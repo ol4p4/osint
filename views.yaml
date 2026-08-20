@@ -1,0 +1,32 @@
+# views.yaml - views and assumption templates
+# Each view is decomposed by AI into verifiable sub-propositions
+
+- id: "view_001"
+  title: "East Asian Modernization Convergence"
+  author: "user"
+  created: "2026-08-20"
+  status: "active"
+  core_claim: "China Japan Korea face same problems in modernization, make similar policies, get similar results"
+  evidence_basis: "Japan 1960-1990, Korea 1980-2010 social policy experience"
+  key_dimensions:
+    - "aging pace and response"
+    - "export-driven economic transition"
+    - "social security buildout"
+    - "youth employment pressure"
+  confidence_initial: 0.7
+  time_horizon_months: 36
+
+- id: "view_002"
+  title: "China following Korea social security path"
+  author: "user"
+  created: "2026-08-20"
+  status: "active"
+  core_claim: "China social security reform (rate cuts, delayed retirement, national pooling) repeating Korea 1997-2010 path"
+  evidence_basis: "Korea post-1997 crisis social security reform timeline"
+  key_dimensions:
+    - "rate cut timing"
+    - "national pooling progress"
+    - "delayed retirement policy"
+    - "fiscal subsidy scale"
+  confidence_initial: 0.65
+  time_horizon_months: 24

@@ -1,0 +1,52 @@
+# -*- coding: utf-8 -*-
+"""
+Dialogue Engine - 5-round questioning to extract structured views
+Modes: interactive (command line) / batch (read draft from Obsidian)
+"""
+
+import json, os, re, yaml, uuid
+from typing import List, Dict, Any, Optional
+from datetime import datetime, timezone
+from pathlib import Path
+
+
+# 5-round questioning strategy
+QUESTION_ROUNDS = [
+    {
+        "round": 1,
+        "name": "WHAT",
+        "prompt": "你说的[观点]具体指什么？请从以下维度中选择或补充：经济结构、社会政策、制度设计、文化传统、人口趋势、国际关系。",
+    },
+    {
+        "round": 2,
+        "name": "WHY",
+        "prompt": "你基于什么得出这个判断？是读过什么书、看过什么数据、还是个人观察和经历？请具体说明。",
+    },
+    {
+        "round": 3,
+        "name": "HOW",
+        "prompt": "这个观点如何验证？什么数据出现能支持它？什么数据出现能反驳它？请给出具体的可观察指标。",
+    },
+    {
+        "round": 4,
+        "name": "WHEN",
+        "prompt": "你认为这个判断的时间跨度是多长？什么时候能验证对错？给出一个到期日。",
+    },
+    {
+        "round": 5,
+        "name": "WHO",
+        "prompt": "这个判断对谁影响最大？对你个人意味着什么？你会因此做出什么改变？",
+    },
+]
+
+
+class DialogueEngine:
+    def __init__(self, config, analyzer):
+        self.config = config
+        self.analyzer = analyzer
+        paths = config.get("paths", {})
+        self.output_dir = Path(paths.get("output_dir", r"D:\\Codex\u8f93\u51fa\\osint_\u536b\u661f\u56fe"))
+        self.idea_dir = Path(r"D:\\Codex\u8f93\u51fa\\u89c6\u9891\u77e5\u8bc6\u5e93\\00_\u6536\u4ef6\u7bb1\\idea")
+        self.idea_dir.mkdir(parents=True, exist_ok=True)
+        self.dialogue_dir = self.output_dir / "dialogues"
+        self.dialogue_dir.mkdir(parents=True, exist_ok=True)

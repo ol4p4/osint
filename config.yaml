@@ -1,0 +1,77 @@
+# 本地配置 - 参谋长专用（不上传Git，含API Key）
+# 复制为 config.local.yaml 并填入真实值
+
+# AI API 配置（兼容OpenAI格式）
+api:
+  base_url: "https://opencode.ai/zen/v1"
+  api_key: "sk-vA4SblJVLpBNwpCVXvoa4nFciLlgYM6J6irsEydGEpedeqaiThDoEAtYNdTAHCcC"
+  model: "mimo-v2.5-free"
+  # 备用模型（主模型失败时降级）
+  fallback_models:
+    - base_url: "https://opencode.ai/zen/v1"
+      model: "nemotron-3.5-lightning-free"
+      api_key: "sk-vA4SblJVLpBNwpCVXvoa4nFciLlgYM6J6irsEydGEpedeqaiThDoEAtYNdTAHCcC"
+    - base_url: "https://opencode.ai/zen/v1"
+      model: "deepseek-v4-flash-free"
+      api_key: "sk-vA4SblJVLpBNwpCVXvoa4nFciLlgYM6J6irsEydGEpedeqaiThDoEAtYNdTAHCcC"
+
+# 运行模式
+mode:
+  # cloud: 仅拉取云端情报（GitHub Actions产物/Gist）
+  # local: 完整本地运行（含采集+分析，需网络可达源站）
+  # hybrid: 云端采集+本地分析（默认推荐）
+  default: "hybrid"
+  
+  # 云端情报获取方式
+  cloud_fetch:
+    method: "gist"              # gist / artifact / local
+    gist_id: ""                 # 私有Gist ID
+    github_repo: ""             # 你的GitHub仓库 owner/repo
+    artifact_name: "intel-daily" # Actions artifact名称
+
+# 输出路径
+paths:
+  output_dir: "D:\\Codex输出\\osint_卫星图"
+  wiki_dir: "D:\\Codex输出\\osint_卫星图\\wiki"
+  intel_cache_dir: "D:\\Codex输出\\osint_卫星图\\cache"
+  log_dir: "D:\\Codex输出\\osint_卫星图\\logs"
+
+# 知识库路径（用于RAG检索）
+knowledge_base:
+  vault_path: "D:\\Codex输出\\视频知识库"
+  index_file: "wiki\\index.md"
+  concepts_dir: "wiki\\concepts"
+  entities_dir: "wiki\\entities"
+  comparisons_dir: "wiki\\comparisons"
+
+# 输出格式控制
+output:
+  brief:
+    enabled: true
+    max_items: 15              # 简报包含的高优先级情报数
+    include_reasoning: true    # 包含AI推理链
+  
+  dashboard:
+    enabled: true
+    theme: "dark"              # dark / light / auto
+    chart_lib: "chartjs"       # chartjs / echarts
+  
+  wiki:
+    enabled: true
+    auto_link: true            # 自动生成双向链接
+    update_index: true         # 自动更新index.md
+    update_log: true           # 自动写入log.md
+
+# 调度设置（本地定时运行用）
+schedule:
+  enabled: false               # 改为true启用本地定时
+  time: "07:30"                # 每日运行时间
+  timezone: "Asia/Shanghai"
+
+# 日志级别
+logging:
+  level: "INFO"                # DEBUG / INFO / WARNING / ERROR
+  file: true
+  console: true
+
+
