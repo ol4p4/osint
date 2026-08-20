@@ -2,9 +2,8 @@ name: Daily Intelligence Collection
 
 on:
   schedule:
-    # 每日 23:00 UTC = 次日 07:00 CST
     - cron: "0 23 * * *"
-  workflow_dispatch:  # 手动触发
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -17,11 +16,9 @@ jobs:
     timeout-minutes: 30
     
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: "pip"
@@ -36,8 +33,7 @@ jobs:
           cd ${{ github.workspace }}
           python cloud/main_cloud.py
       
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: intel-daily
           path: |
@@ -46,17 +42,15 @@ jobs:
           retention-days: 30
       
       - name: Push to private Gist
-        if: ${{ env.GIST_TOKEN != "" }}
+        if: ${{ env.GIST_TOKEN }}
         env:
           GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
         run: |
           TODAY=$(date -u +%Y%m%d)
           FILE="intel_${TODAY}.jsonl"
           if [ -f "$FILE" ]; then
-            # 创建或更新私有 Gist
             GIST_ID="${{ secrets.GIST_ID }}"
             if [ -z "$GIST_ID" ]; then
-              # 创建新 Gist
               RESPONSE=$(curl -s -X POST \
                 -H "Authorization: token $GIST_TOKEN" \
                 -H "Accept: application/vnd.github.v3+json" \
@@ -66,7 +60,6 @@ jobs:
               echo "GIST_ID=$GIST_ID" >> $GITHUB_ENV
               echo "Created new Gist: $GIST_ID"
             else
-              # 更新现有 Gist
               curl -s -X PATCH \
                 -H "Authorization: token $GIST_TOKEN" \
                 -H "Accept: application/vnd.github.v3+json" \
