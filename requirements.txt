@@ -1,0 +1,9 @@
+# Cloud collector dependencies
+# Run in GitHub Actions via: pip install -q --upgrade pip && pip install -q feedparser requests lxml pyyaml simhash
+
+feedparser==6.0.10
+requests==2.32.3
+lxml==5.3.0
+pyyaml==6.0.1
+simhash==4.1.2
+jq==1.0  # for JSON pretty printing in summary
