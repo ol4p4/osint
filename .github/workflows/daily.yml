@@ -46,7 +46,7 @@ jobs:
           retention-days: 30
       
       - name: Push to private Gist
-        if: env.GIST_TOKEN != ""
+        if: ${{ env.GIST_TOKEN != "" }}
         env:
           GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
         run: |
