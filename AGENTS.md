@@ -87,4 +87,16 @@ headers = {
 - 三模型的中文输出通过文件写入验证正常（控制台显示乱码是Windows编码问题）
 
 ---
-*最后更新：2026-08-27 - 仪表盘+假设引擎+情报修复完成*
+*最后更新：2026-08-27 - 假设树重建(8大/20中/40小)+数据同步+仓库清理*
+
+## 仪表盘脚本（产物目录→仓库）
+- gen_dashboard.py：从dashboard_data.json+active_hypotheses.json生成自包含HTML
+- ebuild_hyps.py：重建假设树（调整TREE字典后运行）
+- sync_data.py：同步假设+修复短摘要
+- ix_dashboard.py：修复esc函数位置
+
+## 运行方式
+1. 假设树重建：python rebuild_hyps.py
+2. 数据同步：python sync_data.py
+3. 仪表盘生成：python gen_dashboard.py → python fix_dashboard.py
+4. 启动服务：python -m http.server 4080 → http://127.0.0.1:4080/interactive_dashboard.html
