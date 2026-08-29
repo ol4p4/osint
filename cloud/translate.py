@@ -79,11 +79,21 @@ def main():
                 except:
                     pass
     
-    # Limit to 50 most recent items to stay within CI timeout
-    items = items[:50]
-    print(f"Translating {len(items)} items...")
-    translated = translate_batch(items, api_key, model)
+    # Incremental: skip already-translated items (have cn_title)
+    untranslated = [i for i in items if not i.get("cn_title")]
+    translated_count = len(items) - len(untranslated)
+    print(f"Total: {len(items)}, already translated: {translated_count}, to translate: {len(untranslated)}")
+    # Take only 50 newest untranslated
+    untranslated.sort(key=lambda x: x.get("published_at", ""), reverse=True)
+    untranslated = untranslated[:50]
+    print(f"Translating {len(untranslated)} new items...")
+    translated = translate_batch(untranslated, api_key, model)
     
+    # Merge translated back into full items
+    id_map = {i["id"]: i for i in untranslated if i.get("cn_title")}
+    for i, item in enumerate(items):
+        if item["id"] in id_map:
+            items[i] = id_map[item["id"]]
     with open(files[0], "w", encoding="utf-8") as f:
         for item in items:
             f.write(json.dumps(item, ensure_ascii=False) + "\n")
