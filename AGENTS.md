@@ -1,76 +1,33 @@
-﻿# 「参谋系统」项目文档
+# 参谋系统 - AGENTS.md
 
-## 系统架构
+## 项目概述
+个人情报智库系统：云端抓取全球开源情报 → 本地 AI 四维结构研判 → 仪表盘展示 + Obsidian 知识库写入。
+面向"中国年轻失业毕业生"视角，基于积累制度/空间修正/国家-市场边界/阶级利益四维框架分析。
 
-### 四层角色分离
-- **情报官（云端）**：GitHub Actions 抓取 RSS/政府/国际源
-- **参谋长（本地）**：生成假设/现状分析 → Mimo-v2.5-free
-- **裁判（本地）**：验证判定/复盘 → Nemotron-3.5-lightning-free
-- **用户（终审）**：复核判定
+## 关键路径
+- **仓库**：`C:\Users\admin\Documents\osint`（GitHub: `ol4p4/osint`）
+- **产物目录**：`D:\Codex输出\osint_卫星图\`
+- **知识库**：`D:\Codex输出\视频知识库\`
+- **Python**：`E:\software\python3.13.8\python.exe`
+- **仪表盘**：http://127.0.0.1:9090/interactive_dashboard.html
 
-### 模型红线测试结果（2026-08-20 已完成）
-- **DeepSeek**：从不拒绝但输出极其官方（"中国政府高度重视""关乎亿万人民福祉"），完全无法用于批判性分析。**弃用。**
-- **Mimo**：最优秀——2800+字符详细分析，有数据表格，结构清晰，直接分析风险和博弈。**参谋长（生成假设）。**
-- **Nemotron**：学术风格好——用"代际契约的结构性崩塌""阶层权益重新分配"等专业术语，从不拒绝。**裁判（验证判定）。**
+## CI 流水线（GitHub Actions `daily.yml`）
+- **频率**：每天 4 次（UTC 02/08/14/20 = 北京时间 10/16/22/04）
+- **超时**：25 分钟
+- **步骤**：采集 RSS → NVIDIA 翻译（增量，每次最多 50 条新条目）→ 假设关联 → 假设验证 → 生成简报 → 推送回仓库
+- **权限**：`contents: write`（必须，否则无法推送翻译结果）
+- **翻译模型**：`meta/llama-3.2-11b-vision-instruct`（通过 `https://integrate.api.nvidia.com/v1`）
+- **翻译限制**：每次最多翻译 50 条未翻译条目（有 `cn_title` 的跳过），batch 大小 10
 
-### 输出目录
-- 产物：`D:\Codex输出\osint_卫星图\`
-- 知识库：`D:\Codex输出\视频知识库\`
-- API：OpenCode Zen 免费代理（伪造请求头调用）
+## 模型分工
+| 角色 | 模型 | 用途 |
+|------|------|------|
+| 参谋长（生成） | Mimo-v2.5-free | 生成假设/现状分析 |
+| 裁判（验证） | Nemotron-3.5-lightning-free | 验证判定/复盘 |
+| 翻译（CI） | meta/llama-3.2-11b-vision-instruct | NVIDIA API 批量翻译 |
+| DeepSeek | 已弃用 | 输出过于官方，无批判性 |
 
-## 实施进度
-
-### P0 修复 AI 调用 ✅ 已完成
-- [x] 移除 OpenAI SDK，改用 urllib 伪造请求头
-- [x] 移植早报的伪造头：User-Agent: opencode/latest/1.3.15/cli
-- [x] 中文响应乱码修复（markdown清理+max_tokens=8192）
-- [x] 完整分析测试通过：3条情报全部正确分析，置信度7-9
-
-### P1 模型红线测试 ✅ 已完成
-- [x] 三模型 × 5 问题测试完成
-- [x] 结论：Mimo参谋长 + Nemotron裁判
-- [x] config.yaml 已更新
-
-### P2 假设引擎 ✅ 已完成
-- [x] 三层假设树：20大/43中/71小（children引用方式）
-- [x] 仪表盘层级钻取：大假设→中假设→小假设+进度条+指标阈值
-- [x] 指标自动化：FRED/Frankfurter/World Bank/NBS/Gold API + curl兜底
-- [x] 知识库写入：render_wiki.py 生成假设页+基线+简报
-
-### P4 云端采集 ✅ 已完成
-- [x] RSS源：MarketWatch/Fed/ECB/BOJ/PIIE/IMF/WorldBank/OECD/ADB/Yonhap/CNBC/OilPrice
-- [x] NVIDIA批量翻译：标题+摘要+研判（云端CI运行）
-- [x] 情报数据修复：清理英文标题、补充AI研判、过滤无关条目
-
-### 仪表盘 ✅ 已完成
-- [x] 自包含HTML：gen_dashboard_v2.py 生成
-- [x] 分类筛选：宏观/金融/地缘/能源/东亚/贸易/科技/社会
-- [x] 相关度+时间排序
-- [x] 启动方式：python -m http.server 4080 → http://127.0.0.1:4080/interactive_dashboard.html
-
-### 待续
-- [ ] P2a 对话引擎：问题驱动的观点结构化（用户说想法→5轮追问→观点卡）
-- [ ] P2b 问题生成器：AI分析后自动生成开放性问题
-- [ ] P6 每周循环：每周日汇总数据生成/更新假设
-- [ ] 指标覆盖率提升：74个custom指标无免费API
-- [ ] 趋势数据积累：indicator_history.json需多次运行
-- [ ] P7 自动化与早报打通
-
-## 关键设计决策
-
-### 假设生命周期
-```
-灵感闪记(idea) → 拆子命题(2-6个) → 假设卡(幅度+时间窗+可信度)
-→ 每周证据更新 → 到期验证(AI判定+用户复核) → 偏差复盘 → 回灌权重
-```
-
-### 知识库扩展
-- `wiki/views/`：观点卡（原始观点）
-- `wiki/hypotheses/`：假设卡（带幅度/时间窗/指标）
-- `wiki/verifications/`：验证复盘记录
-- `wiki/baselines/`：现状基线报告
-
-### AI调用约束（必须）
+AI 调用通过 OpenCode Zen 免费代理，伪造请求头：
 ```python
 headers = {
     "Content-Type": "application/json",
@@ -81,22 +38,91 @@ headers = {
 }
 ```
 
-### 已知问题
-- 模型可能返回 ```json 代码块包裹的JSON（已加清理）
-- max_tokens=8192（已调整）
-- 三模型的中文输出通过文件写入验证正常（控制台显示乱码是Windows编码问题）
+## 文件结构
 
----
-*最后更新：2026-08-27 - 假设树重建(8大/20中/40小)+数据同步+仓库清理*
+### 仓库根目录
+| 文件 | 用途 |
+|------|------|
+| `cloud/main_cloud.py` | CI 主入口：采集→去重→评分→推送 |
+| `cloud/fetch_rss.py` | RSS 抓取（每源 15s 超时） |
+| `cloud/fetch_list.py` | 列表页抓取（需 cssselect） |
+| `cloud/clean_dedup_score.py` | 去重+评分（修复了 content 字段映射和 simhash 位溢出） |
+| `cloud/translate.py` | NVIDIA API 增量翻译 |
+| `local/analyze.py` | 本地 AI 四维分析（参谋长） |
+| `local/hypothesis_engine.py` | 假设生成/更新/验证 |
+| `gen_dashboard.py` | 从 dashboard_data.json 生成 HTML |
+| `fix_dashboard.py` | 修复 esc() 函数位置（必须在 gen_dashboard.py 之后运行） |
+| `link_intel_hyp.py` | 情报→假设关联 |
+| `verify_hypotheses.py` | 假设自动验证（FRED/WorldBank 等） |
+| `daily_briefing.py` | 每日简报生成 |
+| `sync_data.py` | 同步假设+修复短摘要 |
+| `rebuild_hyps.py` | 重建假设树（修改 TREE 字典后运行） |
+| `sources.yaml` | 47 个情报源配置 |
+| `config.yaml` | API 密钥和模型配置 |
+| `weights.yaml` | 关键词权重 |
+| `requirements.txt` | Python 依赖（含 cssselect、simhash 2.1.2） |
 
-## 仪表盘脚本（产物目录→仓库）
-- gen_dashboard.py：从dashboard_data.json+active_hypotheses.json生成自包含HTML
-- ebuild_hyps.py：重建假设树（调整TREE字典后运行）
-- sync_data.py：同步假设+修复短摘要
-- ix_dashboard.py：修复esc函数位置
+### 产物目录（`D:\Codex输出\osint_卫星图\`）
+| 文件 | 用途 |
+|------|------|
+| `dashboard_data.json` | 仪表盘数据（intel + hyps + stats） |
+| `interactive_dashboard.html` | 自包含仪表盘 HTML |
+| `serve.py` | HTTP 服务器（端口 9090） |
+| `refresh.py` | 拉取+重建+生成（定时任务调用） |
+| `intel_YYYYMMDD.jsonl` | 每日翻译后的情报 |
+| `hypotheses/active_hypotheses.json` | 假设树（68 节点：8大/20中/40小） |
+| `indicator_history.json` | 指标历史数据 |
 
 ## 运行方式
-1. 假设树重建：python rebuild_hyps.py
-2. 数据同步：python sync_data.py
-3. 仪表盘生成：python gen_dashboard.py → python fix_dashboard.py
-4. 启动服务：python -m http.server 4080 → http://127.0.0.1:4080/interactive_dashboard.html
+
+### 手动生成仪表盘
+```bash
+python gen_dashboard.py
+python fix_dashboard.py
+# 然后 python -m http.server 9090 或启动 serve.py
+```
+
+### 手动刷新（拉取+重建）
+```bash
+python D:\Codex输出\osint_卫星图\refresh.py
+```
+
+### 启动 HTTP 服务
+```bash
+# 方式1：直接运行
+python D:\Codex输出\osint_卫星图\serve.py
+
+# 方式2：Startup 文件夹已有快捷方式，开机自动启动
+```
+
+### 重建假设树
+修改 `rebuild_hyps.py` 中的 `TREE` 字典，然后运行：
+```bash
+python rebuild_hyps.py
+```
+
+## CI 故障排除
+
+### 常见失败原因
+1. **RSS 超时**：每个源 15s 超时，坏源会跳过，不影响其他源
+2. **翻译 404**：检查 NVIDIA API key 是否有效，模型是否可用
+3. **翻译超时**：已限制每次 50 条，如果还超时减小 `translate.py` 中的限制
+4. **push 403**：检查 workflow 的 `permissions: contents: write`
+5. **`No module named 'cloud'`**：`main_cloud.py` 顶部有 `sys.path` 修复
+6. **simhash 报错**：确认 `simhash==2.1.2`（不是 4.1.2）
+
+### 数据质量指标
+- 总情报数：~719 条（跨 7 天）
+- 有中文标题比例：~56%（405/719）
+- 每日新增 RSS：~331 条
+- 翻译吞吐：~50 条/次 CI
+
+## 待续事项
+- [ ] P2a 对话引擎：用户说想法 → 5 轮追问 → 观点卡 → 假设检验
+- [ ] P2b 问题生成器：AI 分析后自动生成开放性问题
+- [ ] P6 每周循环：每周日汇总数据生成/更新假设
+- [ ] 知识库双向链接：wiki/hypotheses/ 与 index.md/log.md 同步
+- [ ] 指标覆盖率提升：74 个 custom 指标部分无免费 API
+
+---
+*最后更新：2026-08-29 - CI 全链路修复 + 增量翻译 + 仪表盘持久化服务*
