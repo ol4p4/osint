@@ -1,331 +1,594 @@
-# 数据源定义 - 云端情报官使用
-# 所有源按类别组织，每个源包含：名称、URL、类型、选择器/解析规则、权重、关键词
-
 rss_sources:
-  # --- 中国官方/政府 ---
-  - name: "新华社-时政"
-    url: "http://www.xinhuanet.com/politics/rss.xml"
-    type: "rss"
-    category: "gov"
-    weight: 1.0
-    keywords: ["政策", "改革", "发展", "规划", "部署"]
-  
-  - name: "人民日报-要闻"
-    url: "http://www.people.com.cn/rss/politics.xml"
-    type: "rss"
-    category: "gov"
-    weight: 1.0
-    keywords: ["中央", "国务院", "会议", "文件", "指示"]
-  
-  - name: "外交部-发言人谈话"
-    url: "https://www.fmprc.gov.cn/web/fyrbt_673021/default.rss"
-    type: "rss"
-    category: "gov"
-    weight: 1.2
-    keywords: ["中美", "伊朗", "能源", "安全", "合作", "冲突"]
-  
-  - name: "国家统计局-最新数据"
-    url: "http://www.stats.gov.cn/tjsj/rss.xml"
-    type: "rss"
-    category: "stats"
-    weight: 1.3
-    keywords: ["PPI", "CPI", "GDP", "工业增加值", "固定资产投资", "就业", "失业率"]
-  
-  - name: "海关总署-统计数据"
-    url: "http://www.customs.gov.cn/customs/302249/302266/302267/index.rss"
-    type: "rss"
-    category: "stats"
-    weight: 1.2
-    keywords: ["进口", "出口", "原油", "大宗商品", "贸易顺差"]
-  
-  - name: "发改委-政策文件"
-    url: "https://www.ndrc.gov.cn/xxgk/zcfb/zcjd/rss.xml"
-    type: "rss"
-    category: "gov"
-    weight: 1.2
-    keywords: ["能源", "基建", "投资", "产业", "规划", "沙戈荒", "核电"]
-  
-  - name: "央行-货币政策"
-    url: "https://www.pbc.gov.cn/diaochatongjisi/116219/116319/rss.xml"
-    type: "rss"
-    category: "stats"
-    weight: 1.1
-    keywords: ["货币供应量", "社融", "利率", "LPR", "MLF", "逆回购"]
-  
-  - name: "证监会-政策法规"
-    url: "http://www.csrc.gov.cn/csrc/rss.xml"
-    type: "rss"
-    category: "gov"
-    weight: 1.0
-    keywords: ["资本市场", "IPO", "再融资", "并购重组", "监管"]
-
-  # --- 国际财经/商业 (P0) ---
-  # MarketWatch (Dow Jones) - 免费个人非商用
-  - name: "MarketWatch-TopStories"
-    url: "https://feeds.content.dowjones.io/public/rss/mw_topstories"
-    type: "rss"
-    category: "biz"
-    weight: 1.1
-    keywords: ["美股", "美债", "联储", "宏观", "大宗商品", "美元", "通胀"]
-  
-  - name: "MarketWatch-RealTime"
-    url: "https://feeds.content.dowjones.io/public/rss/mw_realtimeheadlines"
-    type: "rss"
-    category: "biz"
-    weight: 1.0
-    keywords: ["实时", "突发", "盘前", "盘后", "财报"]
-  
-  - name: "MarketWatch-MarketPulse"
-    url: "https://feeds.content.dowjones.io/public/rss/mw_marketpulse"
-    type: "rss"
-    category: "biz"
-    weight: 1.0
-    keywords: ["市场脉搏", "简讯", "快讯"]
-
-  # Yahoo Finance
-  - name: "YahooFinance-TopStories"
-    url: "https://finance.yahoo.com/rss/topstories"
-    type: "rss"
-    category: "biz"
-    weight: 1.0
-    keywords: ["美股", "加密", "宏观", "财报", "ETF", "期权"]
-  
-  - name: "YahooFinance-Markets"
-    url: "https://finance.yahoo.com/rss/markets"
-    type: "rss"
-    category: "biz"
-    weight: 0.9
-    keywords: ["市场数据", "指数", "商品", "外汇"]
-
-  # --- 中央银行 (P0+P1) ---
-  # Federal Reserve (P0)
-  - name: "FederalReserve-FEDS"
-    url: "https://www.federalreserve.gov/feeds/feds.xml"
-    type: "rss"
-    category: "stats"
-    weight: 1.3
-    keywords: ["联储", "货币政策", "利率", "量化紧缩", "金融稳定", "经济研究"]
-  
-  - name: "FederalReserve-IFDP"
-    url: "https://www.federalreserve.gov/feeds/ifdp.xml"
-    type: "rss"
-    category: "stats"
-    weight: 1.1
-    keywords: ["国际金融", "汇率", "跨境流动", "新兴市场"]
-
-  # ECB (P1)
-  - name: "ECB-Press"
-    url: "https://www.ecb.europa.eu/rss/press.xml"
-    type: "rss"
-    category: "stats"
-    weight: 1.2
-    keywords: ["欧洲央行", "欧元区", "通胀目标", "利率决定", "银行监管"]
-  
-  # BOJ (P1)
-  - name: "BOJ-Releases"
-    url: "https://www.boj.or.jp/en/announcements/release_2024/rss.xml"
-    type: "rss"
-    category: "stats"
-    weight: 1.0
-    keywords: ["日本央行", "收益率曲线控制", "YCC", "负利率", "日元"]
-
-  # --- 国际智库 (P0+P1) ---
-  # PIIE - 彼得森国际经济研究所 (P0)
-  - name: "PIIE-Peterson"
-    url: "https://www.piie.com/rss/update.xml"
-    type: "rss"
-    category: "thinktank"
-    weight: 1.2
-    keywords: ["贸易战", "产业政策", "供应链", "汇率操纵", "绿色补贴", "WTO"]
-  
-  # IMF (P1)
-  - name: "IMF-News"
-    url: "https://www.imf.org/en/News/RSS"
-    type: "rss"
-    category: "thinktank"
-    weight: 1.1
-    keywords: ["世界经济展望", "债务可持续性", "气候金融", "SDR", "资本流动"]
-  
-  # World Bank (P1)
-  - name: "WorldBank-News"
-    url: "https://www.worldbank.org/en/news/rss"
-    type: "rss"
-    category: "thinktank"
-    weight: 1.0
-    keywords: ["大宗商品", "发展融资", "营商环境", "贫困", "气候变化"]
-  
-  # OECD (P1)
-  - name: "OECD-News"
-    url: "https://www.oecd.org/rss.xml"
-    type: "rss"
-    category: "thinktank"
-    weight: 1.0
-    keywords: ["税收协定", "BEPS", "数字税", "养老金", "教育", "生产率"]
-  
-  # ADB - 亚洲开发银行 (P1)
-  - name: "ADB-AsianDevelopment"
-    url: "https://www.adb.org/rss.xml"
-    type: "rss"
-    category: "thinktank"
-    weight: 0.9
-    keywords: ["亚洲基建", "气候融资", "区域合作", "一带一路", "数字经济"]
-
-  # --- 东亚来源 ---
-  - name: "Nikkei Asia"
-    url: "https://asia.nikkei.com/rss"
-    type: "rss"
-    category: "east_asia"
-    weight: 1.1
-    keywords: ["Japan", "economy", "policy", "trade", "technology"]
-
-  - name: "Korea Herald"
-    url: "http://www.koreaherald.com/rss/020200000000.xml"
-    type: "rss"
-    category: "east_asia"
-    weight: 1.0
-    keywords: ["Korea", "economy", "policy", "social security", "employment"]
-
-  - name: "Yonhap News"
-    url: "https://en.yna.co.kr/RSS/news.xml"
-    type: "rss"
-    category: "east_asia"
-    weight: 0.9
-    keywords: ["Korea", "North Korea", "diplomacy", "economy"]
-
-  - name: "Japan Times"
-    url: "https://www.japantimes.co.jp/feed/"
-    type: "rss"
-    category: "east_asia"
-    weight: 1.0
-    keywords: ["Japan", "economy", "demographics", "policy", "trade"]
-
+- name: 新华社-时政
+  url: http://www.xinhuanet.com/politics/rss.xml
+  type: rss
+  category: gov
+  weight: 1.0
+  keywords:
+  - 政策
+  - 改革
+  - 发展
+  - 规划
+  - 部署
+- name: 人民日报-要闻
+  url: http://www.people.com.cn/rss/politics.xml
+  type: rss
+  category: gov
+  weight: 1.0
+  keywords:
+  - 中央
+  - 国务院
+  - 会议
+  - 文件
+  - 指示
+- name: 外交部-发言人谈话
+  url: https://www.fmprc.gov.cn/web/fyrbt_673021/default.rss
+  type: rss
+  category: gov
+  weight: 1.2
+  keywords:
+  - 中美
+  - 伊朗
+  - 能源
+  - 安全
+  - 合作
+  - 冲突
+- name: 国家统计局-最新数据
+  url: http://www.stats.gov.cn/tjsj/rss.xml
+  type: rss
+  category: stats
+  weight: 1.3
+  keywords:
+  - PPI
+  - CPI
+  - GDP
+  - 工业增加值
+  - 固定资产投资
+  - 就业
+  - 失业率
+- name: 海关总署-统计数据
+  url: http://www.customs.gov.cn/customs/302249/302266/302267/index.rss
+  type: rss
+  category: stats
+  weight: 1.2
+  keywords:
+  - 进口
+  - 出口
+  - 原油
+  - 大宗商品
+  - 贸易顺差
+- name: 发改委-政策文件
+  url: https://www.ndrc.gov.cn/xxgk/zcfb/zcjd/rss.xml
+  type: rss
+  category: gov
+  weight: 1.2
+  keywords:
+  - 能源
+  - 基建
+  - 投资
+  - 产业
+  - 规划
+  - 沙戈荒
+  - 核电
+- name: 央行-货币政策
+  url: https://www.pbc.gov.cn/diaochatongjisi/116219/116319/rss.xml
+  type: rss
+  category: stats
+  weight: 1.1
+  keywords:
+  - 货币供应量
+  - 社融
+  - 利率
+  - LPR
+  - MLF
+  - 逆回购
+- name: 证监会-政策法规
+  url: http://www.csrc.gov.cn/csrc/rss.xml
+  type: rss
+  category: gov
+  weight: 1.0
+  keywords:
+  - 资本市场
+  - IPO
+  - 再融资
+  - 并购重组
+  - 监管
+- name: MarketWatch-TopStories
+  url: https://feeds.content.dowjones.io/public/rss/mw_topstories
+  type: rss
+  category: biz
+  weight: 1.1
+  keywords:
+  - 美股
+  - 美债
+  - 联储
+  - 宏观
+  - 大宗商品
+  - 美元
+  - 通胀
+- name: MarketWatch-RealTime
+  url: https://feeds.content.dowjones.io/public/rss/mw_realtimeheadlines
+  type: rss
+  category: biz
+  weight: 1.0
+  keywords:
+  - 实时
+  - 突发
+  - 盘前
+  - 盘后
+  - 财报
+- name: MarketWatch-MarketPulse
+  url: https://feeds.content.dowjones.io/public/rss/mw_marketpulse
+  type: rss
+  category: biz
+  weight: 1.0
+  keywords:
+  - 市场脉搏
+  - 简讯
+  - 快讯
+- name: YahooFinance-TopStories
+  url: https://finance.yahoo.com/rss/topstories
+  type: rss
+  category: biz
+  weight: 1.0
+  keywords:
+  - 美股
+  - 加密
+  - 宏观
+  - 财报
+  - ETF
+  - 期权
+- name: YahooFinance-Markets
+  url: https://finance.yahoo.com/rss/markets
+  type: rss
+  category: biz
+  weight: 0.9
+  keywords:
+  - 市场数据
+  - 指数
+  - 商品
+  - 外汇
+- name: FederalReserve-FEDS
+  url: https://www.federalreserve.gov/feeds/feds.xml
+  type: rss
+  category: stats
+  weight: 1.3
+  keywords:
+  - 联储
+  - 货币政策
+  - 利率
+  - 量化紧缩
+  - 金融稳定
+  - 经济研究
+- name: FederalReserve-IFDP
+  url: https://www.federalreserve.gov/feeds/ifdp.xml
+  type: rss
+  category: stats
+  weight: 1.1
+  keywords:
+  - 国际金融
+  - 汇率
+  - 跨境流动
+  - 新兴市场
+- name: ECB-Press
+  url: https://www.ecb.europa.eu/rss/press.xml
+  type: rss
+  category: stats
+  weight: 1.2
+  keywords:
+  - 欧洲央行
+  - 欧元区
+  - 通胀目标
+  - 利率决定
+  - 银行监管
+- name: BOJ-Releases
+  url: https://www.boj.or.jp/en/announcements/release_2024/rss.xml
+  type: rss
+  category: stats
+  weight: 1.0
+  keywords:
+  - 日本央行
+  - 收益率曲线控制
+  - YCC
+  - 负利率
+  - 日元
+- name: PIIE-Peterson
+  url: https://www.piie.com/rss/update.xml
+  type: rss
+  category: thinktank
+  weight: 1.2
+  keywords:
+  - 贸易战
+  - 产业政策
+  - 供应链
+  - 汇率操纵
+  - 绿色补贴
+  - WTO
+- name: IMF-News
+  url: https://www.imf.org/en/News/RSS
+  type: rss
+  category: thinktank
+  weight: 1.1
+  keywords:
+  - 世界经济展望
+  - 债务可持续性
+  - 气候金融
+  - SDR
+  - 资本流动
+- name: WorldBank-News
+  url: https://www.worldbank.org/en/news/rss
+  type: rss
+  category: thinktank
+  weight: 1.0
+  keywords:
+  - 大宗商品
+  - 发展融资
+  - 营商环境
+  - 贫困
+  - 气候变化
+- name: OECD-News
+  url: https://www.oecd.org/rss.xml
+  type: rss
+  category: thinktank
+  weight: 1.0
+  keywords:
+  - 税收协定
+  - BEPS
+  - 数字税
+  - 养老金
+  - 教育
+  - 生产率
+- name: ADB-AsianDevelopment
+  url: https://www.adb.org/rss.xml
+  type: rss
+  category: thinktank
+  weight: 0.9
+  keywords:
+  - 亚洲基建
+  - 气候融资
+  - 区域合作
+  - 一带一路
+  - 数字经济
+- name: Nikkei Asia
+  url: https://asia.nikkei.com/rss
+  type: rss
+  category: east_asia
+  weight: 1.1
+  keywords:
+  - Japan
+  - economy
+  - policy
+  - trade
+  - technology
+- name: Korea Herald
+  url: http://www.koreaherald.com/rss/020200000000.xml
+  type: rss
+  category: east_asia
+  weight: 1.0
+  keywords:
+  - Korea
+  - economy
+  - policy
+  - social security
+  - employment
+- name: Yonhap News
+  url: https://en.yna.co.kr/RSS/news.xml
+  type: rss
+  category: east_asia
+  weight: 0.9
+  keywords:
+  - Korea
+  - North Korea
+  - diplomacy
+  - economy
+- name: Japan Times
+  url: https://www.japantimes.co.jp/feed/
+  type: rss
+  category: east_asia
+  weight: 1.0
+  keywords:
+  - Japan
+  - economy
+  - demographics
+  - policy
+  - trade
+- name: OilPrice-News
+  url: https://oilprice.com/rss/main
+  type: rss
+  category: 能源安全
+  weight: 0.9
+  keywords:
+  - oil
+  - energy
+  - crude
+  - OPEC
+  - gas
+  - renewable
+- name: CNBC-World
+  url: https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100727362
+  type: rss
+  category: 国际政治
+  weight: 0.85
+  keywords:
+  - geopolitics
+  - war
+  - sanction
+  - trade
+- name: CNBC-Economy
+  url: https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=20910258
+  type: rss
+  category: 宏观经济
+  weight: 0.85
+  keywords:
+  - GDP
+  - inflation
+  - CPI
+  - Fed
+  - rate
+- name: CNBC-Finance
+  url: https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10000664
+  type: rss
+  category: 金融市场
+  weight: 0.8
+  keywords:
+  - stock
+  - bond
+  - market
+  - crypto
+- name: CNBC-Investing
+  url: https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10001147
+  type: rss
+  category: 投资
+  weight: 0.75
+  keywords:
+  - investment
+  - fund
+  - strategy
+- name: Reuters-Business
+  url: https://www.reutersagency.com/feed/?best-topics=business-finance&post_type=best
+  type: rss
+  category: 商业财经
+  weight: 0.9
+  keywords:
+  - business
+  - finance
+  - economy
+  - trade
+- name: FT-World
+  url: https://www.ft.com/rss/home/uk
+  type: rss
+  category: 国际财经
+  weight: 0.9
+  keywords:
+  - world
+  - economy
+  - politics
+  - trade
+- name: AP-News
+  url: https://rsshub.app/apnews/topics/business
+  type: rss
+  category: 新闻通讯社
+  weight: 0.85
+  keywords:
+  - breaking
+  - news
+  - headline
+- name: Bloomberg-Markets
+  url: https://feeds.bloomberg.com/markets/news.rss
+  type: rss
+  category: 金融市场
+  weight: 0.9
+  keywords:
+  - market
+  - stock
+  - bond
+  - commodity
+- name: Caixin-Global
+  url: https://rsshub.app/caixin/latest
+  type: rss
+  category: 中国财经
+  weight: 0.9
+  keywords:
+  - China
+  - economy
+  - policy
+  - finance
+- name: Yicai-Global
+  url: https://www.yicaiglobal.com/rss
+  type: rss
+  category: 中国财经
+  weight: 0.85
+  keywords:
+  - China
+  - economy
+  - policy
+- name: WSJ-World
+  url: https://feeds.content.dowjones.io/public/rss/wsjcomworldnews
+  type: rss
+  category: 国际新闻
+  weight: 0.9
+  keywords:
+  - world
+  - geopolitics
+  - trade
 gov_portals:
-  - name: "中国政府网-政策文件"
-    url: "https://www.gov.cn/zhengce/zuixin.htm"
-    type: "list_page"
-    category: "gov"
-    weight: 1.3
-    list_selector: ".list_1 li a"
-    title_selector: "h1"
-    content_selector: ".pages_content"
-    date_selector: ".pages-date"
-    keywords: ["国务院", "令", "决定", "方案", "意见", "通知", "就业", "创业", "人才"]
-    max_items: 20
-  
-  - name: "人社部-就业创业"
-    url: "https://www.mohrss.gov.cn/xxgk2020/fdzdgknr/zcyjcz/index.html"
-    type: "list_page"
-    category: "gov"
-    weight: 1.4
-    list_selector: ".list-con li a"
-    title_selector: "h1"
-    content_selector: ".TRS_Editor"
-    date_selector: ".date"
-    keywords: ["失业", "就业", "补贴", "技能", "培训", "毕业生", "实习", "见习"]
-    max_items: 15
-  
-  - name: "工信部-产业政策"
-    url: "https://www.miit.gov.cn/search/index.html?keyword=%E6%94%BF%E7%AD%96"
-    type: "list_page"
-    category: "gov"
-    weight: 1.1
-    list_selector: ".result-list li a"
-    title_selector: "h1"
-    content_selector: ".content"
-    date_selector: ".time"
-    keywords: ["新能源", "新材料", "高端装备", "电子信息", "数字经济", "人工智能"]
-    max_items: 15
-  
-  - name: "教育部-毕业生就业"
-    url: "http://www.moe.gov.cn/jyb_xxgk/zcwj_2024/"
-    type: "rss"
-    category: "gov"
-    weight: 1.2
-    list_selector: ".moe-list li a"
-    title_selector: "h1"
-    content_selector: ".content"
-    date_selector: ".date"
-    keywords: ["毕业生", "就业", "选调", "基层", "西部计划", "三支一扶", "特岗"]
-    max_items: 15
-
+- name: 中国政府网-政策文件
+  url: https://www.gov.cn/zhengce/zuixin.htm
+  type: list_page
+  category: gov
+  weight: 1.3
+  list_selector: .list_1 li a
+  title_selector: h1
+  content_selector: .pages_content
+  date_selector: .pages-date
+  keywords:
+  - 国务院
+  - 令
+  - 决定
+  - 方案
+  - 意见
+  - 通知
+  - 就业
+  - 创业
+  - 人才
+  max_items: 20
+- name: 人社部-就业创业
+  url: https://www.mohrss.gov.cn/xxgk2020/fdzdgknr/zcyjcz/index.html
+  type: list_page
+  category: gov
+  weight: 1.4
+  list_selector: .list-con li a
+  title_selector: h1
+  content_selector: .TRS_Editor
+  date_selector: .date
+  keywords:
+  - 失业
+  - 就业
+  - 补贴
+  - 技能
+  - 培训
+  - 毕业生
+  - 实习
+  - 见习
+  max_items: 15
+- name: 工信部-产业政策
+  url: https://www.miit.gov.cn/search/index.html?keyword=%E6%94%BF%E7%AD%96
+  type: list_page
+  category: gov
+  weight: 1.1
+  list_selector: .result-list li a
+  title_selector: h1
+  content_selector: .content
+  date_selector: .time
+  keywords:
+  - 新能源
+  - 新材料
+  - 高端装备
+  - 电子信息
+  - 数字经济
+  - 人工智能
+  max_items: 15
+- name: 教育部-毕业生就业
+  url: http://www.moe.gov.cn/jyb_xxgk/zcwj_2024/
+  type: rss
+  category: gov
+  weight: 1.2
+  list_selector: .moe-list li a
+  title_selector: h1
+  content_selector: .content
+  date_selector: .date
+  keywords:
+  - 毕业生
+  - 就业
+  - 选调
+  - 基层
+  - 西部计划
+  - 三支一扶
+  - 特岗
+  max_items: 15
 stats_sources:
-  - name: "国家统计局-月度数据"
-    url: "https://data.stats.gov.cn/easyquery.htm?cn=C01"
-    type: "api"
-    category: "stats"
-    weight: 1.5
-    api_params:
-      dbcode: "hgnd"
-      rowcode: "zb"
-      colcode: "sj"
-      wds: "[]"
-      dfwds: "[{\"wdcode\":\"zb\",\"valuecode\":\"A0201\"}]"
-    keywords: ["GDP", "工业", "投资", "消费", "进出口"]
-  
-  - name: "风险提示-宏观"
-    url: "https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125440/index.html"
-    type: "list_page"
-    category: "stats"
-    weight: 1.1
-    list_selector: ".list li a"
-    title_selector: "h1"
-    content_selector: ".content"
-    date_selector: ".date"
-    keywords: ["金融稳定", "风险", "房地产", "地方债", "影子银行"]
-    max_items: 10
-
+- name: 国家统计局-月度数据
+  url: https://data.stats.gov.cn/easyquery.htm?cn=C01
+  type: api
+  category: stats
+  weight: 1.5
+  api_params:
+    dbcode: hgnd
+    rowcode: zb
+    colcode: sj
+    wds: '[]'
+    dfwds: '[{"wdcode":"zb","valuecode":"A0201"}]'
+  keywords:
+  - GDP
+  - 工业
+  - 投资
+  - 消费
+  - 进出口
+- name: 风险提示-宏观
+  url: https://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125440/index.html
+  type: list_page
+  category: stats
+  weight: 1.1
+  list_selector: .list li a
+  title_selector: h1
+  content_selector: .content
+  date_selector: .date
+  keywords:
+  - 金融稳定
+  - 风险
+  - 房地产
+  - 地方债
+  - 影子银行
+  max_items: 10
 think_tanks:
-  - name: "社科院-宏观经济"
-    url: "https://www.cass.net.cn/zz/zyjj/"
-    type: "list_page"
-    category: "thinktank"
-    weight: 1.0
-    list_selector: ".list li a"
-    title_selector: "h1"
-    content_selector: ".content"
-    date_selector: ".date"
-    keywords: ["宏观", "增长", "结构", "改革", "开放", "收入分配"]
-    max_items: 10
-  
-  - name: "发改委宏观院"
-    url: "https://www.ndrc.gov.cn/mhjj/"
-    type: "list_page"
-    category: "thinktank"
-    weight: 1.1
-    list_selector: ".list li a"
-    title_selector: "h1"
-    content_selector: ".content"
-    date_selector: ".date"
-    keywords: ["经济运行", "政策效果", "投资", "消费", "产业升级"]
-    max_items: 10
-  
-  - name: "中金-宏观策略"
-    url: "https://www.cicc.com/research/macro/"
-    type: "list_page"
-    category: "thinktank"
-    weight: 1.0
-    list_selector: ".article-list li a"
-    title_selector: "h1"
-    content_selector: ".article-content"
-    date_selector: ".date"
-    keywords: ["宏观策略", "资产配置", "利率债", "信用债", "权益", "大类资产"]
-    max_items: 10
-  
-  - name: "华泰-宏观固收"
-    url: "https://www.htsec.com/research/macro/"
-    type: "list_page"
-    category: "thinktank"
-    weight: 1.0
-    list_selector: ".list li a"
-    title_selector: "h1"
-    content_selector: ".content"
-    date_selector: ".date"
-    keywords: ["固收", "利率", "债券", "货币政策", "财政政策", "通胀"]
-    max_items: 10
-
-# 通用关键词字典（用于基础评分）
+- name: 社科院-宏观经济
+  url: https://www.cass.net.cn/zz/zyjj/
+  type: list_page
+  category: thinktank
+  weight: 1.0
+  list_selector: .list li a
+  title_selector: h1
+  content_selector: .content
+  date_selector: .date
+  keywords:
+  - 宏观
+  - 增长
+  - 结构
+  - 改革
+  - 开放
+  - 收入分配
+  max_items: 10
+- name: 发改委宏观院
+  url: https://www.ndrc.gov.cn/mhjj/
+  type: list_page
+  category: thinktank
+  weight: 1.1
+  list_selector: .list li a
+  title_selector: h1
+  content_selector: .content
+  date_selector: .date
+  keywords:
+  - 经济运行
+  - 政策效果
+  - 投资
+  - 消费
+  - 产业升级
+  max_items: 10
+- name: 中金-宏观策略
+  url: https://www.cicc.com/research/macro/
+  type: list_page
+  category: thinktank
+  weight: 1.0
+  list_selector: .article-list li a
+  title_selector: h1
+  content_selector: .article-content
+  date_selector: .date
+  keywords:
+  - 宏观策略
+  - 资产配置
+  - 利率债
+  - 信用债
+  - 权益
+  - 大类资产
+  max_items: 10
+- name: 华泰-宏观固收
+  url: https://www.htsec.com/research/macro/
+  type: list_page
+  category: thinktank
+  weight: 1.0
+  list_selector: .list li a
+  title_selector: h1
+  content_selector: .content
+  date_selector: .date
+  keywords:
+  - 固收
+  - 利率
+  - 债券
+  - 货币政策
+  - 财政政策
+  - 通胀
+  max_items: 10
 keyword_weights:
-  # 高权重：直接关系用户生存发展
   就业: 3.0
   失业: 3.0
   毕业生: 2.5
@@ -341,8 +604,6 @@ keyword_weights:
   西部计划: 2.0
   三支一扶: 2.0
   特岗: 2.0
-  
-  # 中高权重：宏观结构性影响
   能源: 2.0
   原油: 2.0
   石油: 2.0
@@ -357,7 +618,6 @@ keyword_weights:
   电网: 1.8
   绿电: 1.8
   绿证: 1.5
-  
   PPI: 2.0
   CPI: 2.0
   通胀: 2.2
@@ -371,8 +631,6 @@ keyword_weights:
   M2: 1.5
   地方债: 1.8
   房地产: 1.8
-  
-  # 中权重：行业/区域机会
   制造业: 1.5
   高端装备: 1.8
   新材料: 1.5
@@ -383,8 +641,6 @@ keyword_weights:
   生物制造: 1.5
   量子科技: 1.5
   商业航天: 1.5
-  
-  # 地缘/外部冲击
   中美: 1.8
   伊朗: 1.5
   霍尔木兹: 2.0
@@ -393,8 +649,6 @@ keyword_weights:
   供应链: 1.5
   能源安全: 2.0
   粮食安全: 1.8
-  
-  # 国际金融/宏观 (P0+P1 新增)
   联储: 2.5
   美联储: 2.5
   FOMC: 2.5
@@ -407,16 +661,12 @@ keyword_weights:
   软着陆: 1.8
   硬着陆: 2.0
   滞胀: 2.2
-  
-  # 央行
   欧洲央行: 1.8
   ECB: 1.8
   日本央行: 1.5
   BOJ: 1.5
   YCC: 1.8
   收益率曲线控制: 1.8
-  
-  # 国际机构
   IMF: 1.5
   世界银行: 1.2
   WorldBank: 1.2
@@ -425,14 +675,10 @@ keyword_weights:
   亚洲开发银行: 1.0
   PIIE: 1.5
   彼得森: 1.5
-  
-  # 低权重：背景噪音
   会议: 0.5
   讲话: 0.5
   考察: 0.5
   调研: 0.5
-
-# 来源基础权重
 source_base_weights:
   gov: 1.3
   stats: 1.5
@@ -440,33 +686,47 @@ source_base_weights:
   rss: 1.0
   social: 0.8
   biz: 0.9
-
-# ========== East Asia Sources ==========
 east_asia_sources:
-  - name: "Nikkei Asia"
-    url: "https://asia.nikkei.com/rss"
-    type: "rss"
-    category: "east_asia"
-    weight: 1.1
-    keywords: ["Japan", "economy", "policy", "trade", "technology"]
-
-  - name: "Korea Herald"
-    url: "http://www.koreaherald.com/rss/020200000000.xml"
-    type: "rss"
-    category: "east_asia"
-    weight: 1.0
-    keywords: ["Korea", "economy", "policy", "social security", "employment"]
-
-  - name: "Yonhap News"
-    url: "https://en.yna.co.kr/RSS/news.xml"
-    type: "rss"
-    category: "east_asia"
-    weight: 0.9
-    keywords: ["Korea", "North Korea", "diplomacy", "economy"]
-
-  - name: "Japan Times"
-    url: "https://www.japantimes.co.jp/feed/"
-    type: "rss"
-    category: "east_asia"
-    weight: 1.0
-    keywords: ["Japan", "economy", "demographics", "policy", "trade"]
+- name: Nikkei Asia
+  url: https://asia.nikkei.com/rss
+  type: rss
+  category: east_asia
+  weight: 1.1
+  keywords:
+  - Japan
+  - economy
+  - policy
+  - trade
+  - technology
+- name: Korea Herald
+  url: http://www.koreaherald.com/rss/020200000000.xml
+  type: rss
+  category: east_asia
+  weight: 1.0
+  keywords:
+  - Korea
+  - economy
+  - policy
+  - social security
+  - employment
+- name: Yonhap News
+  url: https://en.yna.co.kr/RSS/news.xml
+  type: rss
+  category: east_asia
+  weight: 0.9
+  keywords:
+  - Korea
+  - North Korea
+  - diplomacy
+  - economy
+- name: Japan Times
+  url: https://www.japantimes.co.jp/feed/
+  type: rss
+  category: east_asia
+  weight: 1.0
+  keywords:
+  - Japan
+  - economy
+  - demographics
+  - policy
+  - trade
