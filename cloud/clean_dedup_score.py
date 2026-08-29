@@ -37,7 +37,7 @@ class SimHashDedup:
         v = [0] * 64
         for token, weight in tokens:
             h = hashlib.md5(token.encode()).hexdigest()
-            bits = bin(int(h, 16))[2:].zfill(64)
+            bits = bin(int(h, 16))[2:].zfill(64)[:64]
             for i, bit in enumerate(bits):
                 v[i] += weight if bit == "1" else -weight
         fingerprint = 0
@@ -135,12 +135,14 @@ def clean_items(items: List[Dict]) -> List[Dict]:
     for item in items:
         item = item.copy()
         item["title"] = clean_text(item.get("title", ""))
-        item["content"] = clean_text(item.get("content", ""))
+        raw_content = item.get("content", "") or item.get("content_preview", "") or item.get("content_full", "") or item.get("cn_summary", "")
+        item["content"] = clean_text(raw_content)
         item["summary"] = clean_text(item.get("summary", ""))
-        zh_chars = len(re.findall(r"[\u4e00-\u9fff]", item["content"]))
+        zh_chars = len(re.findall(r"[一-鿿]", item["content"]))
         total_chars = len(item["content"])
         item["lang"] = "zh" if zh_chars / max(total_chars, 1) > 0.3 else "other"
-        if item["lang"] == "zh" and len(item["content"]) >= 100:
+        has_cn = bool(item.get("cn_title") or item.get("cn_summary"))
+        if (item["lang"] == "zh" and len(item["content"]) >= 100) or has_cn or (total_chars >= 200):
             cleaned.append(item)
     return cleaned
 
