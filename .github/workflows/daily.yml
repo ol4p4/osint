@@ -70,12 +70,13 @@ jobs:
             link_report.json
           retention-days: 30
       
-      - name: Push updates back to repo
+      - name: Commit and push translated intel
         run: |
           cd ${{ github.workspace }}
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A
+          TODAY=$(date -u +%Y%m%d)
+          git add intel_${TODAY}.jsonl intel_summary_${TODAY}.json hypotheses/ briefing_*.md 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
