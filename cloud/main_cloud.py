@@ -14,20 +14,35 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
-def run_fetcher(script: str, config: str, output: str):
+def run_fetcher(script, config, output):
+    """运行采集脚本，从输出文件读取结果"""
     cmd = [sys.executable, script, config, output]
-    result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
-    if result.returncode != 0:
-        print(f"[ERROR] {script} failed: {result.stderr}")
-        return []
+    result = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
     
+    if result.returncode != 0:
+        print(f"[WARN] {script} exit code {result.returncode}")
+        if result.stderr:
+            print(f"  stderr: {result.stderr[:200]}")
+    
+    # Print stdout logs
+    if result.stdout:
+        for line in result.stdout.strip().split("\n"):
+            if line.strip():
+                print(f"  {line}")
+    
+    # Read items from output file
     items = []
-    for line in result.stdout.strip().split("\n"):
-        if line.strip():
-            try:
-                items.append(json.loads(line))
-            except:
-                pass
+    output_path = Path(output)
+    if output_path.exists():
+        with open(output_path, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line:
+                    try:
+                        items.append(json.loads(line))
+                    except:
+                        pass
+    
     return items
 
 
@@ -35,32 +50,35 @@ def main():
     with open("sources.yaml", "r", encoding="utf-8") as f:
         sources_config = yaml.safe_load(f)
     
-    with open("weights.yaml", "r", encoding="utf-8") as f:
-        weights_config = yaml.safe_load(f)
-    
     today = datetime.now(timezone.utc).strftime("%Y%m%d")
     raw_file = f"intel_raw_{today}.jsonl"
     final_file = f"intel_{today}.jsonl"
     
     all_items = []
     
-    print("=== 抓取 RSS 源 ===")
+    print("=== Collecting RSS ===")
     rss_items = run_fetcher("cloud/fetch_rss.py", "sources.yaml", f"rss_{today}.jsonl")
     all_items.extend(rss_items)
+    print(f"  RSS: {len(rss_items)} items")
     
-    print("=== 抓取列表页源 ===")
+    print("=== Collecting List pages ===")
     list_items = run_fetcher("cloud/fetch_list.py", "sources.yaml", f"list_{today}.jsonl")
     all_items.extend(list_items)
+    print(f"  List: {len(list_items)} items")
     
-    print(f"=== 合计原始条目: {len(all_items)} ===")
+    print(f"=== Total raw: {len(all_items)} ===")
+    
+    if not all_items:
+        print("[ERROR] No items collected, aborting")
+        sys.exit(1)
     
     with open(raw_file, "w", encoding="utf-8") as f:
         for item in all_items:
             f.write(json.dumps(item, ensure_ascii=False) + "\n")
     
-    print("=== 运行清洗/去重/评分管道 ===")
+    print("=== Running dedup + scoring ===")
     from cloud.clean_dedup_score import pipeline
-    final_items = pipeline(raw_file, final_file, "weights.yaml")
+    final_items = pipeline(raw_file, final_file, "sources.yaml")
     
     summary = {
         "date": today,
@@ -82,9 +100,9 @@ def main():
     with open(f"intel_summary_{today}.json", "w", encoding="utf-8") as f:
         json.dump(summary, f, ensure_ascii=False, indent=2)
     
-    print(f"=== 完成 ===")
-    print(f"输出文件: {final_file}")
-    print(f"摘要: {summary}")
+    print(f"=== Done ===")
+    print(f"  Raw: {len(all_items)} -> Final: {len(final_items)}")
+    print(f"  Output: {final_file}")
     
     if "GITHUB_OUTPUT" in os.environ:
         with open(os.environ["GITHUB_OUTPUT"], "a") as f:
