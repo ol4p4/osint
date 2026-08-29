@@ -62,7 +62,7 @@ def main():
         print("No NVIDIA_API_KEY, skipping translation")
         sys.exit(0)
     
-    model = "nvidia/llama-3.1-nemotron-70b-instruct"
+    model = "meta/llama-3.2-11b-vision-instruct"
     
     files = sorted(glob.glob("intel_*.jsonl"), reverse=True)[:1]
     if not files:

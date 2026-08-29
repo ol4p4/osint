@@ -47,6 +47,11 @@ def run_fetcher(script, config, output):
 
 
 def main():
+    # Ensure project root is on sys.path for cloud module imports
+    import sys as _sys
+    _project_root = str(Path(__file__).resolve().parent.parent)
+    if _project_root not in _sys.path:
+        _sys.path.insert(0, _project_root)
     with open("sources.yaml", "r", encoding="utf-8") as f:
         sources_config = yaml.safe_load(f)
     
