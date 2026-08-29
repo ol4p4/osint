@@ -6,3 +6,7 @@ nbs_cache.json
 *.tmp
 *.bak
 data/
+
+_patch_*
+_test_*
+nnull
