@@ -107,7 +107,7 @@ class MacroAnalyzer:
                             if val:
                                 content = val
                                 break
-                    with open(r'C:\Users\admin\Documents\osint\_tmp_raw_resp.txt', 'w', encoding='utf-8') as _f:
+                    with open(r'D:\osint\_tmp_raw_resp.txt', 'w', encoding='utf-8') as _f:
                         _f.write(content)
                     if content and content.strip():
                         return content.strip()

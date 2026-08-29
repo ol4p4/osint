@@ -5,7 +5,7 @@
 面向"中国年轻失业毕业生"视角，基于积累制度/空间修正/国家-市场边界/阶级利益四维框架分析。
 
 ## 关键路径
-- **仓库**：`C:\Users\admin\Documents\osint`（GitHub: `ol4p4/osint`）
+- **仓库**：`D:\osint`（GitHub: `ol4p4/osint`）
 - **产物目录**：`D:\Codex输出\osint_卫星图\`
 - **知识库**：`D:\Codex输出\视频知识库\`
 - **Python**：`E:\software\python3.13.8\python.exe`

@@ -1,3 +1,3 @@
 @echo off
-E:\software\python3.13.8\python.exe D:\Codex??\osint_???\refresh.py
-start "" /min E:\software\python3.13.8\python.exe D:\Codex??\osint_???\serve.py
+set OUTDIR=D:\Codex输出\osint_卫星图
+start "" /min E:\software\python3.13.8\python.exe %OUTDIR%\serve.py

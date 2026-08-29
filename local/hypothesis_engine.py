@@ -229,7 +229,7 @@ Output JSON array, each: {{"claim":"...","indicator":"measurable metric","data_s
 
     def run_weekly_cycle(self, intel_items=None):
         print("[ENGINE] === Weekly Hypothesis Cycle ===")
-        views = self.load_views(r"C:\Usersdmin\Documents\osintiews.yaml")
+        views = self.load_views(r"D:\osint\views.yaml")
         hyps = self.generate_hypotheses_from_views(views)
         active = self.get_all_active()
         print("[ENGINE] Active hypotheses: " + str(len(active)))
