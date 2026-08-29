@@ -1,0 +1,22 @@
+{
+  "date": "20260829",
+  "total_raw": 331,
+  "total_final": 331,
+  "by_category": {
+    "biz": 10,
+    "thinktank": 4,
+    "east_asia": 244,
+    "能源安全": 15,
+    "国际政治": 30,
+    "宏观经济": 3,
+    "金融市场": 16,
+    "投资": 9
+  },
+  "by_priority": {
+    "unknown": 331
+  },
+  "top_keywords": {
+    "PIIE": 2,
+    "PPI": 5
+  }
+}
