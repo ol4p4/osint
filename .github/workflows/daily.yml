@@ -75,8 +75,15 @@ jobs:
           cd ${{ github.workspace }}
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          echo "=== Files in workspace ==="
+          ls -la intel*.jsonl 2>/dev/null || echo "No intel*.jsonl found"
           TODAY=$(date -u +%Y%m%d)
-          git add intel_${TODAY}.jsonl intel_summary_${TODAY}.json hypotheses/ briefing_*.md 2>/dev/null || true
+          echo "Today=$TODAY"
+          ls -la intel_${TODAY}.jsonl 2>/dev/null || echo "intel_${TODAY}.jsonl not found"
+          ls -la intel_raw_${TODAY}.jsonl 2>/dev/null || echo "intel_raw_${TODAY}.jsonl not found"
+          git add intel_${TODAY}.jsonl intel_raw_${TODAY}.jsonl intel_summary_${TODAY}.json hypotheses/ briefing_*.md 2>/dev/null || true
+          git add -A intel*.jsonl rss*.jsonl 2>/dev/null || true
+          git status
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
