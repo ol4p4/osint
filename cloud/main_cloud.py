@@ -77,8 +77,16 @@ def main():
             f.write(json.dumps(item, ensure_ascii=False) + "\n")
     
     print("=== Running dedup + scoring ===")
-    from cloud.clean_dedup_score import pipeline
-    final_items = pipeline(raw_file, final_file, "sources.yaml")
+    sys.stdout.flush()
+    try:
+        from cloud.clean_dedup_score import pipeline
+        final_items = pipeline(raw_file, final_file, "sources.yaml")
+    except Exception as e:
+        print(f"[ERROR] Dedup pipeline failed: {e}")
+        import traceback
+        traceback.print_exc()
+        sys.stdout.flush()
+        final_items = all_items
     
     summary = {
         "date": today,
