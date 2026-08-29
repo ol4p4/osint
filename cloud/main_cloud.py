@@ -116,6 +116,17 @@ def main():
         with open(os.environ["GITHUB_OUTPUT"], "a") as f:
             f.write(f"intel_file={final_file}\n")
             f.write(f"summary_file=intel_summary_{today}.json\n")
+    
+    # Auto-commit artifacts in CI
+    if os.environ.get("GITHUB_ACTIONS"):
+        import subprocess as _sp
+        _sp.run(["git", "add", final_file, f"intel_summary_{today}.json"], check=False)
+        _sp.run(["git", "add", "hypotheses/"], check=False)
+        _sp.run(["git", "diff", "--staged", "--quiet"], check=False)
+        if _sp.run(["git", "diff", "--staged", "--quiet"]).returncode != 0:
+            _sp.run(["git", "commit", "-m", f"auto: intel update {today}"], check=False)
+            _sp.run(["git", "push"], check=False)
+            print(f"Committed and pushed {final_file}")
 
 
 if __name__ == "__main__":
