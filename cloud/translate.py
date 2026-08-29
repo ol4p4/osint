@@ -7,7 +7,7 @@ def translate_batch(items, api_key, model):
     base_url = "https://integrate.api.nvidia.com/v1"
     translated = 0
     
-    for i in range(0, len(items), 5):
+    for i in range(0, len(items), 10):
         batch = items[i:i+5]
         texts = []
         for item in batch:
@@ -79,6 +79,8 @@ def main():
                 except:
                     pass
     
+    # Limit to 50 most recent items to stay within CI timeout
+    items = items[:50]
     print(f"Translating {len(items)} items...")
     translated = translate_batch(items, api_key, model)
     
