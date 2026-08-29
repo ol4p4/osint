@@ -344,28 +344,8 @@ rss_sources:
   - investment
   - fund
   - strategy
-- name: Reuters-Business
-  url: https://www.reutersagency.com/feed/?best-topics=business-finance&post_type=best
-  type: rss
-  category: 商业财经
-  weight: 0.9
-  keywords:
-  - business
-  - finance
-  - economy
-  - trade
-- name: FT-World
-  url: https://www.ft.com/rss/home/uk
-  type: rss
-  category: 国际财经
-  weight: 0.9
-  keywords:
-  - world
-  - economy
-  - politics
-  - trade
 - name: AP-News
-  url: https://rsshub.app/apnews/topics/business
+  url: https://feedx.net/rss/ap.json
   type: rss
   category: 新闻通讯社
   weight: 0.85
@@ -373,16 +353,7 @@ rss_sources:
   - breaking
   - news
   - headline
-- name: Bloomberg-Markets
-  url: https://feeds.bloomberg.com/markets/news.rss
-  type: rss
-  category: 金融市场
-  weight: 0.9
-  keywords:
-  - market
-  - stock
-  - bond
-  - commodity
+  note: fallback via feedx
 - name: Caixin-Global
   url: https://rsshub.app/caixin/latest
   type: rss
@@ -393,24 +364,6 @@ rss_sources:
   - economy
   - policy
   - finance
-- name: Yicai-Global
-  url: https://www.yicaiglobal.com/rss
-  type: rss
-  category: 中国财经
-  weight: 0.85
-  keywords:
-  - China
-  - economy
-  - policy
-- name: WSJ-World
-  url: https://feeds.content.dowjones.io/public/rss/wsjcomworldnews
-  type: rss
-  category: 国际新闻
-  weight: 0.9
-  keywords:
-  - world
-  - geopolitics
-  - trade
 gov_portals:
 - name: 中国政府网-政策文件
   url: https://www.gov.cn/zhengce/zuixin.htm
