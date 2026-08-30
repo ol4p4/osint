@@ -21,10 +21,17 @@ def _safe_nvidia_post(url, payload, headers, timeout=60):
     with urllib.request.urlopen(req, timeout=timeout) as resp:
         return resp.read()
 
-def translate_batch(items, api_key, model):
+# 翻译模型降级链（2026-08-30 bench 实测可用的三个，按速度/质量排序）
+MODEL_CHAIN = [
+    "openai/gpt-oss-120b",
+    "openai/gpt-oss-20b",
+    "meta/llama-3.2-11b-vision-instruct",
+]
+
+def translate_batch(items, api_key):
     base_url = "https://integrate.api.nvidia.com/v1"
     translated = 0
-    
+
     for i in range(0, len(items), 5):
         batch = items[i:i+5]
         texts = []
@@ -32,51 +39,55 @@ def translate_batch(items, api_key, model):
             title = item.get("title", "")
             content = item.get("content_preview", "")[:500]
             texts.append(f"ITEM: {title}\nCONTENT: {content}")
-        
+
         prompt = (
             "Translate each ITEM to Chinese. Output JSON array with format: "
             '[{"cn_title": "中文标题", "cn_summary": "4-6句中文摘要", '
             '"impact": "对中国宏观经济、就业市场和青年失业毕业生的影响分析"}]. '
             "Only output JSON, no markdown."
         )
-        
-        payload = json.dumps({
-            "model": model,
-            "messages": [{"role": "user", "content": prompt + "\n\n" + "\n".join(texts)}],
-            "temperature": 0.3,
-            "max_tokens": 4096
-        }).encode()
-        
+
         headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {api_key}",
         }
-        
-        # NVIDIA 免费接口高峰期响应慢，60s 常不够生成 5 条摘要：
-        # 超时放宽到 180s，整批失败自动重试一次（翻译是增量的，重试不会污染已翻好的条目）
-        for attempt in range(2):
-            try:
-                raw = _safe_nvidia_post(base_url + "/chat/completions", payload, headers, timeout=180)
-                result = json.loads(raw)
-                content = result["choices"][0]["message"]["content"]
-                content = content.strip()
-                if content.startswith("```"):
-                    content = content.split("```")[1]
-                    if content.startswith("json"):
-                        content = content[4:]
-                content = content.strip().rstrip("`")
-                translations = json.loads(content)
-                for j, trans in enumerate(translations):
-                    if i+j < len(items):
-                        items[i+j].update(trans)
-                        items[i+j]["language"] = "cn"
-                        translated += 1
+
+        # NVIDIA 免费接口高峰期响应慢：超时 180s，整批失败重试一次，
+        # 重试仍失败则沿 MODEL_CHAIN 降级到下一个模型（翻译是增量的，不污染已翻条目）
+        batch_done = False
+        for model in MODEL_CHAIN:
+            if batch_done:
                 break
-            except Exception as e:
-                if attempt == 0:
-                    print(f"  Batch {i} attempt 1 failed ({e}), retrying...")
-                else:
-                    print(f"  Batch {i} failed: {e}")
+            payload = json.dumps({
+                "model": model,
+                "messages": [{"role": "user", "content": prompt + "\n\n" + "\n".join(texts)}],
+                "temperature": 0.3,
+                "max_tokens": 4096
+            }).encode()
+            for attempt in range(2):
+                try:
+                    raw = _safe_nvidia_post(base_url + "/chat/completions", payload, headers, timeout=180)
+                    result = json.loads(raw)
+                    content = result["choices"][0]["message"]["content"]
+                    content = content.strip()
+                    if content.startswith("```"):
+                        content = content.split("```")[1]
+                        if content.startswith("json"):
+                            content = content[4:]
+                    content = content.strip().rstrip("`")
+                    translations = json.loads(content)
+                    for j, trans in enumerate(translations):
+                        if i+j < len(items):
+                            items[i+j].update(trans)
+                            items[i+j]["language"] = "cn"
+                            translated += 1
+                    batch_done = True
+                    break
+                except Exception as e:
+                    if attempt == 0:
+                        print(f"  Batch {i} [{model}] attempt 1 failed ({e}), retrying...")
+                    else:
+                        print(f"  Batch {i} [{model}] failed: {e}, trying next model")
 
     return translated
 
@@ -107,8 +118,7 @@ def run(dir_path="."):
         print("No NVIDIA_API_KEY, skipping translation")
         sys.exit(0)
 
-    # 2026-08-30 A/B: llama-3.2-11b-vision → gpt-oss-120b (bench 2.7s 同档, 120B 翻译质量更强)
-    model = "openai/gpt-oss-120b"
+    # 模型选择见 MODEL_CHAIN（主 gpt-oss-120b，失败降级 20b / llama）
 
     # 只处理 intel_YYYYMMDD.jsonl（intel_raw_*/intel_final_* 不在翻译范围）
     files = sorted(glob.glob(os.path.join(dir_path, "intel_2*.jsonl")), reverse=True)[:1]
@@ -134,7 +144,7 @@ def run(dir_path="."):
     untranslated.sort(key=lambda x: x.get("published_at", ""), reverse=True)
     untranslated = untranslated[:50]
     print(f"Translating {len(untranslated)} new items...")
-    translated = translate_batch(untranslated, api_key, model)
+    translated = translate_batch(untranslated, api_key)
     
     # Merge translated back into full items
     id_map = {i["id"]: i for i in untranslated if i.get("cn_title")}
