@@ -105,6 +105,13 @@ python -c "..." # 见 daily_run.ps1 Step3，或等 OsintWeekly 周日 09:30 自�
 5. **simhash 报错**：确认 `simhash==2.1.2`
 6. **本地数据没中文**：正常——等 CI 翻完由 local_sync 合并回来；或本地设置 `NVIDIA_API_KEY` 环境变量
 7. **计划任务没跑成**：查 `logs/refresh_YYYYMMDD.log`；`daily_run.ps1` 手动测试加 `-Auto`
+8. **GitHub schedule 会被静默跳过**（平台通病）：数据陈旧时先 `gh run list` 看 CI，再 `gh workflow run daily.yml` 手动补跑，跑完等本地 OsintRefresh 每小时拉取或手动跑 refresh.py
+9. **仪表盘时间错乱**：time_ago 已改为浏览器端动态计算（gen_dashboard.py 内嵌 JS IIFE），不再依赖采集时写死的静态文本
+
+## 数据量级真相（2026-08-30 诊断）
+- 关键词表（sources.yaml keyword_weights）是**中文**（就业/失业/毕业生/落户…），47 个源以英文为主 → 每日命中通常只有 0~3 条，**这是筛选器设计行为而非故障**
+- 8-27 的 105 条是首次抓取的历史积压（feed 全量），之后每日只有源新增；"信息不新"的解法是**扩充中文源**（财新、华尔街见闻、第一财经、人社部官网等），不是改代码
+- 未来日期脏数据（源站错误时间戳）由 refresh 的 `_clean_date` 过滤（>明天2天或 <2020 年丢弃）
 
 ## 数据质量基线（2026-08-30）
 - 情报 ~718 条（脏日期已过滤）；cn_title 405（56%，随 CI 翻译推进会涨）
