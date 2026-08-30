@@ -11,3 +11,4 @@ _patch_*
 _test_*
 .mimosa/
 .zcode/
+_tmp_raw_resp.txt

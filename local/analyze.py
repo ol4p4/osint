@@ -123,7 +123,6 @@ class MacroAnalyzer:
                         if val:
                             content = val
                             break
-                Path(r'D:\osint\_tmp_raw_resp.txt').write_text(content, encoding='utf-8')
                 if content and content.strip():
                     return content.strip()
                 raise ValueError("empty response")
