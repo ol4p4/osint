@@ -32,7 +32,7 @@ cloud/local_sync.py: git pull + 合并 CI 数据进产物目录 jsonl（同 id �
 |------|------|------|
 | 参谋长（生成） | Mimo-v2.5-free | 生成假设/现状分析/对话追问/观点卡 |
 | 裁判（验证） | Nemotron-3.5-lightning-free | 验证判定/复盘 |
-| 翻译（CI） | meta/llama-3.2-11b-vision-instruct | NVIDIA API 批量翻译 |
+| 翻译（CI） | openai/gpt-oss-120b | NVIDIA API 批量翻译（2026-08-30 A/B 从 llama-3.2-11b-vision 切换：llama 生产 0/18 超时，gpt-oss 18/18 一次过，质量更好） |
 | DeepSeek | 已弃用 | 输出过于官方，无批判性 |
 
 AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key 在 config.yaml），伪造请求头见 `local/analyze.py`。**端点有白名单校验（只允许 opencode.ai），改端点要同步改 analyze.py 的校验**。NVIDIA key 只在 GitHub Secrets（`NVIDIA_API_KEY`），本地没有——本地翻译默认跳过、靠合并 CI 翻译成果。
