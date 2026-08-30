@@ -150,17 +150,15 @@ def main():
             
             link_report.append(report_entry)
     
-    with open(HYP_FILE, "w", encoding="utf-8") as f:
-        json.dump(hyps, f, ensure_ascii=False, indent=2)
-    
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        json.dump({
-            "generated_at": datetime.now().isoformat(),
-            "total_intel": len(all_intel),
-            "linked_intel": total_links,
-            "evidence_updates": total_updates,
-            "links": link_report[:50]
-        }, f, ensure_ascii=False, indent=2)
+    HYP_FILE.write_text(json.dumps(hyps, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    OUTPUT_FILE.write_text(json.dumps({
+        "generated_at": datetime.now().isoformat(),
+        "total_intel": len(all_intel),
+        "linked_intel": total_links,
+        "evidence_updates": total_updates,
+        "links": link_report[:50]
+    }, ensure_ascii=False, indent=2), encoding="utf-8")
     
     print(f"Linked: {total_links}/{len(all_intel)} intel items")
     print(f"Evidence updates: {total_updates}")

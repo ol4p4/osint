@@ -8,6 +8,7 @@
 import json
 import yaml
 import hashlib
+from pathlib import Path
 from datetime import datetime, timezone, timedelta
 from typing import List, Dict, Any, Set
 from collections import defaultdict
@@ -251,10 +252,10 @@ def pipeline(input_jsonl: str, output_jsonl: str, config_path: str):
     items = score_items(items, config)
     
     items = filter_by_threshold(items, config)
-    
-    with open(output_jsonl, "w", encoding="utf-8") as f:
-        for item in items:
-            f.write(json.dumps(item, ensure_ascii=False) + "\n")
+
+    Path(output_jsonl).write_text(
+        "\n".join(json.dumps(item, ensure_ascii=False) for item in items) + "\n",
+        encoding="utf-8")
     
     print(f"[PIPELINE] 输出: {len(items)} 条 -> {output_jsonl}")
     return items

@@ -4,11 +4,33 @@ import json
 import time
 import urllib.request
 import socket
+from pathlib import Path
 from datetime import datetime, timezone, timedelta
 from typing import List, Dict, Any, Optional
 from urllib.parse import urljoin
 import re
 import sys
+
+
+def _safe_rss_fetch(url, timeout=15, max_bytes=512000):
+    """RSS 源为配置文件中的任意站点：仅允许 http/https + 解析结果不得指向私有/环回/保留地址"""
+    import ipaddress
+    from urllib.parse import urlparse
+    parsed = urlparse(url)
+    if parsed.scheme not in ("http", "https"):
+        raise ValueError("scheme not allowed: " + str(parsed.scheme))
+    host = parsed.hostname or ""
+    port = parsed.port or (443 if parsed.scheme == "https" else 80)
+    for info in socket.getaddrinfo(host, port):
+        ip = ipaddress.ip_address(info[4][0])
+        if ip.is_private or ip.is_loopback or ip.is_reserved or ip.is_link_local or ip.is_multicast:
+            raise ValueError("host resolves to forbidden address: " + str(ip))
+    req = urllib.request.Request(url, headers={
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "Accept": "application/rss+xml, application/xml, text/xml, */*"
+    })
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        return resp.read(max_bytes)
 
 
 class RSSFetcher:
@@ -35,12 +57,7 @@ class RSSFetcher:
         # Fetch with timeout using urllib
         try:
             socket.setdefaulttimeout(15)
-            req = urllib.request.Request(url, headers={
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-                "Accept": "application/rss+xml, application/xml, text/xml, */*"
-            })
-            with urllib.request.urlopen(req, timeout=15) as resp:
-                raw = resp.read(512000)  # Max 500KB
+            raw = _safe_rss_fetch(url)
             feed = feedparser.parse(raw)
         except Exception as e:
             print(f"  Fetch failed: {e}")
@@ -145,9 +162,9 @@ if __name__ == "__main__":
     
     fetcher = RSSFetcher(all_sources, weights)
     items = fetcher.fetch_all(max_age_hours=72)
-    
-    with open(output_file, "w", encoding="utf-8") as f:
-        for item in items:
-            f.write(json.dumps(item, ensure_ascii=False) + "\n")
+
+    Path(output_file).write_text(
+        "\n".join(json.dumps(item, ensure_ascii=False) for item in items) + "\n",
+        encoding="utf-8")
     
     print(f"Total: {len(items)} items -> {output_file}")

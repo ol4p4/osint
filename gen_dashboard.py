@@ -222,8 +222,7 @@ parts.append('\n</body>\n</html>')
 
 html = ''.join(parts)
 
-with open(HTML_FILE, 'w', encoding='utf-8') as f:
-    f.write(html)
+HTML_FILE.write_text(html, encoding='utf-8')
 
 print(f"Dashboard v3 generated: {len(html)} bytes")
 print(f"Intelligence: {len(intel)}")

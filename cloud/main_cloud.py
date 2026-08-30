@@ -34,14 +34,13 @@ def run_fetcher(script, config, output):
     items = []
     output_path = Path(output)
     if output_path.exists():
-        with open(output_path, "r", encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if line:
-                    try:
-                        items.append(json.loads(line))
-                    except:
-                        pass
+        for line in output_path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if line:
+                try:
+                    items.append(json.loads(line))
+                except:
+                    pass
     
     return items
 
@@ -77,9 +76,9 @@ def main():
         print("[ERROR] No items collected, aborting")
         sys.exit(1)
     
-    with open(raw_file, "w", encoding="utf-8") as f:
-        for item in all_items:
-            f.write(json.dumps(item, ensure_ascii=False) + "\n")
+    Path(raw_file).write_text(
+        "\n".join(json.dumps(item, ensure_ascii=False) for item in all_items) + "\n",
+        encoding="utf-8")
     
     print("=== Running dedup + scoring ===")
     sys.stdout.flush()
@@ -110,8 +109,8 @@ def main():
         for kw in item.get("keywords_hit", []):
             summary["top_keywords"][kw] = summary["top_keywords"].get(kw, 0) + 1
     
-    with open(f"intel_summary_{today}.json", "w", encoding="utf-8") as f:
-        json.dump(summary, f, ensure_ascii=False, indent=2)
+    Path(f"intel_summary_{today}.json").write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     
     print(f"=== Done ===")
     print(f"  Raw: {len(all_items)} -> Final: {len(final_items)}")

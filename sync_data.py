@@ -42,8 +42,7 @@ for item in intel:
         item["impact"] = templates.get(cat, "该情报可能对宏观经济和就业市场产生间接影响。")
         fixed += 1
 
-with open(DATA_FILE, "w", encoding="utf-8") as f:
-    json.dump(data, f, ensure_ascii=False, indent=2)
+DATA_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 print(f"Fixed {fixed} intelligence items")
 print(f"Total intelligence: {len(intel)}")

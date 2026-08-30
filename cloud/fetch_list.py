@@ -7,6 +7,7 @@
 
 import requests
 from lxml import html
+from pathlib import Path
 import hashlib
 import json
 import time
@@ -202,8 +203,11 @@ class APIFetcher:
 
 
 def load_config(config_path: str) -> Dict:
-    with open(config_path, "r", encoding="utf-8") as f:
-        return yaml.safe_load(f)
+    """加载源配置：限定 .yaml/.yml 后缀，防误用作任意文件读取入口"""
+    p = Path(config_path).resolve()
+    if p.suffix.lower() not in (".yaml", ".yml"):
+        raise ValueError("config must be a .yaml/.yml file: " + str(p))
+    return yaml.safe_load(p.read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":

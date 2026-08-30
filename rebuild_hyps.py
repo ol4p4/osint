@@ -239,8 +239,7 @@ for major_id, major_data in TREE.items():
             }
             new_hyps.append(small_entry)
 
-with open(HYP_FILE, "w", encoding="utf-8") as f:
-    json.dump(new_hyps, f, ensure_ascii=False, indent=2)
+HYP_FILE.write_text(json.dumps(new_hyps, ensure_ascii=False, indent=2), encoding="utf-8")
 
 majors = sum(1 for h in new_hyps if h["level"] == "major")
 mediums = sum(1 for h in new_hyps if h["level"] == "medium")

@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
+from pathlib import Path
+
 path = r"D:\Codex输出\osint_卫星图\interactive_dashboard.html"
-with open(path, "r", encoding="utf-8") as f:
-    html = f.read()
+html = Path(path).read_text(encoding="utf-8")
 
 # Find the byId line and add esc right after it
 old = "var byId={};H.forEach(function(h){byId[h.id]=h});\nvar orderedMajors"
@@ -8,11 +10,9 @@ new = 'var byId={};H.forEach(function(h){byId[h.id]=h});\nfunction esc(t){return
 
 html = html.replace(old, new, 1)
 
-with open(path, "w", encoding="utf-8") as f:
-    f.write(html)
+Path(path).write_text(html, encoding="utf-8")
 
 # Verify
-with open(path, "r", encoding="utf-8") as f:
-    html2 = f.read()
+html2 = Path(path).read_text(encoding="utf-8")
 idx = html2.index("var byId")
 print(html2[idx:idx+300])

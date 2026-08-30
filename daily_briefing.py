@@ -159,13 +159,11 @@ def main():
     # Save briefing
     today = datetime.now().strftime("%Y-%m-%d")
     briefing_file = BRIEFING_DIR / f"briefing_{today}.md"
-    with open(briefing_file, "w", encoding="utf-8") as f:
-        f.write(briefing)
-    
+    briefing_file.write_text(briefing, encoding="utf-8")
+
     # Also save to analysis directory
     analysis_file = INTEL_DIR / f"analysis_{today}.md"
-    with open(analysis_file, "w", encoding="utf-8") as f:
-        f.write(briefing)
+    analysis_file.write_text(briefing, encoding="utf-8")
     
     print(f"\n=== 完成 ===")
     print(f"简报保存: {briefing_file}")

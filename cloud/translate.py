@@ -4,6 +4,23 @@ import json, os, glob, sys, uuid
 import urllib.request
 from pathlib import Path
 
+NVIDIA_HOST = "integrate.api.nvidia.com"
+
+def _safe_nvidia_post(url, payload, headers, timeout=60):
+    """翻译端点固定为 NVIDIA：https + 域名白名单 + 解析结果不得指向私有/环回/保留地址"""
+    import socket, ipaddress
+    from urllib.parse import urlparse
+    parsed = urlparse(url)
+    if parsed.scheme != "https" or (parsed.hostname or "") != NVIDIA_HOST:
+        raise ValueError("blocked non-whitelisted translate endpoint: " + url)
+    for info in socket.getaddrinfo(parsed.hostname, 443):
+        ip = ipaddress.ip_address(info[4][0])
+        if ip.is_private or ip.is_loopback or ip.is_reserved or ip.is_link_local or ip.is_multicast:
+            raise ValueError("endpoint resolves to forbidden address: " + str(ip))
+    req = urllib.request.Request(url, data=payload, headers=headers)
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        return resp.read()
+
 def translate_batch(items, api_key, model):
     base_url = "https://integrate.api.nvidia.com/v1"
     translated = 0
@@ -36,22 +53,21 @@ def translate_batch(items, api_key, model):
         }
         
         try:
-            req = urllib.request.Request(base_url + "/chat/completions", data=payload, headers=headers)
-            with urllib.request.urlopen(req, timeout=60) as resp:
-                result = json.loads(resp.read())
-                content = result["choices"][0]["message"]["content"]
-                content = content.strip()
-                if content.startswith("```"):
-                    content = content.split("```")[1]
-                    if content.startswith("json"):
-                        content = content[4:]
-                content = content.strip().rstrip("`")
-                translations = json.loads(content)
-                for j, trans in enumerate(translations):
-                    if i+j < len(items):
-                        items[i+j].update(trans)
-                        items[i+j]["language"] = "cn"
-                        translated += 1
+            raw = _safe_nvidia_post(base_url + "/chat/completions", payload, headers)
+            result = json.loads(raw)
+            content = result["choices"][0]["message"]["content"]
+            content = content.strip()
+            if content.startswith("```"):
+                content = content.split("```")[1]
+                if content.startswith("json"):
+                    content = content[4:]
+            content = content.strip().rstrip("`")
+            translations = json.loads(content)
+            for j, trans in enumerate(translations):
+                if i+j < len(items):
+                    items[i+j].update(trans)
+                    items[i+j]["language"] = "cn"
+                    translated += 1
         except Exception as e:
             print(f"  Batch {i} failed: {e}")
     
@@ -117,9 +133,9 @@ def run(dir_path="."):
     for i, item in enumerate(items):
         if item["id"] in id_map:
             items[i] = id_map[item["id"]]
-    with open(files[0], "w", encoding="utf-8") as f:
-        for item in items:
-            f.write(json.dumps(item, ensure_ascii=False) + "\n")
+    Path(files[0]).write_text(
+        "\n".join(json.dumps(item, ensure_ascii=False) for item in items) + "\n",
+        encoding="utf-8")
     
     print(f"Translated {translated}/{len(items)} items")
 
