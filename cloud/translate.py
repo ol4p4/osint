@@ -107,7 +107,8 @@ def run(dir_path="."):
         print("No NVIDIA_API_KEY, skipping translation")
         sys.exit(0)
 
-    model = "meta/llama-3.2-11b-vision-instruct"
+    # 2026-08-30 A/B: llama-3.2-11b-vision → gpt-oss-120b (bench 2.7s 同档, 120B 翻译质量更强)
+    model = "openai/gpt-oss-120b"
 
     # 只处理 intel_YYYYMMDD.jsonl（intel_raw_*/intel_final_* 不在翻译范围）
     files = sorted(glob.glob(os.path.join(dir_path, "intel_2*.jsonl")), reverse=True)[:1]
