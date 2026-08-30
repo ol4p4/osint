@@ -1,0 +1,23 @@
+name: RSSHub route check
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check RSSHub routes (public instance)
+        run: |
+          BASE="https://rsshub.app"
+          for route in "gov/zhengce/zuixin" "zhihu/hotlist" "wallstreetcn/news/global" "36kr/newsflashes" "weibo/search/hotlist" "caixin/latest" "gov/mohrss/szyw"; do
+            code=$(curl -sL -o /tmp/out.xml -w "%{http_code}" --max-time 25 "$BASE/$route" || echo "ERR")
+            items=$(grep -c "<item>" /tmp/out.xml 2>/dev/null || echo 0)
+            title=$(grep -oP '(?<=<title>).*?(?=</title>)' /tmp/out.xml 2>/dev/null | head -1 | cut -c1-60)
+            echo "ROUTE[$route] HTTP=$code items=$items title=$title"
+            head -c 200 /tmp/out.xml 2>/dev/null | grep -q "<rss" && echo "  -> valid RSS" || echo "  -> NOT rss (head: $(head -c 120 /tmp/out.xml 2>/dev/null | tr '\n' ' '))"
+          done
