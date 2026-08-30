@@ -211,15 +211,28 @@ def load_config(config_path: str) -> Dict:
 
 
 if __name__ == "__main__":
-    import sys
-    config = load_config(sys.argv[1] if len(sys.argv) > 1 else "sources.yaml")
-    
+    import argparse
+    parser = argparse.ArgumentParser(description="列表页采集器")
+    parser.add_argument("config", nargs="?", default="sources.yaml", help="sources.yaml 路径")
+    parser.add_argument("output", nargs="?", default=None, help="输出 jsonl 路径（main_cloud 传入）")
+    parser.add_argument("--max-age-hours", type=int, default=168)
+    args = parser.parse_args()
+
+    config = load_config(args.config)
+
     list_sources = []
     for key in ["gov_portals", "stats_sources", "think_tanks"]:
         list_sources.extend(config.get(key, []))
-    
+
     fetcher = ListPageFetcher(list_sources, config.get("keyword_weights", {}))
-    items = fetcher.fetch_all()
-    
-    for item in items:
-        print(json.dumps(item, ensure_ascii=False))
+    items = fetcher.fetch_all(max_age_hours=args.max_age_hours)
+
+    # 与 fetch_rss 相同的接口：写 output 文件（main_cloud 靠读它收集结果）
+    if args.output:
+        Path(args.output).write_text(
+            "\n".join(json.dumps(item, ensure_ascii=False) for item in items) + "\n",
+            encoding="utf-8")
+        print(f"[LIST] wrote {len(items)} items -> {args.output}")
+    else:
+        for item in items:
+            print(json.dumps(item, ensure_ascii=False))
