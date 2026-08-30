@@ -45,9 +45,18 @@ def _safe_ai_post(url, payload, headers, timeout=120):
 def call_ai(config, prompt):
     """走 OpenCode Zen 免费代理（参谋长 Mimo，失败依次降级 fallback 模型）"""
     api_cfg = config.get("api", {})
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+        from secrets_loader import get_opencode_key
+        key = get_opencode_key()
+    except Exception:
+        key = api_cfg.get("api_key", "")
     attempts = [{"base_url": api_cfg.get("base_url"), "model": api_cfg.get("model"),
-                 "api_key": api_cfg.get("api_key")}]
-    attempts += api_cfg.get("fallback_models") or []
+                 "api_key": key}]
+    for fb in (api_cfg.get("fallback_models") or []):
+        fb = dict(fb)
+        fb["api_key"] = fb.get("api_key") or key
+        attempts.append(fb)
     last_err = None
     for m in attempts:
         try:

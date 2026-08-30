@@ -41,6 +41,8 @@ jobs:
           cd ${{ github.workspace }}
           python cloud/translate.py
       - name: Citizen impact analysis
+        env:
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         run: |
           cd ${{ github.workspace }}
           python cloud/citizen_impact.py || echo "Impact step skipped"

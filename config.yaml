@@ -1,19 +1,21 @@
-# 本地配置 - 参谋长专用（不上传Git，含API Key）
-# 复制为 config.local.yaml 并填入真实值
+# 本地配置 - 参谋长专用
+# 注意：本文件在 git 里且仓库为 PUBLIC，禁止存放任何真实密钥。
+# 真实 key 位置：本地 config.local.yaml（已gitignore）或环境变量 OPENCODE_API_KEY
+# （CI 由 GitHub Secrets 注入；读取逻辑见 secrets_loader.py）
 
 # AI API 配置（兼容OpenAI格式）
 api:
   base_url: "https://opencode.ai/zen/v1"
-  api_key: "sk-vA4SblJVLpBNwpCVXvoa4nFciLlgYM6J6irsEydGEpedeqaiThDoEAtYNdTAHCcC"
+  api_key: ""  # 密钥已于2026-08-30从本文件移除（仓库PUBLIC曾泄露，须在OpenCode平台重置）；真实值在 config.local.yaml 或 GitHub Secret OPENCODE_API_KEY
   model: "mimo-v2.5-free"
   # 备用模型（主模型失败时降级）
   fallback_models:
     - base_url: "https://opencode.ai/zen/v1"
       model: "nemotron-3.5-lightning-free"
-      api_key: "sk-vA4SblJVLpBNwpCVXvoa4nFciLlgYM6J6irsEydGEpedeqaiThDoEAtYNdTAHCcC"
+      api_key: ""  # 密钥已于2026-08-30从本文件移除（仓库PUBLIC曾泄露，须在OpenCode平台重置）；真实值在 config.local.yaml 或 GitHub Secret OPENCODE_API_KEY
     - base_url: "https://opencode.ai/zen/v1"
       model: "deepseek-v4-flash-free"
-      api_key: "sk-vA4SblJVLpBNwpCVXvoa4nFciLlgYM6J6irsEydGEpedeqaiThDoEAtYNdTAHCcC"
+      api_key: ""  # 密钥已于2026-08-30从本文件移除（仓库PUBLIC曾泄露，须在OpenCode平台重置）；真实值在 config.local.yaml 或 GitHub Secret OPENCODE_API_KEY
 
 # 运行模式
 mode:

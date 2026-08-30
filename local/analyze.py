@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """Local Staff Officer - AI Deep Analysis Engine"""
 
-import json, os, re, yaml
+import json, os, re, sys, yaml
 from pathlib import Path
 from typing import List, Dict, Any
 from dataclasses import dataclass, asdict
@@ -42,7 +42,10 @@ class MacroAnalyzer:
         self.persona = persona
         self.kb = knowledge_base
         api_cfg = config.get("api", {})
-        self.api_key = api_cfg.get("api_key") or os.environ.get("OPENAI_API_KEY")
+        # 密钥走 secrets_loader（env > config.local.yaml > config.yaml），仓库内 config.yaml 不存真实 key
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+        from secrets_loader import get_opencode_key
+        self.api_key = get_opencode_key() or os.environ.get("OPENAI_API_KEY")
         self.base_url = api_cfg.get("base_url", "https://api.deepseek.com/v1")
         self.model = api_cfg.get("model", "deepseek-chat")
         self.fallback_models = api_cfg.get("fallback_models", [])
