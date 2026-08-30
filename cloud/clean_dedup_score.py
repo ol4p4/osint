@@ -143,7 +143,9 @@ def clean_items(items: List[Dict]) -> List[Dict]:
         total_chars = len(item["content"])
         item["lang"] = "zh" if zh_chars / max(total_chars, 1) > 0.3 else "other"
         has_cn = bool(item.get("cn_title") or item.get("cn_summary"))
-        if (item["lang"] == "zh" and len(item["content"]) >= 100) or has_cn or (total_chars >= 200):
+        # 2026-08-30: 200 字符门槛是为详情页全文设计的, RSS feed 摘要普遍只有 80~150 字符,
+        # 曾把 94% 的新闻(含全部当日新文)过滤掉。降到 50(过滤空壳), 质量由 AI 研判层兜底
+        if (item["lang"] == "zh" and len(item["content"]) >= 50) or has_cn or (total_chars >= 50):
             cleaned.append(item)
     return cleaned
 
