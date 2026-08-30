@@ -28,6 +28,12 @@ jobs:
           pip install -q --upgrade pip
           pip install -q -r requirements.txt
       
+      - name: Start RSSHub (local container, for Chinese sources)
+        run: |
+          docker run -d --name rsshub -p 1200:1200 diygod/rsshub:latest
+          timeout 90 bash -c 'until curl -s -o /dev/null http://localhost:1200/healthz; do sleep 3; done' || echo "RSSHub slow start, continue anyway"
+          curl -s -o /dev/null -w "RSSHub ready: %{http_code}\n" http://localhost:1200/ || true
+
       - name: Collect RSS + List sources
         run: |
           cd ${{ github.workspace }}
