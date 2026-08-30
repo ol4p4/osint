@@ -120,11 +120,9 @@ python -c "..." # 见 daily_run.ps1 Step3，或等 OsintWeekly 周日 09:30 自�
 - 假设树 69 节点（8大/20中/41小）；观点卡链路已通（view_e0c75e → hyp_4656924e）
 
 ## 待续事项
-- [x] P2a 对话引擎（dialogue_engine.py 全链路已通）
-- [x] P2b 问题生成器（question_generator.py）
-- [x] P6 每周循环（run_weekly_cycle 修复 + OsintWeekly 计划任务周日 09:30）
-- [x] 知识库双向链接（kb_linker.py，index/log/hypotheses 三处同步）
 - [ ] 指标覆盖率提升：74 个 custom 指标部分无免费 API（NBS 3 个指标无抓取函数）
+- [ ] **PLAN-1 RSSHub 中文源接入**（docs/PLAN-1-RSSHub中文源接入.md，待执行：Vercel 部署+路由核对+sources.yaml 追加）
+- [ ] **PLAN-2 ACH 假设矩阵升级**（docs/PLAN-2-ACH假设矩阵升级.md，三期：M1 矩阵+证伪补全→M2 贝叶斯校准→M3 仪表盘排名）
 - [ ] 旧目录 `C:\Users\admin\Documents\osint` 确认后删除（含 git 历史，删前确认不再回滚）
 - [ ] 对话引擎观点卡的 time_horizon_months 有时与用户回答的到期日不一致（AI 浓缩偏差，可加后校验）
 
