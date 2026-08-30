@@ -12,3 +12,7 @@ _test_*
 .mimosa/
 .zcode/
 _tmp_raw_resp.txt
+intel_raw_*
+rss_*
+list_*
+.playwright-mcp/

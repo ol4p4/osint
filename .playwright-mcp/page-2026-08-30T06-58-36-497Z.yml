@@ -1,0 +1,102 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]: 参谋系统 · 战略假设驾驶舱
+        - heading "最大假设优先" [level=1] [ref=e7]
+        - paragraph [ref=e8]: 点击大假设查看中假设；点击中假设查看小假设、指标和阈值。
+      - textbox "搜索三战、经济危机、城投、AI、台海…" [ref=e9]
+    - generic [ref=e10]:
+      - button "大假设 🟢活跃 全球能源转型加速导致传统能源需求骤降 86% toward 6 条下级 无期限" [ref=e11] [cursor=pointer]:
+        - generic [ref=e12]:
+          - generic [ref=e13]: 大假设
+          - generic [ref=e14]: 🟢活跃
+        - heading "全球能源转型加速导致传统能源需求骤降" [level=3] [ref=e15]
+        - paragraph [ref=e16]
+        - generic [ref=e17]: 86%
+        - generic [ref=e20]:
+          - generic [ref=e21]: toward
+          - generic [ref=e22]: 6 条下级
+          - generic [ref=e23]: 无期限
+      - button "大假设 🟢活跃 AI算力与关键材料短缺限制技术商业化速度 77% toward 6 条下级 无期限" [ref=e24] [cursor=pointer]:
+        - generic [ref=e25]:
+          - generic [ref=e26]: 大假设
+          - generic [ref=e27]: 🟢活跃
+        - heading "AI算力与关键材料短缺限制技术商业化速度" [level=3] [ref=e28]
+        - paragraph [ref=e29]
+        - generic [ref=e30]: 77%
+        - generic [ref=e33]:
+          - generic [ref=e34]: toward
+          - generic [ref=e35]: 6 条下级
+          - generic [ref=e36]: 无期限
+      - button "大假设 🟢活跃 美加贸易摩擦升级引发全球供应链重构 74% toward 6 条下级 无期限" [ref=e37] [cursor=pointer]:
+        - generic [ref=e38]:
+          - generic [ref=e39]: 大假设
+          - generic [ref=e40]: 🟢活跃
+        - heading "美加贸易摩擦升级引发全球供应链重构" [level=3] [ref=e41]
+        - paragraph [ref=e42]
+        - generic [ref=e43]: 74%
+        - generic [ref=e46]:
+          - generic [ref=e47]: toward
+          - generic [ref=e48]: 6 条下级
+          - generic [ref=e49]: 无期限
+      - button "大假设 🟢活跃 中国社保走韩国老路 中国社保改革（降费率、延迟退休、全国统筹）正在重复韩国1997-2010年的路径 73% toward 12 条下级 2028-08-09" [ref=e50] [cursor=pointer]:
+        - generic [ref=e51]:
+          - generic [ref=e52]: 大假设
+          - generic [ref=e53]: 🟢活跃
+        - heading "中国社保走韩国老路" [level=3] [ref=e54]
+        - paragraph [ref=e55]: 中国社保改革（降费率、延迟退休、全国统筹）正在重复韩国1997-2010年的路径
+        - generic [ref=e56]: 73%
+        - generic [ref=e59]:
+          - generic [ref=e60]: toward
+          - generic [ref=e61]: 12 条下级
+          - generic [ref=e62]: 2028-08-09
+      - button "大假设 🟢活跃 东亚三国现代化进程趋同 中日韩在现代化进程中面临相似问题（老龄化、青年失业、房地产泡沫），采取相似政策应对，走向相似结果 68% toward 12 条下级 2029-08-04" [ref=e63] [cursor=pointer]:
+        - generic [ref=e64]:
+          - generic [ref=e65]: 大假设
+          - generic [ref=e66]: 🟢活跃
+        - heading "东亚三国现代化进程趋同" [level=3] [ref=e67]
+        - paragraph [ref=e68]: 中日韩在现代化进程中面临相似问题（老龄化、青年失业、房地产泡沫），采取相似政策应对，走向相似结果
+        - generic [ref=e69]: 68%
+        - generic [ref=e72]:
+          - generic [ref=e73]: toward
+          - generic [ref=e74]: 12 条下级
+          - generic [ref=e75]: 2029-08-04
+      - button "大假设 🟢活跃 全球能源供应格局重塑导致大国竞争 氢能竞赛、伊拉克石油扩产、燃气轮机短缺以及东南亚电网投资需求激增，预示能源领域的地缘政治竞争加剧。 65% toward 6 条下级 2035-12-31" [ref=e76] [cursor=pointer]:
+        - generic [ref=e77]:
+          - generic [ref=e78]: 大假设
+          - generic [ref=e79]: 🟢活跃
+        - heading "全球能源供应格局重塑导致大国竞争" [level=3] [ref=e80]
+        - paragraph [ref=e81]: 氢能竞赛、伊拉克石油扩产、燃气轮机短缺以及东南亚电网投资需求激增，预示能源领域的地缘政治竞争加剧。
+        - generic [ref=e82]: 65%
+        - generic [ref=e85]:
+          - generic [ref=e86]: toward
+          - generic [ref=e87]: 6 条下级
+          - generic [ref=e88]: 2035-12-31
+      - button "大假设 🟢活跃 台海冲突升级风险 美中军事摩擦加剧、美国对台军售增加、地区军机拦截频繁，可能在未来十年内导致台海冲突升级。 60% toward 6 条下级 2035-12-31" [ref=e89] [cursor=pointer]:
+        - generic [ref=e90]:
+          - generic [ref=e91]: 大假设
+          - generic [ref=e92]: 🟢活跃
+        - heading "台海冲突升级风险" [level=3] [ref=e93]
+        - paragraph [ref=e94]: 美中军事摩擦加剧、美国对台军售增加、地区军机拦截频繁，可能在未来十年内导致台海冲突升级。
+        - generic [ref=e95]: 60%
+        - generic [ref=e98]:
+          - generic [ref=e99]: toward
+          - generic [ref=e100]: 6 条下级
+          - generic [ref=e101]: 2035-12-31
+      - button "大假设 🟢活跃 AI技术成本上升触发宏观经济波动与金融风险 英伟达价格警告、燃气轮机短缺导致算力成本飙升、Anthropic IPO风险提示等因素可能在中长期内对通胀、资本支出及金融体系产生冲击 59% toward 6 条下级 2035-12-31" [ref=e102] [cursor=pointer]:
+        - generic [ref=e103]:
+          - generic [ref=e104]: 大假设
+          - generic [ref=e105]: 🟢活跃
+        - heading "AI技术成本上升触发宏观经济波动与金融风险" [level=3] [ref=e106]
+        - paragraph [ref=e107]: 英伟达价格警告、燃气轮机短缺导致算力成本飙升、Anthropic IPO风险提示等因素可能在中长期内对通胀、资本支出及金融体系产生冲击
+        - generic [ref=e108]: 59%
+        - generic [ref=e111]:
+          - generic [ref=e112]: toward
+          - generic [ref=e113]: 6 条下级
+          - generic [ref=e114]: 2035-12-31
+  - generic [ref=e115]:
+    - heading "📡 情报流" [level=2] [ref=e116]
+    - generic [ref=e117]:
+      - button "按相关度" [ref=e118] [cursor=pointer]
+      - button "按时间" [ref=e119] [cursor=pointer]
