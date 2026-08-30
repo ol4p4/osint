@@ -17,6 +17,8 @@ BASE = "https://integrate.api.nvidia.com/v1"
 AI_ALLOWED_HOST = "integrate.api.nvidia.com"
 
 CANDIDATES = [
+    "openai/gpt-oss-120b",
+    "openai/gpt-oss-20b",
     "meta/llama-3.2-11b-vision-instruct",
     "mistralai/mistral-7b-instruct-v0.3",
     "nv-mistralai/mistral-nemo-12b-instruct",
