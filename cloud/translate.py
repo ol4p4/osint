@@ -123,43 +123,60 @@ def run(dir_path="."):
         sys.exit(0)
 
     # 模型选择见 MODEL_CHAIN（主 gpt-oss-120b，失败降级 20b / llama）
-
-    # 只处理 intel_YYYYMMDD.jsonl（intel_raw_*/intel_final_* 不在翻译范围）
-    files = sorted(glob.glob(os.path.join(dir_path, "intel_2*.jsonl")), reverse=True)[:1]
+    # 2026-08-30: 扫描全部 intel_2*.jsonl（此前只扫最新文件，历史条目永无翻译）
+    files = sorted(glob.glob(os.path.join(dir_path, "intel_2*.jsonl")), reverse=True)
     if not files:
         print("No intel files found")
         sys.exit(0)
-    
-    items = []
-    with open(files[0], "r", encoding="utf-8") as f:
-        for line in f:
+    file_items = {}
+    translated_ids = set()
+    for f in files:
+        arr = []
+        for line in Path(f).read_text(encoding="utf-8").splitlines():
             line = line.strip()
             if line:
                 try:
-                    items.append(json.loads(line))
-                except:
+                    arr.append(json.loads(line))
+                except Exception:
                     pass
-    
-    # Incremental: skip already-translated items (have cn_title)
-    untranslated = [i for i in items if not i.get("cn_title")]
-    translated_count = len(items) - len(untranslated)
-    print(f"Total: {len(items)}, already translated: {translated_count}, to translate: {len(untranslated)}")
-    # Take only 50 newest untranslated
-    untranslated.sort(key=lambda x: x.get("published_at", ""), reverse=True)
-    untranslated = untranslated[:50]
-    print(f"Translating {len(untranslated)} new items...")
-    translated = translate_batch(untranslated, api_key, deadline=time.time() + 600)
-    
-    # Merge translated back into full items
-    id_map = {i["id"]: i for i in untranslated if i.get("cn_title")}
-    for i, item in enumerate(items):
-        if item["id"] in id_map:
-            items[i] = id_map[item["id"]]
-    Path(files[0]).write_text(
-        "\n".join(json.dumps(item, ensure_ascii=False) for item in items) + "\n",
-        encoding="utf-8")
-    
-    print(f"Translated {translated}/{len(items)} items")
+        file_items[f] = arr
+        for it in arr:
+            if it.get("cn_title"):
+                translated_ids.add(it.get("id"))
+
+    # 跨文件按 id 去重，收集未翻译条目，最新优先取 50 条（时间预算内能翻多少翻多少）
+    todo = []
+    seen = set()
+    for f in files:
+        for it in file_items[f]:
+            iid = it.get("id")
+            if iid in seen or iid in translated_ids:
+                continue
+            seen.add(iid)
+            todo.append((f, it))
+    todo.sort(key=lambda p: p[1].get("published_at", ""), reverse=True)
+    todo = todo[:50]
+    total = sum(len(v) for v in file_items.values())
+    print(f"Total: {total}, unique untranslated: {len(todo)}, to translate now: {len(todo)}")
+    if not todo:
+        print("All items already translated")
+        sys.exit(0)
+    translated = translate_batch(todo, api_key, deadline=time.time() + 600)
+
+    # 翻译结果按文件写回（条目分布在多个文件）
+    translated_by_id = {it.get("id"): it for _, it in todo if it.get("cn_title")}
+    for f, arr in file_items.items():
+        changed = False
+        for i, it in enumerate(arr):
+            rep = translated_by_id.get(it.get("id"))
+            if rep is not None and rep is not it:
+                arr[i] = rep
+                changed = True
+        if changed:
+            Path(f).write_text(
+                "\n".join(json.dumps(item, ensure_ascii=False) for item in arr) + "\n",
+                encoding="utf-8")
+    print(f"Translated {translated}/{len(todo)} items across {len(file_items)} files")
 
 if __name__ == "__main__":
     main()

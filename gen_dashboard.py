@@ -72,6 +72,11 @@ h2{font-size:16px;margin-bottom:12px;color:#58a6ff}
 .title{font-size:14px;font-weight:600;color:#e6edf3;margin-bottom:4px}
 .body{font-size:12px;color:#8b949e;line-height:1.6}
 .impact{font-size:11px;color:#3fb950;margin-top:6px;padding:4px 8px;background:rgba(63,159,80,.1);border-radius:4px}
+.impact.grad{color:#58a6ff;background:rgba(88,166,255,.1)}
+.dims{margin-top:6px;font-size:11px;color:#8b949e}
+.dims summary{cursor:pointer;color:#58a6ff}
+.dims-body{margin-top:4px;padding:6px 8px;background:rgba(110,118,129,.1);border-radius:4px;line-height:1.6}
+.dims-body b{color:#c9d1d9}
 .kf{font-size:11px;color:#79c0ff;margin-top:4px;padding:4px 8px;background:rgba(121,192,255,.08);border-radius:4px}
 .expand-btn{font-size:10px;padding:2px 8px;border:1px solid #30363d;border-radius:4px;background:#21262d;color:#8b949e;cursor:pointer;margin-top:6px}
 .expand-btn:hover{background:#30363d;color:#c9d1d9}
@@ -158,6 +163,17 @@ h2{font-size:16px;margin-bottom:12px;color:#58a6ff}
 </div>
 <div class="panel">
   <h2>📡 情报流 <span style="font-size:11px;color:#8b949e" id="intelCount"></span></h2>
+  <div style="margin-bottom:8px">
+    <button class="btn" onclick="toggleAsk()">💬 向参谋长提问 / 提出假设</button>
+    <div id="askBox" style="display:none;margin-top:8px">
+      <textarea id="askInput" placeholder="输入你的问题或假设，例如：如果美联储9月降息，对我意味着什么？" style="width:100%;box-sizing:border-box;min-height:60px;background:#161b22;color:#c9d1d9;border:1px solid #30363d;border-radius:6px;padding:8px;font-size:12px;resize:vertical"></textarea>
+      <div style="margin-top:6px;display:flex;gap:8px;align-items:center">
+        <button class="btn" onclick="sendAsk()">发送研判请求</button>
+        <span id="askStatus" style="font-size:11px;color:#8b949e"></span>
+      </div>
+      <div id="askAnswer" style="display:none;margin-top:8px;padding:10px;background:rgba(88,166,255,.08);border:1px solid rgba(88,166,255,.3);border-radius:6px;font-size:12px;color:#c9d1d9;white-space:pre-wrap;line-height:1.7"></div>
+    </div>
+  </div>
   <div class="sort-btns">
     <button class="btn" id="sort-relevance" onclick="S('relevance')">按相关度</button>
     <button class="btn active" id="sort-time" onclick="S('time')">按时间</button>
@@ -209,8 +225,10 @@ intel_js_lines.append("""var curSort="time";var curCat="";
 var catNames={"macro":"宏观经济","finance":"金融市场","geopolitics":"地缘政治","energy":"能源安全","east_asia":"东亚","trade":"贸易","tech":"科技","social":"社会"};
 function buildCatBtns(){var cats={};D.forEach(function(i){var c=i.category_cn||"other";cats[c]=(cats[c]||0)+1});var html='<button class="btn active" onclick="filterCat(\\'\\')">全部</button>';Object.keys(cats).sort(function(a,b){return cats[b]-cats[a]}).forEach(function(c){html+='<button class="btn" onclick="filterCat(\\''+c+'\\')">'+(catNames[c]||c)+' ('+cats[c]+')</button>'});document.getElementById("catBtns").innerHTML=html;document.getElementById("intelCount").textContent="("+D.length+" 条)"}
 function filterCat(cat){curCat=cat;R(cat)}
-function R(cat){var list=cat?D.filter(function(i){return i.category_cn===cat}):D;var sorted=list.slice();if(curSort==="time"){sorted.sort(function(a,b){return new Date(b.published_at||0)-new Date(a.published_at||0)})}else{sorted.sort(function(a,b){return (b.relevance||0)-(a.relevance||0)})}document.getElementById("il").innerHTML=sorted.map(function(i){var cc=i.category_cn||"other";var rv=i.relevance||0;var lang=(i.language||"en").toUpperCase();var pub=i.published_cn||"";if(!pub&&i.published_at){var pd=new Date(i.published_at);if(!isNaN(pd.getTime()))pub=pd.toLocaleDateString("zh-CN")}var ago=(function(){var pa=new Date(i.published_at||0);if(isNaN(pa.getTime()))return i.time_ago||"";var dm=(Date.now()-pa.getTime())/60000;if(dm<0)dm=0;return dm<1?"刚刚":dm<60?Math.round(dm)+"分钟前":dm<1440?Math.round(dm/60)+"小时前":Math.round(dm/1440)+"天前"})();var kf=(i.key_facts&&i.key_facts.length)?i.key_facts.join("; "):"";var hasOrig=i.content_full&&i.content_full.length>30;return '<div class="item"><div class="meta-row"><span class="cat cat-'+cc+'">'+cc+'</span><span class="badge">'+lang+'</span><span class="rel rel-'+rv+'">R'+rv+'</span><span class="src">'+(i.source_name||"")+'</span></div><div class="meta-row"><span class="time-tag">'+pub+'</span><span class="time-tag">'+ago+'</span></div><div class="title">'+esc(i.cn_title||i.title||"")+'</div><div class="body">'+esc(i.cn_summary||"")+'</div>'+(kf?'<div class="kf">关键事实: '+esc(kf)+'</div>':'')+(i.impact?'<div class="impact">'+esc(i.impact)+'</div>':'')+(hasOrig?'<button class="expand-btn" onclick="tog(this)">展开原文</button><div class="orig">'+esc(i.content_full)+'</div>':'')+'</div>'}).join("")}
+function R(cat){var list=cat?D.filter(function(i){return i.category_cn===cat}):D;var sorted=list.slice();if(curSort==="time"){sorted.sort(function(a,b){return new Date(b.published_at||0)-new Date(a.published_at||0)})}else{sorted.sort(function(a,b){return (b.relevance||0)-(a.relevance||0)})}document.getElementById("il").innerHTML=sorted.map(function(i){var cc=i.category_cn||"other";var rv=i.relevance||0;var lang=(i.language||"en").toUpperCase();var pub=i.published_cn||"";if(!pub&&i.published_at){var pd=new Date(i.published_at);if(!isNaN(pd.getTime()))pub=pd.toLocaleDateString("zh-CN")}var ago=(function(){var pa=new Date(i.published_at||0);if(isNaN(pa.getTime()))return i.time_ago||"";var dm=(Date.now()-pa.getTime())/60000;if(dm<0)dm=0;return dm<1?"刚刚":dm<60?Math.round(dm)+"分钟前":dm<1440?Math.round(dm/60)+"小时前":Math.round(dm/1440)+"天前"})();var kf=(i.key_facts&&i.key_facts.length)?i.key_facts.join("; "):"";var hasOrig=i.content_full&&i.content_full.length>30;return '<div class="item"><div class="meta-row"><span class="cat cat-'+cc+'">'+cc+'</span><span class="badge">'+lang+'</span><span class="rel rel-'+rv+'">R'+rv+'</span><span class="src">'+(i.source_name||"")+'</span></div><div class="meta-row"><span class="time-tag">'+pub+'</span><span class="time-tag">'+ago+'</span></div><div class="title">'+esc(i.cn_title||i.title||"")+'</div><div class="body">'+esc(i.cn_summary||"")+'</div>'+(kf?'<div class="kf">关键事实: '+esc(kf)+'</div>':'')+(i.impact?'<div class="impact">👤 '+esc(i.impact)+'</div>':'')+(i.graduate_impact?'<div class="impact grad">🎓 '+esc(i.graduate_impact)+'</div>':'')+(i.dims?'<details class="dims"><summary>四维诊断</summary><div class="dims-body">'+Object.entries(i.dims).map(function(p){return '<div><b>'+({accumulation_node:'积累制度',spatial_layer:'空间修正',state_market_shift:'国家-市场',class_interest:'阶级利益'}[p[0]]||p[0])+'</b>：'+esc(p[1])+'</div>'}).join('')+'</div></details>':'')+(hasOrig?'<button class="expand-btn" onclick="tog(this)">展开原文</button><div class="orig">'+esc(i.content_full)+'</div>':'')+'</div>'}).join("")}
 function S(s){curSort=s;document.getElementById("sort-relevance").classList.toggle("active",s==="relevance");document.getElementById("sort-time").classList.toggle("active",s==="time");R(curCat)}
+function toggleAsk(){var b=document.getElementById("askBox");b.style.display=b.style.display==="none"?"block":"none"}
+async function sendAsk(){var q=document.getElementById("askInput").value.trim();if(!q)return;var st=document.getElementById("askStatus");var ab=document.getElementById("askAnswer");st.textContent="参谋长研判中，约需 10~30 秒……";ab.style.display="none";try{var r=await fetch("/api/ask",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({q:q})});var d=await r.json();if(d.answer){ab.textContent=d.answer;ab.style.display="block";st.textContent=""}else{st.textContent="出错: "+(d.error||"未知错误")}}catch(e){st.textContent="请求失败: "+e}}
 function tog(btn){var c=btn.nextElementSibling;var open=c.style.display!=="block";c.style.display=open?"block":"none";btn.textContent=open?"收起原文":"展开原文"}
 function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
 buildCatBtns();R("");""")
