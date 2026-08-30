@@ -52,25 +52,32 @@ def translate_batch(items, api_key, model):
             "Authorization": f"Bearer {api_key}",
         }
         
-        try:
-            raw = _safe_nvidia_post(base_url + "/chat/completions", payload, headers)
-            result = json.loads(raw)
-            content = result["choices"][0]["message"]["content"]
-            content = content.strip()
-            if content.startswith("```"):
-                content = content.split("```")[1]
-                if content.startswith("json"):
-                    content = content[4:]
-            content = content.strip().rstrip("`")
-            translations = json.loads(content)
-            for j, trans in enumerate(translations):
-                if i+j < len(items):
-                    items[i+j].update(trans)
-                    items[i+j]["language"] = "cn"
-                    translated += 1
-        except Exception as e:
-            print(f"  Batch {i} failed: {e}")
-    
+        # NVIDIA 免费接口高峰期响应慢，60s 常不够生成 5 条摘要：
+        # 超时放宽到 180s，整批失败自动重试一次（翻译是增量的，重试不会污染已翻好的条目）
+        for attempt in range(2):
+            try:
+                raw = _safe_nvidia_post(base_url + "/chat/completions", payload, headers, timeout=180)
+                result = json.loads(raw)
+                content = result["choices"][0]["message"]["content"]
+                content = content.strip()
+                if content.startswith("```"):
+                    content = content.split("```")[1]
+                    if content.startswith("json"):
+                        content = content[4:]
+                content = content.strip().rstrip("`")
+                translations = json.loads(content)
+                for j, trans in enumerate(translations):
+                    if i+j < len(items):
+                        items[i+j].update(trans)
+                        items[i+j]["language"] = "cn"
+                        translated += 1
+                break
+            except Exception as e:
+                if attempt == 0:
+                    print(f"  Batch {i} attempt 1 failed ({e}), retrying...")
+                else:
+                    print(f"  Batch {i} failed: {e}")
+
     return translated
 
 def get_api_key():
