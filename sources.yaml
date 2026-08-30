@@ -542,6 +542,71 @@ think_tanks:
   - 通胀
   max_items: 10
 keyword_weights:
+  # ── 英文传导链关键词（2026-08-30 双语化：90 个中文词 × 英文源 = 命中率≈0，补英文词恢复粗筛）──
+  employment: 3.0
+  unemployment: 3.0
+  layoff: 3.0
+  layoffs: 3.0
+  jobless: 3.0
+  job cuts: 3.0
+  hiring freeze: 2.5
+  youth unemployment: 3.0
+  pension: 2.5
+  retirement: 2.0
+  social security: 2.5
+  welfare: 2.0
+  food stamp: 2.0
+  wage: 2.0
+  inflation: 2.0
+  deflation: 2.0
+  consumer price: 2.0
+  food price: 2.2
+  grocery: 1.5
+  rent: 1.5
+  housing market: 1.8
+  mortgage: 1.8
+  property market: 1.8
+  electricity price: 1.8
+  fuel price: 1.8
+  income tax: 1.8
+  tax cut: 1.8
+  rate cut: 2.2
+  rate hike: 2.2
+  interest rate: 1.8
+  federal reserve: 2.5
+  fomc: 2.2
+  stimulus: 2.2
+  quantitative easing: 2.0
+  central bank: 1.8
+  gdp: 1.5
+  recession: 2.2
+  stagflation: 2.0
+  deficit: 1.5
+  debt ceiling: 1.8
+  national debt: 1.8
+  tariff: 2.2
+  tariffs: 2.2
+  trade war: 2.2
+  sanctions: 1.8
+  export control: 1.8
+  supply chain: 2.0
+  chip ban: 2.0
+  semiconductor: 1.8
+  taiwan: 1.8
+  south china sea: 1.8
+  de-dollarization: 1.8
+  artificial intelligence: 1.8
+  automation: 1.8
+  robot: 1.5
+  tech layoff: 2.5
+  energy transition: 1.8
+  china: 1.5
+  chinese: 1.2
+  beijing: 1.2
+  pboc: 2.2
+  yuan: 1.8
+  renminbi: 1.8
+  # ── 中文原有关键词 ──
   就业: 3.0
   失业: 3.0
   毕业生: 2.5

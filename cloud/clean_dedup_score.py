@@ -225,7 +225,9 @@ def filter_by_threshold(items: List[Dict], config: Dict) -> List[Dict]:
         elif score >= archive:
             item["priority"] = "archive"
         else:
-            item["priority"] = "drop"
+            # 准入放宽(2026-08-30)：低分/零分不再丢弃，进 archive 区由 AI 公民影响研判兜底
+            # （此前 base_score=0 的抽象新闻被直接 drop，导致"对公民有间接影响的新闻"漏采）
+            item["priority"] = "archive"
     
     filtered = [i for i in items if i["priority"] != "drop"]
     print(f"[FILTER] {len(items)} -> {len(filtered)} (high:{sum(1 for i in filtered if i['priority']=='high')}, medium:{sum(1 for i in filtered if i['priority']=='medium')}, low:{sum(1 for i in filtered if i['priority']=='low')}, archive:{sum(1 for i in filtered if i['priority']=='archive')})")
