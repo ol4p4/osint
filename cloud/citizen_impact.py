@@ -15,6 +15,7 @@ import json
 import os
 import socket
 import sys
+import time
 import uuid
 import urllib.request
 from pathlib import Path
@@ -153,7 +154,11 @@ def main():
     print(f"[IMPACT] to analyze: {len(todo)}/{len(items)} in {target.name}")
 
     analyzed = 0
+    deadline = time.time() + 480  # 8 分钟预算(CI job 25 分钟上限内给翻译/研判各留余量)
     for i in range(0, len(todo), BATCH_SIZE):
+        if time.time() > deadline:
+            print(f"[IMPACT] time budget exhausted, {len(todo)-i} items left for next CI run")
+            break
         batch = todo[i:i + BATCH_SIZE]
         try:
             results = parse_json_array(call_ai(config, build_prompt(batch)))

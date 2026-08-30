@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """NVIDIA API批量翻译 - CI调用"""
-import json, os, glob, sys, uuid
+import json, os, glob, sys, uuid, time
 import urllib.request
 from pathlib import Path
 
@@ -28,11 +28,15 @@ MODEL_CHAIN = [
     "meta/llama-3.2-11b-vision-instruct",
 ]
 
-def translate_batch(items, api_key):
+def translate_batch(items, api_key, deadline=None):
+    """deadline: Unix 时间戳, 批间检查, 超预算即停(剩余条目留给下轮 CI 增量补)"""
     base_url = "https://integrate.api.nvidia.com/v1"
     translated = 0
 
     for i in range(0, len(items), 5):
+        if deadline and time.time() > deadline:
+            print(f"[TRANSLATE] time budget exhausted, {len(items)-i} items left for next CI run")
+            break
         batch = items[i:i+5]
         texts = []
         for item in batch:
@@ -144,7 +148,7 @@ def run(dir_path="."):
     untranslated.sort(key=lambda x: x.get("published_at", ""), reverse=True)
     untranslated = untranslated[:50]
     print(f"Translating {len(untranslated)} new items...")
-    translated = translate_batch(untranslated, api_key)
+    translated = translate_batch(untranslated, api_key, deadline=time.time() + 600)
     
     # Merge translated back into full items
     id_map = {i["id"]: i for i in untranslated if i.get("cn_title")}
