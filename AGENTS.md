@@ -9,7 +9,7 @@
 - **产物目录**：`D:\Codex输出\osint_卫星图\`
 - **知识库**：`D:\Codex输出\视频知识库\`
 - **Python**：`E:\software\python3.13.8\python.exe`
-- **仪表盘**：http://127.0.0.1:9090/interactive_dashboard.html
+- **仪表盘**：http://127.0.0.1:19090/interactive_dashboard.html （旧端口 9090 会落进 Windows 动态保留段导致 WinError 10013，勿改回）
 - **废弃目录**：`C:\Users\admin\Documents\osint`（迁移残留，仅供回滚，禁止新增引用；确认无误后可删）
 
 ## 数据流全貌（接手必读）
@@ -22,7 +22,7 @@ cloud/local_sync.py: git pull + 合并 CI 数据进产物目录 jsonl（同 id �
   + translate_local（本地有 NVIDIA_API_KEY 才跑，否则等 CI 翻完合并回来）
   + rebuild_data（只读 intel_2*.jsonl，过滤脏日期）→ dashboard_data.json → gen_dashboard+fix_dashboard
   ↓
-仪表盘 9090 ← serve.py（开机自启）
+仪表盘 19090 ← serve.py（开机自启）
 计划任务 OsintWeekly（周日 09:30）→ 产物目录 daily_run.ps1 -Auto → local/main_local.py 分析 + hypothesis_engine.run_weekly_cycle
 对话引擎 daily_question.ps1 → local/dialogue_engine.py（观点卡）→ feed_to_hypothesis 进假设树 → local/kb_linker.py 同步知识库
 ```
