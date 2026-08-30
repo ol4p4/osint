@@ -29,7 +29,7 @@ MODEL_CHAIN = [
 ]
 
 def translate_batch(items, api_key, deadline=None):
-    """deadline: Unix 时间戳, 批间检查, 超预算即停(剩余条目留给下轮 CI 增量补)"""
+    """items: [(file_path, item_dict), ...]（跨文件元组）；deadline: Unix 时间戳，批间检查"""
     base_url = "https://integrate.api.nvidia.com/v1"
     translated = 0
 
@@ -39,7 +39,7 @@ def translate_batch(items, api_key, deadline=None):
             break
         batch = items[i:i+5]
         texts = []
-        for item in batch:
+        for _, item in batch:
             title = item.get("title", "")
             content = item.get("content_preview", "")[:500]
             texts.append(f"ITEM: {title}\nCONTENT: {content}")
@@ -81,9 +81,10 @@ def translate_batch(items, api_key, deadline=None):
                     content = content.strip().rstrip("`")
                     translations = json.loads(content)
                     for j, trans in enumerate(translations):
-                        if i+j < len(items):
-                            items[i+j].update(trans)
-                            items[i+j]["language"] = "cn"
+                        if j < len(batch):
+                            _, item = batch[j]
+                            item.update(trans)
+                            item["language"] = "cn"
                             translated += 1
                     batch_done = True
                     break
