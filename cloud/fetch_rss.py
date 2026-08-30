@@ -23,7 +23,10 @@ def _safe_rss_fetch(url, timeout=15, max_bytes=512000):
     port = parsed.port or (443 if parsed.scheme == "https" else 80)
     for info in socket.getaddrinfo(host, port):
         ip = ipaddress.ip_address(info[4][0])
-        if ip.is_private or ip.is_loopback or ip.is_reserved or ip.is_link_local or ip.is_multicast:
+        if ip.is_loopback:
+            # 环回放行：CI 内自起的 RSSHub 容器(localhost:1200)是可信的本地转换服务
+            continue
+        if ip.is_private or ip.is_reserved or ip.is_link_local or ip.is_multicast:
             raise ValueError("host resolves to forbidden address: " + str(ip))
     req = urllib.request.Request(url, headers={
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
