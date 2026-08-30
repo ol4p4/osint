@@ -13,6 +13,14 @@ from typing import List, Dict, Any, Set
 from pathlib import Path
 from collections import defaultdict
 
+# AI 四维诊断键 → 知识库固定维度页（长句分析汇入页内，不再生成碎片文件）
+_DIM_PAGE = {
+    "accumulation_node": "宏观-积累制度与劳动力市场",
+    "spatial_layer": "宏观-空间修正与区域选择",
+    "state_market_shift": "宏观-国家市场边界迁移史",
+    "class_interest": "宏观-青年劳动力再生产成本",
+}
+
 
 class WikiRenderer:
     def __init__(self, config: Dict, vault_path: str):
@@ -135,14 +143,18 @@ class WikiRenderer:
             wm = pas.get("window_months", 18)
             lines.append(f"**行动空间（{wm}个月窗口）**")
             for m in pas.get("concrete_moves", []):
+                # AI 返回的 concrete_moves 可能是字符串或对象，两种都兼容
+                if isinstance(m, str):
+                    lines.append(f"- ✅ {m}")
+                    continue
                 lines.append(f"- ✅ {m.get('action', '')}")
                 lines.append(f"  - 理由：{m.get('rationale', '')}")
                 lines.append(f"  - 风险：{m.get('risk', '')}")
             if pas.get("avoid_traps"):
-                joined = "；".join(pas["avoid_traps"])
+                joined = "；".join(str(t) for t in pas["avoid_traps"])
                 lines.append(f"- ⚠️ 避坑：{joined}")
             if pas.get("signals_to_watch"):
-                joined = "；".join(pas["signals_to_watch"])
+                joined = "；".join(str(s) for s in pas["signals_to_watch"])
                 lines.append(f"- 👁️ 观测：{joined}")
             lines.append("")
             
@@ -182,9 +194,11 @@ class WikiRenderer:
             md = a.get("macro_diagnosis", {})
             for dim, val in md.items():
                 if val and val != "未识别":
-                    concept_name = f"宏观-{dim}-{val}"
+                    # 2026-08-30 修复：AI 长句 val 不再进文件名（曾产生 79 个超长名文件污染知识库），
+                    # 一律汇入 4 个固定维度页，长句作为页内更新素材
+                    concept_name = _DIM_PAGE.get(dim, f"宏观-{dim}")
                     if concept_name not in macro_concepts:
-                        macro_concepts[concept_name] = {"tags": ["宏观分析", "政治经济学"], "keywords": [dim, val]}
+                        macro_concepts[concept_name] = {"tags": ["宏观分析", "政治经济学"], "keywords": [dim]}
         
         created_files = []
         for concept_name, meta in macro_concepts.items():

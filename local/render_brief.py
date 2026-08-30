@@ -11,6 +11,22 @@ from pathlib import Path
 from dataclasses import asdict
 
 
+def _norm_moves(moves):
+    """concrete_moves 兼容两种 AI 返回形态：字符串列表 / 对象列表"""
+    out = []
+    for m in moves or []:
+        if isinstance(m, dict):
+            out.append(m)
+        else:
+            out.append({"action": str(m), "rationale": "", "risk": ""})
+    return out
+
+
+def _norm_strs(items):
+    return [str(x) for x in items or []]
+
+
+
 def render_brief(analyses, intel_items: List[Dict], date_str: str, output_dir: str, config: Dict) -> str:
     # 兼容 dataclass
     analyses = [asdict(a) if hasattr(a, "__dataclass_fields__") else a for a in analyses]
@@ -76,10 +92,10 @@ def render_brief(analyses, intel_items: List[Dict], date_str: str, output_dir: s
     all_moves, all_traps, all_signals = [], [], []
     for a in high + medium:
         pas = a.get("personal_action_space", {})
-        all_moves.extend(pas.get("concrete_moves", []))
-        all_traps.extend(pas.get("avoid_traps", []))
-        all_signals.extend(pas.get("signals_to_watch", []))
-    
+        all_moves.extend(_norm_moves(pas.get("concrete_moves", [])))
+        all_traps.extend(_norm_strs(pas.get("avoid_traps", [])))
+        all_signals.extend(_norm_strs(pas.get("signals_to_watch", [])))
+
     seen = set()
     unique_moves = []
     for m in all_moves:
@@ -140,10 +156,13 @@ def _render_single(lines, analysis, intel, priority):
     wm = pas.get("window_months", 18)
     lines.append(f"**行动空间（{wm}个月窗口）**")
     for m in pas.get("concrete_moves", []):
+        # AI 返回的 concrete_moves 可能是字符串或对象，两种都兼容
+        if isinstance(m, str):
+            lines.append(f"- ✅ {m}")
+            continue
         lines.append(f"- ✅ {m.get('action', '')}")
         lines.append(f"  - 理由：{m.get('rationale', '')}")
         lines.append(f"  - 风险：{m.get('risk', '')}")
-    
     if pas.get("avoid_traps"):
         joined = "；".join(pas["avoid_traps"])
         lines.append(f"- ⚠️ 避坑：{joined}")

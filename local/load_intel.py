@@ -25,6 +25,8 @@ def load_from_local(date_str: str = None, cache_dir: str = None) -> List[Dict[st
     paths = [
         Path(cache_dir) / f"intel_{date_str}.jsonl",
         Path(cache_dir) / f"intel_{date_str}.json",
+        # CI final 数据直接落在产物目录本体（local_sync 合并的位置），必须优先于 cwd
+        Path(cache_dir).parent / f"intel_{date_str}.jsonl",
         Path(".") / f"intel_{date_str}.jsonl",
         Path(".") / f"intel_{date_str}.json",
     ]
