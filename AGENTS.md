@@ -99,7 +99,7 @@ python -c "..." # 见 daily_run.ps1 Step3，或等 OsintWeekly 周日 09:30 自�
 
 ## CI 故障排除
 1. **RSS 超时**：每源 15s 超时，坏源跳过不影响其他源
-2. **翻译 404/超时**：NVIDIA key 在 GitHub Secrets；已限每次 50 条、batch 5
+2. **翻译 404/超时**：NVIDIA key 在 GitHub Secrets；已限每次 50 条、batch 5；模型降级链 MODEL_CHAIN（gpt-oss-120b→20b→llama）
 3. **push 403**：检查 workflow `permissions: contents: write`
 4. **`No module named 'cloud'`**：`main_cloud.py` 顶部有 sys.path 修复
 5. **simhash 报错**：确认 `simhash==2.1.2`
@@ -107,6 +107,7 @@ python -c "..." # 见 daily_run.ps1 Step3，或等 OsintWeekly 周日 09:30 自�
 7. **计划任务没跑成**：查 `logs/refresh_YYYYMMDD.log`；`daily_run.ps1` 手动测试加 `-Auto`
 8. **GitHub schedule 会被静默跳过**（平台通病）：数据陈旧时先 `gh run list` 看 CI，再 `gh workflow run daily.yml` 手动补跑，跑完等本地 OsintRefresh 每小时拉取或手动跑 refresh.py
 9. **仪表盘时间错乱**：time_ago 已改为浏览器端动态计算（gen_dashboard.py 内嵌 JS IIFE），不再依赖采集时写死的静态文本
+10. **fetch_list 采集 0 条**（2026-08-30 诊断）：接口缺陷已修（main 现在写 output jsonl，与 fetch_rss 同接口）；但所有列表源在 CI 上也解析出 0 条——**sources.yaml 的 list_selector 已与改版后的页面结构脱节**（gov.cn 还是 JS 渲染页）。逐源修选择器是持久战，替代方案：改用 RSSHub 或各站 RSS 源。
 
 ## 数据量级真相（2026-08-30 诊断）
 - 关键词表（sources.yaml keyword_weights）是**中文**（就业/失业/毕业生/落户…），47 个源以英文为主 → 每日命中通常只有 0~3 条，**这是筛选器设计行为而非故障**
