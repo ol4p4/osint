@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pathlib import Path
 
-path = r"D:\Codex输出\osint_卫星图\interactive_dashboard.html"
+path = r"D:\osint\data\interactive_dashboard.html"
 html = Path(path).read_text(encoding="utf-8")
 
 # Find the byId line and add esc right after it

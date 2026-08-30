@@ -4,9 +4,9 @@ import json, sys
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
 
-DATA_FILE = Path(r"D:\Codex输出\osint_卫星图\dashboard_data.json")
-HYP_FILE = Path(r"D:\Codex输出\osint_卫星图\hypotheses\active_hypotheses.json")
-HTML_FILE = Path(r"D:\Codex输出\osint_卫星图\interactive_dashboard.html")
+DATA_FILE = Path(r"D:\osint\data\dashboard_data.json")
+HYP_FILE = Path(r"D:\osint\data\hypotheses\active_hypotheses.json")
+HTML_FILE = Path(r"D:\osint\data\interactive_dashboard.html")
 
 with open(DATA_FILE, "r", encoding="utf-8") as f:
     data = json.load(f)

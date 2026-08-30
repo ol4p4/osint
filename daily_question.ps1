@@ -23,7 +23,7 @@ Set-Location $localDir
 switch ($mode) {
     "2" {
         $dir = Read-Host "Path to Obsidian idea drafts directory"
-        if (-not $dir) { $dir = "D:\Codex输出\osint_卫星图\dialogues\ideas" }
+        if (-not $dir) { $dir = "D:\osint\data\dialogues\ideas" }
         & python dialogue_engine.py --batch $dir
     }
     "3" {
@@ -44,7 +44,7 @@ switch ($mode) {
 }
 
 Write-Host ""
-Write-Host "Done. Cards: D:\Codex输出\osint_卫星图\dialogues\view_cards\" -ForegroundColor Gray
+Write-Host "Done. Cards: D:\osint\data\dialogues\view_cards\" -ForegroundColor Gray
 
 if (-not $Auto) {
     Read-Host "Press Enter to exit"

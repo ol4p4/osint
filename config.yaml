@@ -31,10 +31,10 @@ mode:
 
 # 输出路径
 paths:
-  output_dir: "D:\\Codex输出\\osint_卫星图"
-  wiki_dir: "D:\\Codex输出\\osint_卫星图\\wiki"
-  intel_cache_dir: "D:\\Codex输出\\osint_卫星图\\cache"
-  log_dir: "D:\\Codex输出\\osint_卫星图\\logs"
+  output_dir: "D:\\osint\\data"
+  wiki_dir: "D:\\osint\\data\\wiki"
+  intel_cache_dir: "D:\\osint\\data\\cache"
+  log_dir: "D:\\osint\\data\\logs"
 
 # 知识库路径（用于RAG检索）
 knowledge_base:

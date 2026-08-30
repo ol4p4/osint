@@ -6,7 +6,7 @@
 
 ## 关键路径
 - **仓库**：`D:\osint`（GitHub: `ol4p4/osint`）
-- **产物目录**：`D:\Codex输出\osint_卫星图\`
+- **产物目录**：`D:\osint\data\`（2026-08-30 从 D:\Codex输出\osint_卫星图 迁入，gitignore 不追踪）
 - **知识库**：`D:\Codex输出\视频知识库\`
 - **Python**：`E:\software\python3.13.8\python.exe`
 - **仪表盘**：http://127.0.0.1:19090/interactive_dashboard.html （旧端口 9090 会落进 Windows 动态保留段导致 WinError 10013，勿改回）
@@ -59,7 +59,7 @@ AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key �
 | `views.yaml` | 观点模板（`materialized_hyp_id` 标注已物化的 view，防止周循环重复生成） |
 | `sources.yaml`(47源) / `config.yaml`(key+路径) / `weights.yaml` / `daily_question.ps1`(P2a/P2b入口) | 配置与入口 |
 
-### 产物目录（`D:\Codex输出\osint_卫星图\`）
+### 产物目录（`D:\osint\data\`，gitignore 不追踪）
 | 文件 | 用途 |
 |------|------|
 | `dashboard_data.json` / `interactive_dashboard.html` | 仪表盘数据+页面 |
@@ -72,7 +72,7 @@ AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key �
 ## 运行方式
 ```bash
 # 手动刷新（拉取+合并+翻译+重建）
-python D:\Codex输出\osint_卫星图\refresh.py
+python D:\osint\data\refresh.py
 
 # 对话引擎：想法 → 5轮追问 → 观点卡 → 进假设树
 python D:\osint\local\dialogue_engine.py --interactive "你的想法" --feed-hyp
@@ -87,7 +87,7 @@ python -c "..." # 见 daily_run.ps1 Step3，或等 OsintWeekly 周日 09:30 自�
 ```
 
 ## 约束与禁忌 / MUST NOT
-- **禁止引用旧路径** `C:\Users\admin\Documents\osint`；仓库= `D:\osint`，产物= `D:\Codex输出\osint_卫星图`，路径常量只在文件头部定义一次。
+- **禁止引用旧路径** `C:\Users\admin\Documents\osint`（旧仓库）和 `D:\Codex输出\osint_卫星图`（旧产物目录，均已废弃）；仓库= `D:\osint`，产物= `D:\osint\data`，路径常量只在文件头部定义一次。
 - **禁止绕过白名单**：外发请求只允许 https + 白名单域名（verify_hypotheses 的 `ALLOWED_HOSTS`、analyze.py 的 opencode.ai 校验）。加新 API 必须先加白名单。
 - **禁止让周循环重复生成假设**：views.yaml 加新 view 时若已在树里，必须填 `materialized_hyp_id`。
 - **写 Python 文件 IO 用方法式 API**（`read_text/write_text/Path.open`），不要 `open(变量)`——Mimosa 安全扫描会按路径穿越拦截（PreToolUse），拦截后改写法而不是硬试。

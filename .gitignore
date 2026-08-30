@@ -9,4 +9,5 @@ data/
 
 _patch_*
 _test_*
-nnull
+.mimosa/
+.zcode/

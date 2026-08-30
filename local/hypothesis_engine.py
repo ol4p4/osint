@@ -68,7 +68,7 @@ class HypothesisEngine:
         self.kb = kb
         self.analyzer = analyzer
         paths = config.get("paths", {})
-        self.output_dir = Path(paths.get("output_dir", r"D:\Codex输出\osint_卫星图"))
+        self.output_dir = Path(paths.get("output_dir", r"D:\osint\data"))
         self.hyp_dir = self.output_dir / "hypotheses"
         self.hyp_dir.mkdir(parents=True, exist_ok=True)
         self.hyp_file = self.hyp_dir / "active_hypotheses.json"

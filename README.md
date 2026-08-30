@@ -80,7 +80,7 @@ api:
 ```
 
 ### 4. 查看产物
-产物输出到 `D:\Codex输出\osint_卫星图\`：
+产物输出到 `D:\osint\data\`：
 - `brief_YYYYMMDD.md` - 每日简报（双击用 Obsidian/浏览器阅读）
 - `dashboard_YYYYMMDD.html` - 交互式仪表盘（双击在浏览器打开，可筛选/钻取）
 - `wiki/osint-YYYYMMDD.md` - 每日情报概念页（含双向链接）

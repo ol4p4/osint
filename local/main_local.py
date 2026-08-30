@@ -31,8 +31,8 @@ def main():
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     
     paths = config.get("paths", {})
-    output_dir = paths.get("output_dir", r"D:\Codex输出\osint_卫星图")
-    cache_dir = paths.get("intel_cache_dir", r"D:\Codex输出\osint_卫星图\cache")
+    output_dir = paths.get("output_dir", r"D:\osint\data")
+    cache_dir = paths.get("intel_cache_dir", r"D:\osint\data\cache")
     
     Path(output_dir).mkdir(parents=True, exist_ok=True)
     Path(output_dir, "wiki").mkdir(parents=True, exist_ok=True)

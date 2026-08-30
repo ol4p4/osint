@@ -75,7 +75,7 @@ try {
 Write-Host ""
 if ($exitCode -eq 0) {
     Write-Host "✅ 运行成功完成！" -ForegroundColor Green
-    $outputDir = "D:\Codex输出\osint_卫星图"
+    $outputDir = "D:\osint\data"
     if (Test-Path $outputDir) {
         Write-Host "📁 产物目录: $outputDir" -ForegroundColor Cyan
         Get-ChildItem $outputDir -File | Sort-Object LastWriteTime -Descending | Select-Object -First 10 | ForEach-Object {

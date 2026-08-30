@@ -1,0 +1,16 @@
+[
+  {
+    "claim": "Pension replacement rates in Japan, South Korea, and China will differ by no more than 10 percentage points in 2030.",
+    "indicator": "Average pension replacement rate as a percentage of pre-retirement income for each country.",
+    "data_source": "OECD Pensions at a Glance, World Bank Social Security Indicators, or national government reports (e.g., Japan's Ministry of Health, Labour and Welfare; South Korea's Ministry of Health and Welfare; China's Ministry of Human Resources and Social Security).",
+    "threshold_support": "By 2030, the maximum difference in pension replacement rates among Japan, South Korea, and China is ≤ 10 percentage points, and the variance has decreased from the 2020 baseline.",
+    "threshold_refute": "By 2030, the maximum difference is > 10 percentage points, or the variance has not decreased (or increased) compared to the 2020 baseline."
+  },
+  {
+    "claim": "Contribution rates to pension systems in Japan, South Korea, and China will differ by no more than 5 percentage points in 2030.",
+    "indicator": "Total contribution rate to the pension system as a percentage of gross salary for each country (employee and employer combined).",
+    "data_source": "OECD Taxing Wages, International Social Security Association (ISSA) reports, or national pension fund publications (e.g., Japan Pension Service, National Pension Fund of Korea, China's Social Security Administration).",
+    "threshold_support": "By 2030, the maximum difference in contribution rates among Japan, South Korea, and China is ≤ 5 percentage points, and the trend shows convergence from 2020 levels.",
+    "threshold_refute": "By 2030, the maximum difference is > 5 percentage points, or contribution rates have diverged since 2020."
+  }
+]

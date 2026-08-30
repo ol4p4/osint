@@ -7,10 +7,10 @@ import json, re, sys
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
 
-HYP_FILE = Path(r"D:\Codex输出\osint_卫星图\hypotheses\active_hypotheses.json")
-INTEL_DIR = Path(r"D:\Codex输出\osint_卫星图")
-LINK_REPORT = Path(r"D:\Codex输出\osint_卫星图\link_report.json")
-BRIEFING_DIR = Path(r"D:\Codex输出\osint_卫星图")
+HYP_FILE = Path(r"D:\osint\data\hypotheses\active_hypotheses.json")
+INTEL_DIR = Path(r"D:\osint\data")
+LINK_REPORT = Path(r"D:\osint\data\link_report.json")
+BRIEFING_DIR = Path(r"D:\osint\data")
 
 def load_today_intel():
     """Load today's intelligence"""

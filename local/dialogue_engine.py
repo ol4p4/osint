@@ -38,7 +38,7 @@ class DialogueEngine:
     def __init__(self, config, idea_dir=None):
         self.config = config or {}
         paths = self.config.get("paths", {})
-        self.output_dir = Path(paths.get("output_dir", r"D:\Codex输出\osint_卫星图"))
+        self.output_dir = Path(paths.get("output_dir", r"D:\osint\data"))
         self.dialogue_dir = self.output_dir / "dialogues"
         self.cards_dir = self.dialogue_dir / "view_cards"
         self.dialogue_dir.mkdir(parents=True, exist_ok=True)

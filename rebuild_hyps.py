@@ -1,7 +1,7 @@
 import json, uuid
 from pathlib import Path
 
-HYP_FILE = Path(r"D:\Codex输出\osint_卫星图\hypotheses\active_hypotheses.json")
+HYP_FILE = Path(r"D:\osint\data\hypotheses\active_hypotheses.json")
 
 with open(HYP_FILE, "r", encoding="utf-8") as f:
     existing = json.load(f)

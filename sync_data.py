@@ -1,8 +1,8 @@
 import json
 from pathlib import Path
 
-DATA_FILE = Path(r"D:\Codex输出\osint_卫星图\dashboard_data.json")
-HYP_FILE = Path(r"D:\Codex输出\osint_卫星图\hypotheses\active_hypotheses.json")
+DATA_FILE = Path(r"D:\osint\data\dashboard_data.json")
+HYP_FILE = Path(r"D:\osint\data\hypotheses\active_hypotheses.json")
 
 # 1. Sync hypotheses
 with open(HYP_FILE, "r", encoding="utf-8") as f:

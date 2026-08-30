@@ -31,9 +31,9 @@ def _safe_fetch_bytes(url, timeout=10):
 def _fetch_json(url, timeout=10):
     return json.loads(_safe_fetch_bytes(url, timeout))
 
-HYP_FILE = Path(r"D:\Codex输出\osint_卫星图\hypotheses\active_hypotheses.json")
-INTEL_DIR = Path(r"D:\Codex输出\osint_卫星图")
-HISTORY_FILE = Path(r"D:\Codex输出\osint_卫星图\indicator_history.json")
+HYP_FILE = Path(r"D:\osint\data\hypotheses\active_hypotheses.json")
+INTEL_DIR = Path(r"D:\osint\data")
+HISTORY_FILE = Path(r"D:\osint\data\indicator_history.json")
 
 # FRED series mapping for known indicators
 FRED_SERIES = {

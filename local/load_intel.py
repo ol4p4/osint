@@ -17,7 +17,7 @@ import yaml
 
 def load_from_local(date_str: str = None, cache_dir: str = None) -> List[Dict[str, Any]]:
     if cache_dir is None:
-        cache_dir = r"D:\Codex输出\osint_卫星图\cache"
+        cache_dir = r"D:\osint\data\cache"
     
     if date_str is None:
         date_str = datetime.now(timezone.utc).strftime("%Y%m%d")

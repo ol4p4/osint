@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 r"""local_sync.py - 本地数据同步模块
-职责：仓库(D:\osint, CI 产物) → 产物目录(D:\Codex输出\osint_卫星图) 的 intel jsonl 合并、
+职责：仓库(D:\osint, CI 产物) → 本地产物目录(D:\osint\data) 的 intel jsonl 合并、
 可选本地翻译、运行日志。由产物目录的 refresh.py 调用（计划任务 OsintRefresh 每小时）。
 
 合并策略：同 id 条目优先保留带 cn_title 的版本（直接复用 CI 的翻译成果）；
@@ -16,7 +16,7 @@ from datetime import datetime
 from pathlib import Path
 
 PROJECT = Path(r"D:\osint").resolve()
-BASE = Path(r"D:\Codex输出\osint_卫星图").resolve()
+BASE = Path(r"D:\osint\data").resolve()
 LOG_DIR = BASE / "logs"
 ALLOWED_DIRS = (PROJECT, BASE)
 

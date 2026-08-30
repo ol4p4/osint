@@ -114,7 +114,7 @@ def main():
         text = Path(args.analysis_file).read_text(encoding="utf-8")
     gen = QuestionGenerator(config)
     questions = gen.generate_daily_questions(text, n=args.n)
-    output_dir = (config.get("paths", {}) or {}).get("output_dir", r"D:\Codex输出\osint_卫星图")
+    output_dir = (config.get("paths", {}) or {}).get("output_dir", r"D:\osint\data")
     gen.save_questions(questions, output_dir)
     for i, q in enumerate(questions, 1):
         print(f"  Q{i} [{q['name']}] {q['question']}")
