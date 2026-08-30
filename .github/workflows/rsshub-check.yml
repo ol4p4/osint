@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Check RSSHub instances x routes
         run: |
-          ROUTES="gov/zhengce/zuixin zhihu/hotlist wallstreetcn/news/global 36kr/newsflashes"
+          ROUTES="jin10 wallstreetcn/live wallstreetcn/news/global gov/zhengce/zuixin yicai/news"
           INSTANCES="https://rsshub.rssforever.com https://rsshub.ktachibana.party https://rsshub.pseudoyu.com https://rss.owo.nz https://rsshub.moeyy.cn"
           for inst in $INSTANCES; do
             echo "===== $inst ====="
