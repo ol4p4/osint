@@ -2,12 +2,13 @@
 """NVIDIA API批量翻译 - CI调用"""
 import json, os, glob, sys, uuid
 import urllib.request
+from pathlib import Path
 
 def translate_batch(items, api_key, model):
     base_url = "https://integrate.api.nvidia.com/v1"
     translated = 0
     
-    for i in range(0, len(items), 10):
+    for i in range(0, len(items), 5):
         batch = items[i:i+5]
         texts = []
         for item in batch:
@@ -56,15 +57,37 @@ def translate_batch(items, api_key, model):
     
     return translated
 
+def get_api_key():
+    """CI 从环境变量取 key；本地跑可回退到 config.yaml 的 api.nvidia_api_key（可选字段）"""
+    key = os.environ.get("NVIDIA_API_KEY", "")
+    if key:
+        return key
+    try:
+        import yaml
+        cfg_file = Path(__file__).resolve().parent.parent / "config.yaml"
+        with open(cfg_file, "r", encoding="utf-8") as f:
+            cfg = yaml.safe_load(f) or {}
+        return (cfg.get("api", {}) or {}).get("nvidia_api_key", "") or ""
+    except Exception:
+        return ""
+
 def main():
-    api_key = os.environ.get("NVIDIA_API_KEY", "")
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--dir", default=".", help="intel_*.jsonl 所在目录（CI 用默认当前目录，本地传产物目录）")
+    args = parser.parse_args()
+    run(args.dir)
+
+def run(dir_path="."):
+    api_key = get_api_key()
     if not api_key:
         print("No NVIDIA_API_KEY, skipping translation")
         sys.exit(0)
-    
+
     model = "meta/llama-3.2-11b-vision-instruct"
-    
-    files = sorted(glob.glob("intel_*.jsonl"), reverse=True)[:1]
+
+    # 只处理 intel_YYYYMMDD.jsonl（intel_raw_*/intel_final_* 不在翻译范围）
+    files = sorted(glob.glob(os.path.join(dir_path, "intel_2*.jsonl")), reverse=True)[:1]
     if not files:
         print("No intel files found")
         sys.exit(0)

@@ -3,6 +3,7 @@
 
 - id: "view_001"
   title: "East Asian Modernization Convergence"
+  materialized_hyp_id: "hyp_e2b46e32"
   author: "user"
   created: "2026-08-20"
   status: "active"
@@ -18,6 +19,7 @@
 
 - id: "view_002"
   title: "China following Korea social security path"
+  materialized_hyp_id: "hyp_d26158d3"
   author: "user"
   created: "2026-08-20"
   status: "active"

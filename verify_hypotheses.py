@@ -3,9 +3,33 @@
 假设自动验证引擎
 读取假设树 → 拉取指标真实值 → 对比阈值 → 更新置信度
 """
-import json, re, sys, urllib.request, urllib.error
+import json, re, sys, socket, ipaddress, urllib.request, urllib.error
 from pathlib import Path
+from urllib.parse import urlparse
 from datetime import datetime, timezone, timedelta
+
+# SSRF 防护：仅 https + 域名白名单 + 解析结果不得指向私有/环回/保留地址
+ALLOWED_HOSTS = {
+    "api.stlouisfed.org", "api.frankfurter.app", "api.gold-api.com", "api.worldbank.org",
+}
+
+def _safe_fetch_bytes(url, timeout=10):
+    parsed = urlparse(url)
+    if parsed.scheme != "https":
+        raise ValueError("only https allowed")
+    host = parsed.hostname or ""
+    if host not in ALLOWED_HOSTS:
+        raise ValueError("host not allowed: " + host)
+    for info in socket.getaddrinfo(host, 443):
+        ip = ipaddress.ip_address(info[4][0])
+        if ip.is_private or ip.is_loopback or ip.is_reserved or ip.is_link_local or ip.is_multicast:
+            raise ValueError("host resolves to forbidden address: " + str(ip))
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        return resp.read()
+
+def _fetch_json(url, timeout=10):
+    return json.loads(_safe_fetch_bytes(url, timeout))
 
 HYP_FILE = Path(r"D:\Codex输出\osint_卫星图\hypotheses\active_hypotheses.json")
 INTEL_DIR = Path(r"D:\Codex输出\osint_卫星图")
@@ -41,14 +65,12 @@ def fetch_fred(series_id):
         return None
     try:
         url = f"https://api.stlouisfed.org/fred/series/observations?series_id={series_id}&sort_order=desc&limit=1&api_key=DEMO_KEY&file_type=json"
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=10) as resp:
-            data = json.loads(resp.read())
-            obs = data.get("observations", [])
-            if obs:
-                val = obs[0].get("value")
-                if val and val != ".":
-                    return {"value": float(val), "date": obs[0].get("date", ""), "source": "FRED"}
+        data = _fetch_json(url)
+        obs = data.get("observations", [])
+        if obs:
+            val = obs[0].get("value")
+            if val and val != ".":
+                return {"value": float(val), "date": obs[0].get("date", ""), "source": "FRED"}
     except Exception as e:
         print(f"  FRED fetch failed for {series_id}: {e}")
     return None
@@ -57,12 +79,10 @@ def fetch_frankfurter(from_currency="USD", to_currency="CNY"):
     """Fetch exchange rate from Frankfurter API"""
     try:
         url = f"https://api.frankfurter.app/latest?from={from_currency}&to={to_currency}"
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=10) as resp:
-            data = json.loads(resp.read())
-            rate = data.get("rates", {}).get(to_currency)
-            if rate:
-                return {"value": rate, "date": data.get("date", ""), "source": "Frankfurter"}
+        data = _fetch_json(url)
+        rate = data.get("rates", {}).get(to_currency)
+        if rate:
+            return {"value": rate, "date": data.get("date", ""), "source": "Frankfurter"}
     except Exception as e:
         print(f"  Frankfurter fetch failed: {e}")
     return None
@@ -71,12 +91,10 @@ def fetch_gold():
     """Fetch gold price"""
     try:
         url = "https://api.gold-api.com/price/XAU"
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=10) as resp:
-            data = json.loads(resp.read())
-            price = data.get("price")
-            if price:
-                return {"value": float(price), "date": datetime.now().strftime("%Y-%m-%d"), "source": "GoldAPI"}
+        data = _fetch_json(url)
+        price = data.get("price")
+        if price:
+            return {"value": float(price), "date": datetime.now().strftime("%Y-%m-%d"), "source": "GoldAPI"}
     except:
         pass
     return None
@@ -85,14 +103,12 @@ def fetch_world_bank(indicator_code, country="CN"):
     """Fetch from World Bank API"""
     try:
         url = f"https://api.worldbank.org/v2/country/{country}/indicator/{indicator_code}?format=json&per_page=1&mrv=1"
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=10) as resp:
-            data = json.loads(resp.read())
-            if len(data) > 1 and data[1]:
-                item = data[1][0]
-                val = item.get("value")
-                if val:
-                    return {"value": float(val), "date": item.get("date", ""), "source": "WorldBank"}
+        data = _fetch_json(url)
+        if len(data) > 1 and data[1]:
+            item = data[1][0]
+            val = item.get("value")
+            if val:
+                return {"value": float(val), "date": item.get("date", ""), "source": "WorldBank"}
     except Exception as e:
         print(f"  WorldBank fetch failed for {indicator_code}: {e}")
     return None
@@ -253,12 +269,10 @@ def main():
                 print(u)
     
     # Save updated hypotheses
-    with open(HYP_FILE, "w", encoding="utf-8") as f:
-        json.dump(hyps, f, ensure_ascii=False, indent=2)
-    
+    HYP_FILE.write_text(json.dumps(hyps, ensure_ascii=False, indent=2), encoding="utf-8")
+
     # Save history
-    with open(HISTORY_FILE, "w", encoding="utf-8") as f:
-        json.dump(history, f, ensure_ascii=False, indent=2)
+    HISTORY_FILE.write_text(json.dumps(history, ensure_ascii=False, indent=2), encoding="utf-8")
     
     print(f"\n=== 完成 ===")
     print(f"指标更新: {total_updates} 项")

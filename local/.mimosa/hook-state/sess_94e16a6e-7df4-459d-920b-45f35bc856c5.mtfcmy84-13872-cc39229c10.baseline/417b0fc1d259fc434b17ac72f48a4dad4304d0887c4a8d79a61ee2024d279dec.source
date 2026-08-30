@@ -3,27 +3,9 @@
 """Local Staff Officer - AI Deep Analysis Engine"""
 
 import json, os, re, yaml
-from pathlib import Path
 from typing import List, Dict, Any
 from dataclasses import dataclass, asdict
 import urllib.request, urllib.error, uuid
-
-AI_ALLOWED_HOST = "opencode.ai"
-
-def _safe_ai_post(url, payload, headers, timeout=180):
-    """SSRF 防护：仅 https + opencode.ai 白名单 + 解析结果不得指向私有/环回/保留地址"""
-    import socket, ipaddress
-    from urllib.parse import urlparse
-    parsed = urlparse(url)
-    if parsed.scheme != "https" or (parsed.hostname or "") != AI_ALLOWED_HOST:
-        raise ValueError("blocked non-whitelisted AI endpoint: " + url)
-    for info in socket.getaddrinfo(parsed.hostname, 443):
-        ip = ipaddress.ip_address(info[4][0])
-        if ip.is_private or ip.is_loopback or ip.is_reserved or ip.is_link_local or ip.is_multicast:
-            raise ValueError("endpoint resolves to forbidden address: " + str(ip))
-    req = urllib.request.Request(url, data=payload, headers=headers, method="POST")
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return resp.read().decode("utf-8")
 
 @dataclass
 class AnalysisResult:
@@ -113,20 +95,23 @@ class MacroAnalyzer:
                     "x-opencode-project": uuid.uuid4().hex[:8],
                     "x-opencode-request": uuid.uuid4().hex,
                 }
-                raw = _safe_ai_post(url, payload, headers, 180)
-                result = json.loads(raw)
-                msg = result["choices"][0]["message"]
-                content = msg.get("content", "")
-                if not content:
-                    for k in ("reasoning_content", "reasoning", "output"):
-                        val = msg.get(k, "")
-                        if val:
-                            content = val
-                            break
-                Path(r'D:\osint\_tmp_raw_resp.txt').write_text(content, encoding='utf-8')
-                if content and content.strip():
-                    return content.strip()
-                raise ValueError("empty response")
+                req = urllib.request.Request(url, data=payload, headers=headers, method="POST")
+                with urllib.request.urlopen(req, timeout=180) as resp:
+                    raw = resp.read().decode("utf-8")
+                    result = json.loads(raw)
+                    msg = result["choices"][0]["message"]
+                    content = msg.get("content", "")
+                    if not content:
+                        for k in ("reasoning_content", "reasoning", "output"):
+                            val = msg.get(k, "")
+                            if val:
+                                content = val
+                                break
+                    with open(r'D:\osint\_tmp_raw_resp.txt', 'w', encoding='utf-8') as _f:
+                        _f.write(content)
+                    if content and content.strip():
+                        return content.strip()
+                    raise ValueError("empty response")
             except Exception as e:
                 print("[AI] model " + m["model"] + " failed: " + str(e))
                 if i == len(models) - 1:
@@ -224,7 +209,7 @@ if __name__ == "__main__":
             if line: items.append(json.loads(line))
     print("Analyzing " + str(len(items)) + " items...")
     results = analyze_intel(config, persona, kb, items)
-    Path(args.output).write_text(
-        "\n".join(json.dumps(asdict(r), ensure_ascii=False) for r in results) + "\n",
-        encoding="utf-8")
+    with open(args.output, "w", encoding="utf-8") as f:
+        for r in results:
+            f.write(json.dumps(asdict(r), ensure_ascii=False) + "\\n")
     print("Done: " + args.output)

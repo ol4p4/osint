@@ -1,55 +1,51 @@
-# Daily Question & View Generator
-# 运行此脚本开始问题驱动对话
+﻿# Daily Question & View Generator (P2a/P2b entry)
+# 用法: 右键"使用 PowerShell 运行"; 计划任务/自动化调用加 -Auto 跳过交互暂停
 
-Write-Host '=== Daily Question & View Generator ===' -ForegroundColor Cyan
-Write-Host '1. Generate questions after analysis' -ForegroundColor Green
-Write-Host '2. Start interactive dialogue (type your idea)' -ForegroundColor Green
-Write-Host '3. Or read draft from Obsidian idea folder' -ForegroundColor Gray
+param([switch]$Auto)
 
-Write-Host ''
-Write-Host 'Choose mode: 1-interactive, 2-batch, 3-generate-questions' -ForegroundColor Yellow
- = Read-Host 'Enter mode'
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$ErrorActionPreference = "Continue"
 
-if ( -eq '1') {
-    Write-Host 'Enter your idea (press Enter when done):' -ForegroundColor White
-     = Read-Host
-    if () {
-        # Run Python dialogue
-        python -c "
-import sys
-sys.path.insert(0, r'C:\Users\admin\Documents\osint\local')
-from dialogue_engine import DialogueEngine
-import yaml
-with open(r'C:\Users\admin\Documents\osint\config.yaml', 'r', encoding='utf-8') as f:
-    config = yaml.safe_load(f)
-engine = DialogueEngine(config, None)
-engine.run_interactive('')
-"
+$projectDir = "D:\osint"
+$localDir = Join-Path $projectDir "local"
+
+Write-Host "=== Daily Question & View Generator ===" -ForegroundColor Cyan
+Write-Host "  1. Interactive dialogue (type idea -> 5 rounds -> view card)" -ForegroundColor Green
+Write-Host "  2. Batch: process Obsidian idea drafts directory" -ForegroundColor Green
+Write-Host "  3. Generate daily open questions from analysis" -ForegroundColor Green
+
+$mode = "1"
+if (-not $Auto) {
+    $mode = Read-Host "Choose mode (1/2/3, default 1)"
+}
+Set-Location $localDir
+
+switch ($mode) {
+    "2" {
+        $dir = Read-Host "Path to Obsidian idea drafts directory"
+        if (-not $dir) { $dir = "D:\Codex输出\osint_卫星图\dialogues\ideas" }
+        & python dialogue_engine.py --batch $dir
     }
-} elseif ( -eq '2') {
-    Write-Host 'Enter path to Obsidian idea draft:' -ForegroundColor White
-     = Read-Host
-    if (Test-Path ) {
-        python -c "
-import sys
-sys.path.insert(0, r'C:\Users\admin\Documents\osint\local')
-from dialogue_engine import DialogueEngine
-engine = DialogueEngine(None, None)
-engine.run_batch(r'\')
-"
+    "3" {
+        & python question_generator.py
+    }
+    default {
+        $idea = ""
+        if (-not $Auto) {
+            Write-Host "Type your idea (Enter to submit):" -ForegroundColor White
+            $idea = Read-Host
         }
-} elseif ( -eq '3') {
-    Write-Host 'Generating 3-5 questions after analysis...' -ForegroundColor Green
-    python -c "
-import sys
-sys.path.insert(0, r'C:\Users\admin\Documents\osint\local')
-from question_generator import QuestionGenerator
-with open(r'C:\Users\admin\Documents\osint\config.yaml', 'r', encoding='utf-8') as f:
-    import yaml
-    config = yaml.safe_load(f)
-gen = QuestionGenerator(config)
-questions = gen.generate_daily_questions('Today\'s analysis: CPI up 1.8%, PPI down 0.5%, youth unemployment at 18%')
-for q in questions:
-    print(f'Round {q[\"round\"]}: {q[\"prompt\"]}')
-"
+        if ($idea) {
+            & python dialogue_engine.py --interactive $idea --feed-hyp
+        } else {
+            & python dialogue_engine.py --interactive
+        }
+    }
+}
+
+Write-Host ""
+Write-Host "Done. Cards: D:\Codex输出\osint_卫星图\dialogues\view_cards\" -ForegroundColor Gray
+
+if (-not $Auto) {
+    Read-Host "Press Enter to exit"
 }

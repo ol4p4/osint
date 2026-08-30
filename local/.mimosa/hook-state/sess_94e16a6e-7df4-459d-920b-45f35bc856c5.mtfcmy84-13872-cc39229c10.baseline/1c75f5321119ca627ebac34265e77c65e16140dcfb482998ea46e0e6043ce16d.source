@@ -28,7 +28,8 @@ def main():
     print("=" * 60)
     
     config_path = Path(__file__).parent.parent / "config.yaml"
-    config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+    with open(config_path, "r", encoding="utf-8") as f:
+        config = yaml.safe_load(f)
     
     paths = config.get("paths", {})
     output_dir = paths.get("output_dir", r"D:\Codex输出\osint_卫星图")
@@ -61,10 +62,11 @@ def main():
         if cache_files:
             latest = max(cache_files, key=lambda p: p.stat().st_mtime)
             print(f"    找到缓存: {latest}")
-            for line in latest.read_text(encoding="utf-8").splitlines():
-                line = line.strip()
-                if line:
-                    intel_items.append(json.loads(line))
+            with open(latest, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if line:
+                        intel_items.append(json.loads(line))
     
     if not intel_items:
         print("    无可用情报数据，退出")
@@ -75,9 +77,9 @@ def main():
     
     date_str = datetime.now(timezone.utc).strftime("%Y%m%d")
     cache_file = Path(cache_dir) / f"intel_{date_str}.jsonl"
-    cache_file.write_text(
-        "\n".join(json.dumps(item, ensure_ascii=False) for item in intel_items) + "\n",
-        encoding="utf-8")
+    with open(cache_file, "w", encoding="utf-8") as f:
+        for item in intel_items:
+            f.write(json.dumps(item, ensure_ascii=False) + "\n")
     print(f"    缓存已更新: {cache_file}")
     
     print("\n[4/6] AI 深度分析（四维政治经济学框架）...")
@@ -86,9 +88,10 @@ def main():
     print(f"    分析完成: {analysis_count} 条")
     
     analysis_file = Path(output_dir) / f"analysis_{date_str}.jsonl"
-    analysis_file.write_text(
-        "\n".join(json.dumps(a.__dict__ if hasattr(a, "__dict__") else a, ensure_ascii=False) for a in analyses) + "\n",
-        encoding="utf-8")
+    with open(analysis_file, "w", encoding="utf-8") as f:
+        for a in analyses:
+            data = a.__dict__ if hasattr(a, "__dict__") else a
+            f.write(json.dumps(data, ensure_ascii=False) + "\n")
     print(f"    分析结果已保存: {analysis_file}")
     
     print("\n[5/6] 生成产物...")

@@ -228,13 +228,6 @@ class DialogueEngine:
         card_file.write_text("\n".join(lines), encoding="utf-8")
         print(f"[DIALOGUE] card saved: {card_file}")
         print(f"[DIALOGUE] transcript: {transcript_file}")
-        # 知识库双向链接：观点卡入库 wiki/views/view_cards + index.md + log.md
-        try:
-            sys.path.insert(0, str(Path(__file__).parent))
-            from kb_linker import link_view_card_to_kb
-            link_view_card_to_kb(card)
-        except Exception as e:
-            print(f"[DIALOGUE] kb link failed: {e}")
 
 
 def main():
