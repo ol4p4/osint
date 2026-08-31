@@ -336,11 +336,11 @@ Output JSON array, each: {{"claim":"...","indicator":"measurable metric","data_s
                 ach_data = None
         from datetime import datetime, timezone
         today = datetime.now(timezone.utc)
-        is_sunday = today.weekday() == 6  # 0=Mon ... 6=Sun
-        # 环境变量 OSINT_WEEKLY=1 强制出周报（不强制也行，因为周日就够）
-        if is_sunday:
+        is_monday = today.weekday() == 0  # 0=Mon
+        # 环境变量 OSINT_WEEKLY=1 强制出周报（不强制也行，因为周一就够）
+        if is_monday:
             try:
-                self._save_ai_weekly_summary(hyps, ach_matrix=ach_data, intel_items=intel_items)
+                self._save_ai_weekly_summary(hyps, ach_matrix=ach_data, intel_items=intel_items, week_offset=0)
             except Exception as e:
                 print("[ENGINE] AI weekly summary step failed: " + str(e))
 
@@ -366,27 +366,100 @@ Output JSON array, each: {{"claim":"...","indicator":"measurable metric","data_s
         report_path.write_text("\n".join(lines), encoding="utf-8")
         print("[ENGINE] Weekly report: " + str(report_path))
 
-    def _save_ai_weekly_summary(self, hyps, ach_matrix=None, intel_items=None):
-        """AI 浓缩的每周总结。仅在周日或显式调用时执行。
-        对比上一份 weekly_*.md，只摘要本周变化（新增/验证/ACH 排名变动）。"""
+    def _save_ai_weekly_summary(self, hyps, ach_matrix=None, intel_items=None, week_offset=0):
+        """AI 浓缩的每周总结。在周一或显式调用时执行。
+
+        week_offset=0: 本周一到今天的窗口（用于周一生成复盘整周）
+        week_offset=1: 上一周（周一到周日）
+
+        周报结构：
+        1. 本周大事（情报关键词，按主题分组）
+        2. ACH 假设变化（排名 + 验证动态）
+        3. 对个人（年轻失业毕业生）的影响
+        4. 下周预判（3-5 个具体观察点）
+        """
         from datetime import datetime, timezone, timedelta
         report_dir = self.output_dir / "reports"
         report_dir.mkdir(parents=True, exist_ok=True)
         date_str = datetime.now(timezone.utc).strftime("%Y%m%d")
 
-        # 找上一份 weekly_*.md 算本周新增（用文件 mtime）
-        prev_files = sorted(report_dir.glob("weekly_*.md"), key=lambda p: p.stat().st_mtime)
-        prev_mtime = prev_files[-1].stat().st_mtime if prev_files else 0
+        # 计算"上周"窗口（周一 00:00 到周日 23:59 UTC）
+        # 用本地时间更符合用户视角（假设用户在 UTC+8）
+        today_local = datetime.now()
+        # 本周一 0 点
+        this_monday = today_local - timedelta(days=today_local.weekday())
+        if week_offset == 0:
+            week_start = this_monday.replace(hour=0, minute=0, second=0, microsecond=0)
+            week_end = today_local
+        else:
+            last_monday = this_monday - timedelta(days=7)
+            week_end_local = this_monday - timedelta(seconds=1)
+            week_start = last_monday
+            week_end = week_end_local
+        week_start_str = week_start.strftime("%Y-%m-%d")
+        week_end_str = week_end.strftime("%Y-%m-%d")
+        # 标题里的"周 N"标记
+        week_label = "本周（%s ~ %s）" % (week_start.strftime("%m-%d"), week_end.strftime("%m-%d"))
 
-        # 收集本周新增的假设、验证动态、ACH 变化
+        # 过滤上周情报
+        week_intel = []
+        if intel_items:
+            for it in intel_items:
+                pub = (it.get("published_at") or "")[:10]
+                if week_start_str <= pub <= week_end_str:
+                    week_intel.append(it)
+        week_intel.sort(key=lambda x: x.get("published_at", ""), reverse=True)
+
+        # 收集假设动态
         active = [h for h in hyps if h.get("status") == "active"]
-        verified = [h for h in hyps if h.get("last_verified")]
+        verified = [h for h in hyps if h.get("last_verified")
+                    and (h.get("last_verified") or "")[:10] >= week_start_str]
         falsified = [h for h in hyps if h.get("status") == "falsified"]
         new_hyps = [h for h in hyps
-                    if h.get("created_at")
-                    and h["created_at"] >= datetime.fromtimestamp(prev_mtime, timezone.utc).strftime("%Y-%m-%d")]
+                    if h.get("created_at") and h["created_at"][:10] >= week_start_str]
 
-        # 构造 prompt
+        # 按主题分类上周情报
+        # 优先看四维分析字段 dims/impact
+        themes = {
+            "经济/金融/就业": [],
+            "外交/地缘/贸易": [],
+            "科技/AI/产业": [],
+            "社会/民生/教育": [],
+            "其他": [],
+        }
+        for i in week_intel[:30]:
+            t = i.get("cn_title") or i.get("title") or ""
+            cat = (i.get("category_cn") or i.get("category") or "").lower()
+            impact = i.get("graduate_impact") or i.get("impact") or ""
+            score = i.get("relevance") or 0
+            # 简易分类
+            if any(k in cat for k in ["finance", "econ", "market", "就业", "失业"]):
+                themes["经济/金融/就业"].append((score, t[:60], impact[:50]))
+            elif any(k in cat for k in ["polit", "world", "diplom", "geop", "trade", "war"]):
+                themes["外交/地缘/贸易"].append((score, t[:60], impact[:50]))
+            elif any(k in cat for k in ["tech", "ai", "产业", "industry", "energy"]):
+                themes["科技/AI/产业"].append((score, t[:60], impact[:50]))
+            elif any(k in cat for k in ["society", "社会", "教育", "life", "health"]):
+                themes["社会/民生/教育"].append((score, t[:60], impact[:50]))
+            else:
+                themes["其他"].append((score, t[:60], impact[:50]))
+
+        theme_lines = []
+        for theme, items in themes.items():
+            if not items:
+                continue
+            # 按 score 排序取前 5
+            items.sort(key=lambda x: x[0], reverse=True)
+            theme_lines.append(f"### {theme}（{len(items)} 条）")
+            for score, t, imp in items[:5]:
+                line = f"- (R{score}) {t}"
+                if imp:
+                    line += f" → 个人: {imp}"
+                theme_lines.append(line)
+            theme_lines.append("")
+        themes_block = "\n".join(theme_lines) if theme_lines else "（无）"
+
+        # ACH 排名
         ach_section = ""
         if ach_matrix and ach_matrix.get("scoring"):
             top = sorted(ach_matrix["scoring"].items(),
@@ -395,7 +468,7 @@ Output JSON array, each: {{"claim":"...","indicator":"measurable metric","data_s
             hyp_lookup = {h["id"]: h.get("title", h["id"]) for h in hyps}
             for hid, s in top:
                 rows.append(f'- {hyp_lookup.get(hid, hid)[:40]} | 后验 {s.get("posterior", 0):.2f} | 支 {s.get("support", 0)} 驳 {s.get("refute", 0)}')
-            ach_section = "## ACH 排名前 5（贝叶斯后验）\n" + "\n".join(rows)
+            ach_section = "## ACH 排名 Top 5\n" + "\n".join(rows)
 
         hyp_section_lines = []
         for h in active[:8]:
@@ -404,39 +477,50 @@ Output JSON array, each: {{"claim":"...","indicator":"measurable metric","data_s
             hyp_section_lines.append(f'- [{h.get("level", "?")}] {h.get("title", "?")} (conf {conf:.2f}, last_verified {last_v})')
         hyp_section = "## 活跃假设（前 8）\n" + "\n".join(hyp_section_lines)
 
-        new_section = ""
-        if new_hyps:
-            new_section = "## 本周新增假设\n" + "\n".join(f'- {h.get("title", "?")}' for h in new_hyps[:10])
-        else:
-            new_section = "## 本周新增假设\n（无）"
+        new_section = "## 上周新增假设\n" + ("\n".join(f'- {h.get("title", "?")}' for h in new_hyps[:10]) if new_hyps else "（无）")
 
-        verif_section = ""
+        verif_section = "## 上周验证动态\n"
         if verified or falsified:
-            lines = []
             for h in verified[-5:]:
-                lines.append(f'- ✓ {h.get("title", "?")}: {h.get("verification_result", "?")}')
+                verif_section += f'- ✓ {h.get("title", "?")}: {h.get("verification_result", "?")}\n'
             for h in falsified[-5:]:
-                lines.append(f'- ✗ {h.get("title", "?")}: {h.get("verification_result", "?")}')
-            verif_section = "## 本周验证动态\n" + "\n".join(lines)
+                verif_section += f'- ✗ {h.get("title", "?")}: {h.get("verification_result", "?")}\n'
         else:
-            verif_section = "## 本周验证动态\n（无到期验证）"
+            verif_section += "（无到期验证）\n"
 
-        intel_section = ""
-        if intel_items:
-            recent = sorted(intel_items, key=lambda x: x.get("published_at", ""), reverse=True)[:10]
-            lines = []
-            for i in recent:
-                src = i.get("source_name", "?")[:20]
-                t = (i.get("cn_title") or i.get("title", ""))[:50]
-                lines.append(f'- [{src}] {t}')
-            intel_section = "## 本周重点情报（前 10）\n" + "\n".join(lines)
+        system = "你是一个中文政治经济分析师，面向'中国年轻失业毕业生'视角，浓缩上周情报、ACH 假设变化、给出对个人影响 + 下周预判。语气清醒、有批判性，避免空话和政治套话。不要说'我们要相信国家'这种官话。"
+        prompt = f"""请基于以下材料，写一份「参谋周报」总结，分四段：
 
-        system = "你是一个中文政治经济分析师，面向'中国年轻失业毕业生'视角，浓缩本周情报与假设变化，给出 300-500 字的总结。语气清醒、有批判性，避免空话。"
-        prompt = f"""请基于以下本周动态，写一份 300-500 字的「参谋周报」总结。结构：
-1. 本周情报关键词（2-3 句）
-2. ACH 排名要点（前 5 大假设怎么解读，是否有反常）
-3. 验证动态（如有反驳要重点说明）
-4. 对个人（年轻失业毕业生）的影响 1 句
+## 1. 本周大事（300 字内）
+按主题归纳上周最值得关注的 3-5 个事件。每事件 1-2 句：是什么 + 为什么重要。
+不要逐条复述情报列表，要识别**模式**（如"多家央行同步加息"、"AI 芯片订单集中爆发"）。
+
+## 2. 假设验证动态（150 字内）
+ACH 排名前 5 中哪些被强化/削弱？新出现的反常点是什么？本周验证活动有何结论？
+
+## 3. 对个人（年轻失业毕业生）的影响（200 字内）
+结合双层身份：
+- 第一层（普通公民）：宏观叙事如何映射到日常
+- 第二层（年轻失业毕业生）：就业/学历/房产/婚育/社保的具体影响
+要具体、可操作、避免空话。给出 1-2 个本周值得自己跟进的具体动作。
+
+## 4. 下周预判（200 字内）
+3-5 个具体观察点，标注"高/中/低确定性"。例如：
+- 央行议息（高，确定性最高）
+- 财报季 AI 板块表现（中）
+- 国内某政策窗口期（中）
+- 边缘/高赔率事件（低）
+每点 1 句说明触发条件。
+
+---
+
+## 上周情报（已按主题分类，按相关度排序）
+
+{themes_block}
+
+## 上周情报总条数：{len(week_intel)}（活跃过滤后）
+
+{ach_section}
 
 {hyp_section}
 
@@ -444,11 +528,13 @@ Output JSON array, each: {{"claim":"...","indicator":"measurable metric","data_s
 
 {verif_section}
 
-{ach_section}
+---
 
-{intel_section}
-
-要求：直接给总结，不要复述上面所有数据。"""
+要求：
+- 直接给结论，不要列点列举所有数据
+- 对"中国年轻失业毕业生"视角要具体到行为层面（投简历方向、技能学习、避免的坑）
+- 语气：参谋而非导师，敢说"这周最重要的信号是 X"
+- 字数：每段严格控制在提示字数内，总长 800-1000 字"""
 
         try:
             summary = self.analyzer._call_api(system, prompt)
@@ -457,7 +543,7 @@ Output JSON array, each: {{"claim":"...","indicator":"measurable metric","data_s
             summary = "（AI 周报生成失败，请看 hypothesis_weekly_*.md 了解活跃假设列表）"
 
         out = ["# 参谋周报 - " + date_str, ""]
-        out.append("> 视角：第一层公民 + 第二层年轻失业毕业生 | 来源：ACH 矩阵 + 假设验证 + 本周情报")
+        out.append(f"> {week_label} | 视角：公民 + 年轻失业毕业生 | 来源：ACH 矩阵 + 假设验证 + 情报")
         out.append("")
         out.append("## AI 总结")
         out.append("")
@@ -467,16 +553,22 @@ Output JSON array, each: {{"claim":"...","indicator":"measurable metric","data_s
         out.append("")
         out.append("## 机器索引")
         out.append("")
-        out.append(hyp_section)
+        out.append(f"### 上周情报总览（{week_start_str} ~ {week_end_str}）")
+        out.append("")
+        out.append(f"- 总条数：{len(week_intel)}")
+        out.append(f"- 活跃假设：{len(active)} | 已验证：{len(verified)} | 已证伪：{len(falsified)} | 新增：{len(new_hyps)}")
+        out.append("")
+        out.append("### 按主题分类")
+        out.append("")
+        out.append(themes_block)
         out.append("")
         out.append(ach_section)
+        out.append("")
+        out.append(hyp_section)
         out.append("")
         out.append(new_section)
         out.append("")
         out.append(verif_section)
-        out.append("")
-        if intel_section:
-            out.append(intel_section)
         out.append("")
         out.append("---")
         out.append("Generated by HypothesisEngine._save_ai_weekly_summary")
