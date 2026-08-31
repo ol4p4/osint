@@ -25,6 +25,17 @@ rss_sources:
   type: rss
   category: tech
   weight: 0.9
+- name: 金十数据-快讯
+  url: http://localhost:1200/jin10
+  type: rss
+  category: finance
+  weight: 0.9
+  keywords:
+  - 外汇
+  - 期货
+  - 黄金
+  - 原油
+  - 央行
 - name: 联合早报-中国
   url: http://localhost:1200/zaobao/realtime/china
   type: rss
