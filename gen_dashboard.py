@@ -20,6 +20,15 @@ try:
 except:
     pass
 
+# ACH 矩阵数据（周循环产出，不存在时面板不显示）
+ACH_FILE = Path(r"D:\osint\data\hypotheses\ach_matrix.json")
+ach_data = None
+try:
+    with open(ACH_FILE, "r", encoding="utf-8") as f:
+        ach_data = json.load(f)
+except:
+    pass
+
 by_id = {h["id"]: h for h in hyps}
 major_ids = [h["id"] for h in hyps if h.get("level") == "major"]
 major_ids.sort(key=lambda x: by_id.get(x, {}).get("confidence", 0), reverse=True)
@@ -27,6 +36,7 @@ major_ids.sort(key=lambda x: by_id.get(x, {}).get("confidence", 0), reverse=True
 h_json = json.dumps(hyps, ensure_ascii=False)
 m_json = json.dumps(major_ids, ensure_ascii=False)
 i_json = json.dumps(intel, ensure_ascii=False)
+ach_json = json.dumps(ach_data, ensure_ascii=False) if ach_data else "null"
 
 now = datetime.now(timezone(timedelta(hours=8))).isoformat()
 
@@ -149,6 +159,22 @@ h2{font-size:16px;margin-bottom:12px;color:#58a6ff}
 .no-note{background:#f8514911;color:#ffa198}
 .empty-tip{padding:18px;border:1px dashed #30363d;border-radius:8px;color:#484f58;text-align:center}
 @media(max-width:850px){.strategy-head{align-items:stretch;flex-direction:column}#hypSearch{width:100%}.hyp-modal{padding:8px}.hyp-modal-box{height:96vh}.hyp-modal-columns{grid-template-columns:1fr;height:calc(100% - 53px)}.branch-pane{border-left:0;border-top:1px solid #30363d}.meta-grid{grid-template-columns:repeat(2,1fr)}}
+.ach-panel{margin-top:18px;padding:16px;border:1px solid #388bfd44;border-radius:10px;background:linear-gradient(135deg,#0d1117,#111827)}
+.ach-panel h2{font-size:15px;color:#79c0ff;margin-bottom:10px}
+.ach-panel .subtitle{font-size:11px;color:#8b949e;margin-bottom:12px}
+.ach-rank{display:flex;align-items:center;gap:10px;padding:8px 10px;margin-bottom:6px;background:#0d1117;border:1px solid #30363d;border-radius:6px;cursor:pointer;transition:.15s}
+.ach-rank:hover{border-color:#58a6ff;background:#161b22}
+.ach-rank .rank-num{font-size:18px;font-weight:800;color:#484f58;min-width:28px;text-align:center}
+.ach-rank .rank-num.top{color:#f0883e}
+.ach-rank .rank-body{flex:1;min-width:0}
+.ach-rank .rank-title{font-size:12px;color:#e6edf3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ach-rank .rank-meta{font-size:10px;color:#8b949e;margin-top:2px}
+.ach-rank .rank-score{font-size:14px;font-weight:700;min-width:48px;text-align:right}
+.ach-rank .rank-score.high{color:#3fb950}
+.ach-rank .rank-score.mid{color:#f0883e}
+.ach-rank .rank-score.low{color:#f85149}
+.ach-bar{height:4px;background:#21262d;border-radius:99px;margin-top:4px;overflow:hidden}
+.ach-bar span{display:block;height:100%;border-radius:99px}
 </style>
 </head>
 <body>
@@ -163,6 +189,11 @@ h2{font-size:16px;margin-bottom:12px;color:#58a6ff}
     <input id="hypSearch" placeholder="搜索三战、经济危机、城投、AI、台海…" oninput="renderMajors()">
   </div>
   <div id="majorGrid" class="major-grid"></div>
+  <div id="achPanel" class="ach-panel" style="display:none">
+    <h2>🔬 ACH 竞争性假设排名</h2>
+    <div class="subtitle">CIA Heuer 方法论 · 贝叶斯后验置信度 · 证据越多越准</div>
+    <div id="achRanks"></div>
+  </div>
 </div>
 <div id="hypModal" class="hyp-modal" onclick="if(event.target===this)closeHyp()">
   <div class="hyp-modal-box">
@@ -191,6 +222,7 @@ h2{font-size:16px;margin-bottom:12px;color:#58a6ff}
 # Write hypothesis JS as plain string concatenation (no f-string issues)
 hyp_js_lines = []
 hyp_js_lines.append('<script>')
+hyp_js_lines.append('function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}')
 hyp_js_lines.append('var H=' + h_json + ';')
 hyp_js_lines.append('var byId={};H.forEach(function(h){byId[h.id]=h});')
 hyp_js_lines.append('var orderedMajors=' + m_json + ';')
@@ -217,6 +249,40 @@ hyp_js_lines.append(render_small)
 hyp_js_lines.append('function closeHyp(){document.getElementById("hypModal").classList.remove("open");currentMajor=null;currentMedium=null}')
 hyp_js_lines.append('var currentMajor=null,currentMedium=null;')
 hyp_js_lines.append('renderMajors();')
+
+# ACH 排名面板渲染
+ach_js = """
+var ACH_DATA=""" + ach_json + """;
+(function(){
+  if(!ACH_DATA||!ACH_DATA.scoring)return;
+  var sc=ACH_DATA.scoring;
+  var hyps=ACH_DATA.hypotheses||[];
+  var rank=Object.keys(sc).map(function(id){
+    var s=sc[id],h=hyps.find(function(x){return x.id===id})||{};
+    return {id:id,title:h.title||id,posterior:s.posterior,support:s.support,refute:s.refute,prior:h.prior||0.5}
+  }).sort(function(a,b){return b.posterior-a.posterior});
+  if(!rank.length)return;
+  document.getElementById('achPanel').style.display='';
+  var html=rank.map(function(r,i){
+    var cls=i<3?'top':'';
+    var scoreCls=r.posterior>=0.6?'high':r.posterior>=0.35?'mid':'low';
+    var barCol=r.posterior>=0.6?'#3fb950':r.posterior>=0.35?'#f0883e':'#f85149';
+    return '<div class="ach-rank" onclick="openMajor(\\''+r.id+'\\')">'
+      +'<span class="rank-num '+(i<3?cls:'')+'">'+(i+1)+'</span>'
+      +'<div class="rank-body">'
+      +'<div class="rank-title">'+esc(r.title)+'</div>'
+      +'<div class="rank-meta">支持 '+r.support+' · 反驳 '+r.refute+' · 先验 '+Math.round(r.prior*100)+'%</div>'
+      +'<div class="ach-bar"><span style="width:'+Math.round(r.posterior*100)+'%;background:'+barCol+'"></span></div>'
+      +'</div>'
+      +'<div class="rank-score '+scoreCls+'">'+Math.round(r.posterior*100)+'%</div>'
+      +'</div>'
+  }).join('');
+  document.getElementById('achRanks').innerHTML=html;
+  document.querySelector('.strategy-kicker').textContent+=' · ACH 排名';
+})();
+"""
+hyp_js_lines.append(ach_js)
+
 hyp_js_lines.append('</script>')
 
 parts.append('\n'.join(hyp_js_lines))
