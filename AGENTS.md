@@ -106,6 +106,8 @@ python -c "..." # 见 daily_run.ps1 Step3，或等 OsintWeekly 周日 09:30 自�
 6. **本地数据没中文**：正常——等 CI 翻完由 local_sync 合并回来；或本地设置 `NVIDIA_API_KEY` 环境变量
 7. **计划任务没跑成**：查 `logs/refresh_YYYYMMDD.log`；`daily_run.ps1` 手动测试加 `-Auto`
 8. **GitHub schedule 会被静默跳过**（平台通病）：数据陈旧时先 `gh run list` 看 CI，再 `gh workflow run daily.yml` 手动补跑，跑完等本地 OsintRefresh 每小时拉取或手动跑 refresh.py
+   - 诊断命令：`gh api repos/ol4p4/osint/actions/runs?event=schedule` 看时间戳间隔
+   - 双联防御：CI 已 6x/day（cron `0 */4 * * *`，commit edbd79d）+ 本地 `OsintWatchdog` 计划任务每 6h 检查 `intel_2*.jsonl` mtime，> 8h 静默则 `gh workflow run daily.yml`，日志 `data/logs/watchdog_YYYYMMDD.log`
 9. **仪表盘时间错乱**：time_ago 已改为浏览器端动态计算（gen_dashboard.py 内嵌 JS IIFE），不再依赖采集时写死的静态文本
 10. **fetch_list 采集 0 条**（2026-08-30 诊断）：接口缺陷已修（main 现在写 output jsonl，与 fetch_rss 同接口）；但所有列表源在 CI 上也解析出 0 条——**sources.yaml 的 list_selector 已与改版后的页面结构脱节**（gov.cn 还是 JS 渲染页）。逐源修选择器是持久战，替代方案：改用 RSSHub 或各站 RSS 源。
 
@@ -120,11 +122,14 @@ python -c "..." # 见 daily_run.ps1 Step3，或等 OsintWeekly 周日 09:30 自�
 - 假设树 69 节点（8大/20中/41小）；观点卡链路已通（view_e0c75e → hyp_4656924e）
 
 ## 待续事项
+- [x] **PLAN-1 RSSHub 中文源接入**（5 源已上线 CI docker run per-job；公共实例 403 已绕过）
+- [x] **PLAN-2 M1 ACH 假设矩阵**（ach_matrix.py + hypothesis_engine 接入 + falsification_criteria 69/69 补完）
+- [x] **PLAN-2 M3 仪表盘 ACH 排名面板**（gen_dashboard.py 已加，等首次周循环产出 ach_matrix.json 后自动显示）
+- [ ] **PLAN-2 M2 贝叶斯调优**（待首次周循环跑完，观察后验分布再调先验/LR 锚定）
 - [ ] 指标覆盖率提升：74 个 custom 指标部分无免费 API（NBS 3 个指标无抓取函数）
-- [ ] **PLAN-1 RSSHub 中文源接入**（docs/PLAN-1-RSSHub中文源接入.md，待执行：Vercel 部署+路由核对+sources.yaml 追加）
-- [ ] **PLAN-2 ACH 假设矩阵升级**（docs/PLAN-2-ACH假设矩阵升级.md，三期：M1 矩阵+证伪补全→M2 贝叶斯校准→M3 仪表盘排名）
+- [ ] 源健康度审计：47+6 源逐源测试（部分 list 源选择器已脱节）
 - [ ] 旧目录 `C:\Users\admin\Documents\osint` 确认后删除（含 git 历史，删前确认不再回滚）
 - [ ] 对话引擎观点卡的 time_horizon_months 有时与用户回答的到期日不一致（AI 浓缩偏差，可加后校验）
 
 ---
-*最后更新：2026-08-30 - 修复同步/翻译/周循环三大链路 + P2a/P2b 落地 + 知识库联动 + SSRF 白名单*
+*最后更新：2026-08-31 - PLAN-2 M1/M3 落地（ACH 矩阵+排名面板+证伪全量补完）*
