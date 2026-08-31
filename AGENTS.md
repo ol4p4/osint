@@ -93,6 +93,7 @@ python -c "..." # 见 daily_run.ps1 Step3，或等 OsintWeekly 周日 09:30 自�
 - **写 Python 文件 IO 用方法式 API**（`read_text/write_text/Path.open`），不要 `open(变量)`——Mimosa 安全扫描会按路径穿越拦截（PreToolUse），拦截后改写法而不是硬试。
 - **.ps1 文件保存必须带 UTF-8 BOM**：PS 5.1 无 BOM 按 GBK 解析，中文字符串奇数字节会吞掉后面引号导致"字符串缺少终止符"（用 python 补 BOM：`open(p,'wb').write(b'\xef\xbb\xbf'+content_bytes)`）。
 - 破坏性改动前先 commit（仓库有 git）；产物目录脚本改前先复制 `.bak_日期`。
+- **bat 文件避免 `%VAR%\path` 模式**：cmd 解析时 `\r` 会被当 carriage return 吞一个字符（`%OUTDIR%\refresh.py` → `efresh.py`），导致"不是内部或外部命令"。bat 里路径直接写绝对路径（**用正斜杠更稳**：`D:/osint/data/refresh.py` Windows 也认），不要混用 `%VAR%` + 反斜杠。
 - **serve.py 进程管理**：agent 会话内用 `Start-Process`/后台任务启动的进程会随会话清理被杀（用户浏览器随即 ERR_CONNECTION_REFUSED）。正确方式：`Invoke-CimMethod Win32_Process Create`（进程挂系统服务下，脱离会话树）。开机自启用 Startup\osint_dashboard.bat（用户会话里跑，不受影响）。
 - 批量改多文件前先 `git status` 确认影响范围；禁止 `push --force`、`reset --hard` 丢未提交内容。
 - `falsification_criteria` 为空时会在验证时自动从 indicators/sub_propositions 的 `threshold_refute` 回填，不要手填重复值。
