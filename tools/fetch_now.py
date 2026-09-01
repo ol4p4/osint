@@ -1,0 +1,50 @@
+"""一次性本地全量 RSS 拉取 + 写入 jsonl + rebuild dashboard
+适用于: 本地 RSSHub 容器已起, refresh.py 默认配置没有走 24h 全量窗口
+"""
+import sys, json
+from pathlib import Path
+from datetime import datetime, timezone
+
+sys.path.insert(0, str(Path(r"D:\osint")))
+import yaml
+from cloud.fetch_rss import RSSFetcher
+
+BASE = Path(r"D:\osint\data")
+
+# 1. 加载 sources
+config = yaml.safe_load((Path(r"D:\osint") / "sources.yaml").read_text(encoding="utf-8"))
+sources = []
+for key in ["rss_sources", "east_asia_sources"]:
+    sources.extend(config.get(key, []))
+print(f"[fetch_now] {len(sources)} sources")
+
+# 2. 拉取最近 24h
+fetcher = RSSFetcher(sources, config.get("keyword_weights", {}))
+new_items = fetcher.fetch_all(max_age_hours=24)
+print(f"[fetch_now] {len(new_items)} new items in last 24h")
+
+# 3. 写入今天 jsonl
+today = datetime.now(timezone.utc).strftime("%Y%m%d")
+jsonl_path = BASE / f"intel_{today}.jsonl"
+
+# 读已有 entries 做去重
+existing_ids = set()
+if jsonl_path.exists():
+    for line in jsonl_path.read_text(encoding="utf-8", errors="replace").splitlines():
+        try:
+            d = json.loads(line)
+            if d.get("id"):
+                existing_ids.add(d["id"])
+        except Exception:
+            pass
+
+# 追加新条目
+appended = 0
+with open(jsonl_path, "a", encoding="utf-8") as f:
+    for it in new_items:
+        if it["id"] in existing_ids:
+            continue
+        f.write(json.dumps(it, ensure_ascii=False) + "\n")
+        appended += 1
+print(f"[fetch_now] {appended} appended to {jsonl_path.name}")
+print(f"[fetch_now] Total now: {len(existing_ids) + appended}")
