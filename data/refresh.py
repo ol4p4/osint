@@ -128,6 +128,50 @@ def gen_html():
     print(f"fix_dashboard: OK")
     return r1.returncode == 0
 
+def fetch_macro():
+    """拉取宏观指标（汇率/利率/GDP等）→ data/macro_indicators.json"""
+    r = subprocess.run(
+        [sys.executable, str(PROJECT / "tools" / "fetch_macro_indicators.py")],
+        cwd=str(PROJECT), capture_output=True, text=True
+    )
+    if r.stdout:
+        print(f"macro: {r.stdout.strip()[:200]}")
+    if r.returncode != 0 and r.stderr:
+        print(f"macro stderr: {r.stderr.strip()[:200]}")
+    return r.returncode == 0
+
+
+def fetch_unemployment_history():
+    """拉取 NBS 分年龄组失业率历史月度序列 → data/cn_unemployment_history.json
+    NBS 每月19日发布上月数据,财新20日左右转载。节流策略:同月内只跑一次。
+    """
+    hist_file = BASE / "cn_unemployment_history.json"
+    # 月度节流: 上次成功抓取是当前月则跳过
+    if hist_file.exists():
+        try:
+            prev = json.loads(hist_file.read_text(encoding="utf-8"))
+            last_upd = prev.get("updated_at", "")
+            if last_upd:
+                last_month = last_upd[:7]  # YYYY-MM
+                if last_month == datetime.now().strftime("%Y-%m"):
+                    # 同月, 但允许在每月20日后重抓(NBS 通常19日发布, 保险起见 21+)
+                    day = datetime.now().day
+                    if day < 21:
+                        print(f"unrate-history: skip (already fetched {last_month}, day {day}<21)")
+                        return True
+        except Exception:
+            pass
+    r = subprocess.run(
+        [sys.executable, str(PROJECT / "tools" / "fetch_macro_indicators.py"), "--history"],
+        cwd=str(PROJECT), capture_output=True, text=True
+    )
+    if r.stdout:
+        print(f"unrate-history: {r.stdout.strip()[:300]}")
+    if r.returncode != 0 and r.stderr:
+        print(f"unrate-history stderr: {r.stderr.strip()[:200]}")
+    return r.returncode == 0
+
+
 if __name__ == "__main__":
     with run_logging():
         print(f"\n=== Refresh at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ===")
@@ -135,5 +179,7 @@ if __name__ == "__main__":
         sync_repo_intel()
         translate_local()
         count = rebuild_data()
+        fetch_macro()
+        fetch_unemployment_history()
         gen_html()
         print(f"=== Done: {count} intel ===")

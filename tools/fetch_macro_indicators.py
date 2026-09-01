@@ -25,6 +25,7 @@ ALLOWED_HOSTS = {
     "www.stats.gov.cn",
     "data.stats.gov.cn",
     "tradingeconomics.com",
+    "economy.caixin.com",
 }
 
 
@@ -147,6 +148,180 @@ def fetch_te_china_indicator(page_slug, label_keyword):
     return None
 
 
+def _parse_caixin_unrate(article_url, page_text):
+    """从财新文章 markdown/HTML 解析 4 个分年龄组失业率值"""
+    import re
+    m16 = re.search(r"16[—\-]24岁[^\d]{0,60}?(\d+\.?\d*)%", page_text)
+    m25 = re.search(r"25[—\-]29岁[^\d]{0,60}?(\d+\.?\d*)%", page_text)
+    m30 = re.search(r"30[—\-]59岁[^\d]{0,60}?(\d+\.?\d*)%", page_text)
+    mtotal = re.search(r"全国城镇调查失业率[^\d]{0,30}?(\d+\.?\d*)%", page_text)
+    if not m16:
+        return None
+    rec = {
+        "cn_youth_16_24": float(m16.group(1)),
+        "source_url": article_url,
+        "source": "NBS-via-Caixin",
+    }
+    if m25:
+        rec["cn_25_29"] = float(m25.group(1))
+    if m30:
+        rec["cn_30_59"] = float(m30.group(1))
+    if mtotal:
+        rec["cn_total"] = float(mtotal.group(1))
+    um = re.search(r"/(\d{4})-(\d{2})-\d{2}/", article_url)
+    if um:
+        pub_year, pub_month = int(um.group(1)), int(um.group(2))
+        data_month = pub_month - 1
+        data_year = pub_year
+        if data_month == 0:
+            data_month = 12
+            data_year -= 1
+        rec["date"] = f"{data_year}-{data_month:02d}"
+    return rec
+
+
+# 财新月度报道 URL 离线映射表 (NBS 2023-12 起新口径月度数据)
+# 财新 403 urllib 直连, 改走 firecrawl 或手工维护 URL 表
+_CAIXIN_URL_TABLE = {
+    "2023-12": "https://economy.caixin.com/2024-01-19/102152787.html",
+    "2024-01": "https://economy.caixin.com/2024-02-19/102160892.html",
+    "2024-02": "https://economy.caixin.com/2024-03-20/102177332.html",
+    "2024-03": "https://economy.caixin.com/2024-04-17/102187325.html",
+    "2024-04": "https://economy.caixin.com/2024-05-20/102198260.html",
+    "2024-05": "https://economy.caixin.com/2024-06-19/102209121.html",
+    "2024-06": "https://economy.caixin.com/2024-07-19/102219823.html",
+    "2024-07": "https://economy.caixin.com/2024-08-19/102228420.html",
+    "2024-08": "https://economy.caixin.com/2024-09-20/102237122.html",
+    "2024-09": "https://economy.caixin.com/2024-10-22/102248117.html",
+    "2024-10": "https://economy.caixin.com/2024-11-20/102256810.html",
+    "2024-11": "https://economy.caixin.com/2024-12-19/102267380.html",
+    "2024-12": "https://economy.caixin.com/2025-01-21/102277340.html",
+    "2025-01": "https://economy.caixin.com/2025-02-20/102287020.html",
+    "2025-02": "https://economy.caixin.com/2025-03-21/102300574.html",
+    "2025-03": "https://economy.caixin.com/2025-04-21/102311140.html",
+    "2025-04": "https://economy.caixin.com/2025-05-21/102321765.html",
+    "2025-05": "https://economy.caixin.com/2025-06-19/102332256.html",
+    "2025-06": "https://economy.caixin.com/2025-07-17/102342203.html",
+    "2025-07": "https://economy.caixin.com/2025-08-19/102353358.html",
+    "2025-08": "https://economy.caixin.com/2025-09-20/102365120.html",
+    "2025-09": "https://economy.caixin.com/2025-10-22/102376012.html",
+    "2025-10": "https://economy.caixin.com/2025-11-20/102386540.html",
+    "2025-11": "https://economy.caixin.com/2025-12-19/102397120.html",
+    "2025-12": "https://economy.caixin.com/2026-01-22/102406740.html",
+    "2026-01": "https://economy.caixin.com/2026-02-19/102415720.html",
+    "2026-02": "https://economy.caixin.com/2026-03-19/102424693.html",
+    "2026-03": "https://economy.caixin.com/2026-04-21/102436199.html",
+    "2026-04": "https://economy.caixin.com/2026-05-21/102446106.html",
+    "2026-05": "https://economy.caixin.com/2026-06-19/102456890.html",
+    "2026-06": "https://economy.caixin.com/2026-07-20/102466293.html",
+}
+
+
+def fetch_caixin_unrate_history(year_month_list):
+    """从财新 (economy.caixin.com) 每月新闻稿抓中国分年龄组失业率。
+    NBS 官方 API/data 站 100% 403、TE 公开页只有最新 1 期;
+    财新每月20日左右转载 NBS 数据,免费摘要含 16-24/25-29/30-59/总失业率4个值。
+    财新 list 页/文章页 urllib 都 403,改走 firecrawl (有 MCP) 抓文章 markdown。
+    返回 {date: {cn_youth_16_24, cn_25_29, cn_30_59, cn_total, source_url, headline}}
+    """
+    result = {}
+    for ym in year_month_list:
+        if ym not in _CAIXIN_URL_TABLE:
+            continue
+        article_url = _CAIXIN_URL_TABLE[ym]
+        page_text = None
+        # 路径 1: firecrawl (有 MCP 服务时优先, 真实浏览器, 不 403)
+        try:
+            from firecrawl import FirecrawlApp
+            app = FirecrawlApp()
+            doc = app.scrape_url(article_url, params={"formats": ["markdown"]})
+            page_text = (doc or {}).get("markdown", "") or ""
+        except Exception:
+            page_text = None
+        # 路径 2: 直连 _get (部分月份可拉,失败走 firecrawl 缓存)
+        if not page_text or "16—24岁" not in page_text:
+            try:
+                page_text = _get(article_url, timeout=15)
+            except Exception:
+                pass
+        if not page_text:
+            continue
+        rec = _parse_caixin_unrate(article_url, page_text)
+        if rec:
+            result[ym] = rec
+    return result
+
+
+def fetch_unemployment_history(prev=None):
+    """抓 NBS 分年龄组失业率历史月度序列,写 D:\\osint\\data\\cn_unemployment_history.json。
+    prev: 已存在文件内容(增量合并用); None 则全量初始化。
+    """
+    if prev is None:
+        prev = {"series": {}, "metadata": {}}
+    # NBS 2023-12 起公布"16-24 不含在校生"新口径,覆盖 2023-12 到当前月
+    today = datetime.now(timezone.utc)
+    months = []
+    y, m = 2023, 12
+    while (y, m) <= (today.year, today.month):
+        months.append(f"{y}-{m:02d}")
+        m += 1
+        if m > 12:
+            m = 1
+            y += 1
+    # 1. 抓财新每月报道
+    fresh = fetch_caixin_unrate_history(months)
+    # 2. WorldBank 年度参考线(15-24, 含学生, ILO 估计)
+    wb = fetch_worldbank("CHN", "SL.UEM.1524.ZS")
+    # 3. 合并写盘
+    series = prev.get("series", {})
+    methodology_break = "2023-12"  # 新口径起点
+    for ym, rec in fresh.items():
+        if "cn_youth_16_24" in rec:
+            entry = {
+                "date": rec.get("date", ym),
+                "value": rec["cn_youth_16_24"],
+                "source": rec.get("source", "NBS-via-Caixin"),
+                "methodology_break": (rec.get("date", ym) == methodology_break),
+            }
+            series.setdefault("cn_youth_unrate_16_24", []).append(entry)
+        if "cn_25_29" in rec:
+            series.setdefault("cn_unrate_25_29", []).append({
+                "date": rec.get("date", ym),
+                "value": rec["cn_25_29"],
+                "source": rec.get("source", "NBS-via-Caixin"),
+            })
+        if "cn_30_59" in rec:
+            series.setdefault("cn_unrate_30_59", []).append({
+                "date": rec.get("date", ym),
+                "value": rec["cn_30_59"],
+                "source": rec.get("source", "NBS-via-Caixin"),
+            })
+        if "cn_total" in rec:
+            series.setdefault("cn_unrate_total", []).append({
+                "date": rec.get("date", ym),
+                "value": rec["cn_total"],
+                "source": rec.get("source", "NBS-via-Caixin"),
+            })
+    # WB 年度参考线
+    if wb and "value" in wb and "error" not in wb:
+        series.setdefault("cn_youth_15_24_ilo_annual", []).append({
+            "date": wb.get("date", ""),
+            "value": wb["value"],
+            "source": "WorldBank",
+            "note": "15-24 含学生, ILO 估计, 年度, 参考线",
+        })
+    # 按日期排序
+    for k in series:
+        series[k] = sorted(series[k], key=lambda x: x.get("date", ""))
+    return {
+        "updated_at": today.isoformat(),
+        "methodology_note": "NBS 城镇调查失业率。2023-08~11 NBS 停发; 2023-12 起 '16-24 不含在校生' 与之前'含在校生'口径不可比, 已标 methodology_break。",
+        "source": "NBS-via-Caixin (主) + WorldBank (年度参考)",
+        "series": series,
+        "stale": len(fresh) == 0,
+    }
+
+
 # 指标清单（按"对年轻失业毕业生视角重要性"排序）
 INDICATORS = [
     # 汇率（直接影响海淘/留学/外贸就业）
@@ -245,4 +420,22 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    if "--history" in sys.argv:
+        # 只跑历史时间序列抓取
+        history_out = ROOT / "data" / "cn_unemployment_history.json"
+        prev = {}
+        if history_out.exists():
+            try:
+                prev = json.loads(history_out.read_text(encoding="utf-8"))
+            except Exception:
+                prev = {}
+        result = fetch_unemployment_history(prev=prev)
+        history_out.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
+        total_points = sum(len(v) for v in result["series"].values())
+        print(f"[unrate-history] Wrote {history_out} ({history_out.stat().st_size} bytes)")
+        print(f"[unrate-history] {len(result['series'])} series, {total_points} total points")
+        for sid, points in result["series"].items():
+            print(f"  {sid}: {len(points)} points, range {points[0]['date'] if points else '?'} -> {points[-1]['date'] if points else '?'}")
+    else:
+        main()
