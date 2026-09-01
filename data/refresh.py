@@ -172,12 +172,76 @@ def fetch_unemployment_history():
     return r.returncode == 0
 
 
+def ensure_rsshub():
+    """保 RSSHub 容器在 + 健康。中断恢复:Docker 重启后容器要 5-15s 健康。
+    失败不阻塞 refresh, fetch_now 走不到时后续 0 items 已知退化。
+    """
+    try:
+        import urllib.request, socket
+        socket.setdefaulttimeout(3)
+        try:
+            urllib.request.urlopen("http://localhost:1200/", timeout=3)
+            return  # healthy
+        except Exception:
+            pass
+        # 不健康,尝试启动容器
+        print("rsshub: localhost:1200 not healthy, starting container...")
+        r = subprocess.run(
+            ["docker", "start", "rsshub"],
+            capture_output=True, text=True, timeout=30,
+        )
+        if r.returncode != 0:
+            # 容器不存在,创建它
+            print("rsshub: container missing, creating...")
+            r = subprocess.run(
+                ["docker", "run", "-d", "--name", "rsshub",
+                 "-p", "1200:1200", "--restart", "unless-stopped",
+                 "diygod/rsshub:latest"],
+                capture_output=True, text=True, timeout=120,
+            )
+            if r.returncode != 0:
+                print(f"rsshub: failed to start: {r.stderr.strip()[:200]}")
+                return
+        # 等 15s 让容器起
+        import time
+        for i in range(15):
+            time.sleep(1)
+            try:
+                urllib.request.urlopen("http://localhost:1200/", timeout=2)
+                print(f"rsshub: ready after {i+1}s")
+                return
+            except Exception:
+                continue
+        print("rsshub: still not ready after 15s, fetch may fail")
+    except Exception as e:
+        print(f"rsshub: ensure failed: {e}")
+
+
+def fetch_now():
+    """本地 RSSHub 24h 全量拉取,append 到今日 jsonl。
+    替代 CI 端 9 条金十的限流,保证本地有完整时间线。
+    """
+    r = subprocess.run(
+        [sys.executable, str(PROJECT / "tools" / "fetch_now.py")],
+        cwd=str(PROJECT), capture_output=True, text=True, timeout=300,
+    )
+    if r.stdout:
+        # 打印关键行
+        for line in r.stdout.splitlines():
+            if any(k in line for k in ("[fetch_now]", "Fetched", "appended")):
+                print(f"fetch_now: {line.strip()}")
+    if r.returncode != 0 and r.stderr:
+        print(f"fetch_now stderr: {r.stderr.strip()[:200]}")
+
+
 if __name__ == "__main__":
     with run_logging():
         print(f"\n=== Refresh at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ===")
         git_pull()
         sync_repo_intel()
         translate_local()
+        ensure_rsshub()  # 保 RSSHub 健康(8h 滞后根因修复)
+        fetch_now()       # 24h 全量本地拉(绕开 CI 9 条限流)
         count = rebuild_data()
         fetch_macro()
         fetch_unemployment_history()
