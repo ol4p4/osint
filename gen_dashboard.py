@@ -141,6 +141,15 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
 .ach-bar span{display:block;height:100%;border-radius:99px}
 
 /* ===== Intel Feed ===== */
+.section-collapsible{border:1px solid var(--border);border-radius:8px;background:var(--bg);margin-bottom:24px;overflow:hidden}
+.section-collapsible>summary{list-style:none;cursor:pointer;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;user-select:none;background:var(--bg-subtle);border-bottom:1px solid transparent;transition:background .15s}
+.section-collapsible>summary:hover{background:var(--bg-muted)}
+.section-collapsible>summary::-webkit-details-marker{display:none}
+.section-collapsible>summary::before{content:"▶";font-size:10px;margin-right:10px;color:var(--text-muted);transition:transform .15s;display:inline-block}
+.section-collapsible[open]>summary::before{transform:rotate(90deg)}
+.section-collapsible[open]>summary{border-bottom-color:var(--border)}
+.section-toggle-hint{font-size:10px;color:var(--text-muted);font-family:"JetBrains Mono",monospace}
+.section-body{padding:14px 18px 18px;max-height:600px;overflow-y:auto}
 .filter-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .btn{padding:5px 12px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text-secondary);cursor:pointer;font-size:11px;font-family:"Inter",sans-serif;transition:all .15s}
 .btn:hover{border-color:var(--accent);color:var(--accent)}
@@ -315,11 +324,12 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
 </div>
 
 <!-- Intel Feed -->
-<div class="section">
-  <div class="section-header">
-    <div>
-      <div class="section-title">📡 情报流 <span id="intelCount" style="font-weight:400;color:var(--text-muted)"></span></div>
-    </div>
+<details class="section section-collapsible" id="intelSection">
+  <summary>
+    <div class="section-title">📡 情报流 <span id="intelCount" style="font-weight:400;color:var(--text-muted)"></span></div>
+    <span class="section-toggle-hint">点击展开 ▾</span>
+  </summary>
+  <div class="section-body">
     <div class="filter-row">
       <div class="sort-btns">
         <button class="btn" id="sort-relevance" onclick="S('relevance')">按相关度</button>
@@ -327,9 +337,9 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
       </div>
       <div class="btns" id="catBtns"></div>
     </div>
+    <div id="il"></div>
   </div>
-  <div id="il"></div>
-</div>
+</details>
 
 <!-- Hypothesis Cockpit -->
 <div class="section">
@@ -548,6 +558,18 @@ var MACRO_DATA=""" + macro_json + """;
 hyp_js_lines.append(ach_js)
 hyp_js_lines.append(macro_js)
 hyp_js_lines.append(unrate_js)
+
+# 情报流 section 折叠提示文字切换
+hyp_js_lines.append('''
+(function(){
+  var sec=document.getElementById('intelSection');
+  if(!sec)return;
+  var hint=sec.querySelector('.section-toggle-hint');
+  function upd(){if(hint)hint.textContent=sec.open?'点击收起 ▴':'点击展开 ▾';}
+  sec.addEventListener('toggle',upd);
+  upd();
+})();
+''')
 
 hyp_js_lines.append('</script>')
 
