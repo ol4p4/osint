@@ -41,6 +41,16 @@ rss_sources:
   type: rss
   category: east_asia
   weight: 1.1
+- name: 新浪财经-7x24直播
+  url: http://localhost:1200/sina/finance/live
+  type: rss
+  category: finance
+  weight: 1.0
+- name: 新浪财经-滚动新闻
+  url: http://localhost:1200/sina/roll/2509
+  type: rss
+  category: finance
+  weight: 1.0
 - name: 新华社-时政
   url: http://www.xinhuanet.com/politics/rss.xml
   type: rss
