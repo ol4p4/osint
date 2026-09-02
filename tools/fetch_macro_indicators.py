@@ -128,19 +128,37 @@ def fetch_te_china_indicator(page_slug, label_keyword):
     TE 同步源标注 "National Bureau of Statistics of China"，数据可信度与 NBS 一致。
     page_slug: URL 路径段，如 "youth-unemployment-rate" 或 "inflation-cpi"
     label_keyword: meta description 里的英文短语（区分 Youth/General Unemployment/Inflation）
+    返回 date 字段为 ISO 月份 "YYYY-MM" 格式。
     """
     import re
     try:
         te_url = f"https://tradingeconomics.com/china/{page_slug}"
         html = _get(te_url, timeout=15)  # 走白名单+IP安全检查
         m = re.search(
-            rf"{re.escape(label_keyword)} in China (?:increased|decreased|rose|fell|was) to ([\d.]+) (?:percent|points) in (\w+)",
+            rf"{re.escape(label_keyword)} in China (?:increased|decreased|rose|fell|was) to ([\d.]+) (?:percent|points) in (\w+)(?:\s+(\d{{4}}))?",
             html,
         )
         if m:
+            month_name = m.group(2)
+            year = m.group(3)  # 可能 None
+            # TE HTML 一般不返年份, 兜底用当前年(1 月抓 12 月数据时可能有偏差, 但仪表盘上 "2026-01" 总比 "January" 好)
+            if not year:
+                year = str(datetime.now().year)
+            try:
+                month_num = {
+                    "January": 1, "February": 2, "March": 3, "April": 4,
+                    "May": 5, "June": 6, "July": 7, "August": 8,
+                    "September": 9, "October": 10, "November": 11, "December": 12,
+                }[month_name]
+            except KeyError:
+                month_num = None
+            if month_num:
+                date_str = f"{year}-{month_num:02d}"
+            else:
+                date_str = month_name  # 兜底: 解析不到月份名就保留原文
             return {
                 "value": float(m.group(1)),
-                "date": m.group(2),
+                "date": date_str,
                 "source": "NBS-TE",
             }
     except Exception as e:

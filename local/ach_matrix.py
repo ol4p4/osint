@@ -49,8 +49,11 @@ class ACHMatrix:
         return {"version": MATRIX_VERSION, "evidence": [], "diagnosis": {}}
 
     def save(self):
+        from datetime import datetime, timezone
         self.file.parent.mkdir(parents=True, exist_ok=True)
-        self.data["updated"] = time.strftime("%Y-%m-%d %H:%M")
+        # ISO8601 UTC, 前端可解析
+        self.data["updated_at"] = datetime.now(timezone.utc).isoformat()
+        self.data["updated"] = self.data["updated_at"][:16].replace("T", " ")  # 兼容老字段
         self.data["hypotheses"] = [
             {"id": h["id"], "title": h.get("title", ""), "prior": h.get("base_confidence") or h.get("confidence", 0.5)}
             for h in self.majors]

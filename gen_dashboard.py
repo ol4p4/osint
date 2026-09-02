@@ -294,6 +294,7 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
     <div class="kpi-ach">
       <div class="ach-title">🔬 ACH 竞争性假设排名</div>
       <div id="achPanel" style="display:none">
+        <div id="achMeta" style="font-size:10px;color:var(--text-muted);margin-bottom:8px;font-family:'JetBrains Mono',monospace"></div>
         <div id="achRanks"></div>
       </div>
       <div id="achEmpty" class="empty-tip" style="margin-top:8px">等待周循环产出 ACH 矩阵…</div>
@@ -409,6 +410,18 @@ var ACH_DATA=""" + ach_json + """;
   document.getElementById('achEmpty').style.display='none';
   var sc=ACH_DATA.scoring;
   var hyps=ACH_DATA.hypotheses||[];
+  // 显示诊断时间
+  var meta=document.getElementById('achMeta');
+  if(meta){
+    var upd=ACH_DATA.updated_at||ACH_DATA.updated;
+    if(upd){
+      var dt=new Date(upd);
+      var local=isNaN(dt)?upd:dt.toLocaleString('zh-CN',{hour12:false});
+      meta.textContent='诊断时间: '+local+' (UTC)';
+    } else {
+      meta.textContent='诊断时间: 未知';
+    }
+  }
   var rank=Object.keys(sc).map(function(id){
     var s=sc[id],h=hyps.find(function(x){return x.id===id})||{};
     return {id:id,title:h.title||id,posterior:s.posterior,support:s.support,refute:s.refute,prior:h.prior||0.5}

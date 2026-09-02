@@ -14,16 +14,20 @@
 
 ## 数据流全貌（接手必读）
 ```
-GitHub CI (daily.yml, 4次/天)
+GitHub CI (daily.yml, 6次/天)
   采集RSS → clean_dedup_score → translate(NVIDIA增量50条) → link_intel_hyp → verify_hypotheses → daily_briefing → push 仓库
 仓库 D:\osint\intel_YYYYMMDD.jsonl
   ↓ (计划任务 OsintRefresh 每小时跑产物目录 refresh.py)
-cloud/local_sync.py: git pull + 合并 CI 数据进产物目录 jsonl（同 id 保留 cn_title 版）
-  + translate_local（本地有 NVIDIA_API_KEY 才跑，否则等 CI 翻完合并回来）
-  + rebuild_data（只读 intel_2*.jsonl，过滤脏日期）→ dashboard_data.json → gen_dashboard+fix_dashboard
+refresh.py: git pull + 合并 CI 数据 + 可选翻译
+  → ensure_rsshub()  → 保本地 RSSHub 容器健康（curl localhost:1200 → docker start / run）
+  → fetch_now()     → tools/fetch_now.py 24h 全量本地拉（绕开 CI 9 条金十限流，详见 §"CI 故障排除 #11"）
+  → rebuild_data → dashboard_data.json
+  → fetch_macro() → tools/fetch_macro_indicators.py → macro_indicators.json（12个宏观指标）
+  → fetch_unemployment_history() → tools/fetch_macro_indicators.py --history → cn_unemployment_history.json
+  → gen_dashboard+fix_dashboard → interactive_dashboard.html
   ↓
 仪表盘 19090 ← serve.py（开机自启）
-计划任务 OsintWeekly（周日 09:30）→ 产物目录 daily_run.ps1 -Auto → local/main_local.py 分析 + hypothesis_engine.run_weekly_cycle
+计划任务 OsintWeekly（周一 09:30）→ 产物目录 daily_run.ps1 -Auto → local/main_local.py 分析 + hypothesis_engine.run_weekly_cycle
 对话引擎 daily_question.ps1 → local/dialogue_engine.py（观点卡）→ feed_to_hypothesis 进假设树 → local/kb_linker.py 同步知识库
 ```
 
@@ -54,7 +58,9 @@ AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key �
 | `local/kb_linker.py` | 知识库双向链接：假设/观点卡写 `视频知识库\wiki\hypotheses|views` + index.md + log.md（幂等） |
 | `local/render_wiki.py` / `main_local.py` | 旧渲染管线（daily_run.ps1 的 Step2 用） |
 | `verify_hypotheses.py` | 假设自动验证（FRED/Frankfurter/GoldAPI/WorldBank，域名白名单在 `ALLOWED_HOSTS`） |
-| `gen_dashboard.py` + `fix_dashboard.py` | 生成 HTML（必须按此顺序） |
+| `tools/fetch_macro_indicators.py` | 宏观指标抓取（汇率/利率/GDP/CPI/失业率，12个指标），产物 `data/macro_indicators.json`，refresh.py 自动调用；`--history` 子命令抓 NBS 分年龄组失业率历史月度序列 |
+| `tools/fetch_now.py` | 本地 RSSHub 24h 全量拉取（绕开 CI 端 9 条金十/财联社限流），append 到今日 jsonl；refresh.py 自动调 |
+| `gen_dashboard.py` + `fix_dashboard.py` | 生成 HTML（必须按此顺序）；gen_dashboard 内嵌 macro 面板 CSS/HTML/JS，趋势图用 Chart.js 4.4 (jsdelivr)，情报流 section 用 `<details>` 折叠默认收起 |
 | `link_intel_hyp.py` / `daily_briefing.py` / `sync_data.py` / `rebuild_hyps.py` | 关联/简报/同步/重建树 |
 | `views.yaml` | 观点模板（`materialized_hyp_id` 标注已物化的 view，防止周循环重复生成） |
 | `sources.yaml`(47源) / `config.yaml`(key+路径) / `weights.yaml` / `daily_question.ps1`(P2a/P2b入口) | 配置与入口 |
@@ -62,8 +68,9 @@ AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key �
 ### 产物目录（`D:\osint\data\`，gitignore 不追踪）
 | 文件 | 用途 |
 |------|------|
-| `dashboard_data.json` / `interactive_dashboard.html` | 仪表盘数据+页面 |
-| `refresh.py` | 薄壳入口（逻辑在 `D:\osint\cloud\local_sync.py`），日志落 `logs/refresh_YYYYMMDD.log` |
+| `dashboard_data.json` / `interactive_dashboard.html` | 仪表盘数据+页面（含宏观指标面板） |
+| `macro_indicators.json` | 宏观指标数据（10个：汇率/利率/GDP/CPI/失业率），由 fetch_macro_indicators.py 产出 |
+| `refresh.py` | 刷新入口：git pull + 合并 + 翻译 + rebuild + fetch_macro + gen_html，日志落 `logs/refresh_YYYYMMDD.log` |
 | `daily_run.ps1` | 本地分析+周循环运行器（`-Auto` 参数供计划任务用；**必须带 UTF-8 BOM**） |
 | `intel_YYYYMMDD.jsonl` | 每日情报（`intel_raw_*`/`intel_final_*` 不参与重建和翻译） |
 | `hypotheses/active_hypotheses.json` | 假设树（69 节点：8大/20中/41小，status 支持 active/falsified） |
@@ -111,6 +118,13 @@ python -c "..." # 见 daily_run.ps1 Step3，或等 OsintWeekly 周日 09:30 自�
    - 双联防御：CI 已 6x/day（cron `0 */4 * * *`，commit edbd79d）+ 本地 `OsintWatchdog` 计划任务每 6h 检查 `intel_2*.jsonl` mtime，> 8h 静默则 `gh workflow run daily.yml`，日志 `data/logs/watchdog_YYYYMMDD.log`
 9. **仪表盘时间错乱**：time_ago 已改为浏览器端动态计算（gen_dashboard.py 内嵌 JS IIFE），不再依赖采集时写死的静态文本
 10. **fetch_list 采集 0 条**（2026-08-30 诊断）：接口缺陷已修（main 现在写 output jsonl，与 fetch_rss 同接口）；但所有列表源在 CI 上也解析出 0 条——**sources.yaml 的 list_selector 已与改版后的页面结构脱节**（gov.cn 还是 JS 渲染页）。逐源修选择器是持久战，替代方案：改用 RSSHub 或各站 RSS 源。
+11. **仪表盘情报全显示 "8 小时前" 但金十/财联社实际在发**（2026-09-01 诊断）：**90% 是本地 RSSHub Docker 容器没起**。排查：
+   - `docker ps | grep rsshub` 看容器在不在
+   - `curl -s http://localhost:1200/jin10 | head -3` 看 RSSHub 是否健康
+   - 不在/不健康：`docker run -d --name rsshub -p 1200:1200 --restart unless-stopped diygod/rsshub:latest`
+   - 容器有了还报 0 条：CI 端 GitHub Runner 限流金十/财联社仅 9 条切片，**改用 `python D:\osint\tools\fetch_now.py` 走本地 24h 全量**（绕开 CI 限流，401+ 条/24h）
+   - 永久修：`refresh.py:ensure_rsshub()` 启动时 3s 探活 + `fetch_now()` 24h 拉取，OsintRefresh 计划任务每小时跑无需人工介入
+   - 详细步骤见 `C:\Users\admin\.zcode\cli\memories\projects\osint-d824a33e2ef30701\memory\osint-rsshub-local-bootstrap.md`
 
 ## 数据量级真相（2026-08-30 诊断）
 - 关键词表（sources.yaml keyword_weights）是**中文**（就业/失业/毕业生/落户…），47 个源以英文为主 → 每日命中通常只有 0~3 条，**这是筛选器设计行为而非故障**
@@ -126,6 +140,7 @@ python -c "..." # 见 daily_run.ps1 Step3，或等 OsintWeekly 周日 09:30 自�
 - [x] **PLAN-1 RSSHub 中文源接入**（5 源已上线 CI docker run per-job；公共实例 403 已绕过）
 - [x] **PLAN-2 M1 ACH 假设矩阵**（ach_matrix.py + hypothesis_engine 接入 + falsification_criteria 69/69 补完）
 - [x] **PLAN-2 M3 仪表盘 ACH 排名面板**（gen_dashboard.py 已加，等首次周循环产出 ach_matrix.json 后自动显示）
+- [x] **宏观指标集成**（tools/fetch_macro_indicators.py → 10 指标 → refresh.py 自动调用 → 仪表盘面板渲染）
 - [ ] **PLAN-2 M2 贝叶斯调优**（待首次周循环跑完，观察后验分布再调先验/LR 锚定）
 - [ ] 指标覆盖率提升：74 个 custom 指标部分无免费 API（NBS 3 个指标无抓取函数）
 - [ ] 源健康度审计：47+6 源逐源测试（部分 list 源选择器已脱节）
@@ -133,4 +148,4 @@ python -c "..." # 见 daily_run.ps1 Step3，或等 OsintWeekly 周日 09:30 自�
 - [ ] 对话引擎观点卡的 time_horizon_months 有时与用户回答的到期日不一致（AI 浓缩偏差，可加后校验）
 
 ---
-*最后更新：2026-08-31 - PLAN-2 M1/M3 落地（ACH 矩阵+排名面板+证伪全量补完）*
+*最后更新：2026-09-01 - 宏观指标集成完成（fetch_macro → refresh.py → 仪表盘面板）*
