@@ -12,6 +12,7 @@ with open(DATA_FILE, "r", encoding="utf-8") as f:
     data = json.load(f)
 
 intel = data.get("intelligence", [])
+generated_at = data.get("generated_at", datetime.now(timezone(timedelta(hours=8))).isoformat())
 
 hyps = []
 try:
@@ -96,6 +97,7 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
 .header h1{font-size:20px;font-weight:700;color:var(--text);letter-spacing:-.3px}
 .header h1 span{color:var(--accent)}
 .header-meta{font-size:11px;color:var(--text-muted);font-family:"JetBrains Mono",monospace}
+.header-updated{font-size:11px;color:var(--text-secondary);font-family:"JetBrains Mono",monospace;background:var(--bg-subtle);padding:6px 12px;border-radius:6px;border:1px solid var(--border);cursor:help}
 
 /* ===== KPI Bar ===== */
 .kpi-bar{display:grid;grid-template-columns:1fr 340px;gap:16px}
@@ -278,6 +280,7 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
     <h1>参谋系统 · <span>战略假设驾驶舱</span></h1>
     <div class="header-meta">四维研判框架 · CIA Heuer ACH · 贝叶斯更新</div>
   </div>
+  <div class="header-updated" id="headerUpdated">最近更新: --</div>
 </div>
 
 <!-- KPI Bar: Macro + ACH -->
@@ -606,7 +609,7 @@ function tog(btn){var c=btn.nextElementSibling;var open=c.style.display!=="block
 function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
 buildCatBtns();R("");""")
 intel_js_lines.append('</script>')
-intel_js_lines.append('<script>var _lastUpdate="' + now + '";</script>')
+intel_js_lines.append('<script>var _lastUpdate="' + generated_at + '";(function(){var el=document.getElementById("headerUpdated");if(!el)return;var dt=new Date(_lastUpdate);if(isNaN(dt.getTime())){el.textContent="最近更新: "+_lastUpdate;return;}var local=dt.toLocaleString("zh-CN",{hour12:false,timeZone:"Asia/Shanghai"});el.textContent="最近更新: "+local;el.title="UTC: "+_lastUpdate;})();</script>')
 
 parts.append('\n'.join(intel_js_lines))
 parts.append('''

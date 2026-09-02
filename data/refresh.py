@@ -104,9 +104,24 @@ def rebuild_data():
         # 归一化分类写回条目（新条目缺 category_cn, JS 端筛选按该字段过滤）
         i['category_cn'] = cat
 
+    # 源配额: 避免 Yonhap/CNBC 这种 hourly 高频源挤占 top 200 名额
+    # 每个 source 最多 15 条, 然后按时间再选前 200
+    PER_SOURCE_CAP = 15
+    by_src = {}
+    for it in unique:
+        src = it.get('source_name') or '_unknown'
+        by_src.setdefault(src, []).append(it)
+    # 每个源截到 PER_SOURCE_CAP
+    capped = []
+    for src, lst in by_src.items():
+        capped.extend(lst[:PER_SOURCE_CAP])
+    # 重新按时间排
+    capped.sort(key=lambda x: (_parse_dt(x.get('published_at')), x.get('relevance', 0)), reverse=True)
+    top200 = capped[:200]
+
     output = {
         "generated_at": datetime.now().isoformat(),
-        "intelligence": unique[:200],
+        "intelligence": top200,
         "full_intelligence": unique,
         "intel_count": len(unique),
         "hypotheses": hyps,

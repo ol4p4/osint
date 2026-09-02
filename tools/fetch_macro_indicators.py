@@ -6,6 +6,7 @@ SSRF 防护：所有 URL 在发出前过白名单 + 解析 IP 检查（拒绝 RF
 """
 import ipaddress
 import json
+import re
 import socket
 from pathlib import Path
 from datetime import datetime, timezone
@@ -415,6 +416,31 @@ def main():
                 "source": fresh.get("source", ""),
                 "stale": False,
             })
+            # 数据年龄阈值: 月级数据 > 60d 标 stale, 日级 > 14d 标 stale
+            try:
+                d_str = fresh.get("date", "")
+                dt = None
+                # 兼容 ISO 月份 "2026-07" 和全日期 "2026-09-01"
+                if re.match(r"^\d{4}-\d{2}$", d_str):
+                    dt = datetime.strptime(d_str, "%Y-%m")
+                elif re.match(r"^\d{4}-\d{2}-\d{2}", d_str):
+                    dt = datetime.strptime(d_str[:10], "%Y-%m-%d")
+                elif d_str.isdigit() and len(d_str) == 4:
+                    # 年级 "2025"
+                    age_days = (datetime.now() - datetime(int(d_str), 1, 1)).days
+                    if age_days > 180:
+                        entry["stale"] = True
+                        entry["stale_reason"] = f"age {age_days}d > 180d"
+                if dt:
+                    age_days = (datetime.now() - dt).days
+                    # 月级数据有 1-2 月发布延迟 (NBS 8 月数据 9 月才发), 用 90d
+                    # 日级 > 14d 标 stale
+                    threshold = 90 if len(d_str) == 7 else 14
+                    if age_days > threshold:
+                        entry["stale"] = True
+                        entry["stale_reason"] = f"age {age_days}d > {threshold}d"
+            except Exception:
+                pass
         else:
             # Stale fallback
             entry.update({
