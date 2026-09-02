@@ -36,6 +36,8 @@ major_ids.sort(key=lambda x: by_id.get(x, {}).get("confidence", 0), reverse=True
 
 h_json = json.dumps(hyps, ensure_ascii=False)
 m_json = json.dumps(major_ids, ensure_ascii=False)
+mega_ids = [h["id"] for h in hyps if h.get("level") == "mega"]
+mega_json = json.dumps(mega_ids, ensure_ascii=False)
 i_json = json.dumps(intel, ensure_ascii=False)
 ach_json = json.dumps(ach_data, ensure_ascii=False) if ach_data else "null"
 
@@ -118,6 +120,19 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
 .macro-cell .meta{font-size:9px;color:var(--text-muted);margin-top:4px;font-family:"JetBrains Mono",monospace}
 .macro-cell.stale{opacity:.45}
 .macro-cell.stale .val{color:var(--danger)}
+
+/* Mega hypotheses */
+.mega-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px}
+.mega-card{padding:16px;border:1px solid var(--border);border-radius:8px;background:linear-gradient(135deg,var(--bg) 0%,var(--bg-subtle) 100%);transition:box-shadow .15s,border-color .15s;border-left:4px solid #7c3aed}
+.mega-card:hover{box-shadow:var(--shadow);border-color:#7c3aed}
+.mega-card .mega-level{font-size:9px;color:#7c3aed;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;font-family:"JetBrains Mono",monospace;font-weight:700}
+.mega-card .mega-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;line-height:1.3}
+.mega-card .mega-rationale{font-size:12px;color:var(--text-secondary);line-height:1.5;margin-bottom:10px}
+.mega-card .mega-indicators{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);font-size:10px}
+.mega-card .mega-indicators b{color:var(--text);font-weight:600;display:block;margin-bottom:4px;font-size:10px;text-transform:uppercase;letter-spacing:.5px}
+.mega-card .mega-ind{color:var(--text-muted);line-height:1.5;padding:2px 0}
+.mega-card .mega-ind b{color:var(--text-secondary);font-weight:500;font-size:10px;display:inline;margin:0;text-transform:none;letter-spacing:0}
+.mega-card .mega-conf{font-size:24px;font-weight:700;color:#7c3aed;font-family:"JetBrains Mono",monospace;float:right;line-height:1}
 
 /* Trend section */
 .trend-legend{display:flex;flex-wrap:wrap;gap:12px 18px;margin-top:12px;font-size:11px;color:var(--text-secondary)}
@@ -345,6 +360,21 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
     <div id="il"></div>
   </div>
 </details>
+
+<!-- Mega Hypotheses (超大假设) -->
+<div class="section">
+  <div class="section-header">
+    <div>
+      <div class="section-title">🌐 超大假设 <span style="font-weight:400;color:var(--text-muted);font-size:12px">概率极低 × 影响最大 × 跨大假设关联</span></div>
+      <div class="section-subtitle">战略级 mega 假设 · 历史先例驱动 · 不进 ACH 周循环 (单次 AI 成本太高)</div>
+    </div>
+    <div class="filter-row">
+      <input id="megaSearch" placeholder="搜索三战 / 经济危机 / 金融危机…" oninput="renderMegas()" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;font-size:11px;width:220px">
+    </div>
+  </div>
+  <div id="megaGrid" class="mega-grid"></div>
+  <div id="megaEmpty" class="empty-tip">尚无 mega 假设</div>
+</div>
 
 <!-- Hypothesis Cockpit -->
 <div class="section">
@@ -576,6 +606,35 @@ var MACRO_DATA=""" + macro_json + """;
 hyp_js_lines.append(ach_js)
 hyp_js_lines.append(macro_js)
 hyp_js_lines.append(unrate_js)
+
+# 超大假设 (mega) section 渲染
+hyp_js_lines.append('var MEGA_IDS=' + mega_json + ';')
+hyp_js_lines.append('''
+function renderMegas(){
+  var q=(document.getElementById('megaSearch')||{}).value||'';
+  q=q.trim().toLowerCase();
+  var list=MEGA_IDS.map(function(id){return byId[id];}).filter(function(x){return x&&(!q||(x.title+' '+(x.rationale||'')).toLowerCase().indexOf(q)>=0)});
+  var empty=document.getElementById('megaEmpty');
+  var grid=document.getElementById('megaGrid');
+  if(!grid)return;
+  if(!list.length){if(empty)empty.style.display='block';grid.innerHTML='';return;}
+  if(empty)empty.style.display='none';
+  grid.innerHTML=list.map(function(m){
+    var inds=(m.indicators||[]).map(function(i){
+      return '<div class="mega-ind"><b>'+esc(i.name)+':</b> '+esc(i.current_value||'\u672a\u77e5')+' (\u652f\u6301\u9608\u503c '+esc(i.threshold_support||'-')+' / \u53cd\u9a73\u9608\u503c '+esc(i.threshold_refute||'-')+') <span style="color:var(--text-muted)">\u2014 '+esc(i.source||'')+'</span></div>';
+    }).join('');
+    return '<div class="mega-card">'
+      +'<div class="mega-level">\U0001F310 \u8d85\u5927\u5047\u8bbe \u00b7 \u6218\u7565\u7ea7</div>'
+      +'<div class="mega-conf">'+Math.round((m.confidence||0)*100)+'%</div>'
+      +'<div class="mega-title">'+esc(m.title)+'</div>'
+      +'<div class="mega-rationale">'+esc(m.rationale||'')+'</div>'
+      +(inds?'<div class="mega-indicators"><b>\u9a8c\u8bc1\u6307\u6807</b>'+inds+'</div>':'')
+      +'</div>';
+  }).join('');
+}
+window.renderMegas=renderMegas;
+renderMegas();
+''')
 
 # 情报流 section 折叠提示文字切换
 hyp_js_lines.append('''

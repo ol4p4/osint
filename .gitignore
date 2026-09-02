@@ -13,6 +13,7 @@ data/*
 !data/run_all.py
 !data/sync_data.py
 !data/rebuild_hyps.py
+!data/hypotheses/
 
 _patch_*
 _test_*
