@@ -135,10 +135,19 @@ def fetch_te_china_indicator(page_slug, label_keyword):
     try:
         te_url = f"https://tradingeconomics.com/china/{page_slug}"
         html = _get(te_url, timeout=15)  # 走白名单+IP安全检查
+        # 单位宽容: percent/points/CNY Billion/CNY Hundred Million 等; 时间: in Month / on Weekday
+        unit = r"(?:percent|points|CNY [A-Z][A-Za-z ]{2,20}?)"
+        when = r"(?:in (\w+)(?:\s+(\d{4}))?|on \w+)"
         m = re.search(
-            rf"{re.escape(label_keyword)} in China (?:increased|decreased|rose|fell|was) to ([\d.]+) (?:percent|points) in (\w+)(?:\s+(\d{{4}}))?",
+            rf"{re.escape(label_keyword)} in China (?:increased|decreased|rose|fell|was) to ([\d.]+) {unit} {when}",
             html,
         )
+        if not m:
+            # 备选: "remained unchanged at X <unit> in Month / on Weekday" (TE 利率不变时用这个)
+            m = re.search(
+                rf"{re.escape(label_keyword)} in China remained unchanged at ([\d.]+) {unit} {when}",
+                html,
+            )
         if m:
             month_name = m.group(2)
             year = m.group(3)  # 可能 None
@@ -156,7 +165,8 @@ def fetch_te_china_indicator(page_slug, label_keyword):
             if month_num:
                 date_str = f"{year}-{month_num:02d}"
             else:
-                date_str = month_name  # 兜底: 解析不到月份名就保留原文
+                # "on Wednesday" 等无月份场景: 用当前月兜底 (TE 数据是最新的)
+                date_str = datetime.now().strftime("%Y-%m")
             return {
                 "value": float(m.group(1)),
                 "date": date_str,
@@ -376,6 +386,17 @@ INDICATORS = [
     # 美元指数
     {"id": "dxy_proxy", "label": "美元指数代理 (USDEUR)", "category": "汇率", "fmt": "{:.4f}",
      "fetcher": lambda: fetch_fred("DEXUSEU")},
+    # 中国货币/信用序列 (read-macro 五维框架的货币流动性+信用)
+    {"id": "cn_dr007", "label": "中国 7 天逆回购利率 (%)", "category": "货币流动性", "fmt": "{:.2f}",
+     "fetcher": lambda: fetch_te_china_indicator("reverse-repo-rate", "Reverse Repo Rate")},
+    {"id": "cn_shibor_3m", "label": "中国 Shibor 3 个月 (%)", "category": "货币流动性", "fmt": "{:.2f}",
+     "fetcher": lambda: fetch_te_china_indicator("interbank-rate", "Interbank Rate")},
+    {"id": "cn_m1_yoy", "label": "中国 M1 余额 (CNY 亿)", "category": "货币流动性", "fmt": "{:.0f}",
+     "fetcher": lambda: fetch_te_china_indicator("money-supply-m1", "Money Supply M1")},
+    {"id": "cn_m2_yoy", "label": "中国 M2 余额 (CNY 亿)", "category": "货币流动性", "fmt": "{:.0f}",
+     "fetcher": lambda: fetch_te_china_indicator("money-supply-m2", "Money Supply M2")},
+    {"id": "cn_shrong_yoy", "label": "中国社融总量 (CNY 亿)", "category": "信用", "fmt": "{:.0f}",
+     "fetcher": lambda: fetch_te_china_indicator("total-social-financing", "Total Social Financing")},
 ]
 
 
