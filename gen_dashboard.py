@@ -61,6 +61,16 @@ except:
     pass
 unrate_json = json.dumps(unrate_data, ensure_ascii=False) if unrate_data else "null"
 
+# 估值数据 (A 股/港股/美股 PE 面板)
+VALUATION_FILE = Path(r"D:\osint\data\index_valuation.json")
+valuation_data = None
+try:
+    with open(VALUATION_FILE, "r", encoding="utf-8") as f:
+        valuation_data = json.load(f)
+except:
+    pass
+valuation_json = json.dumps(valuation_data, ensure_ascii=False) if valuation_data else "null"
+
 now = datetime.now(timezone(timedelta(hours=8))).isoformat()
 
 # Build HTML as list of parts
@@ -103,7 +113,19 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
 
 /* ===== KPI Bar ===== */
 .kpi-bar{display:grid;grid-template-columns:1fr 340px;gap:16px}
-@media(max-width:900px){.kpi-bar{grid-template-columns:1fr}}
+.kpi-bar-3col{grid-template-columns:1fr 220px 320px}
+@media(max-width:1100px){.kpi-bar-3col{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.kpi-bar,.kpi-bar-3col{grid-template-columns:1fr}}
+.valuation-grid{display:flex;flex-direction:column;gap:6px}
+.valuation-card{padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg);font-size:11px}
+.valuation-card .v-name{font-size:10px;color:var(--text-secondary);margin-bottom:2px}
+.valuation-card .v-val{font-size:14px;font-weight:600;font-family:"JetBrains Mono",monospace}
+.valuation-card .v-pct{font-size:9px;font-family:"JetBrains Mono",monospace;margin-top:2px}
+.valuation-card .v-bar{height:4px;background:var(--bg-muted);border-radius:99px;margin-top:4px;overflow:hidden}
+.valuation-card .v-bar span{display:block;height:100%;border-radius:99px}
+.v-low{color:var(--success)}.v-mid{color:var(--warning)}.v-high{color:var(--danger)}
+.kpi-valuation{border-left:1px solid var(--border);padding-left:16px}
+@media(max-width:900px){.kpi-valuation{border-left:0;border-top:1px solid var(--border);padding-left:0;padding-top:16px}}
 .kpi-macro{min-width:0}
 .kpi-ach{border-left:1px solid var(--border);padding-left:16px}
 @media(max-width:900px){.kpi-ach{border-left:0;border-top:1px solid var(--border);padding-left:0;padding-top:16px}}
@@ -299,15 +321,23 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
   <div class="header-updated" id="headerUpdated">最近更新: --</div>
 </div>
 
-<!-- KPI Bar: Macro + ACH -->
+<!-- KPI Bar: Macro + Valuation + ACH -->
 <div class="section">
-  <div class="kpi-bar">
+  <div class="kpi-bar kpi-bar-3col">
     <div class="kpi-macro">
       <div class="section-title">📊 宏观关键指标</div>
       <div class="section-subtitle">汇率 / 利率 / 通胀 / 就业 / 增长 · 每日自动抓取</div>
       <div id="macroPanel" style="display:none;margin-top:12px">
         <div id="macroGrid" class="macro-grid"></div>
         <div id="macroMeta" style="font-size:10px;color:var(--text-muted);margin-top:8px"></div>
+      </div>
+    </div>
+    <div class="kpi-valuation">
+      <div class="section-title">💹 估值分位</div>
+      <div class="section-subtitle">PE-TTM 10 年百分位 · 多市场</div>
+      <div id="valuationPanel" style="display:none;margin-top:12px">
+        <div id="valuationGrid" class="valuation-grid"></div>
+        <div id="valuationMeta" style="font-size:10px;color:var(--text-muted);margin-top:8px"></div>
       </div>
     </div>
     <div class="kpi-ach">
@@ -606,6 +636,68 @@ var MACRO_DATA=""" + macro_json + """;
 hyp_js_lines.append(ach_js)
 hyp_js_lines.append(macro_js)
 hyp_js_lines.append(unrate_js)
+
+# 估值分位面板
+hyp_js_lines.append('var VALUATION_DATA=' + valuation_json + ';')
+hyp_js_lines.append('''
+function pctColor(p){
+  if(p===null||p===undefined) return 'v-mid';
+  if(p<0.25) return 'v-low';
+  if(p>0.75) return 'v-high';
+  return 'v-mid';
+}
+function pctLabel(p){
+  if(p===null||p===undefined) return 'N/A';
+  if(p<0.10) return '极低估';
+  if(p<0.25) return '低估';
+  if(p<0.40) return '偏低';
+  if(p<0.60) return '合理';
+  if(p<0.75) return '偏高';
+  if(p<0.90) return '高估';
+  return '极高估';
+}
+function renderValuation(){
+  var p=document.getElementById('valuationPanel');
+  var meta=document.getElementById('valuationMeta');
+  if(!p)return;
+  var d=VALUATION_DATA;
+  if(!d||!d.indicators){
+    meta.textContent='等待 valuation 数据';
+    return;
+  }
+  p.style.display='';
+  var grid=document.getElementById('valuationGrid');
+  var order=['us_sp500_pe','cn_csi300_pe','hk_hangseng_pe'];
+  var labels={us_sp500_pe:'S&P 500',cn_csi300_pe:'CSI 300',hk_hangseng_pe:'恒生指数'};
+  var html=order.map(function(id){
+    var v=d.indicators[id];
+    if(!v)return '';
+    if(v.stale){
+      return '<div class="valuation-card"><div class="v-name">'+labels[id]+'</div><div class="v-val" style="color:var(--text-muted)">--</div><div class="v-pct" style="color:var(--danger)">'+esc(v.stale_reason||'stale')+'</div></div>';
+    }
+    var p=v.percentile_10y;
+    var color=pctColor(p);
+    var label=pctLabel(p);
+    var pctText=p!==null?Math.round(p*100)+'% ('+label+')':'N/A';
+    var barW=p!==null?Math.round(p*100):0;
+    var barColor=p<0.25?'var(--success)':p>0.75?'var(--danger)':'var(--warning)';
+    return '<div class="valuation-card">'
+      +'<div class="v-name">'+labels[id]+'</div>'
+      +'<div class="v-val '+color+'">'+v.value.toFixed(2)+' <span style="font-size:10px;color:var(--text-muted)">('+v.date+')</span></div>'
+      +'<div class="v-bar"><span style="width:'+barW+'%;background:'+barColor+'"></span></div>'
+      +'<div class="v-pct '+color+'">10y分位: '+pctText+'</div>'
+      +'</div>';
+  }).join('');
+  grid.innerHTML=html;
+  if(d.updated_at){
+    var dt=new Date(d.updated_at);
+    if(!isNaN(dt.getTime())){
+      meta.textContent='数据源: '+Object.keys(d.indicators).map(function(k){return d.indicators[k].source;}).filter(function(v,i,a){return a.indexOf(v)===i;}).join(', ')+' · 抓取 '+dt.toLocaleString('zh-CN',{hour12:false});
+    }
+  }
+}
+renderValuation();
+''')
 
 # 超大假设 (mega) section 渲染
 hyp_js_lines.append('var MEGA_IDS=' + mega_json + ';')
