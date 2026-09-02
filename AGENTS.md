@@ -21,6 +21,7 @@ GitHub CI (daily.yml, 6次/天)
 refresh.py: git pull + 合并 CI 数据 + 可选翻译
   → ensure_rsshub()  → 保本地 RSSHub 容器健康（curl localhost:1200 → docker start / run）
   → fetch_now()     → tools/fetch_now.py 24h 全量本地拉（绕开 CI 9 条金十限流，详见 §"CI 故障排除 #11"）
+  → translate_now() → tools/translate_local.py OpenCode Zen 翻译 30 条/6min（替代 CI 翻译吞吐瓶颈）
   → rebuild_data → dashboard_data.json
   → fetch_macro() → tools/fetch_macro_indicators.py → macro_indicators.json（12个宏观指标）
   → fetch_unemployment_history() → tools/fetch_macro_indicators.py --history → cn_unemployment_history.json
@@ -60,6 +61,7 @@ AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key �
 | `verify_hypotheses.py` | 假设自动验证（FRED/Frankfurter/GoldAPI/WorldBank，域名白名单在 `ALLOWED_HOSTS`） |
 | `tools/fetch_macro_indicators.py` | 宏观指标抓取（汇率/利率/GDP/CPI/失业率，12个指标），产物 `data/macro_indicators.json`，refresh.py 自动调用；`--history` 子命令抓 NBS 分年龄组失业率历史月度序列 |
 | `tools/fetch_now.py` | 本地 RSSHub 24h 全量拉取（绕开 CI 端 9 条金十/财联社限流），append 到今日 jsonl；refresh.py 自动调 |
+| `tools/translate_local.py` | 本地 OpenCode Zen 翻译（mimo-v2.5-free + nemotron 降级），每跑 30 条 6 分钟，写回 jsonl；refresh.py 自动调，**本地 hourly 翻译 18-30 条/6min，CI 翻译吞吐瓶颈解决** |
 | `gen_dashboard.py` + `fix_dashboard.py` | 生成 HTML（必须按此顺序）；gen_dashboard 内嵌 macro 面板 CSS/HTML/JS，趋势图用 Chart.js 4.4 (jsdelivr)，情报流 section 用 `<details>` 折叠默认收起 |
 | `link_intel_hyp.py` / `daily_briefing.py` / `sync_data.py` / `rebuild_hyps.py` | 关联/简报/同步/重建树 |
 | `views.yaml` | 观点模板（`materialized_hyp_id` 标注已物化的 view，防止周循环重复生成） |

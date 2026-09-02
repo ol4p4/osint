@@ -234,6 +234,23 @@ def fetch_now():
         print(f"fetch_now stderr: {r.stderr.strip()[:200]}")
 
 
+def translate_now():
+    """本地 OpenCode Zen 翻译最新 30 条未翻译条目。
+    走 mimo-v2.5-free + nemotron 降级链, 6 分钟超时。
+    替代依赖 CI 翻译 (CI 50 条/4h 跟不上本地 fetch_now 200+ 条/24h)。
+    """
+    r = subprocess.run(
+        [sys.executable, str(PROJECT / "tools" / "translate_local.py")],
+        cwd=str(PROJECT), capture_output=True, text=True, timeout=420,
+    )
+    if r.stdout:
+        for line in r.stdout.splitlines():
+            if any(k in line for k in ("[translate_local]", "translated", "candidates")):
+                print(f"translate_now: {line.strip()}")
+    if r.returncode != 0 and r.stderr:
+        print(f"translate_now stderr: {r.stderr.strip()[:200]}")
+
+
 if __name__ == "__main__":
     with run_logging():
         print(f"\n=== Refresh at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ===")
@@ -242,6 +259,7 @@ if __name__ == "__main__":
         translate_local()
         ensure_rsshub()  # 保 RSSHub 健康(8h 滞后根因修复)
         fetch_now()       # 24h 全量本地拉(绕开 CI 9 条限流)
+        translate_now()   # 本地 OpenCode Zen 翻译 (替代 CI 翻译吞吐瓶颈)
         count = rebuild_data()
         fetch_macro()
         fetch_unemployment_history()
