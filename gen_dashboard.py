@@ -269,6 +269,7 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
 /* ===== Responsive ===== */
 @media(max-width:850px){.header{flex-direction:column;align-items:flex-start}#hypSearch{width:100%}.hyp-modal{padding:8px}.hyp-modal-box{height:96vh}.hyp-modal-columns{grid-template-columns:1fr;height:calc(100% - 53px)}.branch-pane{border-left:0;border-top:1px solid var(--border)}.meta-grid{grid-template-columns:repeat(2,1fr)}.kpi-bar{grid-template-columns:1fr}.kpi-ach{border-left:0;border-top:1px solid var(--border);padding-left:0;padding-top:16px}}
 </style>
+<link rel="icon" href="data:,">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
@@ -554,7 +555,8 @@ var MACRO_DATA=""" + macro_json + """;
     if(m) precision=parseInt(m[2]);
     valStr=typeof i.value==='number'?i.value.toFixed(precision):(i.value||'—');
     var dateStr=i.date?'数据 '+i.date:'';
-    var srcStr=i.source?(i.source+(i.stale?' (stale '+i.stale_since+')':'')):'';
+    var staleMsg=i.stale&&i.stale_reason?i.stale_reason:(i.stale?'stale':'');
+    var srcStr=i.source?(i.source+(staleMsg?' ('+staleMsg+')':'')):'';
     return '<div class="macro-cell '+cls+'">'
       +'<div class="cat">'+esc(i.category)+'</div>'
       +'<div class="lab">'+esc(i.label)+'</div>'
