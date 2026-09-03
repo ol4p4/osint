@@ -437,6 +437,17 @@ def main():
                 "source": fresh.get("source", ""),
                 "stale": False,
             })
+            # 派生与上次抓取的变化 (basis points), 用于 build_macro_state_prompt
+            prev_val = prev_data.get("value")
+            prev_date = prev_data.get("date")
+            if prev_val is not None and prev_date == fresh.get("date"):
+                change = fresh["value"] - prev_val
+                # 利率类 (cn_dr007/cn_shibor_3m/us_10y/us_fed_funds) 已是 % 形式, change 单位用 bp (1% = 100bp)
+                # 其它用 % 形式
+                if iid in ("cn_dr007","cn_shibor_3m","us_10y","us_fed_funds"):
+                    entry["change_bp"] = round(change * 100, 1)
+                else:
+                    entry["change_pct"] = round(change, 2)
             # 数据年龄阈值: 月级数据 > 60d 标 stale, 日级 > 14d 标 stale
             try:
                 d_str = fresh.get("date", "")

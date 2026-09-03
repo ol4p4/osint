@@ -52,7 +52,17 @@ def build_macro_state_prompt(macro_file=None):
             if not rec or rec.get("value") is None:
                 continue
             stale_mark = "[stale]" if rec.get("stale") else ""
-            parts.append(f"{rec.get('label','')}={rec.get('value')}{stale_mark}")
+            # 派生变化 (环比/同比), fetch_macro_indicators.py 写盘时存了 change_bp/change_pct
+            change = ""
+            if "change_bp" in rec:
+                bp = rec["change_bp"]
+                sign = "+" if bp > 0 else ""
+                change = f"({sign}{bp}bp)"
+            elif "change_pct" in rec:
+                pct = rec["change_pct"]
+                sign = "+" if pct > 0 else ""
+                change = f"({sign}{pct})"
+            parts.append(f"{rec.get('label','')}={rec.get('value')}{change}{stale_mark}")
         if parts:
             lines.append(f"{dim}: " + "；".join(parts))
     if not lines:
