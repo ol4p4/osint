@@ -32,3 +32,65 @@
     - "fiscal subsidy scale"
   confidence_initial: 0.65
   time_horizon_months: 24
+
+- id: "view_003"
+  title: "十五五规划产业政策加码"
+  author: "read-macro"
+  created: "2026-09-02"
+  status: "active"
+  core_claim: "十五五规划期(2026-2030)产业政策将向新质生产力/专精特新集中加码, 财政货币政策配合节奏前紧后松"
+  evidence_basis: "2026 年国务院/发改委/工信部政策发文节奏 + 专项债发行前置 + 以旧换新扩围"
+  key_dimensions:
+    - "十五五重点产业目录落地节奏"
+    - "专项债与超长期特别国债规模"
+    - "新质生产力投资占比"
+    - "政策对青年就业岗位的传导时滞"
+  confidence_initial: 0.6
+  time_horizon_months: 48
+
+- id: "view_004"
+  title: "A 股估值锚定修复"
+  materialized_hyp_id: ""
+  author: "read-macro"
+  created: "2026-09-02"
+  status: "active"
+  core_claim: "沪深300 PE 处于 10 年低位(<25%分位)而美股处于高位(>85%分位), 中期资金再平衡驱动 A 股估值修复"
+  evidence_basis: "CSI300 PE-TTM 14.1 (14%分位) vs S&P500 29.4 (91%分位), GuruFocus/multpl 长周期序列"
+  key_dimensions:
+    - "中美估值差收敛速度"
+    - "外资对 A 股配置比例"
+    - "国内利率下行对股权风险溢价的压制"
+    - "盈利增速能否接棒估值修复"
+  confidence_initial: 0.55
+  time_horizon_months: 18
+
+- id: "view_005"
+  title: "中美流动性周期错位"
+  author: "read-macro"
+  created: "2026-09-02"
+  status: "active"
+  core_claim: "美联储维持高位(3.6%)而中国 7 天逆回购下行至 1.4%, 货币周期错位驱动人民币资产相对吸引力的窗口期"
+  evidence_basis: "中国 7 天逆回购 1.40% / Shibor 1.43% vs 美联储基金利率 3.63%, TE 镜像序列"
+  key_dimensions:
+    - "中美利差走向"
+    - "人民币汇率弹性"
+    - "资本流动管制强度"
+    - "出口企业结汇行为"
+  confidence_initial: 0.6
+  time_horizon_months: 12
+
+- id: "view_006"
+  title: "青年就业政策工具箱扩容"
+  materialized_hyp_id: ""
+  author: "read-macro"
+  created: "2026-09-02"
+  status: "active"
+  core_claim: "青年失业率(16-24 不含在校生)高位徘徊将倒逼稳就业政策工具扩容(国企扩招/基层项目/补贴式见习), 但传导时滞 2-3 个季度"
+  evidence_basis: "2026-07 青年失业率 17.9% (毕业季峰值) + 历次稳就业政策包(2023-2026)落地节奏"
+  key_dimensions:
+    - "政策包出台时点与规模"
+    - "国企/事业单位扩招数量"
+    - "见习补贴与社保补贴覆盖面"
+    - "青年失业率环比拐点"
+  confidence_initial: 0.65
+  time_horizon_months: 12

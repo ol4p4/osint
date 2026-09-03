@@ -107,6 +107,18 @@ python -c "..." # 见 daily_run.ps1 Step3，或等 OsintWeekly 周日 09:30 自�
 - 批量改多文件前先 `git status` 确认影响范围；禁止 `push --force`、`reset --hard` 丢未提交内容。
 - `falsification_criteria` 为空时会在验证时自动从 indicators/sub_propositions 的 `threshold_refute` 回填，不要手填重复值。
 
+## read-macro 集成（2026-09 落地）
+
+| 模块 | 产出 | 文件 |
+|---|---|---|
+| A. 五维框架 prompt 注入 | analyze.py `_build_system_prompt` 拼 `MACRO_FIVE_DIM` + 宏观快照 | `local/macro_framework.py` |
+| B. 中国货币/信用序列 | macro_indicators.json 5 新增 (cn_dr007/cn_shibor_3m/cn_m1/cn_m2/cn_shrong_yoy) | `tools/fetch_macro_indicators.py` |
+| C. 估值分位面板 | KPI Bar 3 列 (宏观 + 估值 + ACH) | `tools/fetch_index_valuation.py` + gen_dashboard.py |
+| D. 政策追踪周报 | 周一 OsintWeekly 跑 policy_tracker.py, 落 wiki/views/view_cards/ | `local/policy_tracker.py` + daily_run.ps1 Step 3.5 |
+
+KB 概念页：`D:\Codex输出\视频知识库\wiki\concepts\宏观-五维分析框架.md`
+注：read-macro 插件本身（`C:\Users\admin\.zcode\cli\plugins\cache\zcode-plugins-official\read-macro\0.1.1`）是 zcode CLI 工具，**不在 agent Python 代码里**——通过 `local/macro_framework.py` 把五维框架的常量下沉到 osint 自己的分析 prompt。
+
 ## CI 故障排除
 1. **RSS 超时**：每源 15s 超时，坏源跳过不影响其他源
 2. **翻译 404/超时**：NVIDIA key 在 GitHub Secrets；已限每次 50 条、batch 5；模型降级链 MODEL_CHAIN（gpt-oss-120b→20b→llama）

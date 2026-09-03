@@ -78,10 +78,20 @@ class MacroAnalyzer:
         return self._parse_response(response, items)
 
     def _build_system_prompt(self, macro_context):
+        # 五维宏观框架注入 (read-macro 下沉, 数据缺失时静默降级)
+        try:
+            from macro_framework import MACRO_FIVE_DIM, build_macro_state_prompt
+            five_dim = "\n\u3010\u4e94\u7ef4\u5b8f\u89c2\u6846\u67b6\u3011\n" + MACRO_FIVE_DIM + "\n\n"
+            macro_state = build_macro_state_prompt()
+            if macro_state:
+                five_dim += "\u3010\u5b8f\u89c2\u5feb\u7167\u3011" + macro_state + "\n\n"
+        except Exception:
+            five_dim = ""
         return (
             "\u4f60\u662f\u4e3a\u300c\u5904\u4e8e\u7ed3\u6784\u6027\u8f6c\u6298\u671f\u7684\u5e74\u8f7b\u52b3\u52a8\u8005\u300d\u670d\u52a1\u7684\u53c2\u8c0b\u957f\u3002"
             + "\n\u7528\u6237\u753b\u50cf\uff1a" + self.persona + "\n\n"
             + "\u77e5\u8bc6\u5e93\u6838\u5fc3\u5b8f\u89c2\u6982\u5ff5\uff1a" + macro_context + "\n\n"
+            + five_dim
             + "\u3010\u56db\u7ef4\u5206\u6790\u6846\u67b6\u3011\u5fc5\u987b\u4e25\u683c\u9075\u5b88\n"
             + "1. \u79ef\u7d2f\u5236\u5ea6\u89c6\u89d2: accumulation_node = \u751f\u4ea7/\u5b9e\u73b0/\u5206\u914d/\u518d\u751f\u4ea7\n"
             + "2. \u7a7a\u95f4\u4fee\u6b63\u89c6\u89d2: spatial_layer = \u4e2d\u5fc3/\u5916\u56f4/\u7279\u533a/\u90fd\u5e02\u5708\n"

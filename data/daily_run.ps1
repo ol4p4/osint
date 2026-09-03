@@ -41,6 +41,11 @@ Write-Host "
 [3/5] Running hypothesis engine..." -ForegroundColor Green
 & $pythonCmd -c "import sys; sys.path.insert(0,'.'); from analyze import MacroAnalyzer; from load_knowledge import load_knowledge; from hypothesis_engine import HypothesisEngine; import yaml; config=yaml.safe_load(open(r'D:\osint\config.yaml','r',encoding='utf-8')); kb=load_knowledge(r'D:\Codex输出\视频知识库'); kb.load_all(); analyzer=MacroAnalyzer(config,'',kb); engine=HypothesisEngine(config,kb,analyzer); engine.run_weekly_cycle()"
 
+# Step 3.5: Policy tracker (read-macro weekly observation card)
+Write-Host "
+[3.5/5] Running policy tracker..." -ForegroundColor Green
+& $pythonCmd policy_tracker.py --week
+
 # Step 4: Update wiki index
 Write-Host "
 [4/5] Updating wiki index..." -ForegroundColor Green
