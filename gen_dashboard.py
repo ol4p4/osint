@@ -71,6 +71,17 @@ except:
     pass
 valuation_json = json.dumps(valuation_data, ensure_ascii=False) if valuation_data else "null"
 
+# 主题: 从 config.yaml 读, 用户可点右上角 toggle 切换
+THEME = "dark"
+try:
+    import yaml as _y
+    _cfg = _y.safe_load((ROOT / "config.yaml").read_text(encoding="utf-8"))
+    THEME = (_cfg.get("output", {}).get("dashboard", {}).get("theme", "dark") or "dark").lower()
+except Exception:
+    pass
+if THEME not in ("dark", "light"):
+    THEME = "dark"
+
 now = datetime.now(timezone(timedelta(hours=8))).isoformat()
 
 # Build HTML as list of parts
@@ -93,6 +104,15 @@ parts.append('''<!DOCTYPE html>
   --shadow-sm:0 1px 2px rgba(0,0,0,.05);
   --shadow:0 1px 3px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.06);
   --shadow-md:0 4px 6px rgba(0,0,0,.07),0 2px 4px rgba(0,0,0,.06);
+}
+body.dark{
+  --bg:#0f172a;--bg-subtle:#1e293b;--bg-muted:#334155;
+  --border:#334155;--border-hover:#475569;
+  --accent:#60a5fa;--accent-light:#1e3a8a;
+  --text:#f1f5f9;--text-secondary:#94a3b8;--text-muted:#64748b;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.3);
+  --shadow:0 1px 3px rgba(0,0,0,.4),0 1px 2px rgba(0,0,0,.3);
+  --shadow-md:0 4px 6px rgba(0,0,0,.4),0 2px 4px rgba(0,0,0,.3);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg-subtle);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.5}
@@ -310,7 +330,8 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
 <link rel="icon" href="data:,">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
-<body>
+<body class="''' + THEME + '''">
+<button id="themeToggle" onclick="toggleTheme()" style="position:fixed;top:14px;right:14px;z-index:1000;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:14px;cursor:pointer;box-shadow:var(--shadow-sm)">🌓</button>
 <div class="container">
 
 <!-- Header -->
@@ -814,6 +835,8 @@ function toggleChat(){var p=document.getElementById("chatPanel");p.classList.tog
 function pushMsg(cls,text){var box=document.getElementById("chatMsgs");var div=document.createElement("div");div.className="chat-msg "+cls;div.textContent=text;box.appendChild(div);box.scrollTop=box.scrollHeight}
 async function sendChat(){var inp=document.getElementById("chatInput");var q=inp.value.trim();if(!q)return;inp.value="";pushMsg("user",q);var box=document.getElementById("chatMsgs");var tip=document.createElement("div");tip.className="chat-msg ai typing";tip.textContent="参谋长研判中……";box.appendChild(tip);box.scrollTop=box.scrollHeight;try{var r=await fetch("/api/ask",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({q:q})});var d=await r.json();tip.remove();pushMsg("ai",d.answer||("出错: "+(d.error||"未知错误")))}catch(e){tip.remove();pushMsg("ai","请求失败: "+e)}}
 document.addEventListener("keydown",function(e){if(e.key==="Enter"&&!e.shiftKey&&document.activeElement===document.getElementById("chatInput")){e.preventDefault();sendChat()}});
+function toggleTheme(){var b=document.body;var isDark=b.classList.contains("dark");var next=isDark?"light":"dark";if(next==="dark"){b.classList.add("dark")}else{b.classList.remove("dark")}try{localStorage.setItem("osint-theme",next)}catch(e){}document.getElementById("themeToggle").textContent=next==="dark"?"🌙":"☀️"}
+try{var saved=localStorage.getItem("osint-theme");if(saved){if(saved==="dark"){document.body.classList.add("dark")}else{document.body.classList.remove("dark")}document.getElementById("themeToggle").textContent=saved==="dark"?"🌙":"☀️"}}catch(e){}
 function tog(btn){var c=btn.nextElementSibling;var open=c.style.display!=="block";c.style.display=open?"block":"none";btn.textContent=open?"收起原文":"展开原文"}
 function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
 buildCatBtns();R("");""")
