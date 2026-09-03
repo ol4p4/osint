@@ -113,9 +113,10 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
 
 /* ===== KPI Bar ===== */
 .kpi-bar{display:grid;grid-template-columns:1fr 340px;gap:16px}
-.kpi-bar-3col{grid-template-columns:1fr 220px 320px}
-@media(max-width:1100px){.kpi-bar-3col{grid-template-columns:1fr 1fr}}
+.kpi-bar-3col{grid-template-columns:1fr 240px 320px}
+@media(max-width:1400px){.kpi-bar-3col{grid-template-columns:1fr 1fr}.kpi-ach{grid-column:1/-1;border-left:0;border-top:1px solid var(--border);padding-left:0;padding-top:12px}}
 @media(max-width:900px){.kpi-bar,.kpi-bar-3col{grid-template-columns:1fr}}
+#valuationChart{min-height:240px}
 .valuation-grid{display:flex;flex-direction:column;gap:6px}
 .valuation-card{padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg);font-size:11px}
 .valuation-card .v-name{font-size:10px;color:var(--text-secondary);margin-bottom:2px}
@@ -337,6 +338,10 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
       <div class="section-subtitle">PE-TTM 10 年百分位 · 多市场</div>
       <div id="valuationPanel" style="display:none;margin-top:12px">
         <div id="valuationGrid" class="valuation-grid"></div>
+        <details style="margin-top:10px">
+          <summary style="font-size:11px;color:var(--text-secondary);cursor:pointer;padding:4px 0">📈 查看 10 年历史走势</summary>
+          <div style="position:relative;height:240px;margin-top:6px"><canvas id="valuationChart"></canvas></div>
+        </details>
         <div id="valuationMeta" style="font-size:10px;color:var(--text-muted);margin-top:8px"></div>
       </div>
     </div>
@@ -697,6 +702,57 @@ function renderValuation(){
   }
 }
 renderValuation();
+
+// 10 年历史走势 (Chart.js 多线)
+function renderValuationChart(){
+  var ctx=document.getElementById('valuationChart');
+  if(!ctx||typeof Chart==='undefined')return;
+  var d=VALUATION_DATA;
+  if(!d||!d.indicators)return;
+  var order=['us_sp500_pe','cn_csi300_pe','hk_hangseng_pe'];
+  var colors={us_sp500_pe:'#dc2626',cn_csi300_pe:'#2563eb',hk_hangseng_pe:'#16a34a'};
+  var labels={us_sp500_pe:'S&P 500',cn_csi300_pe:'CSI 300',hk_hangseng_pe:'恒生'};
+  // 合并所有指数日期作为 X 轴
+  var dateSet={};
+  order.forEach(function(id){
+    var v=d.indicators[id];
+    if(v&&v.history_10y)v.history_10y.forEach(function(p){dateSet[p.date]=true;});
+  });
+  var dates=Object.keys(dateSet).sort();
+  var datasets=order.map(function(id){
+    var v=d.indicators[id];
+    var hist={};
+    if(v&&v.history_10y)v.history_10y.forEach(function(p){hist[p.date]=p.value;});
+    return {
+      label:labels[id]+' PE',
+      data:dates.map(function(d){return hist[d]!==undefined?hist[d]:null;}),
+      borderColor:colors[id],
+      backgroundColor:colors[id]+'20',
+      borderWidth:1.5,
+      pointRadius:0,
+      tension:0.2,
+      spanGaps:true,
+      yAxisID:'y',
+    };
+  });
+  new Chart(ctx,{
+    type:'line',
+    data:{labels:dates,datasets:datasets},
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:true,position:'top',labels:{boxWidth:12,font:{size:10}}}},
+      scales:{
+        x:{ticks:{maxTicksLimit:8,font:{size:9}},grid:{display:false}},
+        y:{ticks:{font:{size:9}},grid:{color:'#eee5'}}
+      }
+    }
+  });
+  // 强制 resize 让 Chart.js 读到父容器 240px 高度
+  setTimeout(function(){try{Chart.getChart(ctx).resize();}catch(e){}},50);
+}
+renderValuationChart();
 ''')
 
 # 超大假设 (mega) section 渲染

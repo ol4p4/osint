@@ -92,6 +92,8 @@ def points_to_record(ind, points):
         points_10y = [p for p in points if int(p["date"][:4]) >= cutoff_year]
     except (ValueError, IndexError):
         points_10y = points
+    # 历史曲线 (按时间升序, 最多 120 点防 JSON 膨胀)
+    history_10y = [{"date": p["date"], "value": p["value"]} for p in reversed(points_10y)][-120:]
     return {
         "id": ind["id"],
         "name": ind["name"],
@@ -103,6 +105,7 @@ def points_to_record(ind, points):
         "percentile_10y": percentile_rank([p["value"] for p in points_10y], current["value"]),
         "history_count": len(points),
         "history_10y_count": len(points_10y),
+        "history_10y": history_10y,
         "stale": False,
     }
 
