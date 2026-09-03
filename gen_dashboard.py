@@ -332,6 +332,7 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
 </head>
 <body class="''' + THEME + '''">
 <button id="themeToggle" onclick="toggleTheme()" style="position:fixed;top:14px;right:14px;z-index:1000;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:14px;cursor:pointer;box-shadow:var(--shadow-sm)">🌓</button>
+<button id="refreshBtn" onclick="manualRefresh()" style="position:fixed;top:14px;right:60px;z-index:1000;background:var(--accent);color:#fff;border:1px solid var(--accent);border-radius:6px;padding:6px 10px;font-size:13px;cursor:pointer;box-shadow:var(--shadow-sm)">🔄 重建</button>
 <div class="container">
 
 <!-- Header -->
@@ -836,6 +837,40 @@ function pushMsg(cls,text){var box=document.getElementById("chatMsgs");var div=d
 async function sendChat(){var inp=document.getElementById("chatInput");var q=inp.value.trim();if(!q)return;inp.value="";pushMsg("user",q);var box=document.getElementById("chatMsgs");var tip=document.createElement("div");tip.className="chat-msg ai typing";tip.textContent="参谋长研判中……";box.appendChild(tip);box.scrollTop=box.scrollHeight;try{var r=await fetch("/api/ask",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({q:q})});var d=await r.json();tip.remove();pushMsg("ai",d.answer||("出错: "+(d.error||"未知错误")))}catch(e){tip.remove();pushMsg("ai","请求失败: "+e)}}
 document.addEventListener("keydown",function(e){if(e.key==="Enter"&&!e.shiftKey&&document.activeElement===document.getElementById("chatInput")){e.preventDefault();sendChat()}});
 function toggleTheme(){var b=document.body;var isDark=b.classList.contains("dark");var next=isDark?"light":"dark";if(next==="dark"){b.classList.add("dark")}else{b.classList.remove("dark")}try{localStorage.setItem("osint-theme",next)}catch(e){}document.getElementById("themeToggle").textContent=next==="dark"?"🌙":"☀️"}
+function manualRefresh(){
+  var btn=document.getElementById("refreshBtn");
+  var orig=btn.textContent;
+  btn.disabled=true;
+  btn.textContent="⏳ 抓取中...";
+  fetch("/api/refresh",{method:"POST"}).then(function(r){
+    if(r.status===202){pollStatus(btn,orig,0);return;}
+    r.json().then(function(d){
+      btn.textContent="❌ "+(d.error||"未知错误");
+      setTimeout(function(){btn.disabled=false;btn.textContent=orig;},3000);
+    });
+  }).catch(function(){
+    btn.textContent="❌ 网络错误";
+    setTimeout(function(){btn.disabled=false;btn.textContent=orig;},3000);
+  });
+}
+function pollStatus(btn,orig,attempt){
+  fetch("/api/refresh/status").then(function(r){return r.json();}).then(function(d){
+    if(d.status==="done"){
+      btn.textContent="✅ "+d.message;
+      setTimeout(function(){location.reload();},1200);
+      return;
+    }
+    if(d.status==="error"){
+      btn.textContent="❌ "+(d.error||"未知错误");
+      setTimeout(function(){btn.disabled=false;btn.textContent=orig;},5000);
+      return;
+    }
+    btn.textContent="⏳ "+(d.message||"抓取中...");
+    if(attempt<30){setTimeout(function(){pollStatus(btn,orig,attempt+1);},2000);}
+  }).catch(function(){
+    if(attempt<30){setTimeout(function(){pollStatus(btn,orig,attempt+1);},2000);}
+  });
+}
 try{var saved=localStorage.getItem("osint-theme");if(saved){if(saved==="dark"){document.body.classList.add("dark")}else{document.body.classList.remove("dark")}document.getElementById("themeToggle").textContent=saved==="dark"?"🌙":"☀️"}}catch(e){}
 function tog(btn){var c=btn.nextElementSibling;var open=c.style.display!=="block";c.style.display=open?"block":"none";btn.textContent=open?"收起原文":"展开原文"}
 function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}

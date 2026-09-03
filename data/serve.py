@@ -94,6 +94,9 @@ def _ask_staff(question: str) -> str:
 
 
 class Handler(http.server.SimpleHTTPRequestHandler):
+    # 仪表盘 "抓取最新" 按钮调 POST /api/refresh, 后台跑 ~90s
+    # 默认 BaseHTTPRequestHandler.timeout=30s 会 504, 调大到 300s
+    timeout = 300
     def __init__(self, *a, **k):
         super().__init__(*a, directory=ROOT, **k)
 
@@ -107,6 +110,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         super().do_GET()
 
     def do_POST(self):
+        if self.path == "/api/refresh":
+            return self._handle_refresh()
         if self.path != "/api/ask":
             self._json_response(404, {"error": "unknown api"})
             return
@@ -121,6 +126,83 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._json_response(200, {"answer": answer})
         except Exception as e:
             self._json_response(500, {"error": str(e)[:200]})
+
+    def _handle_refresh(self):
+        """手动 rebuild dashboard (~5-10s).
+        仪表盘 "抓取最新" 按钮调 POST /api/refresh 落此.
+        设计取舍: 不在按钮里调 fetch_now, 因为它跑 2-3 分钟太慢
+        (用户应配置 OsintRefresh 15min 计划任务或单独后台跑).
+        这里只 rebuild_data + gen_html, 让最新 jsonl 立即呈现.
+        """
+        import subprocess, sys, threading
+        from pathlib import Path
+        project = Path(r"D:\osint")
+        status_file = project / "data" / ".refresh_status.json"
+
+        def run_in_thread():
+            try:
+                status_file.write_text('{"status":"running","message":"rebuild_dashboard..."}', encoding="utf-8")
+                # 1. rebuild_data
+                import importlib.util
+                refresh_module_path = project / "data" / "refresh.py"
+                spec = importlib.util.spec_from_file_location("refresh_mod", str(refresh_module_path))
+                refresh_mod = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(refresh_mod)
+                n = refresh_mod.rebuild_data()
+                # 2. gen_html (内部调 gen_dashboard.py + fix_dashboard.py, ~5s)
+                refresh_mod.gen_html()
+                status_file.write_text(
+                    json.dumps({"status":"done","intel_count":n,
+                                "message":f"已重建 ({n} 条), 页面请手动刷新"}),
+                    encoding="utf-8"
+                )
+            except Exception as e:
+                import traceback
+                status_file.write_text(
+                    json.dumps({"status":"error","error":str(e)[:200],
+                                "trace":traceback.format_exc()[:300]}),
+                    encoding="utf-8"
+                )
+
+        t = threading.Thread(target=run_in_thread, daemon=True)
+        t.start()
+        self.send_response(202)
+        self.send_header("Content-Type", "application/json")
+        body = json.dumps({"status":"accepted","message":"后台 rebuild 中, 轮询 /api/refresh/status"})
+        self.send_header("Content-Length", str(len(body.encode("utf-8"))))
+        self.end_headers()
+        self.wfile.write(body.encode("utf-8"))
+
+        # 启动后台线程 (daemon=True 让 serve.py 退出时自动结束)
+        t = threading.Thread(target=run_in_thread, daemon=True)
+        t.start()
+        # 立即返回 202, 不阻塞 HTTP handler
+        self.send_response(202)
+        self.send_header("Content-Type", "application/json")
+        body = json.dumps({"status":"accepted","message":"后台抓取中, 轮询 /api/refresh/status"})
+        self.send_header("Content-Length", str(len(body.encode("utf-8"))))
+        self.end_headers()
+        self.wfile.write(body.encode("utf-8"))
+
+    def do_GET(self):
+        # refresh status endpoint
+        if self.path == "/api/refresh/status":
+            status_file = Path(r"D:\osint\data\.refresh_status.json")
+            if status_file.exists():
+                try:
+                    self._json_response(200, json.loads(status_file.read_text(encoding="utf-8")))
+                    return
+                except Exception:
+                    pass
+            self._json_response(200, {"status": "idle", "message": "未启动抓取"})
+            return
+        # 根路径或任何不存在的路径一律跳转仪表盘（容错手输错误 URL）
+        if self.path in ("/", "/index.html"):
+            self.send_response(302)
+            self.send_header("Location", "/interactive_dashboard.html")
+            self.end_headers()
+            return
+        super().do_GET()
 
     def _json_response(self, code, obj):
         payload = json.dumps(obj, ensure_ascii=False).encode("utf-8")
