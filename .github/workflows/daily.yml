@@ -41,15 +41,9 @@ jobs:
           pip install -q -r requirements.txt
       
       - name: Start RSSHub (local container, for Chinese sources)
-        env:
-          REUTERS_COOKIE: ${{ secrets.REUTERS_COOKIE }}
         run: |
           docker rm -f rsshub 2>/dev/null || true
-          if [ -n "$REUTERS_COOKIE" ]; then
-            docker run -d --name rsshub -p 1200:1200 -e REUTERS_COOKIE="$REUTERS_COOKIE" diygod/rsshub:latest
-          else
-            docker run -d --name rsshub -p 1200:1200 diygod/rsshub:latest
-          fi
+          docker run -d --name rsshub -p 1200:1200 diygod/rsshub:latest
           timeout 90 bash -c 'until curl -s -o /dev/null http://localhost:1200/healthz; do sleep 3; done' || echo "RSSHub slow start, continue anyway"
           curl -s -o /dev/null -w "RSSHub ready: %{http_code}\n" http://localhost:1200/ || true
 
