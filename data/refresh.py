@@ -11,11 +11,6 @@ BASE = Path(r"D:\osint\data")
 sys.path.insert(0, str(PROJECT))
 from cloud.local_sync import run_logging, git_pull, sync_repo_intel, translate_local
 
-def git_pull():
-    r = subprocess.run(["git", "pull", "origin", "master"], cwd=str(PROJECT), capture_output=True, text=True)
-    print(f"Git pull: {r.stdout.strip()[:100]}")
-    return r.returncode == 0
-
 def _clean_date(e):
     """脏日期过滤：解析出日期后，明显未来(>2天)或早于2020的条目丢弃；解析失败保守保留"""
     pa = str(e.get('published_at', ''))
@@ -53,15 +48,14 @@ def rebuild_data():
     intel_files = sorted(glob.glob(str(BASE / "intel_2*.jsonl")))
     all_intel = []
     for f in intel_files:
-        with open(f, 'r', encoding='utf-8') as fh:
-            for line in fh:
-                line = line.strip()
-                if not line:
-                    continue
-                try:
-                    all_intel.append(json.loads(line))
-                except:
-                    pass
+        for line in Path(f).read_text(encoding='utf-8', errors='replace').splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                all_intel.append(json.loads(line))
+            except Exception:
+                pass
 
     seen = set()
     unique = []
@@ -94,8 +88,7 @@ def rebuild_data():
     hyp_file = BASE / "hypotheses" / "active_hypotheses.json"
     hyps = []
     if hyp_file.exists():
-        with open(hyp_file, 'r', encoding='utf-8') as f:
-            hyps = json.load(f)
+        hyps = json.loads(hyp_file.read_text(encoding='utf-8'))
 
     cat_stats = {}
     for i in unique:
@@ -128,8 +121,9 @@ def rebuild_data():
         "macro": {},
         "category_stats": cat_stats,
     }
-    with open(BASE / "dashboard_data.json", 'w', encoding='utf-8') as f:
-        json.dump(output, f, ensure_ascii=False, indent=2)
+    (BASE / "dashboard_data.json").write_text(
+        json.dumps(output, ensure_ascii=False, indent=2), encoding='utf-8'
+    )
 
     cn_count = sum(1 for i in unique if i.get('cn_title'))
     print(f"Data: {len(unique)} intel, {len(hyps)} hyps, {cn_count} CN-titled")
