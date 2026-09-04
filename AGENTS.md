@@ -60,12 +60,18 @@ AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key �
 | `local/render_wiki.py` / `main_local.py` | 旧渲染管线（daily_run.ps1 的 Step2 用） |
 | `verify_hypotheses.py` | 假设自动验证（FRED/Frankfurter/GoldAPI/WorldBank，域名白名单在 `ALLOWED_HOSTS`） |
 | `tools/fetch_macro_indicators.py` | 宏观指标抓取（汇率/利率/GDP/CPI/失业率，12个指标），产物 `data/macro_indicators.json`，refresh.py 自动调用；`--history` 子命令抓 NBS 分年龄组失业率历史月度序列 |
-| `tools/fetch_now.py` | 本地 RSSHub 24h 全量拉取（绕开 CI 端 9 条金十/财联社限流），append 到今日 jsonl；refresh.py 自动调 |
+| `tools/fetch_now.py` | 本地 24h 全量拉取（**仅国内源**，`scope:ci` 的 33 个外国源跳过——境外源一律由 CI 在 GitHub Actions 上采集，本地拉不动是常态），append 到今日 jsonl；refresh.py 自动调 |
 | `tools/translate_local.py` | 本地 OpenCode Zen 翻译（mimo-v2.5-free + nemotron 降级），每跑 30 条 6 分钟，写回 jsonl；refresh.py 自动调，**本地 hourly 翻译 18-30 条/6min，CI 翻译吞吐瓶颈解决** |
 | `gen_dashboard.py` + `fix_dashboard.py` | 生成 HTML（必须按此顺序）；gen_dashboard 内嵌 macro 面板 CSS/HTML/JS，趋势图用 Chart.js 4.4 (jsdelivr)，情报流 section 用 `<details>` 折叠默认收起 |
 | `link_intel_hyp.py` / `daily_briefing.py` / `sync_data.py` / `rebuild_hyps.py` | 关联/简报/同步/重建树 |
 | `views.yaml` | 观点模板（`materialized_hyp_id` 标注已物化的 view，防止周循环重复生成） |
-| `sources.yaml`(47源) / `config.yaml`(key+路径) / `weights.yaml` / `daily_question.ps1`(P2a/P2b入口) | 配置与入口 |
+| `sources.yaml`(50源) / `config.yaml`(key+路径) / `weights.yaml` / `daily_question.ps1`(P2a/P2b入口) | 配置与入口 |
+
+## 信息源分层（2026-09-04 定稿）
+- **主要渠道**（weight 1.1-1.2，本地+CI 双采）：金十数据、新浪财经(7x24+滚动，官方直连 API)、财联社——国内市场行情/快讯/政策的主入口
+- **辅助渠道**（scope: ci，仅 GitHub Actions 采集）：彭博(容器路由)、路透(容器路由,上游时好时坏)、AP(容器路由)、CNN/DW(官方 RSS,CI 境外直连)——补充国际市场动态与海外宏观；境内网络直连这些源全部被阻,本地拉不动是设计内行为
+- 国内源双采幂等：条目 id=md5(源名:链接:标题)，本地与 CI 采同一条 id 相同，rebuild_data 自动去重；合并优先保留 CI 带回的 cn_title 翻译版
+- 东亚四源（Nikkei/KoreaHerald/Yonhap/JapanTimes）曾在 east_asia_sources 与 rss_sources 完全重复，已去重并入 rss_sources
 
 ### 产物目录（`D:\osint\data\`，gitignore 不追踪）
 | 文件 | 用途 |

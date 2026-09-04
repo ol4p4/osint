@@ -12,12 +12,17 @@ from cloud.fetch_rss import RSSFetcher
 
 BASE = Path(r"D:\osint\data")
 
-# 1. 加载 sources
+# 1. 加载 sources (scope:ci 的外国源仅由 GitHub Actions 采集, 本地跳过 — 境内直连不通, 省超时)
 config = yaml.safe_load((Path(r"D:\osint") / "sources.yaml").read_text(encoding="utf-8"))
 sources = []
+skipped_ci = 0
 for key in ["rss_sources", "east_asia_sources"]:
-    sources.extend(config.get(key, []))
-print(f"[fetch_now] {len(sources)} sources")
+    for s in config.get(key, []):
+        if s.get("scope") == "ci":
+            skipped_ci += 1
+        else:
+            sources.append(s)
+print(f"[fetch_now] {len(sources)} sources (跳过 {skipped_ci} 个 scope:ci 外国源, 由 CI 采集)")
 
 # 2. 拉取最近 24h
 fetcher = RSSFetcher(sources, config.get("keyword_weights", {}))

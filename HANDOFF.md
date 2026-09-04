@@ -42,7 +42,7 @@ D:\osint\                        # git 仓库, GitHub: ol4p4/osint
 ├── tools\                       # 数据抓取工具
 │   ├── fetch_macro_indicators.py # 17 宏观指标
 │   ├── fetch_index_valuation.py  # 3 指数 PE 估值
-│   ├── fetch_now.py             # 46 源 24h RSS (42 rss + 4 east_asia, 以 sources.yaml 实际为准)
+│   ├── fetch_now.py             # 24h RSS (仅国内 17 源; scope:ci 的 33 个外国源由 CI 采, 见 sources.yaml 分层)
 │   ├── translate_local.py       # 本地 OpenCode Zen 翻译
 │   └── find_surrogate.py        # 调试工具
 │
@@ -117,7 +117,8 @@ CI 抓 RSS → git push → OsintRefresh 计划任务 git pull + 抓本地 RSS +
 注意:
 - **解释器必须用 `E:\software\python3.13.8\python.exe`** (9-04 已补装 pyyaml 6.0.3; 链路只需 feedparser+yaml, 均已就位)
 - CI 并没有停 (此前"3 天无 auto commit"是本地没 pull 的假象); CI 停更时 watchdog 本地自愈兜底
-- **9-04 起本地拉取已不依赖 RSSHub**: 金十/新浪走官方直连 API (sources.yaml `direct` 字段), 其余 7 条 RSSHub 路由自动退公共镜像 (hub.slarker.me → rsshub.rssforever.com, 见 fetch_rss.py RSSHUB_BASES)。Docker/RSSHub 全程不开也能拉全 46 源 (实测 10/10 覆盖 377 条/24h); Docker 开着时本地容器仍优先 (更快, 公共镜像有限流风险)
+- **9-04 起本地拉取已不依赖 RSSHub**: 金十/新浪走官方直连 API (sources.yaml `direct` 字段), 其余 7 条 RSSHub 路由自动退公共镜像 (hub.slarker.me → rsshub.rssforever.com, 见 fetch_rss.py RSSHUB_BASES)。Docker/RSSHub 全程不开也能拉全国内源 (实测 10/10 覆盖 377 条/24h); Docker 开着时本地容器仍优先 (更快, 公共镜像有限流风险)
+- **信息源分层**: 主要=金十/新浪/财联社 (weight 1.2, 本地+CI 双采); 辅助=彭博/路透/AP/CNN/DW/CNBC 等 33 源标 `scope:ci` 仅由 GitHub Actions 境外采集, 本地 fetch_now 自动跳过 (本地拉取实测 47s, 原 2-3min)。境内直连外国源被阻是设计内行为, 勿再尝试本地兜底
 - 假设树 71 节点但 evidence 全空 / 0 falsified (link_intel_hyp 结果未写回), 验证闭环仍待接
 - `cn_m1_yoy`/`cn_m2_yoy` 存的是余额绝对值而非同比, 下游勿按同比解读
 - `refresh.py` 9-04 修复: 删除遮蔽 import 的本地 git_pull (改用 local_sync 带超时版); open() 改 Path 方法式 API
