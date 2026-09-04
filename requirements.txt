@@ -3,4 +3,3 @@ requests==2.32.3
 lxml==5.3.0
 cssselect==1.2.0
 pyyaml==6.0.1
-simhash==2.1.2

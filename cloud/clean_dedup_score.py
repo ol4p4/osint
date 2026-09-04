@@ -12,22 +12,33 @@ from pathlib import Path
 from datetime import datetime, timezone, timedelta
 from typing import List, Dict, Any, Set
 from collections import defaultdict
-import simhash
 import re
 
 
 class SimHashDedup:
+    """2026-09-04 优化: O(n^2) 两两比对 → 分桶索引 O(n)。
+    64 位指纹分 4 段 x16bit, 鸽巢原理保证汉明距离<=3 的两指纹至少一段相同,
+    候选只在 4 个桶的并集里做精确距离检查。判定结果与旧实现完全一致(基线快照校验)。
+    """
+
     def __init__(self, threshold: int = 3):
         self.threshold = threshold
-        self.hashes: List[int] = []
+        # seg_idx(0-3) -> seg_val(16bit) -> [历史指纹]
+        self.buckets: Dict[int, Dict[int, List[int]]] = defaultdict(dict)
         self.id_map: Dict[int, str] = {}
-    
+
     def add(self, text: str, item_id: str) -> bool:
         h = self._simhash(text)
-        for existing_h in self.hashes:
+        candidates = set()
+        for seg in range(4):
+            val = (h >> (seg * 16)) & 0xFFFF
+            candidates.update(self.buckets[seg].get(val, ()))
+        for existing_h in candidates:
             if self._hamming_distance(h, existing_h) <= self.threshold:
                 return False
-        self.hashes.append(h)
+        for seg in range(4):
+            val = (h >> (seg * 16)) & 0xFFFF
+            self.buckets[seg].setdefault(val, []).append(h)
         self.id_map[h] = item_id
         return True
     
@@ -48,15 +59,13 @@ class SimHashDedup:
         return fingerprint
     
     def _tokenize(self, text: str) -> List[tuple]:
-        text = re.sub(r"[^\u4e00-\u9fff\w]", " ", text)
-        tokens = []
-        for ch in text:
-            if "\u4e00" <= ch <= "\u9fff":
-                tokens.append((ch, 1.0))
-            else:
-                for w in text.split():
-                    if w:
-                        tokens.append((w.lower(), 1.0))
+        """2026-09-04 修复: 旧实现 for ch in text 循环里对每个非中文字符执行一次
+        text.split() 并重复追加全部英文词 (英文 token 权重被系统性放大, 指纹计算慢
+        一个数量级)。改为单遍正则: 中文按字, 英文/数字按词。
+        注意: 指纹值因此与历史不同, 去重判定阈值(汉明<=3)不变, 边缘条目结果可能有差。
+        """
+        tokens = [(w.lower(), 1.0)
+                  for w in re.findall(r"[\u4e00-\u9fff]|[a-zA-Z0-9]+", text)]
         return tokens[:200]
     
     def _hamming_distance(self, a: int, b: int) -> int:
@@ -64,23 +73,34 @@ class SimHashDedup:
 
 
 class TitleDedup:
+    """2026-09-04 优化: O(n^2) Jaccard → token 倒排剪枝。
+    Jaccard>=threshold 的两标题必共享至少一个 token, 只与共享 token 的历史标题精确比对。
+    """
+
     def __init__(self, threshold: float = 0.7):
         self.threshold = threshold
-        self.titles: List[Set[str]] = []
+        self.titles: List[Set[str]] = []          # idx -> 标题 token 集
+        self.postings: Dict[str, List[int]] = {}  # token -> 含该 token 的标题 idx
         self.id_map: Dict[str, str] = {}
-    
+
     def add(self, title: str, item_id: str) -> bool:
         title_set = set(self._tokenize_title(title))
         title_key = " ".join(sorted(title_set))
-        
+
         if title_key in self.id_map:
             return False
-        
-        for existing_set in self.titles:
-            if self._jaccard(title_set, existing_set) >= self.threshold:
+
+        cand_idx = set()
+        for tok in title_set:
+            cand_idx.update(self.postings.get(tok, ()))
+        for idx in cand_idx:
+            if self._jaccard(title_set, self.titles[idx]) >= self.threshold:
                 return False
-        
+
+        idx = len(self.titles)
         self.titles.append(title_set)
+        for tok in title_set:
+            self.postings.setdefault(tok, []).append(idx)
         self.id_map[title_key] = item_id
         return True
     

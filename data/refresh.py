@@ -97,25 +97,41 @@ def rebuild_data():
         # 归一化分类写回条目（新条目缺 category_cn, JS 端筛选按该字段过滤）
         i['category_cn'] = cat
 
-    # 源配额: 避免 Yonhap/CNBC 这种 hourly 高频源挤占 top 200 名额
-    # 每个 source 最多 15 条, 然后按时间再选前 200
+    # 源配额 + 相关度准入 (2026-09-04 优化):
+    # ① 每源最多 15 条, 但源内改按 (相关分降序, 时间降序) 选代表——
+    #    原先纯按时间取前 15, 高频源(金十日数百条)的低分新快讯把高分条目无条件挤出窗口,
+    #    weights.yaml 的画像加权在窗口准入上完全失效
+    # ② 全局仍按时间倒序取 top200, 时序感知不变
+    # ③ 未来时间戳(源站时区错误, <2 天)在排序键上钳制到当前, 防霸屏顶置
+    #    (同源内 base_score 可比: 同一 source weight 相同)
     PER_SOURCE_CAP = 15
+    now_key = datetime.now().strftime('%Y-%m-%d %H:%M')
+
+    def _rank_time(it):
+        return min(_parse_dt(it.get('published_at')), now_key)
+
+    def _rel_score(it):
+        try:
+            v = float(it.get('final_score') or 0) or float(it.get('base_score') or 0)
+        except (TypeError, ValueError):
+            v = 0.0
+        return v
+
     by_src = {}
     for it in unique:
         src = it.get('source_name') or '_unknown'
         by_src.setdefault(src, []).append(it)
-    # 每个源截到 PER_SOURCE_CAP
     capped = []
     for src, lst in by_src.items():
+        lst.sort(key=lambda x: (_rel_score(x), _rank_time(x)), reverse=True)
         capped.extend(lst[:PER_SOURCE_CAP])
     # 重新按时间排
-    capped.sort(key=lambda x: (_parse_dt(x.get('published_at')), x.get('relevance', 0)), reverse=True)
+    capped.sort(key=lambda x: (_rank_time(x), x.get('relevance', 0)), reverse=True)
     top200 = capped[:200]
 
     output = {
         "generated_at": datetime.now().isoformat(),
         "intelligence": top200,
-        "full_intelligence": unique,
         "intel_count": len(unique),
         "hypotheses": hyps,
         "macro": {},

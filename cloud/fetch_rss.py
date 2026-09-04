@@ -52,6 +52,7 @@ class RSSFetcher:
     def __init__(self, sources_config, keyword_weights):
         self.sources = sources_config
         self.keyword_weights = keyword_weights
+        self._kw_patterns = None  # 关键词正则缓存(词边界), 首次打分时编译
     
     def fetch_all(self, max_age_hours=168):
         all_items = []
@@ -284,11 +285,25 @@ class RSSFetcher:
         return hashlib.md5(raw.encode()).hexdigest()[:16]
     
     def _calc_keyword_score(self, text):
+        """2026-09-04 修复: 纯 ASCII 关键词改词边界匹配。
+        旧实现裸子串, "AI" 命中 said/chairman/maintain 等一切含 'ai' 的词 →
+        所有英文新闻白拿关键词分, 打分被系统性污染。中文关键词无词边界概念, 保持子串。
+        正则预编译一次 (原先每条目对 153 个词重复做子串扫描)。
+        """
+        if self._kw_patterns is None:
+            self._kw_patterns = []
+            for kw, weight in self.keyword_weights.items():
+                k = kw.lower()
+                if k.isascii() and k[0].isalnum() and k[-1].isalnum():
+                    pat = re.compile(r"\b" + re.escape(k) + r"\b")
+                else:
+                    pat = re.compile(re.escape(k))
+                self._kw_patterns.append((kw, weight, pat))
         text_lower = text.lower()
         hits = []
         score = 0
-        for kw, weight in self.keyword_weights.items():
-            if kw.lower() in text_lower:
+        for kw, weight, pat in self._kw_patterns:
+            if pat.search(text_lower):
                 hits.append(kw)
                 score += weight
         return hits, min(score, 1.0)
