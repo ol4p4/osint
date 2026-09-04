@@ -54,18 +54,30 @@ class RSSFetcher:
         self.keyword_weights = keyword_weights
         self._kw_patterns = None  # 关键词正则缓存(词边界), 首次打分时编译
     
-    def fetch_all(self, max_age_hours=168):
+    def fetch_all(self, max_age_hours=168, max_workers=8):
+        """2026-09-04 并发化: 串行 50 源 x 15s 超时上限 ≈ 最坏 12.5min(实测 ~13min),
+        是 CI job 耗时主因。改 8 线程并发, 每源独立超时/独立兜底, 源间无共享状态。
+        预期 CI 采集 ~2min, 本地 17 源 ~10s。"""
+        from concurrent.futures import ThreadPoolExecutor, as_completed
         all_items = []
         cutoff_time = datetime.now(timezone.utc) - timedelta(hours=max_age_hours)
-        
-        for source in self.sources:
+
+        def _one(source):
             try:
-                items = self._fetch_source(source, cutoff_time)
-                all_items.extend(items)
-                print(f"[RSS] {source['name']}: {len(items)} items")
+                return source, self._fetch_source(source, cutoff_time), None
             except Exception as e:
-                print(f"[RSS ERROR] {source['name']}: {e}")
-        
+                return source, [], e
+
+        with ThreadPoolExecutor(max_workers=max_workers) as pool:
+            futures = [pool.submit(_one, s) for s in self.sources]
+            for fut in as_completed(futures):
+                source, items, err = fut.result()
+                if err:
+                    print(f"[RSS ERROR] {source['name']}: {err}")
+                else:
+                    all_items.extend(items)
+                    print(f"[RSS] {source['name']}: {len(items)} items")
+
         return all_items
     
     def _fetch_source(self, source, cutoff_time):

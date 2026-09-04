@@ -2,7 +2,8 @@ name: Intelligence Pipeline (6x/day)
 
 on:
   schedule:
-    - cron: "0 */4 * * *"
+    # 2026-09-04: 4h→3h, 国外源等轮次 P95 从 3.8h→2.85h (延迟验收 4.5h 阈值前提)
+    - cron: "0 */3 * * *"
   workflow_dispatch:
   push:
     branches: [master]
@@ -51,14 +52,9 @@ jobs:
         run: |
           cd ${{ github.workspace }}
           python cloud/main_cloud.py
-      
-      - name: Translate with NVIDIA API
-        if: ${{ env.NVIDIA_API_KEY }}
-        env:
-          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
-        run: |
-          cd ${{ github.workspace }}
-          python cloud/translate.py
+
+      # 翻译已挪到本地 (2026-09-04): refresh.py translate_now 100条/900s/每小时,
+      # 替代 CI 50条/4h 的吞吐瓶颈; CI 只做采集+研判+push, job 显著缩短
       - name: Citizen impact analysis
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}

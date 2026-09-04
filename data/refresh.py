@@ -233,13 +233,14 @@ def fetch_now():
 
 
 def translate_now():
-    """本地 OpenCode Zen 翻译最新 30 条未翻译条目。
-    走 mimo-v2.5-free + nemotron 降级链, 6 分钟超时。
+    """本地 OpenCode Zen 翻译未翻译条目 (mimo-v2.5-free + nemotron 降级链)。
+    2026-09-04: 翻译挪出 CI 后本地承担全部翻译吞吐, 放宽到 100 条/900s;
     替代依赖 CI 翻译 (CI 50 条/4h 跟不上本地 fetch_now 200+ 条/24h)。
     """
     r = subprocess.run(
-        [sys.executable, str(PROJECT / "tools" / "translate_local.py")],
-        cwd=str(PROJECT), capture_output=True, text=True, timeout=420,
+        [sys.executable, str(PROJECT / "tools" / "translate_local.py"),
+         "--max", "100", "--budget", "900"],
+        cwd=str(PROJECT), capture_output=True, text=True, timeout=960,
     )
     if r.stdout:
         for line in r.stdout.splitlines():

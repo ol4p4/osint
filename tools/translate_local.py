@@ -35,8 +35,9 @@ MAX_PER_RUN = 30  # 单次最多翻译 30 条, 10 批 * 30s ≈ 5 分钟内
 def _build_prompt():
     return (
         "Translate each ITEM to Chinese. Output JSON array with format: "
-        '[{"cn_title": "中文标题", "cn_summary": "4-6句中文摘要", '
+        '[{"id": "原ITEM_ID原样返回", "cn_title": "中文标题", "cn_summary": "4-6句中文摘要", '
         '"impact": "对中国宏观经济、就业市场和青年失业毕业生的影响分析"}]. '
+        "Each output object MUST carry the id of the ITEM it translates. "
         "Only output JSON, no markdown."
     )
 
@@ -68,7 +69,7 @@ def translate_batch(items, api_key, deadline=None):
         for it in batch:
             title = it.get("title", "")
             content = it.get("content_preview", "")[:500]
-            texts.append(f"ITEM: {title}\nCONTENT: {content}")
+            texts.append(f"ITEM_ID: {it.get('id', '')}\nTITLE: {title}\nCONTENT: {content}")
 
         prompt = _build_prompt()
         batch_done = False
@@ -108,15 +109,33 @@ def translate_batch(items, api_key, deadline=None):
                     translations = _parse_response(content)
                     if not isinstance(translations, list):
                         raise ValueError("not a JSON array")
-                    for j, trans in enumerate(translations):
-                        if j < len(batch) and isinstance(trans, dict):
-                            batch[j].update({
+                    # 2026-09-04 修复: 原按位置 batch[j] 匹配, 模型返回乱序时译文张冠李戴。
+                    # 改按 id 匹配; 模型未返回 id 时退回按位置(兼容), 并打日志提示
+                    trans_have_id = any(isinstance(t, dict) and t.get("id") for t in translations)
+                    if trans_have_id:
+                        by_id = {t.get("id"): t for t in translations if isinstance(t, dict) and t.get("id")}
+                        for it in batch:
+                            trans = by_id.get(it.get("id", ""))
+                            if not trans:
+                                continue
+                            it.update({
                                 "cn_title": trans.get("cn_title", ""),
                                 "cn_summary": trans.get("cn_summary", ""),
                                 "impact": trans.get("impact", ""),
                                 "language": "cn",
                             })
                             translated += 1
+                    else:
+                        print(f"[translate_local] batch {i//BATCH_SIZE}: model returned no ids, falling back to positional match")
+                        for j, trans in enumerate(translations):
+                            if j < len(batch) and isinstance(trans, dict):
+                                batch[j].update({
+                                    "cn_title": trans.get("cn_title", ""),
+                                    "cn_summary": trans.get("cn_summary", ""),
+                                    "impact": trans.get("impact", ""),
+                                    "language": "cn",
+                                })
+                                translated += 1
                     batch_done = True
                     break
                 except Exception as e:
@@ -203,12 +222,20 @@ def write_back_to_jsonl(translated_items, jsonl_files):
 
 
 def main():
+    # 2026-09-04 参数化: 翻译挪出 CI 后, 本地要消化每轮回流的全部英文条目,
+    # 默认 30 条/360s 不够。refresh 传 --max 100 --budget 900。
+    import argparse
+    parser = argparse.ArgumentParser(description="本地 OpenCode Zen 翻译")
+    parser.add_argument("--max", type=int, default=MAX_PER_RUN)
+    parser.add_argument("--budget", type=int, default=360, help="时间预算(秒), 默认 360 与历史一致")
+    args = parser.parse_args()
+
     # 默认产物目录, 与 refresh.py 一致
     base = Path(r"D:\osint\data")
     jsonl_files = sorted(base.glob("intel_2*.jsonl"))  # 只读 dated jsonl
     print(f"[translate_local] scanning {len(jsonl_files)} jsonl files")
     if not jsonl_files:
-        print("[translate_local] no jsonl found, skip")
+        print(f"[translate_local] no jsonl found, skip")
         return
 
     api_key = get_opencode_key()
@@ -216,16 +243,15 @@ def main():
         print("[translate_local] no OpenCode API key (config.local.yaml / env), skip")
         return
 
-    # 取最新 24h 未翻译, 限 MAX_PER_RUN
-    candidates = collect_unjtranslated(jsonl_files, max_n=MAX_PER_RUN)
+    # 取最新 24h 未翻译, 限 max 条
+    candidates = collect_unjtranslated(jsonl_files, max_n=args.max)
     print(f"[translate_local] {len(candidates)} untranslated candidates")
 
     if not candidates:
         print("[translate_local] nothing to translate")
         return
 
-    # 6 分钟超时 (12 批 * 30s/批)
-    deadline = time.time() + 360
+    deadline = time.time() + args.budget
     translated, failed = translate_batch(candidates, api_key, deadline)
     print(f"[translate_local] {translated} translated, {failed} failed")
 

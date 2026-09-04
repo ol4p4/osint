@@ -42,12 +42,13 @@ def translate_batch(items, api_key, deadline=None):
         for _, item in batch:
             title = item.get("title", "")
             content = item.get("content_preview", "")[:500]
-            texts.append(f"ITEM: {title}\nCONTENT: {content}")
+            texts.append(f"ITEM_ID: {item.get('id', '')}\nTITLE: {title}\nCONTENT: {content}")
 
         prompt = (
             "Translate each ITEM to Chinese. Output JSON array with format: "
-            '[{"cn_title": "中文标题", "cn_summary": "4-6句中文摘要", '
+            '[{"id": "原ITEM_ID原样返回", "cn_title": "中文标题", "cn_summary": "4-6句中文摘要", '
             '"impact": "对中国宏观经济、就业市场和青年失业毕业生的影响分析"}]. '
+            "Each output object MUST carry the id of the ITEM it translates. "
             "Only output JSON, no markdown."
         )
 
@@ -80,12 +81,26 @@ def translate_batch(items, api_key, deadline=None):
                             content = content[4:]
                     content = content.strip().rstrip("`")
                     translations = json.loads(content)
-                    for j, trans in enumerate(translations):
-                        if j < len(batch):
-                            _, item = batch[j]
+                    # 2026-09-04 修复: 原按位置 batch[j] 匹配, 模型返回乱序时译文张冠李戴。
+                    # 改按 id 匹配; 模型未返回 id 时退回按位置(兼容), 并打日志提示
+                    trans_have_id = any(isinstance(t, dict) and t.get("id") for t in translations if isinstance(t, dict))
+                    if trans_have_id:
+                        by_id = {t.get("id"): t for t in translations if isinstance(t, dict) and t.get("id")}
+                        for _, item in batch:
+                            trans = by_id.get(item.get("id", ""))
+                            if not trans:
+                                continue
                             item.update(trans)
                             item["language"] = "cn"
                             translated += 1
+                    else:
+                        print(f"  Batch {i}: model returned no ids, falling back to positional match")
+                        for j, trans in enumerate(translations):
+                            if j < len(batch) and isinstance(trans, dict):
+                                _, item = batch[j]
+                                item.update(trans)
+                                item["language"] = "cn"
+                                translated += 1
                     batch_done = True
                     break
                 except Exception as e:
