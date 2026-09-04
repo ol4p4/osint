@@ -24,7 +24,8 @@ jobs:
   collect:
     name: Collect & Analyze Intelligence
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    # 50 源串行抓取 (每源上限 15s) + RSSHub 容器 + 翻译/关联/验证, 25min 会顶满超时
+    timeout-minutes: 40
     
     steps:
       - uses: actions/checkout@v4
