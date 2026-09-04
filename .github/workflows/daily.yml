@@ -4,6 +4,17 @@ on:
   schedule:
     - cron: "0 */4 * * *"
   workflow_dispatch:
+  push:
+    branches: [master]
+    # 仅配置/文档变更触发 (CI 自身只提交 intel jsonl, 不会命中这些路径 → 不会循环触发)
+    paths:
+      - "sources.yaml"
+      - "config.yaml"
+      - "requirements.txt"
+      - "AGENTS.md"
+      - "HANDOFF.md"
+      - "docs/**"
+      - ".github/workflows/**"
 
 permissions:
   contents: write
