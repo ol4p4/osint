@@ -132,13 +132,12 @@ KB 概念页：`D:\Codex输出\视频知识库\wiki\concepts\宏观-五维分析
    - 双联防御：CI 已 6x/day（cron `0 */4 * * *`，commit edbd79d）+ 本地 `OsintWatchdog` 计划任务每 6h 检查 `intel_2*.jsonl` mtime，> 8h 静默则 `gh workflow run daily.yml`，日志 `data/logs/watchdog_YYYYMMDD.log`
 9. **仪表盘时间错乱**：time_ago 已改为浏览器端动态计算（gen_dashboard.py 内嵌 JS IIFE），不再依赖采集时写死的静态文本
 10. **fetch_list 采集 0 条**（2026-08-30 诊断）：接口缺陷已修（main 现在写 output jsonl，与 fetch_rss 同接口）；但所有列表源在 CI 上也解析出 0 条——**sources.yaml 的 list_selector 已与改版后的页面结构脱节**（gov.cn 还是 JS 渲染页）。逐源修选择器是持久战，替代方案：改用 RSSHub 或各站 RSS 源。
-11. **仪表盘情报全显示 "8 小时前" 但金十/财联社实际在发**（2026-09-01 诊断）：**90% 是本地 RSSHub Docker 容器没起**。排查：
-   - `docker ps | grep rsshub` 看容器在不在
-   - `curl -s http://localhost:1200/jin10 | head -3` 看 RSSHub 是否健康
-   - 不在/不健康：`docker run -d --name rsshub -p 1200:1200 --restart unless-stopped diygod/rsshub:latest`
-   - 容器有了还报 0 条：CI 端 GitHub Runner 限流金十/财联社仅 9 条切片，**改用 `python D:\osint\tools\fetch_now.py` 走本地 24h 全量**（绕开 CI 限流，401+ 条/24h）
-   - 永久修：`refresh.py:ensure_rsshub()` 启动时 3s 探活 + `fetch_now()` 24h 拉取，OsintRefresh 计划任务每小时跑无需人工介入
-   - 详细步骤见 `C:\Users\admin\.zcode\cli\memories\projects\osint-d824a33e2ef30701\memory\osint-rsshub-local-bootstrap.md`
+11. **仪表盘情报全显示 "8 小时前" 但金十/财联社实际在发**（2026-09-01 诊断；**2026-09-04 已基本根治**）：原 90% 是本地 RSSHub Docker 容器没起。9-04 起 fetch_rss 三级改造后**无 RSSHub 也能拉全源**：
+   - 金十/新浪(7x24+滚动) → 官方直连 API（sources.yaml `direct: jin10_flash / sina_zhibo / sina_roll`，不经任何 RSSHub）
+   - 其余 7 条 RSSHub 路由 → 本地容器失败自动退公共镜像（`hub.slarker.me` → `rsshub.rssforever.com`，见 fetch_rss.py `RSSHUB_BASES`，可用环境变量 `RSSHUB_BASES` 覆盖）
+   - 实测 Docker 全程关闭：46 源中受影响 10 源 10/10 覆盖、377 条/24h（镜像限流时某源可能暂缺，下一轮自动恢复）
+   - Docker 开着时本地容器仍优先（更快；公共镜像有匿名限流，勿长期裸奔依赖）
+   - 历史排查步骤（RSSHub 时代）见 `C:\Users\admin\.zcode\cli\memories\projects\osint-d824a33e2ef30701\memory\osint-rsshub-local-bootstrap.md`
 
 ## 数据量级真相（2026-08-30 诊断）
 - 关键词表（sources.yaml keyword_weights）是**中文**（就业/失业/毕业生/落户…），47 个源以英文为主 → 每日命中通常只有 0~3 条，**这是筛选器设计行为而非故障**

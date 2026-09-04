@@ -1,15 +1,27 @@
 import feedparser
 import hashlib
 import json
+import os
 import time
 import urllib.request
 import socket
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
 from typing import List, Dict, Any, Optional
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 import re
 import sys
+
+
+# RSSHub 兜底链: 本地容器优先(CI 内自建), 失败依次退公共镜像。
+# 本地 Docker/RSSHub 不在时 (日常本机常态), 7/9 路由可由镜像兜底;
+# 金十/新浪已改为官方直连 API (sources.yaml direct 字段), 不经过任何 RSSHub。
+RSSHUB_BASES = ["http://localhost:1200", "https://hub.slarker.me", "https://rsshub.rssforever.com"]
+_env_bases = os.environ.get("RSSHUB_BASES", "").strip()
+if _env_bases:
+    RSSHUB_BASES = [b.strip().rstrip("/") for b in _env_bases.split(",") if b.strip()]
+# 命中这些 netloc 的源视为 RSSHub 路由, 走兜底链
+RSSHUB_NETLOCS = {"localhost:1200", "127.0.0.1:1200", "rsshub.app"}
 
 
 def _safe_rss_fetch(url, timeout=15, max_bytes=512000):
@@ -57,15 +69,39 @@ class RSSFetcher:
     
     def _fetch_source(self, source, cutoff_time):
         url = source["url"]
-        # Fetch with timeout using urllib
+        # JSON 直连源 (sources.yaml direct 字段): 官方 API, 不依赖 RSSHub
+        direct = source.get("direct")
+        if direct:
+            return self._fetch_direct(source, direct, cutoff_time)
+        # RSSHub 路由源: 本地容器 -> 公共镜像 逐级兜底, 全部失败才放弃
         try:
-            socket.setdefaulttimeout(15)
-            raw = _safe_rss_fetch(url)
-            feed = feedparser.parse(raw)
+            parsed = urlparse(url)
+        except Exception:
+            parsed = None
+        if parsed and parsed.netloc in RSSHUB_NETLOCS:
+            route = parsed.path
+            for base in RSSHUB_BASES:
+                try:
+                    items = self._fetch_rss_url(source, base + route, cutoff_time)
+                    if items:
+                        if base != RSSHUB_BASES[0]:
+                            print(f"  [RSSHub fallback] {source['name']} via {base}")
+                        return items
+                except Exception as e:
+                    print(f"  [RSSHub] {base}{route} failed: {e}")
+            print(f"  [RSSHub] all bases failed for {source['name']}")
+            return []
+        try:
+            return self._fetch_rss_url(source, url, cutoff_time)
         except Exception as e:
             print(f"  Fetch failed: {e}")
             return []
-        
+
+    def _fetch_rss_url(self, source, url, cutoff_time):
+        socket.setdefaulttimeout(15)
+        raw = _safe_rss_fetch(url)
+        feed = feedparser.parse(raw)
+
         items = []
         for entry in feed.entries:
             published = self._parse_entry_time(entry)
@@ -97,7 +133,124 @@ class RSSFetcher:
             items.append(item)
         
         return items
-    
+
+    # ---- JSON 直连源 (2026-09-04, 摆脱 RSSHub 依赖) ----
+
+    def _fetch_direct(self, source, kind, cutoff_time):
+        try:
+            if kind == "jin10_flash":
+                items = self._direct_jin10(source, cutoff_time)
+            elif kind == "sina_zhibo":
+                items = self._direct_sina_zhibo(source, cutoff_time)
+            elif kind == "sina_roll":
+                items = self._direct_sina_roll(source, cutoff_time)
+            else:
+                print(f"  [direct] unknown kind: {kind}")
+                items = []
+            print(f"  [direct:{kind}] {len(items)} items")
+            return items
+        except Exception as e:
+            print(f"  [direct:{kind}] Fetch failed: {e}")
+            return []
+
+    def _direct_item(self, source, title, content, link, published_utc):
+        """直连条目 -> 标准情报 dict (与 RSS 路径同结构/同过滤/同打分)"""
+        content = re.sub(r"<[^>]+>", " ", content or "")
+        content = re.sub(r"\s+", " ", content).strip()
+        if not content or len(content) < 50:
+            return None
+        uid = self._make_id(source["name"], link, title)
+        keywords_hit, kw_score = self._calc_keyword_score(title + " " + content)
+        return {
+            "id": uid,
+            "source": "rss",
+            "source_name": source["name"],
+            "category": source.get("category", "rss"),
+            "title": (title or content[:60]).strip(),
+            "url": link,
+            "content_preview": content[:2000],
+            "published_at": published_utc.isoformat(),
+            "keywords_hit": keywords_hit,
+            "base_score": round(source.get("weight", 1.0) * kw_score, 3),
+            "language": self._detect_lang(title + " " + content),
+            "entities": [],
+        }
+
+    def _direct_jin10(self, source, cutoff_time):
+        """金十快讯官方接口: flash_newest.js -> var newest = [...] (北京时间字符串)"""
+        raw = _safe_rss_fetch("https://www.jin10.com/flash_newest.js", timeout=15)
+        m = re.search(r"\[.*\]", raw.decode("utf-8", "replace"), re.S)
+        data = json.loads(m.group(0)) if m else []
+        tz8 = timezone(timedelta(hours=8))
+        out = []
+        for it in data[:80]:
+            d = it.get("data") or {}
+            content = str(d.get("content") or "").strip()
+            title = str(d.get("title") or "").strip()
+            if not content and not title:
+                continue
+            try:
+                dt = datetime.strptime(it.get("time", ""), "%Y-%m-%d %H:%M:%S").replace(tzinfo=tz8).astimezone(timezone.utc)
+            except Exception:
+                continue
+            if dt < cutoff_time:
+                continue
+            item = self._direct_item(source, title or content[:60],
+                                     title + " " + content if title else content,
+                                     f"https://www.jin10.com/flash/{it.get('id', '')}", dt)
+            if item:
+                out.append(item)
+        return out
+
+    def _direct_sina_zhibo(self, source, cutoff_time):
+        """新浪 7x24 直播官方接口: zhibo_id=152 (create_time 为北京时间字符串)"""
+        raw = _safe_rss_fetch(
+            "https://zhibo.sina.com.cn/api/zhibo/feed?zhibo_id=152&page=1&page_size=100", timeout=15)
+        lst = json.loads(raw.decode("utf-8", "replace"))["result"]["data"]["feed"]["list"]
+        tz8 = timezone(timedelta(hours=8))
+        out = []
+        for it in lst:
+            text = str(it.get("rich_text") or "").strip()
+            if not text:
+                continue
+            ct = it.get("create_time")
+            try:
+                if isinstance(ct, (int, float)):
+                    dt = datetime.fromtimestamp(int(ct), tz=timezone.utc)
+                else:
+                    dt = datetime.strptime(str(ct), "%Y-%m-%d %H:%M:%S").replace(tzinfo=tz8).astimezone(timezone.utc)
+            except Exception:
+                continue
+            if dt < cutoff_time:
+                continue
+            item = self._direct_item(source, text[:60], text,
+                                     f"https://finance.sina.com.cn/7x24/?id={it.get('id', '')}", dt)
+            if item:
+                out.append(item)
+        return out
+
+    def _direct_sina_roll(self, source, cutoff_time):
+        """新浪滚动新闻官方接口: pageid=153&lid=2509 (ctime 为 epoch 秒)"""
+        raw = _safe_rss_fetch(
+            "https://feed.mix.sina.com.cn/api/roll/get?pageid=153&lid=2509&k=&num=50&page=1", timeout=15)
+        lst = json.loads(raw.decode("utf-8", "replace"))["result"]["data"]
+        out = []
+        for it in lst:
+            title = str(it.get("title") or "").strip()
+            if not title:
+                continue
+            try:
+                dt = datetime.fromtimestamp(int(it.get("ctime")), tz=timezone.utc)
+            except Exception:
+                continue
+            if dt < cutoff_time:
+                continue
+            item = self._direct_item(source, title, str(it.get("intro") or title),
+                                     str(it.get("url") or ""), dt)
+            if item:
+                out.append(item)
+        return out
+
     def _parse_entry_time(self, entry):
         for field in ["published_parsed", "updated_parsed"]:
             t = getattr(entry, field, None)

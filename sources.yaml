@@ -1,5 +1,6 @@
 rss_sources:
-# ── RSSHub 容器源（CI 内 localhost:1200 运行, 见 daily.yml Start RSSHub 步骤; 2026-08-30 接入）──
+# ── RSSHub 路由源（本地容器 1200 优先, 失败自动退公共镜像 hub.slarker.me / rsshub.rssforever.com；
+#    金十/新浪已改官方直连 API, 见 direct 字段, 2026-09-04）──
 - name: 华尔街见闻-快讯
   url: http://localhost:1200/wallstreetcn/live
   type: rss
@@ -26,7 +27,8 @@ rss_sources:
   category: tech
   weight: 0.9
 - name: 金十数据-快讯
-  url: http://localhost:1200/jin10
+  url: https://www.jin10.com/flash_newest.js
+  direct: jin10_flash
   type: rss
   category: finance
   weight: 0.9
@@ -42,12 +44,14 @@ rss_sources:
   category: east_asia
   weight: 1.1
 - name: 新浪财经-7x24直播
-  url: http://localhost:1200/sina/finance/live
+  url: https://zhibo.sina.com.cn/api/zhibo/feed?zhibo_id=152
+  direct: sina_zhibo
   type: rss
   category: finance
   weight: 1.0
 - name: 新浪财经-滚动新闻
-  url: http://localhost:1200/sina/roll/2509
+  url: https://feed.mix.sina.com.cn/api/roll/get?pageid=153&lid=2509
+  direct: sina_roll
   type: rss
   category: finance
   weight: 1.0

@@ -117,7 +117,7 @@ CI 抓 RSS → git push → OsintRefresh 计划任务 git pull + 抓本地 RSS +
 注意:
 - **解释器必须用 `E:\software\python3.13.8\python.exe`** (9-04 已补装 pyyaml 6.0.3; 链路只需 feedparser+yaml, 均已就位)
 - CI 并没有停 (此前"3 天无 auto commit"是本地没 pull 的假象); CI 停更时 watchdog 本地自愈兜底
-- RSSHub 依赖 Docker Desktop 运行; Docker 不在时 fetch_now 直接打源站, 本地 24h 拉取降级可用 (实测 46 源 207 条)
+- **9-04 起本地拉取已不依赖 RSSHub**: 金十/新浪走官方直连 API (sources.yaml `direct` 字段), 其余 7 条 RSSHub 路由自动退公共镜像 (hub.slarker.me → rsshub.rssforever.com, 见 fetch_rss.py RSSHUB_BASES)。Docker/RSSHub 全程不开也能拉全 46 源 (实测 10/10 覆盖 377 条/24h); Docker 开着时本地容器仍优先 (更快, 公共镜像有限流风险)
 - 假设树 71 节点但 evidence 全空 / 0 falsified (link_intel_hyp 结果未写回), 验证闭环仍待接
 - `cn_m1_yoy`/`cn_m2_yoy` 存的是余额绝对值而非同比, 下游勿按同比解读
 - `refresh.py` 9-04 修复: 删除遮蔽 import 的本地 git_pull (改用 local_sync 带超时版); open() 改 Path 方法式 API

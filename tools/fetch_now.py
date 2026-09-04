@@ -1,5 +1,6 @@
 """一次性本地全量 RSS 拉取 + 写入 jsonl + rebuild dashboard
-适用于: 本地 RSSHub 容器已起, refresh.py 默认配置没有走 24h 全量窗口
+适用于: 本地全量 24h 拉取 (不依赖本地 RSSHub 容器 — 路由源自动退公共镜像,
+金十/新浪走官方直连 API), refresh.py 默认配置没走 24h 全量窗口
 """
 import sys, json
 from pathlib import Path
@@ -40,7 +41,7 @@ if jsonl_path.exists():
 
 # 追加新条目
 appended = 0
-with open(jsonl_path, "a", encoding="utf-8") as f:
+with jsonl_path.open("a", encoding="utf-8") as f:
     for it in new_items:
         if it["id"] in existing_ids:
             continue
