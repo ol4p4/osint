@@ -233,6 +233,26 @@ def translate_now():
         print(f"translate_now stderr: {r.stderr.strip()[:200]}")
 
 
+def impact_now():
+    """本地 AI 研判 (citizen_impact.py: 双层身份传导 + 四维诊断)。
+    2026-09-04 新增: 此前研判只在 CI 跑 (4h/轮, 每轮 480s 预算实测产出 20-40 条,
+    vs 日新增 ~360 条 → 覆盖仅 8%, 仪表盘"后面不再分析"的根因)。
+    本地每小时跑 50 条/900s 预算, 日吞吐上限 ~1200 条, 可追平新增。
+    失败不阻塞 refresh (次日轮续跑, 未研判条目无 impact_level 自然重试)。
+    """
+    r = subprocess.run(
+        [sys.executable, str(PROJECT / "cloud" / "citizen_impact.py"),
+         "--dir", str(BASE), "--max", "50", "--budget", "900"],
+        cwd=str(PROJECT), capture_output=True, text=True, timeout=960,
+    )
+    if r.stdout:
+        for line in r.stdout.splitlines():
+            if "[IMPACT]" in line:
+                print(f"impact_now: {line.strip()}")
+    if r.returncode != 0 and r.stderr:
+        print(f"impact_now stderr: {r.stderr.strip()[:200]}")
+
+
 if __name__ == "__main__":
     with run_logging():
         print(f"\n=== Refresh at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ===")
@@ -242,6 +262,7 @@ if __name__ == "__main__":
         ensure_rsshub()  # 保 RSSHub 健康(8h 滞后根因修复)
         fetch_now()       # 24h 全量本地拉(绕开 CI 9 条限流)
         translate_now()   # 本地 OpenCode Zen 翻译 (替代 CI 翻译吞吐瓶颈)
+        impact_now()      # 本地 AI 研判 (替代 CI 研判吞吐瓶颈, 2026-09-04 新增)
         count = rebuild_data()
         fetch_macro()
         fetch_unemployment_history()

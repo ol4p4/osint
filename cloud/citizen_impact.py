@@ -149,6 +149,8 @@ def main():
     parser = argparse.ArgumentParser(description="AI 三层研判（公民/毕业生/四维）")
     parser.add_argument("--dir", default=".", help="intel_*.jsonl 所在目录（CI 默认 cwd，本地传产物目录）")
     parser.add_argument("--max", type=int, default=MAX_PER_RUN)
+    parser.add_argument("--budget", type=int, default=480,
+                        help="AI 调用总时间预算(秒)。CI 保持 480(job 上限内), 本地放宽到 900 提升吞吐")
     args = parser.parse_args()
 
     cfg_path = Path(__file__).resolve().parent.parent / "config.yaml"
@@ -179,7 +181,7 @@ def main():
     print(f"[IMPACT] to analyze: {len(todo)} across {len(files)} files")
 
     analyzed = 0
-    deadline = time.time() + 480  # 8 分钟预算(CI job 25 分钟上限内给翻译/研判各留余量)
+    deadline = time.time() + args.budget  # 默认 480s(CI), 本地传 900 提升吞吐(2026-09-04 参数化)
     for i in range(0, len(todo), BATCH_SIZE):
         if time.time() > deadline:
             print(f"[IMPACT] time budget exhausted, {len(todo)-i} items left for next CI run")
