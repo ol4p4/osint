@@ -182,8 +182,9 @@ def fetch_unemployment_history():
 
 
 def ensure_rsshub():
-    """保 RSSHub 容器在 + 健康。中断恢复:Docker 重启后容器要 5-15s 健康。
-    失败不阻塞 refresh, fetch_now 走不到时后续 0 items 已知退化。
+    """探测本地 RSSHub (localhost:1200)。2026-09-04 去掉 docker start/run 逻辑:
+    本地不再拉起容器 (用户决策)——路由源走公共镜像兜底链 (slarker/rssforever),
+    金十/新浪走 direct 直连, 国际源本就 scope:ci 由 CI 采集。失败不阻塞 refresh。
     """
     try:
         import urllib.request, socket
@@ -193,35 +194,7 @@ def ensure_rsshub():
             return  # healthy
         except Exception:
             pass
-        # 不健康,尝试启动容器
-        print("rsshub: localhost:1200 not healthy, starting container...")
-        r = subprocess.run(
-            ["docker", "start", "rsshub"],
-            capture_output=True, text=True, timeout=30,
-        )
-        if r.returncode != 0:
-            # 容器不存在,创建它
-            print("rsshub: container missing, creating...")
-            r = subprocess.run(
-                ["docker", "run", "-d", "--name", "rsshub",
-                 "-p", "1200:1200", "--restart", "unless-stopped",
-                 "diygod/rsshub:latest"],
-                capture_output=True, text=True, timeout=120,
-            )
-            if r.returncode != 0:
-                print(f"rsshub: failed to start: {r.stderr.strip()[:200]}")
-                return
-        # 等 15s 让容器起
-        import time
-        for i in range(15):
-            time.sleep(1)
-            try:
-                urllib.request.urlopen("http://localhost:1200/", timeout=2)
-                print(f"rsshub: ready after {i+1}s")
-                return
-            except Exception:
-                continue
-        print("rsshub: still not ready after 15s, fetch may fail")
+        print("rsshub: 本机无容器, 路由源将走公共镜像兜底 (slarker/rssforever); 金十/新浪走直连")
     except Exception as e:
         print(f"rsshub: ensure failed: {e}")
 
