@@ -348,6 +348,7 @@ Output JSON array, each: {{"claim":"...","indicator":"measurable metric","data_s
                         except Exception as ex:
                             print("[ACH] diagnose failed: " + str(ex))
                     ach.bayesian_update(hyps)
+                    ach.sensitivity_analysis()  # P0-4：逐条证据中性化看排名稳定性
                     ach.export_markdown(self.output_dir)
                 ach.save()
         except Exception as e:

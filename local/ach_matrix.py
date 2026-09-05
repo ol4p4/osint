@@ -175,6 +175,50 @@ class ACHMatrix:
         self.data["scoring"] = scores
         return scores
 
+    # ---------- 敏感性分析（P0-4：学 ArkhamMirror / Heuer 方法论收尾步） ----------
+    def sensitivity_analysis(self):
+        """逐条证据把 LR 中性化(置1重算其余证据的后验)，看 Top-1 是否翻转、后验变化多大。
+        诊断性最高的证据 = 移除后排名/后验变动最大的那条。
+        Heuer：ACH 的价值在于告诉分析师**下一步该去找什么证据**。
+        须在 bayesian_update() 之后调用（依赖 self.data['scoring']）。"""
+        base = {hid: s.get("posterior", 0.5)
+                for hid, s in (self.data.get("scoring") or {}).items()}
+        if not base:
+            return {}
+        top1 = max(base, key=lambda k: base[k])
+        results = []
+        for ev in self.data["evidence"]:
+            neutral = {}
+            for h in self.majors:
+                prior = float(h.get("base_confidence") or h.get("confidence") or 0.5)
+                odds = prior / max(1 - prior, 0.01)
+                for e2 in self.data["evidence"]:
+                    if e2.get("key") == ev.get("key"):
+                        continue  # 本条证据中性化（LR 不参与）
+                    d = e2.get("diagnosis", {}).get(h["id"])
+                    if d:
+                        odds *= d.get("lr", 1.0)
+                neutral[h["id"]] = min(odds / (1 + odds), POSTERIOR_CAP)
+            new_top1 = max(neutral, key=lambda k: neutral[k])
+            deltas = {hid: base.get(hid, 0.0) - neutral[hid] for hid in neutral}
+            moved = max(deltas, key=lambda k: abs(deltas[k]))
+            results.append({
+                "key": ev.get("key"),
+                "summary": (ev.get("summary") or "")[:80],
+                "date": ev.get("date", ""),
+                "top1_flip": new_top1 != top1,
+                "new_top1": new_top1,
+                "top1_delta": round(deltas.get(top1, 0.0), 3),
+                "max_abs_delta": round(abs(deltas[moved]), 3),
+                "moved_hyp": moved,
+            })
+        results.sort(key=lambda r: (-r["max_abs_delta"], not r["top1_flip"]))
+        out = {"top1": top1, "flips": sum(1 for r in results if r["top1_flip"]),
+               "n_evidence": len(results), "items": results[:10],
+               "updated_at": time.strftime("%Y-%m-%dT%H:%M:%S")}
+        self.data["sensitivity"] = out
+        return out
+
     # ---------- 导出 ----------
     def export_markdown(self, out_dir):
         """Obsidian 风格矩阵周报：假设 × 最近证据的 C/I/N 表 + 排名"""
@@ -198,6 +242,26 @@ class ACHMatrix:
                 d = ev.get("diagnosis", {}).get(h["id"], {})
                 row.append(d.get("code", "·") + str(d.get("lr", "")))
             lines.append("| " + " | ".join(row) + " |")
+
+        # P0-4 敏感性分析节：哪条证据决定排名、哪个结论最脆弱
+        sens = self.data.get("sensitivity")
+        if sens and sens.get("items"):
+            top1_title = next((h.get("title", sens["top1"]) for h in self.majors
+                               if h["id"] == sens["top1"]), sens["top1"])
+            lines += ["", "## 敏感性分析（逐条证据中性化后的排名稳定性）", "",
+                      "当前 Top-1：**" + top1_title + "**；移除单条证据后排名翻转 "
+                      + str(sens.get("flips", 0)) + " 次（共 " + str(sens.get("n_evidence", 0)) + " 条证据）。", "",
+                      "| 证据 | 移除后 Top-1 变为 | 翻转 | 最大单假设后验变化 |",
+                      "|---|---|---|---|"]
+            for r in sens["items"][:5]:
+                t = next((h.get("title", r["new_top1"])[:16] for h in self.majors
+                          if h["id"] == r["new_top1"]), r["new_top1"])
+                lines.append("| " + r.get("summary", "")[:28] + " | " + t + " | "
+                             + ("⚠️ 翻转" if r.get("top1_flip") else "否")
+                             + " | " + format(r.get("max_abs_delta", 0), "+.3f") + " |")
+            lines += ["", "> 下一步该找的证据：对 Top-1 后验变化最大的证据做补充核实；"
+                      "若移除某条证据即翻盘，说明当前结论最脆弱。"]
+
         p = out / ("ach_matrix_" + time.strftime("%Y%m%d") + ".md")
         p.write_text("\n".join(lines), encoding="utf-8")
         print("[ACH] matrix report: " + str(p))

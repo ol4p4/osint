@@ -180,6 +180,20 @@ def fetch_macro():
     return r.returncode == 0
 
 
+def run_calibration():
+    """P0-1 校准评分：读 resolutions.jsonl 算 Brier/Murphy → data/calibration.json。
+    纯本地计算毫秒级；resolutions 由周循环验证到期假设时写入，平时跑只是刷新。"""
+    r = subprocess.run(
+        [sys.executable, str(PROJECT / "local" / "calibration.py")],
+        cwd=str(PROJECT), capture_output=True, text=True, creationflags=_NO_WINDOW
+    )
+    if r.stdout:
+        print(f"calibration: {r.stdout.strip()[:200]}")
+    if r.returncode != 0 and r.stderr:
+        print(f"calibration stderr: {r.stderr.strip()[:200]}")
+    return r.returncode == 0
+
+
 def fetch_unemployment_history():
     """拉取 NBS 分年龄组失业率历史月度序列 → data/cn_unemployment_history.json
     NBS 每月19日发布上月数据,财新20日左右转载。节流策略:同月内只跑一次。
@@ -298,6 +312,7 @@ if __name__ == "__main__":
         translate_now()   # 本地 OpenCode Zen 翻译 (替代 CI 翻译吞吐瓶颈)
         impact_now()      # 本地 AI 研判 (替代 CI 研判吞吐瓶颈, 2026-09-04 新增)
         count = rebuild_data()
+        run_calibration()
         fetch_macro()
         fetch_unemployment_history()
         gen_html()
