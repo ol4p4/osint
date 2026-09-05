@@ -6,6 +6,10 @@ import subprocess, sys, json, glob, os, re
 from pathlib import Path
 from datetime import datetime, timedelta
 
+# 2026-09-04 静默化: 计划任务 OsintRefresh 已改为 pythonw 运行(无控制台),
+# 子进程若不加 CREATE_NO_WINDOW, 每个控制台子程序(如 git.exe)会新建可见窗口闪屏
+_NO_WINDOW = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
+
 PROJECT = Path(r"D:\osint")
 BASE = Path(r"D:\osint\data")
 sys.path.insert(0, str(PROJECT))
@@ -147,9 +151,9 @@ def rebuild_data():
 
 def gen_html():
     """运行 gen_dashboard.py + fix_dashboard.py"""
-    r1 = subprocess.run([sys.executable, str(PROJECT / "gen_dashboard.py")], cwd=str(PROJECT), capture_output=True, text=True)
+    r1 = subprocess.run([sys.executable, str(PROJECT / "gen_dashboard.py")], cwd=str(PROJECT), capture_output=True, text=True, creationflags=_NO_WINDOW)
     print(f"gen_dashboard: {r1.stdout.strip()[:100]}")
-    r2 = subprocess.run([sys.executable, str(PROJECT / "fix_dashboard.py")], cwd=str(PROJECT), capture_output=True, text=True)
+    r2 = subprocess.run([sys.executable, str(PROJECT / "fix_dashboard.py")], cwd=str(PROJECT), capture_output=True, text=True, creationflags=_NO_WINDOW)
     print(f"fix_dashboard: OK")
     return r1.returncode == 0
 
@@ -157,7 +161,7 @@ def fetch_macro():
     """拉取宏观指标（汇率/利率/GDP等）→ data/macro_indicators.json"""
     r = subprocess.run(
         [sys.executable, str(PROJECT / "tools" / "fetch_macro_indicators.py")],
-        cwd=str(PROJECT), capture_output=True, text=True
+        cwd=str(PROJECT), capture_output=True, text=True, creationflags=_NO_WINDOW
     )
     if r.stdout:
         print(f"macro: {r.stdout.strip()[:200]}")
@@ -188,7 +192,7 @@ def fetch_unemployment_history():
             pass
     r = subprocess.run(
         [sys.executable, str(PROJECT / "tools" / "fetch_macro_indicators.py"), "--history"],
-        cwd=str(PROJECT), capture_output=True, text=True
+        cwd=str(PROJECT), capture_output=True, text=True, creationflags=_NO_WINDOW
     )
     if r.stdout:
         print(f"unrate-history: {r.stdout.strip()[:300]}")
@@ -222,6 +226,7 @@ def fetch_now():
     r = subprocess.run(
         [sys.executable, str(PROJECT / "tools" / "fetch_now.py")],
         cwd=str(PROJECT), capture_output=True, text=True, timeout=300,
+        creationflags=_NO_WINDOW,
     )
     if r.stdout:
         # 打印关键行
@@ -241,6 +246,7 @@ def translate_now():
         [sys.executable, str(PROJECT / "tools" / "translate_local.py"),
          "--max", "100", "--budget", "900"],
         cwd=str(PROJECT), capture_output=True, text=True, timeout=960,
+        creationflags=_NO_WINDOW,
     )
     if r.stdout:
         for line in r.stdout.splitlines():
@@ -261,6 +267,7 @@ def impact_now():
         [sys.executable, str(PROJECT / "cloud" / "citizen_impact.py"),
          "--dir", str(BASE), "--max", "50", "--budget", "900"],
         cwd=str(PROJECT), capture_output=True, text=True, timeout=960,
+        creationflags=_NO_WINDOW,
     )
     if r.stdout:
         for line in r.stdout.splitlines():

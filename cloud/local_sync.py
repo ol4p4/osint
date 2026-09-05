@@ -25,6 +25,10 @@ ALLOWED_DIRS = (PROJECT, BASE)
 INTEL_NAME_RE = re.compile(r"^intel_2\d{7}\.jsonl$")
 LOG_NAME_RE = re.compile(r"^refresh_2\d{7}\.log$")
 
+# 2026-09-04 静默化: 计划任务 OsintRefresh 以 pythonw 运行(无控制台),
+# git.exe 是控制台程序, 不加 CREATE_NO_WINDOW 会在每次 pull 时新建可见窗口
+_NO_WINDOW = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
+
 
 def check_inside(p):
     """规范化路径并校验必须位于 PROJECT 或 BASE 目录树内（防路径穿越）"""
@@ -84,7 +88,8 @@ def git_pull():
         return False
     try:
         r = subprocess.run(["git", "pull", "origin", "master"], cwd=str(PROJECT),
-                           capture_output=True, text=True, timeout=120)
+                           capture_output=True, text=True, timeout=120,
+                           creationflags=_NO_WINDOW)
         print(f"Git pull: {(r.stdout or r.stderr).strip()[:120]}")
         return r.returncode == 0
     except Exception as e:
