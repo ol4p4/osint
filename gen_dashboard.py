@@ -71,6 +71,16 @@ except:
     pass
 valuation_json = json.dumps(valuation_data, ensure_ascii=False) if valuation_data else "null"
 
+# 校准数据（local/calibration.py 产出，P0-1：Brier + Murphy 三分解 + 十桶校准曲线）
+CALIB_FILE = Path(r"D:\osint\data\calibration.json")
+calib_data = None
+try:
+    with open(CALIB_FILE, "r", encoding="utf-8") as f:
+        calib_data = json.load(f)
+except:
+    pass
+calib_json = json.dumps(calib_data, ensure_ascii=False) if calib_data else "null"
+
 # 主题: 从 config.yaml 读, 用户可点右上角 toggle 切换
 THEME = "dark"
 try:
@@ -150,6 +160,18 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
 .kpi-macro{min-width:0}
 .kpi-ach{border-left:1px solid var(--border);padding-left:16px}
 @media(max-width:900px){.kpi-ach{border-left:0;border-top:1px solid var(--border);padding-left:0;padding-top:16px}}
+/* Calibration panel (P0-1) */
+.calib-stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.calib-stat{padding:8px 12px;border:1px solid var(--border);border-radius:6px;background:var(--bg)}
+.calib-stat b{display:block;font-size:16px;font-family:"JetBrains Mono",monospace}
+.calib-stat span{font-size:9px;color:var(--text-muted)}
+.calib-bins{display:flex;gap:6px;align-items:stretch}
+.calib-bin{flex:1;display:flex;flex-direction:column}
+.calib-bin-bar{width:100%;height:80px;display:flex;align-items:flex-end;background:var(--bg-muted);border-radius:4px;overflow:hidden}
+.calib-bin-bar span{display:block;width:100%}
+.calib-bin-lab{font-size:9px;color:var(--text-secondary);margin-top:4px;font-family:"JetBrains Mono",monospace;text-align:center}
+.calib-bin-val{font-size:8px;color:var(--text-muted);text-align:center;line-height:1.4}
+@media(max-width:900px){.calib-bins{flex-wrap:wrap}.calib-bin{min-width:48px}}
 
 /* Macro grid inside KPI */
 .macro-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
@@ -398,6 +420,22 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
     <p class="trend-note">注：NBS 2023-08~11 停发; 2023-12 起新口径"不含在校生"与历史不可比; 数据每月20日自动抓取</p>
   </div>
   <div id="unrateEmpty" class="empty-tip">等待历史数据加载…</div>
+</div>
+
+<!-- Calibration Section: 假设置信度校准（P0-1） -->
+<div class="section">
+  <div class="section-header">
+    <div>
+      <div class="section-title">🎯 假设校准（Brier / Murphy 三分解）</div>
+      <div class="section-subtitle">预测概率 vs 实际命中率 · 验证结果由周循环写入 resolutions</div>
+    </div>
+  </div>
+  <div id="calibPanel" style="display:none">
+    <div id="calibStats" class="calib-stats"></div>
+    <div id="calibBins" class="calib-bins"></div>
+    <div id="calibMeta" style="font-size:10px;color:var(--text-muted);margin-top:8px"></div>
+  </div>
+  <div id="calibEmpty" class="empty-tip">暂无已验证假设 — 周循环验证到期假设后自动产出</div>
 </div>
 
 <!-- Intel Feed -->
@@ -663,6 +701,41 @@ var MACRO_DATA=""" + macro_json + """;
 hyp_js_lines.append(ach_js)
 hyp_js_lines.append(macro_js)
 hyp_js_lines.append(unrate_js)
+# 校准面板（P0-1）：Brier + Murphy 三分解 KPI + 十桶预测vs实际命中率
+calibration_js = """
+var CALIB_DATA=""" + calib_json + """;
+(function(){
+  var panel=document.getElementById('calibPanel');
+  var empty=document.getElementById('calibEmpty');
+  if(!panel)return;
+  if(!CALIB_DATA||!CALIB_DATA.n_resolved){ if(empty)empty.style.display='block'; return; }
+  if(empty)empty.style.display='none';
+  panel.style.display='block';
+  function f(v){return (v===undefined||v===null)?'--':v}
+  document.getElementById('calibStats').innerHTML=
+    '<div class="calib-stat"><b>'+f(CALIB_DATA.brier)+'</b><span>Brier ↓</span></div>'
+   +'<div class="calib-stat"><b>'+f(CALIB_DATA.reliability)+'</b><span>可靠性(校准差) ↓</span></div>'
+   +'<div class="calib-stat"><b>'+f(CALIB_DATA.resolution)+'</b><span>分辨度 ↑</span></div>'
+   +'<div class="calib-stat"><b>'+f(CALIB_DATA.uncertainty)+'</b><span>不确定性</span></div>'
+   +'<div class="calib-stat"><b>'+CALIB_DATA.n_resolved+'</b><span>已验证假设</span></div>';
+  var bins=CALIB_DATA.bins||[];
+  var maxN=Math.max.apply(null,bins.map(function(b){return b.n}).concat([1]));
+  document.getElementById('calibBins').innerHTML=bins.map(function(b){
+    var hPct=b.n?Math.round(b.n/maxN*100):0;
+    var barCol=(b.avg_prediction!=null&&b.avg_outcome!=null)?((b.avg_outcome>=b.avg_prediction-0.05)?'#16a34a':'#d97706'):'#94a3b8';
+    var label=(b.avg_prediction!=null)?('预测'+Math.round(b.avg_prediction*100)+'%<br>实际'+Math.round((b.avg_outcome||0)*100)+'%'):'无样本';
+    return '<div class="calib-bin"><div class="calib-bin-bar"><span style="height:'+hPct+'%;background:'+barCol+'"></span></div>'
+      +'<div class="calib-bin-lab">'+Math.round(b.lo*100)+'-'+Math.round(b.hi*100)+'%</div>'
+      +'<div class="calib-bin-val">'+label+'</div></div>';
+  }).join('');
+  var meta=document.getElementById('calibMeta');
+  if(meta){
+    meta.textContent='n='+CALIB_DATA.n_resolved+' · 基准命中率 '+Math.round((CALIB_DATA.base_rate||0)*100)+'%'
+      +(CALIB_DATA.sufficient?'':' · 样本不足，仅供参考');
+  }
+})();
+"""
+hyp_js_lines.append(calibration_js)
 
 # 估值分位面板
 hyp_js_lines.append('var VALUATION_DATA=' + valuation_json + ';')
