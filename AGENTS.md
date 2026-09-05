@@ -66,8 +66,10 @@ AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key �
 | `tools/fetch_macro_indicators.py` | 宏观指标抓取（汇率/利率/GDP/CPI/失业率，12个指标），产物 `data/macro_indicators.json`，refresh.py 自动调用；`--history` 子命令抓 NBS 分年龄组失业率历史月度序列 |
 | `tools/fetch_now.py` | 本地 24h 全量拉取（**仅国内源**，`scope:ci` 的 33 个外国源跳过——境外源一律由 CI 在 GitHub Actions 上采集，本地拉不动是常态），append 到今日 jsonl；refresh.py 自动调 |
 | `tools/translate_local.py` | 本地 OpenCode Zen 翻译（mimo-v2.5-free + nemotron 降级），每跑 30 条 6 分钟，写回 jsonl；refresh.py 自动调，**本地 hourly 翻译 18-30 条/6min，CI 翻译吞吐瓶颈解决** |
-| `gen_dashboard.py` + `fix_dashboard.py` | 生成 HTML（必须按此顺序）；gen_dashboard 内嵌 macro 面板 CSS/HTML/JS，趋势图用 Chart.js 4.4 (jsdelivr)，情报流 section 用 `<details>` 折叠默认收起 |
-| `link_intel_hyp.py` / `daily_briefing.py` / `sync_data.py` / `rebuild_hyps.py` | 关联/简报/同步/重建树 |
+| `tools/fetch_gdelt.py` | P1-5 GDELT 国际侧补源（DOC API 三组查询 24h 窗口，title-only 流入本地翻译管线）；白名单 {api.gdeltproject.org} 脚本内自带；6s 间隔+12s 退避+3h 成功节流（data/.gdelt_last_run）；refresh.py 自动调，失败静默 |
+| `gen_dashboard.py` + `fix_dashboard.py` | 生成 HTML（必须按此顺序）；gen_dashboard 内嵌 macro 面板 CSS/HTML/JS，趋势图用 Chart.js 4.4 (jsdelivr)，情报流 section 用 `<details>` 折叠默认收起；P1-4 翻车高亮（flipBadge：⚡高确信翻车/↓置信度断崖 + 红边卡片） |
+| `link_intel_hyp.py` | 情报→假设证据关联（P1-1 起主匹配=TF-IDF 余弦≥0.12 top3 与 cluster_stories 共用分词，DOMAIN_MAP 降为兜底；证据按 story_id 去重；report 带 method 字段） |
+| `daily_briefing.py` / `sync_data.py` / `rebuild_hyps.py` | 简报/同步/重建树 |
 | `views.yaml` | 观点模板（`materialized_hyp_id` 标注已物化的 view，防止周循环重复生成） |
 | `sources.yaml`(50源) / `config.yaml`(key+路径) / `weights.yaml` / `daily_question.ps1`(P2a/P2b入口) | 配置与入口 |
 
@@ -144,6 +146,16 @@ KB 概念页：`D:\Codex输出\视频知识库\wiki\concepts\宏观-五维分析
 
 验证链路现状：small 假设 40 个有 indicators，其中 37 个 no_source（自定义指标无免费 API）、3 个有 WorldBank 值但阈值是叙述式（走 AI 裁判）。**验证的主战场是周循环 AI 裁判**（deadline 修复后按月到期触发），verify_hypotheses 的数值比较是新假设拿简式阈值时的加成。
 
+### P1 五项落地（2026-09-05 下午）
+
+| P1 项 | 落地 | 实测事实 |
+|---|---|---|
+| TF-IDF 假设匹配 | link_intel_hyp.py：`build_tfidf_vectors()` + `match_intel_tfidf()`，假设语料含 indicators 名 | 精度 100%（抽检 8/8 相关）；召回 9/1816 偏低——词面模型对"抽象假设 vs 具体新闻"天然低召回，**换 embedding 向量即可跃升（只需替换 build_tfidf_vectors，调用方不动）**；当前证据链主力仍是 DOMAIN_MAP 兜底 + story 去重 |
+| verdict 1-20 连续分 | hypothesis_engine：score≥17 supported / 13-16 partial / 7-12 inconclusive / ≤6 refuted，映射覆盖模型自报；resolutions 记 verify_score | 桩测 8 组边界（含 99 越界钳制、无分回退）全过 |
+| 关键词分组 DSL | sources.yaml 新增 `keyword_rules`（any/must/exclude/weight/cap），fetch_rss 预编译叠加计分 | 种子 5 组中英混排；离线测试英文 must 组命中、负例不计分、叠加计分全符合语义 |
+| 高确信翻车高亮 | gen_dashboard：RESOLUTIONS 映射 + flipBadge（⚡高确信翻车/⚡已翻车/↓置信度断崖）+ .flip 红边 | Playwright 浏览器实测双徽章+红边渲染正确；数据为零自然不显示 |
+| GDELT 补源 | tools/fetch_gdelt.py + refresh.py 接入（3h 节流） | 连通性已证（拿到 HTTP 响应）；**试探期触发 GDELT IP 临时封锁（429），等解封后 refresh 每日 ~8 轮自然生效**；mock 验证映射/去重/过滤全过 |
+
 ## CI 故障排除
 1. **RSS 超时**：每源 15s 超时，坏源跳过不影响其他源
 2. **翻译 404/超时**：NVIDIA key 在 GitHub Secrets；已限每次 50 条、batch 5；模型降级链 MODEL_CHAIN（gpt-oss-120b→20b→llama）
@@ -180,9 +192,12 @@ KB 概念页：`D:\Codex输出\视频知识库\wiki\concepts\宏观-五维分析
 - [x] **PLAN-2 M3 仪表盘 ACH 排名面板**（gen_dashboard.py 已加，等首次周循环产出 ach_matrix.json 后自动显示）
 - [x] **宏观指标集成**（tools/fetch_macro_indicators.py → 10 指标 → refresh.py 自动调用 → 仪表盘面板渲染）
 - [x] **同类方案调研 P0 四项**（2026-09-05 落地：验证闭环/校准评分/事件聚类/敏感性分析，详见 §"同类方案调研 P0 落地"）
+- [x] **同类方案调研 P1 五项**（2026-09-05 落地：TF-IDF 匹配/verdict 连续分/关键词 DSL/翻车高亮/GDELT，详见 §"P1 五项落地"）
 - [ ] **PLAN-2 M2 贝叶斯调优**（待首次周循环跑完，观察后验分布再调先验/LR 锚定；敏感性分析已就位可直接复用其输出）
-- [ ] 调研 P1 五项（TF-IDF 假设匹配替代 DOMAIN_MAP / verdict 1-20 连续分 / 关键词 DSL / 高确信翻车高亮 / fetch_gdelt.py 补国际源）——见 docs/同类方案调研-2026-09-04.md §四
 - [ ] 事件聚类阈值调优：同日公告模板句仍会小规模误聚；观察仪表盘「同事件×N」徽章误报率后调 cluster_stories.py 文件头三闸门
+- [ ] TF-IDF 匹配召回跃升：把 build_tfidf_vectors 换成 embedding 向量（接口已预留，调用方不动）；需新增白名单域名
+- [ ] GDELT 解封观察：试探触发的 429 IP 封锁解除后（通常 1h+），观察 refresh 日志 gdelt 行是否正常 append；持续 429 则把查询组砍到 1 组/次
+- [ ] 9-07（周一）OsintWeekly 首跑验收：看 resolutions.jsonl 是否产生真实验证记录 + 校准面板点亮 + verify_score 落库
 - [ ] 指标覆盖率提升：74 个 custom 指标部分无免费 API（NBS 3 个指标无抓取函数）；small 假设 37/40 指标 no_source
 - [ ] 源健康度审计：47+6 源逐源测试（部分 list 源选择器已脱节）
 - [ ] 旧目录 `C:\Users\admin\Documents\osint` 确认后删除（含 git 历史，删前确认不再回滚）
@@ -190,4 +205,4 @@ KB 概念页：`D:\Codex输出\视频知识库\wiki\concepts\宏观-五维分析
 - [ ] mimo-v2.5-free 代理偶发 empty response（2026-09-05 fill_deadline 实测 5 连败）：批量 AI 脚本都应带 level/默认值兜底 + 预算超时
 
 ---
-*最后更新：2026-09-05 - 同类方案调研 P0 四项落地（验证闭环/校准/聚类/敏感性）*
+*最后更新：2026-09-05 - 同类方案调研 P0+P1 九项全部落地（验证闭环/校准/聚类/敏感性 + TF-IDF 匹配/verdict 连续分/关键词 DSL/翻车高亮/GDELT）*
