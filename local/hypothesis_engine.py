@@ -229,7 +229,10 @@ Output JSON array, each: {{"claim":"...","indicator":"measurable metric","data_s
                   + "\nEvidence:\n" + ev_text[:2000]
                   + ("\n\nIndicator readings (compare values against thresholds where given):\n"
                      + "\n".join(ind_lines) if ind_lines else "")
-                  + "\n\nOutput JSON: {verdict: supported/partially_supported/refuted/inconclusive, new_confidence: 0-1, reasoning: ...}")
+                  + "\n\nScore this hypothesis 1-20 (integer): 1-6 = contradicted by evidence (refuted),"
+                    " 7-12 = cannot judge yet (inconclusive), 13-16 = partially supported, 17-20 = strongly supported."
+                    " Be critical; verification is about falsification, not confirmation."
+                  + "\n\nOutput JSON: {score: 1-20, verdict: supported/partially_supported/refuted/inconclusive, new_confidence: 0-1, reasoning: ...}")
         system = "You are the verification judge. Be objective and critical."
         try:
             response = ai_analyzer._call_api(system, prompt)
@@ -252,6 +255,18 @@ Output JSON array, each: {{"claim":"...","indicator":"measurable metric","data_s
         except Exception as e:
             print("[ENGINE] Verify failed: " + str(e))
             result = {"verdict": "inconclusive", "new_confidence": hyp.get("confidence", 0.5), "reasoning": str(e)}
+        # P1-2（学 LLM-as-a-Verifier）：1-20 连续分确定性映射 verdict，消除离散档平局问题；
+        # score 缺失/非法时尊重模型自报 verdict（向后兼容）
+        score = result.get("score")
+        try:
+            score = max(1, min(20, int(score)))
+        except (TypeError, ValueError):
+            score = None
+        if score is not None:
+            result["verdict"] = ("supported" if score >= 17 else
+                                 "partially_supported" if score >= 13 else
+                                 "inconclusive" if score >= 7 else "refuted")
+        hyp["verify_score"] = score
         hyp["confidence"] = result.get("new_confidence", hyp["confidence"])
         hyp["verification_result"] = result.get("verdict", "inconclusive")
         hyp["last_verified"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
@@ -302,6 +317,7 @@ Output JSON array, each: {{"claim":"...","indicator":"measurable metric","data_s
             "outcome": outcome, "verdict": verdict,
             "confidence_at_deadline": pre_conf,
             "confidence_after": hyp.get("confidence", 0.5),
+            "verify_score": hyp.get("verify_score"),
             "judged_by": "ai_referee",
             "reasoning": (hyp.get("reconciliation_notes") or "")[:200],
         }
