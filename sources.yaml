@@ -808,3 +808,24 @@ source_base_weights:
   biz: 0.9
 east_asia_sources: []
 # 东亚四源 (Nikkei/KoreaHerald/Yonhap/JapanTimes) 原在本段且与 rss_sources 完全重复, 2026-09-04 去重并入 rss_sources 并标 scope: ci
+
+# P1-3 关键词分组规则 (TrendRadar 式 DSL, 2026-09-05):
+#   命中语义 = exclude 零中 + must 全中(若配) + any 任中(若配) → 总分加 weight(受 cap 钳制)
+#   与平铺 keyword_weights 叠加; 中英词混排, 补"中文关键词表打不中英文源"的缺口
+keyword_rules:
+  就业与失业:
+    any: [失业, 就业, 毕业生, 失业率, "unemployment", "jobless", "labor market", "labour market", "hiring freeze", "layoff"]
+    weight: 0.35
+  青年就业危机:
+    any: [失业, NEET, 慢就业, "youth"]
+    must: [青年]
+    weight: 0.4
+  青年就业危机_英文:
+    must: ["youth unemployment"]
+    weight: 0.4
+  社保与养老:
+    any: [养老金, 社保, 退休, 延迟退休, "pension", "retirement age"]
+    weight: 0.25
+  贸易摩擦:
+    any: [关税, 贸易摩擦, 出口管制, 实体清单, "tariff", "trade war", "export control", "entity list"]
+    weight: 0.3

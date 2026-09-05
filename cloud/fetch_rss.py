@@ -49,10 +49,12 @@ def _safe_rss_fetch(url, timeout=15, max_bytes=512000):
 
 
 class RSSFetcher:
-    def __init__(self, sources_config, keyword_weights):
+    def __init__(self, sources_config, keyword_weights, keyword_rules=None):
         self.sources = sources_config
         self.keyword_weights = keyword_weights
+        self.keyword_rules = keyword_rules or {}   # P1-3 分组规则(TrendRadar 式)
         self._kw_patterns = None  # 关键词正则缓存(词边界), 首次打分时编译
+        self._kw_rules = None     # 分组规则正则缓存, 首次打分时编译
     
     def fetch_all(self, max_age_hours=168, max_workers=8):
         """2026-09-04 并发化: 串行 50 源 x 15s 超时上限 ≈ 最坏 12.5min(实测 ~13min),
@@ -296,6 +298,36 @@ class RSSFetcher:
         raw = f"{source_name}:{url}:{title}"
         return hashlib.md5(raw.encode()).hexdigest()[:16]
     
+    def _compile_rules(self):
+        """P1-3 分组规则编译: 组名 → {any/must/exclude 预编译正则, weight, cap}。
+        命中语义: exclude 零中 + must 全中(若配) + any 任中(若配) → 加 weight(受 cap 钳制)。"""
+        rules = []
+
+        def _pats(words):
+            out = []
+            for w in (words or []):
+                w = str(w).lower()
+                if not w:
+                    continue
+                if w.isascii() and w[0].isalnum() and w[-1].isalnum():
+                    out.append(re.compile(r"\b" + re.escape(w) + r"\b"))
+                else:
+                    out.append(re.compile(re.escape(w)))
+            return out
+
+        for name, spec in (self.keyword_rules or {}).items():
+            if not isinstance(spec, dict):
+                continue
+            rules.append({
+                "name": name,
+                "any": _pats(spec.get("any")),
+                "must": _pats(spec.get("must")),
+                "exclude": _pats(spec.get("exclude")),
+                "weight": float(spec.get("weight", 0.3)),
+                "cap": spec.get("cap"),
+            })
+        return rules
+
     def _calc_keyword_score(self, text):
         """2026-09-04 修复: 纯 ASCII 关键词改词边界匹配。
         旧实现裸子串, "AI" 命中 said/chairman/maintain 等一切含 'ai' 的词 →
@@ -318,6 +350,24 @@ class RSSFetcher:
             if pat.search(text_lower):
                 hits.append(kw)
                 score += weight
+        # P1-3 分组规则: 与平铺关键词叠加计分
+        if self._kw_rules is None:
+            self._kw_rules = self._compile_rules()
+        for r in self._kw_rules:
+            if any(p.search(text_lower) for p in r["exclude"]):
+                continue
+            if r["must"] and not all(p.search(text_lower) for p in r["must"]):
+                continue
+            if r["any"] and not any(p.search(text_lower) for p in r["any"]):
+                continue
+            contribution = r["weight"]
+            if r["cap"] is not None:
+                try:
+                    contribution = min(contribution, float(r["cap"]))
+                except (TypeError, ValueError):
+                    pass
+            score += contribution
+            hits.append("规则:" + r["name"])
         return hits, min(score, 1.0)
     
     def _detect_lang(self, text):
@@ -342,8 +392,9 @@ if __name__ == "__main__":
         all_sources.extend(config.get(key, []))
     
     weights = config.get("keyword_weights", {})
-    
-    fetcher = RSSFetcher(all_sources, weights)
+    rules = config.get("keyword_rules", {})   # P1-3 分组规则
+
+    fetcher = RSSFetcher(all_sources, weights, rules)
     items = fetcher.fetch_all(max_age_hours=72)
 
     Path(output_file).write_text(
