@@ -261,6 +261,22 @@ def fetch_now():
         print(f"fetch_now stderr: {r.stderr.strip()[:200]}")
 
 
+def fetch_gdelt():
+    """P1-5 GDELT 国际侧补源（api.gdeltproject.org，白名单在脚本内自带）。
+    3h 节流防撞 GDELT 限速；失败/被阻静默跳过不阻塞 refresh，国际侧本就由 CI 兜底。"""
+    r = subprocess.run(
+        [sys.executable, str(PROJECT / "tools" / "fetch_gdelt.py")],
+        cwd=str(PROJECT), capture_output=True, text=True, timeout=180,
+        creationflags=_NO_WINDOW,
+    )
+    if r.stdout:
+        for line in r.stdout.splitlines():
+            if any(k in line for k in ("[GDELT]", "append")):
+                print(f"gdelt: {line.strip()}")
+    if r.returncode != 0 and r.stderr:
+        print(f"gdelt stderr: {r.stderr.strip()[:200]}")
+
+
 def translate_now():
     """本地 OpenCode Zen 翻译未翻译条目 (mimo-v2.5-free + nemotron 降级链)。
     2026-09-04: 翻译挪出 CI 后本地承担全部翻译吞吐, 放宽到 100 条/900s;
@@ -309,6 +325,7 @@ if __name__ == "__main__":
         translate_local()
         ensure_rsshub()  # 保 RSSHub 健康(8h 滞后根因修复)
         fetch_now()       # 24h 全量本地拉(绕开 CI 9 条限流)
+        fetch_gdelt()     # P1-5 GDELT 国际侧补源(3h 节流, 失败静默)
         translate_now()   # 本地 OpenCode Zen 翻译 (替代 CI 翻译吞吐瓶颈)
         impact_now()      # 本地 AI 研判 (替代 CI 研判吞吐瓶颈, 2026-09-04 新增)
         count = rebuild_data()
