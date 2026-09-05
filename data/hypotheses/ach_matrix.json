@@ -985,7 +985,7 @@
    "refute": 0
   }
  },
- "updated": "2026-08-31 13:24",
+ "updated": "2026-09-05 05:08",
  "hypotheses": [
   {
    "id": "hyp_e2b46e32",
@@ -1027,5 +1027,114 @@
    "title": "AI技术成本上升触发宏观经济波动与金融风险",
    "prior": 0.55
   }
- ]
+ ],
+ "sensitivity": {
+  "top1": "HM100",
+  "flips": 0,
+  "n_evidence": 20,
+  "items": [
+   {
+    "key": "ev_591b7a0ff8",
+    "summary": "国会通过决议要求开除反对派议员",
+    "date": "2026-08-27",
+    "top1_flip": false,
+    "new_top1": "HM100",
+    "top1_delta": 0.0,
+    "max_abs_delta": 0.08,
+    "moved_hyp": "hyp_e2b46e32"
+   },
+   {
+    "key": "ev_79c4c3df59",
+    "summary": "随着核心通胀保持高位，韩国央行连续加息",
+    "date": "2026-08-27",
+    "top1_flip": false,
+    "new_top1": "HM100",
+    "top1_delta": 0.0,
+    "max_abs_delta": 0.064,
+    "moved_hyp": "HM003"
+   },
+   {
+    "key": "ev_ac837f1093",
+    "summary": "（领导）中国男子因谋杀研究生而被正式逮捕",
+    "date": "2026-08-27",
+    "top1_flip": false,
+    "new_top1": "HM100",
+    "top1_delta": 0.0,
+    "max_abs_delta": 0.0,
+    "moved_hyp": "HM003"
+   },
+   {
+    "key": "ev_c7db36f47b",
+    "summary": "（新闻焦点） BOK采取先发制人的行动，连续加息，提前发出警告信号",
+    "date": "2026-08-27",
+    "top1_flip": false,
+    "new_top1": "HM100",
+    "top1_delta": 0.0,
+    "max_abs_delta": 0.0,
+    "moved_hyp": "HM003"
+   },
+   {
+    "key": "ev_ad4921c850",
+    "summary": "日本初创公司， IPO将通过交易非上市公司的平台来推动",
+    "date": "2026-08-27",
+    "top1_flip": false,
+    "new_top1": "HM100",
+    "top1_delta": 0.0,
+    "max_abs_delta": 0.0,
+    "moved_hyp": "HM003"
+   },
+   {
+    "key": "ev_ab6b90b01a",
+    "summary": "首次关于综合军校的听证会因校友强烈反对而陷入混乱",
+    "date": "2026-08-27",
+    "top1_flip": false,
+    "new_top1": "HM100",
+    "top1_delta": 0.0,
+    "max_abs_delta": 0.0,
+    "moved_hyp": "HM003"
+   },
+   {
+    "key": "ev_dd2ce8a28e",
+    "summary": "李在明支持率下降 办公室表示将优先关注经济和民生",
+    "date": "2026-08-27",
+    "top1_flip": false,
+    "new_top1": "HM100",
+    "top1_delta": 0.0,
+    "max_abs_delta": 0.0,
+    "moved_hyp": "HM003"
+   },
+   {
+    "key": "ev_d9884157ab",
+    "summary": "抵押贷款利率创三周新高，需求进一步走弱",
+    "date": "2026-08-27",
+    "top1_flip": false,
+    "new_top1": "HM100",
+    "top1_delta": 0.0,
+    "max_abs_delta": 0.0,
+    "moved_hyp": "HM003"
+   },
+   {
+    "key": "ev_01b642d99d",
+    "summary": "日本陷入了技术抛售。策略师说，现在是时候买入下跌了。",
+    "date": "2026-08-27",
+    "top1_flip": false,
+    "new_top1": "HM100",
+    "top1_delta": 0.0,
+    "max_abs_delta": 0.0,
+    "moved_hyp": "HM003"
+   },
+   {
+    "key": "ev_8e4cb58c5f",
+    "summary": "(LEAD)韩国宣布更严厉的措施，以遏制在NLL附近的中国非法捕鱼",
+    "date": "2026-08-27",
+    "top1_flip": false,
+    "new_top1": "HM100",
+    "top1_delta": 0.0,
+    "max_abs_delta": 0.0,
+    "moved_hyp": "HM003"
+   }
+  ],
+  "updated_at": "2026-09-05T13:08:25"
+ },
+ "updated_at": "2026-09-05T05:08:25.162758+00:00"
 }
