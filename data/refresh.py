@@ -75,6 +75,16 @@ def rebuild_data():
     if dirty:
         print(f"Cleaned {dirty} dirty-date entries (future/older than 2020)")
 
+    # P0-3 事件聚类（同类方案调研）：同一事件多家报道 → story_id/story_size，
+    # 仪表盘折叠徽章 + link_intel_hyp 证据去重。失败不阻塞 rebuild。
+    try:
+        sys.path.insert(0, str(PROJECT / "tools"))
+        from cluster_stories import assign_story_ids
+        cl_stats = assign_story_ids(unique)
+        print(f"cluster: {cl_stats}")
+    except Exception as e:
+        print(f"cluster failed (non-blocking): {e}")
+
     # 2026-08-30 修复: 旧排序按 relevance 降序取 Top200, 但新条目无 relevance 字段(=0)
     # 全部被挤出 Top200, 仪表盘永远看不到新信息。改为发布时间降序(新->旧), 同时间按相关度
     def _parse_dt(s):

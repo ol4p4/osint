@@ -65,18 +65,22 @@ def update_hyp_evidence(hyp, intel, match_info):
     """Update hypothesis evidence_log"""
     if "evidence_log" not in hyp:
         hyp["evidence_log"] = []
-    
+
     today = datetime.now().strftime("%Y-%m-%d")
     intel_id = intel.get("id", "")
-    
+    story_id = intel.get("story_id")  # P0-3 事件聚类：同事件多家报道只记一条证据
+
     # Check if already logged
     for entry in hyp["evidence_log"]:
         if intel_id in entry.get("intel_ids", []):
             return 0
-    
+        if story_id and story_id in (entry.get("story_ids") or []):
+            return 0  # 同一事件已记过证据，防 10 家媒体灌 10 条重复证据稀释 ACH 矩阵
+
     entry = {
         "date": today,
         "intel_ids": [intel_id],
+        "story_ids": [story_id] if story_id else [],
         "summary": (intel.get("cn_title", "") or intel.get("title", ""))[:100],
         "domains": match_info.get("domains", []),
         "relevance": match_info.get("relevance_score", 0),
@@ -121,6 +125,14 @@ def main():
                         all_intel.append(json.loads(line))
                     except:
                         pass
+
+    # P0-3 事件聚类：给情报打 story_id（失败不阻塞，退化为原关键词匹配行为）
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent / "tools"))
+        from cluster_stories import assign_story_ids
+        print("story cluster:", assign_story_ids(all_intel))
+    except Exception as e:
+        print(f"story cluster skipped: {e}")
     
     total_links = 0
     total_updates = 0
