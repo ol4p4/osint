@@ -214,10 +214,21 @@ Output JSON array, each: {{"claim":"...","indicator":"measurable metric","data_s
     def verify_hypothesis(self, hyp, ai_analyzer):
         claim = hyp.get("core_claim") or hyp.get("rationale") or hyp.get("title", "")
         ev_text = "\n".join([e.get("summary","") for e in hyp.get("evidence_log",[])])
+        # P0-2: 把 verify_hypotheses.py 抓到的指标当前值+阈值喂给裁判，
+        # 让叙述式阈值（needs_ai）也能对照真实数值判定
+        ind_lines = []
+        for ind in (hyp.get("indicators") or []):
+            if isinstance(ind, dict) and ind.get("name"):
+                cur = ind.get("current_value")
+                ind_lines.append("- " + ind["name"] + ": 当前值=" + (str(cur) if cur is not None else "无数据")
+                                 + " | 支持阈值=" + (ind.get("threshold_support") or "-")
+                                 + " | 证伪阈值=" + (ind.get("threshold_refute") or "-"))
         prompt = ("Verify this hypothesis: " + hyp.get("title","")
                   + "\nClaim: " + claim
                   + "\nConfidence: " + str(hyp.get("confidence",0.5))
                   + "\nEvidence:\n" + ev_text[:2000]
+                  + ("\n\nIndicator readings (compare values against thresholds where given):\n"
+                     + "\n".join(ind_lines) if ind_lines else "")
                   + "\n\nOutput JSON: {verdict: supported/partially_supported/refuted/inconclusive, new_confidence: 0-1, reasoning: ...}")
         system = "You are the verification judge. Be objective and critical."
         try:
@@ -260,6 +271,43 @@ Output JSON array, each: {{"claim":"...","indicator":"measurable metric","data_s
             if refutes:
                 hyp["falsification_criteria"] = "；".join(refutes[:3])
         return hyp
+
+    def record_resolution(self, hyp, pre_conf):
+        """P0-1 校准前置：到期假设的验证结果落 resolutions.jsonl（按 hyp_id 幂等追加）。
+        confidence_at_deadline 记录验证前的置信度（系统持有的'预测'），供 calibration.py 算 Brier。"""
+        res_file = self.output_dir / "hypotheses" / "resolutions.jsonl"
+        res_file.parent.mkdir(parents=True, exist_ok=True)
+        seen = set()
+        if res_file.exists():
+            for line in res_file.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if line:
+                    try:
+                        seen.add(json.loads(line).get("hyp_id"))
+                    except Exception:
+                        pass
+        if hyp.get("id") in seen:
+            return
+        verdict = hyp.get("verification_result", "inconclusive")
+        outcome = {"supported": "confirmed", "partially_supported": "partial",
+                   "refuted": "refuted"}.get(verdict, "inconclusive")
+        try:
+            pre_conf = round(float(pre_conf or 0.5), 3)
+        except (TypeError, ValueError):
+            pre_conf = 0.5
+        entry = {
+            "hyp_id": hyp.get("id"), "title": hyp.get("title", ""), "level": hyp.get("level"),
+            "resolved_at": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+            "deadline": hyp.get("due_date") or hyp.get("deadline") or "",
+            "outcome": outcome, "verdict": verdict,
+            "confidence_at_deadline": pre_conf,
+            "confidence_after": hyp.get("confidence", 0.5),
+            "judged_by": "ai_referee",
+            "reasoning": (hyp.get("reconciliation_notes") or "")[:200],
+        }
+        with res_file.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(entry, ensure_ascii=False) + "\n")
+        print("[ENGINE] Resolution recorded: " + str(hyp.get("id")) + " -> " + outcome)
 
     def run_weekly_cycle(self, intel_items=None):
         """每周循环：补生成缺失的 view 假设 → 验证到期假设 → 保存 → 周报。
@@ -317,7 +365,9 @@ Output JSON array, each: {{"claim":"...","indicator":"measurable metric","data_s
         if due:
             print(f"[ENGINE] Due for verification: {len(due)}")
             for h in due:
+                pre_conf = h.get("confidence", 0.5)  # 验证前置信度 = 校准用的'预测'
                 self.verify_hypothesis(h, self.analyzer)
+                self.record_resolution(h, pre_conf)
                 print("  " + h.get("title", "?") + ": " + str(h.get("verification_result", "")))
         # 3) 保存同一个列表（修复原版保存错误对象导致验证结果不落盘的 bug）
         self.save_active_hypotheses(hyps)
