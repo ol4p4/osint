@@ -22,7 +22,8 @@ refresh.py: git pull + 合并 CI 数据 + 可选翻译
   → ensure_rsshub()  → 保本地 RSSHub 容器健康（curl localhost:1200 → docker start / run）
   → fetch_now()     → tools/fetch_now.py 24h 全量本地拉（绕开 CI 9 条金十限流，详见 §"CI 故障排除 #11"）
   → translate_now() → tools/translate_local.py OpenCode Zen 翻译 30 条/6min（替代 CI 翻译吞吐瓶颈）
-  → rebuild_data → dashboard_data.json
+  → rebuild_data → dashboard_data.json（去重后跑事件聚类 assign_story_ids，条目带 story_id/story_size）
+  → run_calibration() → local/calibration.py 读 resolutions.jsonl → data/calibration.json
   → fetch_macro() → tools/fetch_macro_indicators.py → macro_indicators.json（12个宏观指标）
   → fetch_unemployment_history() → tools/fetch_macro_indicators.py --history → cn_unemployment_history.json
   → gen_dashboard+fix_dashboard → interactive_dashboard.html
@@ -58,7 +59,10 @@ AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key �
 | `local/question_generator.py` | P2b 问题生成器：分析摘要→开放性问题，落 `questions/` |
 | `local/kb_linker.py` | 知识库双向链接：假设/观点卡写 `视频知识库\wiki\hypotheses|views` + index.md + log.md（幂等） |
 | `local/render_wiki.py` / `main_local.py` | 旧渲染管线（daily_run.ps1 的 Step2 用） |
-| `verify_hypotheses.py` | 假设自动验证（FRED/Frankfurter/GoldAPI/WorldBank，域名白名单在 `ALLOWED_HOSTS`） |
+| `verify_hypotheses.py` | 假设自动验证（FRED/Frankfurter/GoldAPI/WorldBank，域名白名单在 `ALLOWED_HOSTS`；2026-09-05 P0-2 重写：`parse_threshold()` 真比较数值、指标值优先读本地 macro_indicators.json、无源标 `no_source`/叙述阈值标 `needs_ai` 留给周循环 AI 裁判） |
+| `tools/fill_deadline.py` | P0-2 一次性脚本（跑一次即弃）：AI 提议 1~24 个月验证期限回填 deadline，失败按 level 兜底（small 3/medium 6/major 12/mega 24 月）；2026-09-05 已跑 71/71 全回填 |
+| `tools/cluster_stories.py` | P0-3 事件聚类：纯标准库 TF-IDF（中文2-gram）+ 余弦 + 并查集，**不引入 sklearn**；`assign_story_ids(items)` 供 refresh/link_intel_hyp 调用；三重闸门参数（SIM_THRESHOLD=0.65/时间48h/同源12h/摘要0.30）在文件头 |
+| `local/calibration.py` | P0-1 校准评分：读 resolutions.jsonl 算 Brier + Murphy 三分解 + 十桶校准曲线 → `data/calibration.json`；refresh.py 自动调 |
 | `tools/fetch_macro_indicators.py` | 宏观指标抓取（汇率/利率/GDP/CPI/失业率，12个指标），产物 `data/macro_indicators.json`，refresh.py 自动调用；`--history` 子命令抓 NBS 分年龄组失业率历史月度序列 |
 | `tools/fetch_now.py` | 本地 24h 全量拉取（**仅国内源**，`scope:ci` 的 33 个外国源跳过——境外源一律由 CI 在 GitHub Actions 上采集，本地拉不动是常态），append 到今日 jsonl；refresh.py 自动调 |
 | `tools/translate_local.py` | 本地 OpenCode Zen 翻译（mimo-v2.5-free + nemotron 降级），每跑 30 条 6 分钟，写回 jsonl；refresh.py 自动调，**本地 hourly 翻译 18-30 条/6min，CI 翻译吞吐瓶颈解决** |
@@ -81,7 +85,9 @@ AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key �
 | `refresh.py` | 刷新入口：git pull + 合并 + 翻译 + rebuild + fetch_macro + gen_html，日志落 `logs/refresh_YYYYMMDD.log` |
 | `daily_run.ps1` | 本地分析+周循环运行器（`-Auto` 参数供计划任务用；**必须带 UTF-8 BOM**） |
 | `intel_YYYYMMDD.jsonl` | 每日情报（`intel_raw_*`/`intel_final_*` 不参与重建和翻译） |
-| `hypotheses/active_hypotheses.json` | 假设树（69 节点：8大/20中/41小，status 支持 active/falsified） |
+| `hypotheses/active_hypotheses.json` | 假设树（71 节点：2mega/8大/20中/41小，status 支持 active/falsified；deadline 2026-09-05 已 71/71 回填，落在 2026-12~2028-09） |
+| `hypotheses/resolutions.jsonl` | P0-1：到期假设验证结果（周循环 record_resolution 幂等追加），calibration.py 的输入 |
+| `calibration.json` | P0-1：Brier + Murphy 三分解 + 十桶校准曲线（gen_dashboard 校准面板读取） |
 | `dialogues/view_cards/` `questions/` `reports/` | 观点卡 / 每日开放问题 / 周报 |
 
 ## 运行方式
@@ -125,6 +131,19 @@ python -c "..." # 见 daily_run.ps1 Step3，或等 OsintWeekly 周日 09:30 自�
 KB 概念页：`D:\Codex输出\视频知识库\wiki\concepts\宏观-五维分析框架.md`
 注：read-macro 插件本身（`C:\Users\admin\.zcode\cli\plugins\cache\zcode-plugins-official\read-macro\0.1.1`）是 zcode CLI 工具，**不在 agent Python 代码里**——通过 `local/macro_framework.py` 把五维框架的常量下沉到 osint 自己的分析 prompt。
 
+## 同类方案调研 P0 落地（2026-09-05，源自 docs/同类方案调研-2026-09-04.md）
+
+调研结论「轮子不用重造，但四个零件该换」的四个 P0 已全部落地：
+
+| P0 项 | 落地 | 关键事实 |
+|---|---|---|
+| 修复验证闭环 | tools/fill_deadline.py + verify_hypotheses.py 重写 + hypothesis_engine 裁判 prompt 注入指标值 | deadline 曾 71/71 不可用（63 空 + 7 个 2028+ 远期）；阈值原是「字符串非空即计数」的空壳。现在周循环能真正到期验证 |
+| 校准评分 | local/calibration.py + resolutions.jsonl + 仪表盘校准面板 | Brier 手算样例校验通过；面板在 resolutions 有数据前显示「暂无已验证假设」 |
+| 事件聚类 | tools/cluster_stories.py（纯标准库，1.1s/6500条）+ refresh/link_intel_hyp/仪表盘徽章三处接入 | 实测 1250 簇/3010 条归簇；三重闸门压模板句误聚：阈值 0.65、候选对时间差 ≤48h、同源 >12h 不合并、双有摘要时摘要相似 ≥0.30；同日不同公司的公告模板句仍会小规模误聚（有界，可接受） |
+| ACH 敏感性分析 | ach_matrix.sensitivity_analysis() + 周报新节 | 现有矩阵 LR 99% =1.0（有壳无实）→ delta 全 0；合成强证伪证据验证翻转逻辑通过，等周循环真诊断出信号 |
+
+验证链路现状：small 假设 40 个有 indicators，其中 37 个 no_source（自定义指标无免费 API）、3 个有 WorldBank 值但阈值是叙述式（走 AI 裁判）。**验证的主战场是周循环 AI 裁判**（deadline 修复后按月到期触发），verify_hypotheses 的数值比较是新假设拿简式阈值时的加成。
+
 ## CI 故障排除
 1. **RSS 超时**：每源 15s 超时，坏源跳过不影响其他源
 2. **翻译 404/超时**：NVIDIA key 在 GitHub Secrets；已限每次 50 条、batch 5；模型降级链 MODEL_CHAIN（gpt-oss-120b→20b→llama）
@@ -160,11 +179,15 @@ KB 概念页：`D:\Codex输出\视频知识库\wiki\concepts\宏观-五维分析
 - [x] **PLAN-2 M1 ACH 假设矩阵**（ach_matrix.py + hypothesis_engine 接入 + falsification_criteria 69/69 补完）
 - [x] **PLAN-2 M3 仪表盘 ACH 排名面板**（gen_dashboard.py 已加，等首次周循环产出 ach_matrix.json 后自动显示）
 - [x] **宏观指标集成**（tools/fetch_macro_indicators.py → 10 指标 → refresh.py 自动调用 → 仪表盘面板渲染）
-- [ ] **PLAN-2 M2 贝叶斯调优**（待首次周循环跑完，观察后验分布再调先验/LR 锚定）
-- [ ] 指标覆盖率提升：74 个 custom 指标部分无免费 API（NBS 3 个指标无抓取函数）
+- [x] **同类方案调研 P0 四项**（2026-09-05 落地：验证闭环/校准评分/事件聚类/敏感性分析，详见 §"同类方案调研 P0 落地"）
+- [ ] **PLAN-2 M2 贝叶斯调优**（待首次周循环跑完，观察后验分布再调先验/LR 锚定；敏感性分析已就位可直接复用其输出）
+- [ ] 调研 P1 五项（TF-IDF 假设匹配替代 DOMAIN_MAP / verdict 1-20 连续分 / 关键词 DSL / 高确信翻车高亮 / fetch_gdelt.py 补国际源）——见 docs/同类方案调研-2026-09-04.md §四
+- [ ] 事件聚类阈值调优：同日公告模板句仍会小规模误聚；观察仪表盘「同事件×N」徽章误报率后调 cluster_stories.py 文件头三闸门
+- [ ] 指标覆盖率提升：74 个 custom 指标部分无免费 API（NBS 3 个指标无抓取函数）；small 假设 37/40 指标 no_source
 - [ ] 源健康度审计：47+6 源逐源测试（部分 list 源选择器已脱节）
 - [ ] 旧目录 `C:\Users\admin\Documents\osint` 确认后删除（含 git 历史，删前确认不再回滚）
 - [ ] 对话引擎观点卡的 time_horizon_months 有时与用户回答的到期日不一致（AI 浓缩偏差，可加后校验）
+- [ ] mimo-v2.5-free 代理偶发 empty response（2026-09-05 fill_deadline 实测 5 连败）：批量 AI 脚本都应带 level/默认值兜底 + 预算超时
 
 ---
-*最后更新：2026-09-01 - 宏观指标集成完成（fetch_macro → refresh.py → 仪表盘面板）*
+*最后更新：2026-09-05 - 同类方案调研 P0 四项落地（验证闭环/校准/聚类/敏感性）*
