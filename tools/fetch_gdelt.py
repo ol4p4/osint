@@ -128,12 +128,19 @@ def main():
                     help="距上次成功不足 N 小时则跳过（refresh 每小时调用时的限速阀）")
     args = ap.parse_args()
 
-    # 节流：成功后写时间戳；hourly refresh 靠它避免连环撞 GDELT 限速
+    # 节流：成功后写入时间戳；hourly refresh 靠它避免连环撞 GDELT 限速。
+    # 2026-09-10 修复：失败同样写戳（短节流 1h）——此前失败不写，每个整点白撞
+    # 126 秒（15s 超时 ×2 + 12s 退避 ×3 组），且重试本身持续维持 429。
+    FAIL_THROTTLE_HOURS = 1
     if not args.dry and not args.force and STATE_FILE.exists():
         try:
-            age_h = (time.time() - float(STATE_FILE.read_text(encoding="utf-8").strip())) / 3600
-            if age_h < args.throttle_hours:
-                print(f"[GDELT] skip (上次成功 {age_h:.1f}h 前 < {args.throttle_hours}h)")
+            stamp = STATE_FILE.read_text(encoding="utf-8").strip()
+            failed_last = stamp.startswith("fail:")
+            ts = float(stamp.replace("fail:", ""))
+            age_h = (time.time() - ts) / 3600
+            limit_h = FAIL_THROTTLE_HOURS if failed_last else args.throttle_hours
+            if age_h < limit_h:
+                print(f"[GDELT] skip (上次{'失败' if failed_last else '成功'} {age_h:.1f}h 前 < {limit_h}h)")
                 return
         except Exception:
             pass
@@ -142,7 +149,8 @@ def main():
     if errors:
         print(f"[GDELT] 部分查询失败(不阻塞): {errors}")
     if not items:
-        print("[GDELT] 0 条（网络不可达或无结果）——失败不写状态文件，下轮重试")
+        STATE_FILE.write_text("fail:" + str(time.time()), encoding="utf-8")
+        print(f"[GDELT] 0 条（网络不可达或无结果）——写失败戳 {FAIL_THROTTLE_HOURS}h，避免每轮白撞")
         return
 
     if args.dry:

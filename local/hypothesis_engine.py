@@ -323,6 +323,7 @@ Output JSON array, each: {{"claim":"...","indicator":"measurable metric","data_s
         }
         with res_file.open("a", encoding="utf-8") as fh:
             fh.write(json.dumps(entry, ensure_ascii=False) + "\n")
+        hyp["resolved_at"] = entry["resolved_at"]  # 节点标记：到期过滤据此跳过（幂等）
         print("[ENGINE] Resolution recorded: " + str(hyp.get("id")) + " -> " + outcome)
 
     def run_weekly_cycle(self, intel_items=None):
@@ -371,11 +372,25 @@ Output JSON array, each: {{"claim":"...","indicator":"measurable metric","data_s
             print("[ENGINE] ACH matrix failed: " + str(e))
 
         # 2) 验证到期假设（engine 节点用 due_date，树节点用 deadline；空期限不验证）
+        # 2026-09-10 幂等修复：resolutions.jsonl 里已有记录的节点不再重判——
+        # 此前一个到期节点会每周被 AI 重判一次并覆盖 confidence_at_deadline 存档的预测
         today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        resolved_ids = set()
+        res_file = self.output_dir / "hypotheses" / "resolutions.jsonl"
+        if res_file.exists():
+            for line in res_file.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if line:
+                    try:
+                        resolved_ids.add(json.loads(line).get("hyp_id"))
+                    except Exception:
+                        pass
         due = []
         for h in hyps:
             if h.get("status") != "active":
                 continue
+            if h.get("id") in resolved_ids:
+                continue  # 已 resolve：结果已存档，不再重判
             due_date = h.get("due_date") or h.get("deadline") or ""
             if due_date and due_date <= today:
                 due.append(h)

@@ -287,17 +287,26 @@ def evaluate_hypothesis(hyp, evidence_from_intel=None):
             ind["verify_status"] = "needs_ai"  # 自由文本阈值，走周循环 AI 裁判
 
     # Adjust confidence based on evidence
+    # 幂等闸门（2026-09-10 修复）：信号状态未变化时不再重复应用增量——
+    # 静态指标（WorldBank 年度值等）反复运行曾会每次叠减/叠加，置信度单向漂移到夹紧边界。
+    # 指标增量按"信号状态变化"触发（sN_rM 快照对比）；intel 关键词微调按日闸（每日至多一次）。
+    prev_stats = hyp.get("verify_stats") or {}
+    cur_sig = "s%d_r%d" % (support_hits, refute_hits)
     old_confidence = float(hyp.get("confidence", 0.5) or 0.5)
     new_confidence = old_confidence
+    applied = False
 
-    # P0-2: 指标阈值信号直接驱动置信度（证伪信号权重 > 支持信号）
-    if refute_hits:
-        new_confidence = max(0.05, new_confidence - 0.05 * refute_hits)
-    if support_hits:
-        new_confidence = min(0.95, new_confidence + 0.03 * support_hits)
+    if (refute_hits or support_hits) and prev_stats.get("signal_state") != cur_sig:
+        # P0-2: 指标阈值信号驱动置信度（证伪信号权重 > 支持信号）
+        if refute_hits:
+            new_confidence = max(0.05, new_confidence - 0.05 * refute_hits)
+        if support_hits:
+            new_confidence = min(0.95, new_confidence + 0.03 * support_hits)
+        applied = True
 
-    # 情报关键词微调：仅在无指标信号时生效，避免双重计数（保留原逻辑）
-    if not (refute_hits or support_hits) and evidence_from_intel:
+    # 情报关键词微调：仅在无指标信号时生效，且每日至多应用一次
+    if (not (refute_hits or support_hits) and evidence_from_intel
+            and prev_stats.get("intel_adjusted_at") != today_str):
         for intel in evidence_from_intel:
             # Simple keyword matching to determine support/contradict
             title = intel.get("cn_title", "") + " " + intel.get("cn_summary", "")
@@ -313,15 +322,21 @@ def evaluate_hypothesis(hyp, evidence_from_intel=None):
                 direction = hyp.get("direction", "toward")
                 if any(w in title for w in ["增长", "上升", "加速", "扩大"]):
                     new_confidence = min(0.95, new_confidence + 0.02)
+                    applied = True
                 elif any(w in title for w in ["下降", "减少", "放缓", "收缩"]):
                     if direction == "toward":
                         new_confidence = min(0.95, new_confidence + 0.01)
                     else:
                         new_confidence = max(0.05, new_confidence - 0.02)
+                    applied = True
 
     hyp["confidence"] = round(new_confidence, 2)
     hyp["verify_stats"] = {"checked_at": today_str, "indicators_checked": checked,
-                           "support_hits": support_hits, "refute_hits": refute_hits}
+                           "support_hits": support_hits, "refute_hits": refute_hits,
+                           "signal_state": cur_sig,
+                           "confidence_applied": applied,
+                           "intel_adjusted_at": (today_str if (evidence_from_intel and not (refute_hits or support_hits))
+                                                 else prev_stats.get("intel_adjusted_at"))}
     return hyp, updates
 
 def load_intel_for_matching():

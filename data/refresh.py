@@ -2,7 +2,7 @@ r"""refresh.py - 拉取最新情报并重建仪表盘（薄壳入口）
 由计划任务 OsintRefresh 每小时调用，也可手动运行。
 同步/翻译/日志逻辑在仓库 D:\osint\cloud\local_sync.py（便于 git 管理与交接）。
 """
-import subprocess, sys, json, glob, os, re
+import subprocess, sys, json, glob, os, re, time
 from pathlib import Path
 from datetime import datetime, timedelta
 
@@ -317,20 +317,93 @@ def impact_now():
         print(f"impact_now stderr: {r.stderr.strip()[:200]}")
 
 
+def run_hypothesis_chain():
+    """P0/P1 假设链每日通电（2026-09-10 新增）：
+    link_intel_hyp（TF-IDF 匹配+story 去重证据）→ verify_hypotheses（数值阈值）
+    → ach_daily_batch（ACH 增量诊断）。此前三者只挂 CI（CI 上 Windows 绝对路径
+    必然静默跳过）→ 证据链与验证链事实上停摆。20h 节流，三个子进程各自独立失败。
+    """
+    state = BASE / ".hyp_chain_last_run"
+    if state.exists():
+        try:
+            age_h = (time.time() - float(state.read_text(encoding="utf-8").strip())) / 3600
+            if age_h < 20:
+                print(f"hyp-chain: skip (上次 {age_h:.1f}h 前 < 20h)")
+                return
+        except Exception:
+            pass
+    steps = [
+        ("link", [sys.executable, str(PROJECT / "link_intel_hyp.py")], 600, ("Linked", "[TFIDF]")),
+        ("verify", [sys.executable, str(PROJECT / "verify_hypotheses.py")], 600, ("指标更新",)),
+        ("ach-batch", [sys.executable, str(PROJECT / "tools" / "ach_daily_batch.py")], 1000, ("[ACH-BATCH]",)),
+    ]
+    ok = 0
+    for name, cmd, tmo, keys in steps:
+        try:
+            r = subprocess.run(cmd, cwd=str(PROJECT), capture_output=True, text=True,
+                               timeout=tmo, creationflags=_NO_WINDOW)
+            if r.stdout:
+                for line in r.stdout.splitlines():
+                    if any(k in line for k in keys):
+                        print(f"hyp-chain[{name}]: {line.strip()[:150]}")
+            if r.returncode == 0:
+                ok += 1
+            else:
+                print(f"hyp-chain[{name}] exit={r.returncode}: {(r.stderr or '')[:150]}")
+        except subprocess.TimeoutExpired:
+            print(f"hyp-chain[{name}]: timeout {tmo}s (跳过, 下轮继续)")
+        except Exception as e:
+            print(f"hyp-chain[{name}] failed: {str(e)[:150]}")
+    if ok == len(steps):
+        state.write_text(str(time.time()), encoding="utf-8")
+    else:
+        print(f"hyp-chain: {ok}/{len(steps)} 成功, 不写节流戳, 下轮重试")
+
+
+def _step(fn, name):
+    """子步骤隔离：任一步异常/超时不再杀死整轮 refresh（9-05 实测 13 轮死 5 轮）"""
+    try:
+        return fn()
+    except subprocess.TimeoutExpired:
+        print(f"[STEP] {name}: timeout, skip (下轮继续)")
+    except Exception as e:
+        print(f"[STEP] {name} failed: {str(e)[:200]}")
+    return None
+
+
 if __name__ == "__main__":
-    with run_logging():
-        print(f"\n=== Refresh at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ===")
-        git_pull()
-        sync_repo_intel()
-        translate_local()
-        ensure_rsshub()  # 保 RSSHub 健康(8h 滞后根因修复)
-        fetch_now()       # 24h 全量本地拉(绕开 CI 9 条限流)
-        fetch_gdelt()     # P1-5 GDELT 国际侧补源(3h 节流, 失败静默)
-        translate_now()   # 本地 OpenCode Zen 翻译 (替代 CI 翻译吞吐瓶颈)
-        impact_now()      # 本地 AI 研判 (替代 CI 研判吞吐瓶颈, 2026-09-04 新增)
-        count = rebuild_data()
-        run_calibration()
-        fetch_macro()
-        fetch_unemployment_history()
-        gen_html()
-        print(f"=== Done: {count} intel ===")
+    # 单实例锁：与 OsintWatchdog 共用的 TEMP/osint_refresh.lock（lock 内 2h 视为在跑）
+    import os as _os, tempfile as _tempfile
+    _lock = Path(_tempfile.gettempdir()) / "osint_refresh.lock"
+    if _lock.exists():
+        try:
+            _age_h = (time.time() - _lock.stat().st_mtime) / 3600
+        except OSError:
+            _age_h = 0
+        if _age_h < 2:
+            print(f"another refresh is running (lock age {_age_h:.1f}h), exit")
+            sys.exit(0)
+    _lock.write_text(str(_os.getpid()), encoding="utf-8")
+    try:
+        with run_logging():
+            print(f"\n=== Refresh at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ===")
+            _step(git_pull, "git_pull")
+            _step(sync_repo_intel, "sync_repo_intel")
+            _step(translate_local, "translate_local")
+            _step(ensure_rsshub, "ensure_rsshub")  # 保 RSSHub 健康(8h 滞后根因修复)
+            _step(fetch_now, "fetch_now")       # 24h 全量本地拉(绕开 CI 9 条限流)
+            _step(fetch_gdelt, "fetch_gdelt")   # P1-5 GDELT 国际侧补源(节流, 失败静默)
+            _step(translate_now, "translate_now")   # 本地 OpenCode Zen 翻译
+            _step(impact_now, "impact_now")      # 本地 AI 研判
+            _step(run_hypothesis_chain, "hyp_chain")  # 每日假设链(link→verify→ACH)
+            count = _step(rebuild_data, "rebuild_data")
+            _step(run_calibration, "calibration")
+            _step(fetch_macro, "fetch_macro")
+            _step(fetch_unemployment_history, "unrate_history")
+            _step(gen_html, "gen_html")
+            print(f"=== Done: {count} intel ===")
+    finally:
+        try:
+            _lock.unlink()
+        except OSError:
+            pass

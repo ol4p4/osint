@@ -67,8 +67,10 @@ class ACHMatrix:
                 ev["diagnosis"][hid] = {"code": "N", "lr": 1.0, "note": "新假设，默认中性"}
 
     # ---------- 证据发现 ----------
-    def find_undiagnosed(self):
-        """major 节点 evidence_log 里还没进矩阵的证据"""
+    def find_undiagnosed(self, limit=None, newest_first=True):
+        """major 节点 evidence_log 里还没进矩阵的证据。
+        limit: 覆盖 MAX_DIAGNOSE_PER_RUN 的每轮预算（每日批用大值）
+        newest_first: 新证据优先（每日增量场景），False 则按日志顺序（历史积压场景）"""
         diagnosed = {ev["key"] for ev in self.data["evidence"]}
         out = []
         for h in self.majors:
@@ -84,7 +86,9 @@ class ACHMatrix:
             if e["key"] not in seen:
                 seen.add(e["key"])
                 uniq.append(e)
-        return uniq[:MAX_DIAGNOSE_PER_RUN]
+        if newest_first:
+            uniq.sort(key=lambda e: str(e["ev"].get("date", "")), reverse=True)
+        return uniq[:(limit if limit else MAX_DIAGNOSE_PER_RUN)]
 
     # ---------- AI 诊断 ----------
     def ai_diagnose(self, evidence_entry, analyzer):

@@ -36,6 +36,13 @@ Write-Host "
 [2/5] Running main analysis..." -ForegroundColor Green
 & $pythonCmd main_local.py
 
+# Step 2.5: Refresh indicator values before weekly verification (2026-09-10 新增)
+# 周循环 AI 裁判直接消费 assumptions 树里的 indicators[].current_value —
+# 先跑 verify_hypotheses 保证读到的是最新数值（幂等：信号不变时不重复调整置信度）
+Write-Host "
+[2.5/5] Refreshing indicator values..." -ForegroundColor Green
+& $pythonCmd "D:\osint\verify_hypotheses.py"
+
 # Step 3: Run hypothesis engine (idempotent: materialized views skipped, only due ones verified)
 Write-Host "
 [3/5] Running hypothesis engine..." -ForegroundColor Green

@@ -24,8 +24,9 @@ for key in ["rss_sources", "east_asia_sources"]:
             sources.append(s)
 print(f"[fetch_now] {len(sources)} sources (跳过 {skipped_ci} 个 scope:ci 外国源, 由 CI 采集)")
 
-# 2. 拉取最近 24h
-fetcher = RSSFetcher(sources, config.get("keyword_weights", {}))
+# 2. 拉取最近 24h（2026-09-10 补传 keyword_rules：本地抓取与 CI 评分口径一致，
+#    否则 P1-3 分组规则只在 CI 生效，本地低分条目被 rebuild 源配额窗口淘汰）
+fetcher = RSSFetcher(sources, config.get("keyword_weights", {}), config.get("keyword_rules", {}))
 new_items = fetcher.fetch_all(max_age_hours=24)
 print(f"[fetch_now] {len(new_items)} new items in last 24h")
 

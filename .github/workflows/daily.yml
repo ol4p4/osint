@@ -103,7 +103,8 @@ jobs:
           ls -la intel_${TODAY}.jsonl 2>/dev/null || echo "intel_${TODAY}.jsonl not found"
           ls -la intel_raw_${TODAY}.jsonl 2>/dev/null || echo "intel_raw_${TODAY}.jsonl not found"
           # 只提交 final 情报与摘要；raw/rss/list 中间产物不进 git（防仓库膨胀，本地合并不依赖它们）
-          git add intel_${TODAY}.jsonl intel_summary_${TODAY}.json hypotheses/ briefing_*.md 2>/dev/null || true
+          # 2026-09-10: 移除 hypotheses/（仓库根旧树 8-27 已删除；活跃树在 data/hypotheses，本地管理不入 CI）
+          git add intel_${TODAY}.jsonl intel_summary_${TODAY}.json briefing_*.md 2>/dev/null || true
           git add -A intel_2*.jsonl 2>/dev/null || true
           git status
           if git diff --staged --quiet; then
