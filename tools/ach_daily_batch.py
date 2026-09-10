@@ -24,7 +24,7 @@ sys.path.insert(0, str(PROJECT / "local"))
 sys.path.insert(0, str(PROJECT / "cloud"))
 
 BATCH = 60
-BUDGET_SECONDS = 900
+BUDGET_SECONDS = 1500   # 实测 AI 诊断 ~45s/条：900s 只够 19 条，1500s 可消化 ~33 条/天
 
 
 def main():
@@ -33,7 +33,8 @@ def main():
     ap.add_argument("--budget", type=int, default=BUDGET_SECONDS)
     ap.add_argument("--dry", action="store_true", help="只统计待诊断数，不调 AI")
     ap.add_argument("--force", action="store_true", help="忽略 20h 节流")
-    ap.add_argument("--throttle-hours", type=float, default=20.0)
+    ap.add_argument("--throttle-hours", type=float, default=18.0,
+                    help="低于链的 20h 节流，避免边界上偶发 skip")
     args = ap.parse_args()
 
     if not args.force and not args.dry and STATE_FILE.exists():

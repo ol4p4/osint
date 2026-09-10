@@ -335,7 +335,7 @@ def run_hypothesis_chain():
     steps = [
         ("link", [sys.executable, str(PROJECT / "link_intel_hyp.py")], 600, ("Linked", "[TFIDF]")),
         ("verify", [sys.executable, str(PROJECT / "verify_hypotheses.py")], 600, ("指标更新",)),
-        ("ach-batch", [sys.executable, str(PROJECT / "tools" / "ach_daily_batch.py")], 1000, ("[ACH-BATCH]",)),
+        ("ach-batch", [sys.executable, str(PROJECT / "tools" / "ach_daily_batch.py")], 1600, ("[ACH-BATCH]",)),
     ]
     ok = 0
     for name, cmd, tmo, keys in steps:

@@ -21,15 +21,23 @@ GitHub CI (daily.yml, 6次/天)
 refresh.py: git pull + 合并 CI 数据 + 可选翻译
   → ensure_rsshub()  → 保本地 RSSHub 容器健康（curl localhost:1200 → docker start / run）
   → fetch_now()     → tools/fetch_now.py 24h 全量本地拉（绕开 CI 9 条金十限流，详见 §"CI 故障排除 #11"）
+  → fetch_gdelt()   → tools/fetch_gdelt.py 国际侧补源（成功 3h / 失败 1h 节流，见 data/.gdelt_last_run）
   → translate_now() → tools/translate_local.py OpenCode Zen 翻译 30 条/6min（替代 CI 翻译吞吐瓶颈）
+  → impact_now()    → cloud/citizen_impact.py 本地 AI 研判 50 条/小时
+  → run_hypothesis_chain() → **每日假设链（20h 节流, data/.hyp_chain_last_run）**：
+       link_intel_hyp（TF-IDF 匹配+story 去重）→ verify_hypotheses（数值阈值）
+       → tools/ach_daily_batch.py（ACH 增量诊断 ~33 条/天，data/.ach_last_run 18h 节流）
   → rebuild_data → dashboard_data.json（去重后跑事件聚类 assign_story_ids，条目带 story_id/story_size）
   → run_calibration() → local/calibration.py 读 resolutions.jsonl → data/calibration.json
   → fetch_macro() → tools/fetch_macro_indicators.py → macro_indicators.json（12个宏观指标）
   → fetch_unemployment_history() → tools/fetch_macro_indicators.py --history → cn_unemployment_history.json
   → gen_dashboard+fix_dashboard → interactive_dashboard.html
+  （全程 _step() 隔离：任一子步骤异常/超时不再杀死整轮；TEMP/osint_refresh.lock 单实例锁防双跑）
   ↓
 仪表盘 19090 ← serve.py（**手动启动**：Start-ScheduledTask -TaskName OsintDashboard；2026-09-05 用户已禁用其登录触发器，不再开机自启）
-计划任务 OsintWeekly（周一 09:30）→ 产物目录 daily_run.ps1 -Auto → local/main_local.py 分析 + hypothesis_engine.run_weekly_cycle
+计划任务 OsintWeekly（周一 09:30）→ 产物目录 daily_run.ps1 -Auto → Step2.5 verify → local/main_local.py 分析 + hypothesis_engine.run_weekly_cycle
+  （**2026-09-10 修复电源条件**：DisallowStartIfOnBatteries/StopIfGoingOnBatteries=false + StartWhenAvailable=true；
+   此前 0x800710E0 失败根因。备份 XML 在 data/OsintWeekly.backup_20260910.xml）
 对话引擎 daily_question.ps1 → local/dialogue_engine.py（观点卡）→ feed_to_hypothesis 进假设树 → local/kb_linker.py 同步知识库
 ```
 
@@ -154,7 +162,24 @@ KB 概念页：`D:\Codex输出\视频知识库\wiki\concepts\宏观-五维分析
 | verdict 1-20 连续分 | hypothesis_engine：score≥17 supported / 13-16 partial / 7-12 inconclusive / ≤6 refuted，映射覆盖模型自报；resolutions 记 verify_score | 桩测 8 组边界（含 99 越界钳制、无分回退）全过 |
 | 关键词分组 DSL | sources.yaml 新增 `keyword_rules`（any/must/exclude/weight/cap），fetch_rss 预编译叠加计分 | 种子 5 组中英混排；离线测试英文 must 组命中、负例不计分、叠加计分全符合语义 |
 | 高确信翻车高亮 | gen_dashboard：RESOLUTIONS 映射 + flipBadge（⚡高确信翻车/⚡已翻车/↓置信度断崖）+ .flip 红边 | Playwright 浏览器实测双徽章+红边渲染正确；数据为零自然不显示 |
-| GDELT 补源 | tools/fetch_gdelt.py + refresh.py 接入（3h 节流） | 连通性已证（拿到 HTTP 响应）；**试探期触发 GDELT IP 临时封锁（429），等解封后 refresh 每日 ~8 轮自然生效**；mock 验证映射/去重/过滤全过 |
+| GDELT 补源 | tools/fetch_gdelt.py + refresh.py 接入（成功 3h/失败 1h 节流） | 连通性已证（拿到 HTTP 响应）；**试探期触发 GDELT IP 临时封锁（429），等解封后 refresh 每日 ~8 轮自然生效**；mock 验证映射/去重/过滤全过 |
+
+## 系统通电修复（2026-09-10，审计驱动）
+
+审计发现 P0/P1 成果「代码就位但未通电」——verify/link 只挂 CI 而 CI 上必然静默跳过、周任务因电源条件从未成功。本轮修复：
+
+| 问题 | 修复 | 验证 |
+|---|---|---|
+| 三条链（证据/验证/ACH）无自动调度 | refresh.py `run_hypothesis_chain()`（20h 节流: link→verify→ACH 批）+ daily_run.ps1 Step 2.5 | **实跑通过**：link 3350/6062 匹配、verify 幂等、ACH 矩阵 20→39 行 |
+| 幂等缺陷（置信度反复漂移） | verify_hypotheses 信号状态闸门（sN_rM 快照）+ intel 微调日闸；hypothesis_engine resolved_at 标记跳过已 resolve | 桩测：连跑两次第二次不调整 |
+| 9-05 日志 13 轮死 5 轮 | refresh `_step()` 隔离全部子步骤 + TEMP/osint_refresh.lock 单实例锁 | 锁测试：锁定期间干净退出 |
+| ACH 积压 885 条（周 20 条=45 周） | tools/ach_daily_batch.py 每日 ~33 条（1500s 预算实测 45s/条），约 4 周清完 | dry 计数正确 |
+| OsintWeekly 从未成功（0x800710E0） | 电源条件三项修复（备份 XML data/OsintWeekly.backup_20260910.xml） | **实测拉起成功（Running）** |
+| GDELT 每轮白撞 126s | 失败写 1h 节流戳 | 代码审查 |
+| 本地抓取不吃 keyword_rules | fetch_now.py 三参构造 | 代码审查 |
+| 仓库根僵尸假设树（8-27, 零引用） | git rm + 磁盘删除 + daily.yml add 列表清理 | grep 确认零引用 |
+
+**当前状态**：假设树 71 节点仍全 active（最早 deadline 2026-12-05，23 个 small）——resolutions 与校准面板要等 12 月首个真实到期；ACH 矩阵每日 +33 条自动消化积压，2-3 周后 major 排名开始有信息量。
 
 ## CI 故障排除
 1. **RSS 超时**：每源 15s 超时，坏源跳过不影响其他源
@@ -193,16 +218,17 @@ KB 概念页：`D:\Codex输出\视频知识库\wiki\concepts\宏观-五维分析
 - [x] **宏观指标集成**（tools/fetch_macro_indicators.py → 10 指标 → refresh.py 自动调用 → 仪表盘面板渲染）
 - [x] **同类方案调研 P0 四项**（2026-09-05 落地：验证闭环/校准评分/事件聚类/敏感性分析，详见 §"同类方案调研 P0 落地"）
 - [x] **同类方案调研 P1 五项**（2026-09-05 落地：TF-IDF 匹配/verdict 连续分/关键词 DSL/翻车高亮/GDELT，详见 §"P1 五项落地"）
-- [ ] **PLAN-2 M2 贝叶斯调优**（待首次周循环跑完，观察后验分布再调先验/LR 锚定；敏感性分析已就位可直接复用其输出）
+- [x] **系统通电修复**（2026-09-10：假设链每日自动调度/幂等/加固/任务条件/僵尸树，详见 §"系统通电修复"）
+- [ ] **PLAN-2 M2 贝叶斯调优**（等 ACH 积压消化 2-3 周后看后验分布再调先验/LR 锚定；敏感性分析已就位）
 - [ ] 事件聚类阈值调优：同日公告模板句仍会小规模误聚；观察仪表盘「同事件×N」徽章误报率后调 cluster_stories.py 文件头三闸门
 - [ ] TF-IDF 匹配召回跃升：把 build_tfidf_vectors 换成 embedding 向量（接口已预留，调用方不动）；需新增白名单域名
-- [ ] GDELT 解封观察：试探触发的 429 IP 封锁解除后（通常 1h+），观察 refresh 日志 gdelt 行是否正常 append；持续 429 则把查询组砍到 1 组/次
-- [ ] 9-07（周一）OsintWeekly 首跑验收：看 resolutions.jsonl 是否产生真实验证记录 + 校准面板点亮 + verify_score 落库
+- [ ] GDELT 解封观察：失败已写 1h 节流戳（不再白撞）；持续 429 则把查询组砍到 1 组/次
+- [ ] **2026-12-05 首个真实到期验证**（23 个 small 节点）——resolutions.jsonl 开始产出 + 校准面板点亮
 - [ ] 指标覆盖率提升：74 个 custom 指标部分无免费 API（NBS 3 个指标无抓取函数）；small 假设 37/40 指标 no_source
 - [ ] 源健康度审计：47+6 源逐源测试（部分 list 源选择器已脱节）
 - [ ] 旧目录 `C:\Users\admin\Documents\osint` 确认后删除（含 git 历史，删前确认不再回滚）
 - [ ] 对话引擎观点卡的 time_horizon_months 有时与用户回答的到期日不一致（AI 浓缩偏差，可加后校验）
-- [ ] mimo-v2.5-free 代理偶发 empty response（2026-09-05 fill_deadline 实测 5 连败）：批量 AI 脚本都应带 level/默认值兜底 + 预算超时
+- [ ] mimo-v2.5-free 代理偶发 empty response / HTTP 400：批量 AI 脚本都应带兜底 + 预算超时（ach_daily_batch 已按此设计，失败条下轮重试）
 
 ---
-*最后更新：2026-09-05 - 同类方案调研 P0+P1 九项全部落地（验证闭环/校准/聚类/敏感性 + TF-IDF 匹配/verdict 连续分/关键词 DSL/翻车高亮/GDELT）*
+*最后更新：2026-09-10 - 系统通电修复（假设链自动调度/幂等/加固/OsintWeekly 电源条件/ACH 每日批/僵尸树清理）*
