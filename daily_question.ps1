@@ -13,10 +13,11 @@ Write-Host "=== Daily Question & View Generator ===" -ForegroundColor Cyan
 Write-Host "  1. Interactive dialogue (type idea -> 5 rounds -> view card)" -ForegroundColor Green
 Write-Host "  2. Batch: process Obsidian idea drafts directory" -ForegroundColor Green
 Write-Host "  3. Generate daily open questions from analysis" -ForegroundColor Green
+Write-Host "  4. Worldview (三观): show current / 9-question guided input" -ForegroundColor Green
 
 $mode = "1"
 if (-not $Auto) {
-    $mode = Read-Host "Choose mode (1/2/3, default 1)"
+    $mode = Read-Host "Choose mode (1/2/3/4, default 1)"
 }
 Set-Location $localDir
 
@@ -28,6 +29,11 @@ switch ($mode) {
     }
     "3" {
         & python question_generator.py
+    }
+    "4" {
+        & python worldview_engine.py --show
+        $go = Read-Host "Run 9-question guided input now? (y/N)"
+        if ($go -match "^[yY]") { & python worldview_engine.py --interactive }
     }
     default {
         $idea = ""

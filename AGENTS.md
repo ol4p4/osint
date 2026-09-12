@@ -75,6 +75,9 @@ AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key �
 | `tools/fetch_now.py` | 本地 24h 全量拉取（**仅国内源**，`scope:ci` 的 33 个外国源跳过——境外源一律由 CI 在 GitHub Actions 上采集，本地拉不动是常态），append 到今日 jsonl；refresh.py 自动调 |
 | `tools/translate_local.py` | 本地 OpenCode Zen 翻译（mimo-v2.5-free + nemotron 降级），每跑 30 条 6 分钟，写回 jsonl；refresh.py 自动调，**本地 hourly 翻译 18-30 条/6min，CI 翻译吞吐瓶颈解决** |
 | `tools/fetch_gdelt.py` | P1-5 GDELT 国际侧补源（DOC API 三组查询 24h 窗口，title-only 流入本地翻译管线）；白名单 {api.gdeltproject.org} 脚本内自带；6s 间隔+12s 退避+3h 成功节流（data/.gdelt_last_run）；refresh.py 自动调，失败静默 |
+| `worldview_loader.py` | 三观加载/注入文本构建（worldview.yaml 唯一事实源；缺失静默降级返回空串；**裁判链路明确不注入**保持校准客观）；`--show` 看档案+注入预览 / `--check` 结构校验 |
+| `local/worldview_engine.py` | 三观输入引擎：`--seed` AI 从 persona+views 起草初稿（draft:true）/ `--interactive` 9 轮引导（3 阶段×3 问，复用 dialogue_engine 深化机制，覆盖写 draft:false）/ `--show`；AI 合成失败不动 YAML |
+| `worldview.yaml` | 用户三观档案（worldview/lifeview/values + analysis_directives），仓库根提交供 CI 读取；draft=true 标记 AI 初稿待校正；Obsidian 镜像 `视频知识库\wiki\views\worldview.md` |
 | `gen_dashboard.py` + `fix_dashboard.py` | 生成 HTML（必须按此顺序）；gen_dashboard 内嵌 macro 面板 CSS/HTML/JS，趋势图用 Chart.js 4.4 (jsdelivr)，情报流 section 用 `<details>` 折叠默认收起；P1-4 翻车高亮（flipBadge：⚡高确信翻车/↓置信度断崖 + 红边卡片） |
 | `link_intel_hyp.py` | 情报→假设证据关联（P1-1 起主匹配=TF-IDF 余弦≥0.12 top3 与 cluster_stories 共用分词，DOMAIN_MAP 降为兜底；证据按 story_id 去重；report 带 method 字段） |
 | `daily_briefing.py` / `sync_data.py` / `rebuild_hyps.py` | 简报/同步/重建树 |
@@ -112,6 +115,11 @@ python D:\osint\local\dialogue_engine.py --batch <草稿目录>      # 批量
 
 # 每日开放性问题
 python D:\osint\local\question_generator.py --analysis-text "分析摘要"
+
+# 三观录入（P2c）：AI 引导 9 问 → worldview.yaml → 全链路自动生效
+python D:\osint\local\worldview_engine.py --interactive   # 引导录入（覆盖写）
+python D:\osint\worldview_loader.py --show                # 查看当前三观与注入预览
+# 或 daily_question.ps1 菜单选 4
 
 # 周循环（幂等，可随时手动跑）
 python -c "..." # 见 daily_run.ps1 Step3，或等 OsintWeekly 周日 09:30 自动跑
@@ -163,6 +171,18 @@ KB 概念页：`D:\Codex输出\视频知识库\wiki\concepts\宏观-五维分析
 | 关键词分组 DSL | sources.yaml 新增 `keyword_rules`（any/must/exclude/weight/cap），fetch_rss 预编译叠加计分 | 种子 5 组中英混排；离线测试英文 must 组命中、负例不计分、叠加计分全符合语义 |
 | 高确信翻车高亮 | gen_dashboard：RESOLUTIONS 映射 + flipBadge（⚡高确信翻车/⚡已翻车/↓置信度断崖）+ .flip 红边 | Playwright 浏览器实测双徽章+红边渲染正确；数据为零自然不显示 |
 | GDELT 补源 | tools/fetch_gdelt.py + refresh.py 接入（成功 3h/失败 1h 节流） | 连通性已证（拿到 HTTP 响应）；**试探期触发 GDELT IP 临时封锁（429），等解封后 refresh 每日 ~8 轮自然生效**；mock 验证映射/去重/过滤全过 |
+
+## 三观输入功能（2026-09-12 落地）
+
+对话式录入（`worldview_engine.py --interactive`，3 阶段×3 问，AI 深化追问）→ `worldview.yaml`（仓库根，唯一事实源）→ 注入研判链路：
+
+| 注入点 | 覆盖 | 方式 |
+|---|---|---|
+| `local/analyze.py` `_build_system_prompt` | 本地主分析 + 周分析 | persona 之后拼【用户三观】块 |
+| `cloud/citizen_impact.py` `build_prompt` | 本地每小时研判 + CI 云端研判 | `GRADUATE_CONTEXT` 后拼 `_worldview_block()` |
+| `data/serve.py` `_ask_staff` | 看板问答面板 | system 提示追加 |
+
+**护栏**：验证裁判（verify_hypotheses / hypothesis_engine.verify_hypothesis）**不注入**三观——裁判保持中立，Brier 校准才不失真。注入文本 ≤800 字自动截断；文件缺失一律空串降级。`--seed` 可从 persona+views 起草初稿（draft:true），`--interactive` 确认后转正。录入入口：daily_question.ps1 模式 4。
 
 ## 系统通电修复（2026-09-10，审计驱动）
 
@@ -219,6 +239,7 @@ KB 概念页：`D:\Codex输出\视频知识库\wiki\concepts\宏观-五维分析
 - [x] **同类方案调研 P0 四项**（2026-09-05 落地：验证闭环/校准评分/事件聚类/敏感性分析，详见 §"同类方案调研 P0 落地"）
 - [x] **同类方案调研 P1 五项**（2026-09-05 落地：TF-IDF 匹配/verdict 连续分/关键词 DSL/翻车高亮/GDELT，详见 §"P1 五项落地"）
 - [x] **系统通电修复**（2026-09-10：假设链每日自动调度/幂等/加固/任务条件/僵尸树，详见 §"系统通电修复"）
+- [x] **三观输入功能**（2026-09-12：worldview_engine 对话式录入 + worldview_loader 四链路注入 + 裁判护栏；初稿已 seed，待用户 --interactive 校正转正）
 - [ ] **PLAN-2 M2 贝叶斯调优**（等 ACH 积压消化 2-3 周后看后验分布再调先验/LR 锚定；敏感性分析已就位）
 - [ ] 事件聚类阈值调优：同日公告模板句仍会小规模误聚；观察仪表盘「同事件×N」徽章误报率后调 cluster_stories.py 文件头三闸门
 - [ ] TF-IDF 匹配召回跃升：把 build_tfidf_vectors 换成 embedding 向量（接口已预留，调用方不动）；需新增白名单域名
@@ -231,4 +252,4 @@ KB 概念页：`D:\Codex输出\视频知识库\wiki\concepts\宏观-五维分析
 - [ ] mimo-v2.5-free 代理偶发 empty response / HTTP 400：批量 AI 脚本都应带兜底 + 预算超时（ach_daily_batch 已按此设计，失败条下轮重试）
 
 ---
-*最后更新：2026-09-10 - 系统通电修复（假设链自动调度/幂等/加固/OsintWeekly 电源条件/ACH 每日批/僵尸树清理）*
+*最后更新：2026-09-12 - 三观输入功能落地（对话式录入 + 四链路注入 + 裁判护栏）*

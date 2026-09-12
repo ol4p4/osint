@@ -124,6 +124,16 @@ def parse_json_array(text):
     return []
 
 
+def _worldview_block():
+    """用户三观注入（worldview.yaml 在仓库根，提交后 CI/本地双端可读；缺失/异常返回空串）"""
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+        from worldview_loader import build_worldview_prompt
+        return build_worldview_prompt()
+    except Exception:
+        return ""
+
+
 def build_prompt(batch):
     news = [{"id": it.get("id", ""),
              "title": ((it.get("cn_title") or it.get("title", "")) or "")[:80],
@@ -131,6 +141,7 @@ def build_prompt(batch):
             for it in batch]
     return ("新闻列表(JSON)：\n" + json.dumps(news, ensure_ascii=False)
             + "\n\n" + GRADUATE_CONTEXT
+            + _worldview_block()
             + '\n\n对每条输出 JSON（严格只输出数组，不要 markdown）：'
               '[{"id":"原id",'
               '"impact_level":"高|中|低",'

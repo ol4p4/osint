@@ -87,6 +87,14 @@ class MacroAnalyzer:
                 five_dim += "\u3010\u5b8f\u89c2\u5feb\u7167\u3011" + macro_state + "\n\n"
         except Exception:
             five_dim = ""
+        # 用户三观注入 (worldview.yaml, 文件缺失时静默降级; 裁判链路不注入保持校准客观)
+        try:
+            from worldview_loader import build_worldview_prompt
+            worldview = build_worldview_prompt()
+            if worldview:
+                five_dim += worldview + "\n\n"
+        except Exception:
+            pass
         return (
             "\u4f60\u662f\u4e3a\u300c\u5904\u4e8e\u7ed3\u6784\u6027\u8f6c\u6298\u671f\u7684\u5e74\u8f7b\u52b3\u52a8\u8005\u300d\u670d\u52a1\u7684\u53c2\u8c0b\u957f\u3002"
             + "\n\u7528\u6237\u753b\u50cf\uff1a" + self.persona + "\n\n"

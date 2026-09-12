@@ -55,12 +55,20 @@ def _ask_staff(question: str) -> str:
     if persona_file.exists():
         persona = persona_file.read_text(encoding="utf-8")[:2000]
 
+    # 用户三观注入（worldview.yaml，缺失时静默降级）
+    worldview = ""
+    try:
+        from worldview_loader import build_worldview_prompt
+        worldview = build_worldview_prompt()
+    except Exception:
+        worldview = ""
+
     system = (
         "你是'参谋系统'的参谋长，服务对象是一名中国年轻失业毕业生。"
         "分析框架：积累制度/空间修正/国家-市场边界/阶级利益四维推演。"
         "决策偏好：不做福利清单做结构性机会映射；给18个月窗口期的行动向量；"
         "必须给风险提示与避坑指南；输出具体可执行内容而非模糊建议。\n\n"
-        "用户画像：\n" + persona
+        "用户画像：\n" + persona + "\n\n" + worldview
     )
     prompt = ("用户的问题或假设：\n" + question[:1000]
               + "\n\n请给出结构化研判（四维诊断+行动向量+避坑），中文回答。")
