@@ -199,6 +199,8 @@ PM 视角审计发现：每小时线和云端线质量在线，短板集中在�
 | OsintWeekly 9-07 静默失败后无兜底 | v3 加周报新鲜度：hypothesis_weekly_*.md >8 天 → 补跑 daily_run -Auto（24h 节流戳） | 手动触发看日志 |
 | 假设树（71 节点）改动从不 commit——git 有追踪无历史，工作区脏文件 + 远端变更会让裸 git_pull 永久失败 | refresh.py `commit_hypotheses()`：hyp_chain 全成功后 add→commit→pull --rebase→push；rebase 冲突自动 --abort 留下轮 | 实跑确认 commit+push |
 | CI 的 link/verify 两步改 data/hypotheses/ 但 git add 不含，每轮成果丢弃白烧时长 | daily.yml 删除两步，假设链诚实化只跑本地 | `gh workflow run` 补跑 CI 绿 |
+| **hypothesis_engine.py:419 函数体内局部 datetime import 使 datetime 成局部变量，377 行抛 UnboundLocalError——周循环 8-31 后每次必死在验证到期假设之前（9-07 周报缺失的真正根因，与电源条件无关）** | 删除该局部 import（全局第 10 行已有），2026-09-12 实测 import 链通过 | 桩测 import chain OK |
+| opencode.ai 偶发慢速滴字节保活绕过 socket timeout（_read_status 每次 read 都有数据，180s 永不触发，实测挂死 22 分钟，faulthandler 栈定位于 ssl.read；Windows 无 SIGALRM） | analyze.py `_safe_ai_post` 白名单校验后改为线程+join 硬超时（195s），超时走模型降级链；实测 429 配额耗尽时 183.7s 正确放弃 | 最小请求实测 |
 
 **重要认知**：`data/hypotheses/` 被 git 追踪（.gitignore 第 9 行 `data/*` + 第 17 行 `!data/hypotheses/`），AGENTS.md 旧描述「产物目录 gitignore 不追踪」不准确。假设树的唯一有效写入方是本地；CI 不碰它。daily_run.ps1 Step2.5 用绝对路径调 verify_hypotheses.py（其内部 MACRO_FILE 也是绝对路径），与 cwd 无关。
 
