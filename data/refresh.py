@@ -356,8 +356,48 @@ def run_hypothesis_chain():
             print(f"hyp-chain[{name}] failed: {str(e)[:150]}")
     if ok == len(steps):
         state.write_text(str(time.time()), encoding="utf-8")
+        commit_hypotheses()
     else:
         print(f"hyp-chain: {ok}/{len(steps)} 成功, 不写节流戳, 下轮重试")
+
+
+def commit_hypotheses():
+    """假设树自动版本化（2026-09-12 新增）：hyp_chain 全成功后 commit+push
+    data/hypotheses/ 变更。.gitignore 第 17 行 !data/hypotheses/ 有意追踪假设树,
+    但此前改动从不提交 → 71 节点唯一资产无版本历史, 且工作区脏文件 + 远端变更
+    会让裸 git pull（local_sync.git_pull 无 stash 容错）永久失败。
+    本地是假设树的唯一写入方（CI 的 link/verify 步骤已删除）；rebase/push 失败
+    静默跳过留下轮重试，不阻塞 refresh 主流程。"""
+    files = ["data/hypotheses/active_hypotheses.json", "data/hypotheses/ach_matrix.json"]
+    try:
+        subprocess.run(["git", "add", *files], cwd=str(PROJECT), capture_output=True,
+                       text=True, timeout=60, creationflags=_NO_WINDOW)
+        # --quiet: 有 staged 变更返回 1, 无变更返回 0
+        diff = subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=str(PROJECT),
+                              capture_output=True, timeout=60, creationflags=_NO_WINDOW)
+        if diff.returncode == 0:
+            print("hyp-commit: 无变更, 跳过")
+            return
+        msg = f"auto: hypothesis chain update {time.strftime('%Y-%m-%d')}"
+        c = subprocess.run(["git", "commit", "-m", msg], cwd=str(PROJECT),
+                           capture_output=True, text=True, timeout=120, creationflags=_NO_WINDOW)
+        if c.returncode != 0:
+            print(f"hyp-commit: commit 失败: {(c.stderr or '')[:150]}")
+            return
+        rb = subprocess.run(["git", "pull", "--rebase", "origin", "master"], cwd=str(PROJECT),
+                            capture_output=True, text=True, timeout=180, creationflags=_NO_WINDOW)
+        if rb.returncode != 0:
+            # 冲突时回退 rebase 中间态, 保住本地 commit 留待下轮, 避免污染后续 git_pull
+            subprocess.run(["git", "rebase", "--abort"], cwd=str(PROJECT),
+                           capture_output=True, timeout=60, creationflags=_NO_WINDOW)
+            print(f"hyp-commit: rebase 失败(留下轮): {(rb.stderr or rb.stdout or '')[:150]}")
+            return
+        ph = subprocess.run(["git", "push", "origin", "master"], cwd=str(PROJECT),
+                            capture_output=True, text=True, timeout=180, creationflags=_NO_WINDOW)
+        print("hyp-commit: pushed" if ph.returncode == 0
+              else f"hyp-commit: push 失败(留下轮): {(ph.stderr or '')[:150]}")
+    except Exception as e:
+        print(f"hyp-commit: failed: {str(e)[:150]}")
 
 
 def _step(fn, name):

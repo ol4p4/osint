@@ -416,7 +416,10 @@ Output JSON array, each: {{"claim":"...","indicator":"measurable metric","data_s
                 ach_data = _json.loads(ach_matrix_path.read_text(encoding="utf-8"))
             except Exception:
                 ach_data = None
-        from datetime import datetime, timezone
+        # 2026-09-12 修复：删除此处局部 `from datetime import datetime, timezone`——
+        # 函数内 import 使 datetime 成为局部变量，导致 377 行先访问时抛 UnboundLocalError，
+        # 周循环每次必死在验证到期假设之前（8-31 后引入，9-07/9-14 周报缺失的真正根因之一）。
+        # 全局第 10 行已有同名 import，此处直接使用。
         today = datetime.now(timezone.utc)
         is_monday = today.weekday() == 0  # 0=Mon
         # 环境变量 OSINT_WEEKLY=1 强制出周报（不强制也行，因为周一就够）

@@ -11,8 +11,13 @@ import urllib.request, urllib.error, uuid
 AI_ALLOWED_HOST = "opencode.ai"
 
 def _safe_ai_post(url, payload, headers, timeout=180):
-    """SSRF 防护：仅 https + opencode.ai 白名单 + 解析结果不得指向私有/环回/保留地址"""
-    import socket, ipaddress
+    """SSRF 防护：仅 https + opencode.ai 白名单 + 解析结果不得指向私有/环回/保留地址。
+    2026-09-12 加固慢速响应硬超时：socket timeout 防不了服务器收下请求后滴字节保活
+    （http.client._read_status 每次 read 都有数据到达，180s 永不触发，实测挂死 22 分钟，
+    faulthandler 栈定位于 ssl.read）。Windows 无 SIGALRM，改为白名单校验后
+    线程 + join 执行请求——超时放弃本次尝试（daemon 孤儿线程自行终结），
+    由 _call_api 走模型降级链。"""
+    import socket, ipaddress, threading
     from urllib.parse import urlparse
     parsed = urlparse(url)
     if parsed.scheme != "https" or (parsed.hostname or "") != AI_ALLOWED_HOST:
@@ -22,8 +27,23 @@ def _safe_ai_post(url, payload, headers, timeout=180):
         if ip.is_private or ip.is_loopback or ip.is_reserved or ip.is_link_local or ip.is_multicast:
             raise ValueError("endpoint resolves to forbidden address: " + str(ip))
     req = urllib.request.Request(url, data=payload, headers=headers, method="POST")
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return resp.read().decode("utf-8")
+    box = {}
+
+    def _do():
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                box["raw"] = resp.read().decode("utf-8")
+        except Exception as e:
+            box["err"] = e
+
+    t = threading.Thread(target=_do, daemon=True)
+    t.start()
+    t.join(timeout + 15)
+    if t.is_alive():
+        raise TimeoutError("AI endpoint unresponsive (slow-drip bypassed socket timeout)")
+    if "err" in box:
+        raise box["err"]
+    return box["raw"]
 
 @dataclass
 class AnalysisResult:
