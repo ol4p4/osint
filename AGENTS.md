@@ -14,8 +14,9 @@
 
 ## 数据流全貌（接手必读）
 ```
-GitHub CI (daily.yml, 6次/天)
-  采集RSS → clean_dedup_score → translate(NVIDIA增量50条) → link_intel_hyp → verify_hypotheses → daily_briefing → push 仓库
+GitHub CI (daily.yml, 8次/天, cron 0 */3 * * *)
+  采集RSS → clean_dedup_score → translate(NVIDIA增量50条) → citizen_impact(AI研判) → daily_briefing → push 仓库
+  （link_intel_hyp / verify_hypotheses 已于 2026-09-12 从 CI 删除——改 data/hypotheses/ 但 git add 不含该目录，每轮成果被丢弃；假设链只跑本地）
 仓库 D:\osint\intel_YYYYMMDD.jsonl
   ↓ (计划任务 OsintRefresh 每小时跑产物目录 refresh.py)
 refresh.py: git pull + 合并 CI 数据 + 可选翻译
@@ -35,9 +36,11 @@ refresh.py: git pull + 合并 CI 数据 + 可选翻译
   （全程 _step() 隔离：任一子步骤异常/超时不再杀死整轮；TEMP/osint_refresh.lock 单实例锁防双跑）
   ↓
 仪表盘 19090 ← serve.py（**手动启动**：Start-ScheduledTask -TaskName OsintDashboard；2026-09-05 用户已禁用其登录触发器，不再开机自启）
-计划任务 OsintWeekly（周一 09:30）→ 产物目录 daily_run.ps1 -Auto → Step2.5 verify → local/main_local.py 分析 + hypothesis_engine.run_weekly_cycle
+计划任务 OsintWeekly（周一 09:30）→ 产物目录 daily_run.ps1 -Auto → Step2 main_local.py 分析 → Step2.5 verify → Step3 hypothesis_engine.run_weekly_cycle → Step3.5 policy_tracker
   （**2026-09-10 修复电源条件**：DisallowStartIfOnBatteries/StopIfGoingOnBatteries=false + StartWhenAvailable=true；
-   此前 0x800710E0 失败根因。备份 XML 在 data/OsintWeekly.backup_20260910.xml）
+   此前 0x800710E0 失败根因。备份 XML 在 data/OsintWeekly.backup_20260910.xml。
+   **2026-09-12 加固**：Step 级 try/catch 隔离（此前 ErrorActionPreference=Stop 任一步挂全链死）+
+   Start-Transcript 日志 data/logs/weekly_YYYYMMDD.log（此前零日志）+ 清理 Sunday 判断死代码；备份 daily_run.ps1.bak_20260912）
 对话引擎 daily_question.ps1 → local/dialogue_engine.py（观点卡）→ feed_to_hypothesis 进假设树 → local/kb_linker.py 同步知识库
 ```
 
@@ -122,7 +125,7 @@ python D:\osint\worldview_loader.py --show                # 查看当前三观�
 # 或 daily_question.ps1 菜单选 4
 
 # 周循环（幂等，可随时手动跑）
-python -c "..." # 见 daily_run.ps1 Step3，或等 OsintWeekly 周日 09:30 自动跑
+python -c "..." # 见 daily_run.ps1 Step3，或等 OsintWeekly 周一 09:30 自动跑
 ```
 
 ## 约束与禁忌 / MUST NOT
@@ -184,6 +187,21 @@ KB 概念页：`D:\Codex输出\视频知识库\wiki\concepts\宏观-五维分析
 
 **护栏**：验证裁判（verify_hypotheses / hypothesis_engine.verify_hypothesis）**不注入**三观——裁判保持中立，Brier 校准才不失真。注入文本 ≤800 字自动截断；文件缺失一律空串降级。`--seed` 可从 persona+views 起草初稿（draft:true），`--interactive` 确认后转正。录入入口：daily_question.ps1 模式 4。
 
+## 周循环链路加固（2026-09-12，审计驱动）
+
+PM 视角审计发现：每小时线和云端线质量在线，短板集中在周循环——它是唯一没有隔离、没有日志、没有看门狗的运行器，却承担校准闭环调度。本轮修复：
+
+| 问题 | 修复 | 验证 |
+|---|---|---|
+| daily_run.ps1 `ErrorActionPreference=Stop`，Step2 挂则 2.5/3/3.5 全不跑 | Step 级 try/catch 隔离 + 原生命令 `$LASTEXITCODE` 检查（PS 原生命令非零退出不触发 catch） | Parser 语法校验 + 手动实跑 |
+| 周循环零日志（Write-Host 丢弃，9-07 失败无据可查） | Start-Transcript 落 `data/logs/weekly_YYYYMMDD.log` | 实跑确认日志生成 |
+| watchdog 只看本地 jsonl mtime，本地 fetch_now 活着时测不出 CI 死亡 | v3 加 `gh run list` 检测：最近 CI 成功 >12h → dispatch | 手动触发看日志 |
+| OsintWeekly 9-07 静默失败后无兜底 | v3 加周报新鲜度：hypothesis_weekly_*.md >8 天 → 补跑 daily_run -Auto（24h 节流戳） | 手动触发看日志 |
+| 假设树（71 节点）改动从不 commit——git 有追踪无历史，工作区脏文件 + 远端变更会让裸 git_pull 永久失败 | refresh.py `commit_hypotheses()`：hyp_chain 全成功后 add→commit→pull --rebase→push；rebase 冲突自动 --abort 留下轮 | 实跑确认 commit+push |
+| CI 的 link/verify 两步改 data/hypotheses/ 但 git add 不含，每轮成果丢弃白烧时长 | daily.yml 删除两步，假设链诚实化只跑本地 | `gh workflow run` 补跑 CI 绿 |
+
+**重要认知**：`data/hypotheses/` 被 git 追踪（.gitignore 第 9 行 `data/*` + 第 17 行 `!data/hypotheses/`），AGENTS.md 旧描述「产物目录 gitignore 不追踪」不准确。假设树的唯一有效写入方是本地；CI 不碰它。daily_run.ps1 Step2.5 用绝对路径调 verify_hypotheses.py（其内部 MACRO_FILE 也是绝对路径），与 cwd 无关。
+
 ## 系统通电修复（2026-09-10，审计驱动）
 
 审计发现 P0/P1 成果「代码就位但未通电」——verify/link 只挂 CI 而 CI 上必然静默跳过、周任务因电源条件从未成功。本轮修复：
@@ -211,7 +229,7 @@ KB 概念页：`D:\Codex输出\视频知识库\wiki\concepts\宏观-五维分析
 7. **计划任务没跑成**：查 `logs/refresh_YYYYMMDD.log`；`daily_run.ps1` 手动测试加 `-Auto`
 8. **GitHub schedule 会被静默跳过**（平台通病）：数据陈旧时先 `gh run list` 看 CI，再 `gh workflow run daily.yml` 手动补跑，跑完等本地 OsintRefresh 每小时拉取或手动跑 refresh.py
    - 诊断命令：`gh api repos/ol4p4/osint/actions/runs?event=schedule` 看时间戳间隔
-   - 双联防御：CI 已 6x/day（cron `0 */4 * * *`，commit edbd79d）+ 本地 `OsintWatchdog` 计划任务每 6h 检查 `intel_2*.jsonl` mtime，> 8h 静默则 `gh workflow run daily.yml`，日志 `data/logs/watchdog_YYYYMMDD.log`
+   - 双联防御：CI 已 8x/day（cron `0 */3 * * *`）+ 本地 `OsintWatchdog` 计划任务每 6h 三项检查（v3, 2026-09-12）：① `intel_2*.jsonl` mtime > 8h 静默 → 本地跑 refresh.py 自愈 + `gh workflow run daily.yml`；② 最近 CI 成功 run > 12h → dispatch（此前只看本地 mtime，本地 fetch_now 活着时测不出 CI 死亡）；③ 最新 hypothesis_weekly_*.md > 8 天（错过周一）→ 补跑 daily_run.ps1 -Auto（24h 节流戳 data/.weekly_catchup_last_run）。日志 `data/logs/watchdog_YYYYMMDD.log`
 9. **仪表盘时间错乱**：time_ago 已改为浏览器端动态计算（gen_dashboard.py 内嵌 JS IIFE），不再依赖采集时写死的静态文本
 10. **fetch_list 采集 0 条**（2026-08-30 诊断）：接口缺陷已修（main 现在写 output jsonl，与 fetch_rss 同接口）；但所有列表源在 CI 上也解析出 0 条——**sources.yaml 的 list_selector 已与改版后的页面结构脱节**（gov.cn 还是 JS 渲染页）。逐源修选择器是持久战，替代方案：改用 RSSHub 或各站 RSS 源。
 11. **仪表盘情报全显示 "8 小时前" 但金十/财联社实际在发**（2026-09-01 诊断；**2026-09-04 已基本根治**）：原 90% 是本地 RSSHub Docker 容器没起。9-04 起 fetch_rss 三级改造后**无 RSSHub 也能拉全源**：
@@ -240,6 +258,7 @@ KB 概念页：`D:\Codex输出\视频知识库\wiki\concepts\宏观-五维分析
 - [x] **同类方案调研 P1 五项**（2026-09-05 落地：TF-IDF 匹配/verdict 连续分/关键词 DSL/翻车高亮/GDELT，详见 §"P1 五项落地"）
 - [x] **系统通电修复**（2026-09-10：假设链每日自动调度/幂等/加固/任务条件/僵尸树，详见 §"系统通电修复"）
 - [x] **三观输入功能**（2026-09-12：worldview_engine 对话式录入 + worldview_loader 四链路注入 + 裁判护栏；初稿已 seed，待用户 --interactive 校正转正）
+- [x] **周循环链路加固**（2026-09-12：daily_run 隔离+日志、watchdog v3 双盲区、假设树自动 commit+push、CI 删无效步骤，详见 §"周循环链路加固"；9-14 周一 09:30 为首次真实验证点）
 - [ ] **PLAN-2 M2 贝叶斯调优**（等 ACH 积压消化 2-3 周后看后验分布再调先验/LR 锚定；敏感性分析已就位）
 - [ ] 事件聚类阈值调优：同日公告模板句仍会小规模误聚；观察仪表盘「同事件×N」徽章误报率后调 cluster_stories.py 文件头三闸门
 - [ ] TF-IDF 匹配召回跃升：把 build_tfidf_vectors 换成 embedding 向量（接口已预留，调用方不动）；需新增白名单域名
@@ -252,4 +271,4 @@ KB 概念页：`D:\Codex输出\视频知识库\wiki\concepts\宏观-五维分析
 - [ ] mimo-v2.5-free 代理偶发 empty response / HTTP 400：批量 AI 脚本都应带兜底 + 预算超时（ach_daily_batch 已按此设计，失败条下轮重试）
 
 ---
-*最后更新：2026-09-12 - 三观输入功能落地（对话式录入 + 四链路注入 + 裁判护栏）*
+*最后更新：2026-09-12 - 周循环链路加固（daily_run 隔离+日志 / watchdog v3 双盲区 / 假设树自动 commit / CI 删无效步骤）*

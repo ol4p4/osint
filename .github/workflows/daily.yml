@@ -61,16 +61,10 @@ jobs:
         run: |
           cd ${{ github.workspace }}
           python cloud/citizen_impact.py || echo "Impact step skipped"
-      - name: Link intel to hypotheses
-        run: |
-          cd ${{ github.workspace }}
-          python link_intel_hyp.py || echo "Link step skipped (no hypotheses yet)"
-      
-      - name: Verify hypotheses
-        run: |
-          cd ${{ github.workspace }}
-          python verify_hypotheses.py || echo "Verify step skipped"
-      
+      # link_intel_hyp / verify_hypotheses 已从 CI 移除 (2026-09-12):
+      # 它们改 data/hypotheses/ 但 git add 列表不含该目录, 每轮成果被 checkout 丢弃,
+      # 纯属无效劳动; 假设链只跑本地 (refresh.py run_hypothesis_chain, 有 AI + git 版本化)
+
       - name: Generate daily briefing
         run: |
           cd ${{ github.workspace }}
