@@ -62,7 +62,10 @@ def main():
         return
 
     ach = ACHMatrix(BASE / "hypotheses" / "ach_matrix.json", majors)
-    undiag = ach.find_undiagnosed(limit=args.batch, newest_first=True)
+    # 全队列计数（可观测：收敛趋势就看这个数字）→ 截取本批
+    queue = ach.find_undiagnosed(limit=10 ** 9, newest_first=True)
+    undiag = queue[:args.batch]
+    print(f"[ACH-BATCH] eligible 诊断队列: {len(queue)} 条")
     print(f"[ACH-BATCH] 待诊断 {len(undiag)} 条（本批上限 {args.batch}）")
     if args.dry or not undiag:
         return

@@ -13,6 +13,14 @@ OUTPUT_FILE = Path(r"D:\osint\data\link_report.json")
 TFIDF_MIN_SIM = 0.12    # 余弦门槛：短文本相关性经验值
 TFIDF_TOP_K = 3
 
+# 2026-09-12 证据准入收紧（实测：DOMAIN 分数无区分度——73% 是 1.0 满分，
+# 因为情报与假设常恰好同命中一个域，分数高不代表内容相关）：
+#   真正的主闸门 = EVIDENCE_DAILY_CAP（每假设每日限量，分数降序择优）；
+#   DOMAIN_MIN_SCORE 只是卫生底线；存量弱证据由 ach_matrix 按 ach_eligible 过滤。
+DOMAIN_MIN_SCORE = 0.34      # DOMAIN 兜底相关性下限（域重叠/联合 < 1/3 不记）
+EVIDENCE_DAILY_CAP = 6       # 每假设每日新增证据上限：8 major × 6 = ≤48/天，匹配 ACH 诊断速度(~40/天)
+ACH_ELIGIBLE_MIN = 0.4       # DOMAIN 兜底证据进入 ACH 诊断队列的分数线（TF-IDF 命中一律 eligible）
+
 # Domain keyword mapping for fuzzy matching
 DOMAIN_MAP = {
     "能源": ["能源", "石油", "油价", "原油", "天然气", "煤", "电力", "核电", "新能源", "太阳能", "风电", "储能", "OPEC", "IEA", "oil", "energy", "crude", "gas", "nuclear"],
@@ -74,8 +82,9 @@ def match_intel_tfidf(intel_vec, hyp_vecs, hyps, top_k=TFIDF_TOP_K, min_sim=TFID
             for sim, hyp in sims[:top_k]]
 
 
-def match_intel_to_hyp(intel, hyps):
-    """Match intel to hypotheses using domain-level fuzzy matching"""
+def match_intel_to_hyp(intel, hyps, min_score=0.0):
+    """Match intel to hypotheses using domain-level fuzzy matching
+    min_score: 域重叠 Jaccard 下限（0=旧行为；收紧准入时传 DOMAIN_MIN_SCORE）"""
     intel_text = (intel.get("cn_title", "") + " " + intel.get("cn_summary", "") + " " + intel.get("title", "")).lower()
     
     # Find which domains the intel belongs to
@@ -105,15 +114,26 @@ def match_intel_to_hyp(intel, hyps):
         domain_overlap = intel_domains & hyp_domains
         if domain_overlap:
             score = len(domain_overlap) / max(len(intel_domains | hyp_domains), 1)
-            matches.append({
-                "hyp_id": hyp["id"],
-                "hyp_title": hyp["title"],
-                "domains": list(domain_overlap),
-                "relevance_score": round(score, 3)
-            })
+            if score >= min_score:
+                matches.append({
+                    "hyp_id": hyp["id"],
+                    "hyp_title": hyp["title"],
+                    "domains": list(domain_overlap),
+                    "relevance_score": round(score, 3)
+                })
     
     matches.sort(key=lambda x: x["relevance_score"], reverse=True)
     return matches[:3]
+
+def _ach_eligible(match_info):
+    """单条匹配是否值得进 ACH 诊断队列（TF-IDF 命中一律是；DOMAIN 兜底按分数线）"""
+    if match_info.get("method") == "tfidf":
+        return True
+    try:
+        return float(match_info.get("relevance_score") or 0) >= ACH_ELIGIBLE_MIN
+    except (TypeError, ValueError):
+        return False
+
 
 def update_hyp_evidence(hyp, intel, match_info):
     """Update hypothesis evidence_log"""
@@ -138,6 +158,9 @@ def update_hyp_evidence(hyp, intel, match_info):
         "summary": (intel.get("cn_title", "") or intel.get("title", ""))[:100],
         "domains": match_info.get("domains", []),
         "relevance": match_info.get("relevance_score", 0),
+        # ACH 诊断准入标记：TF-IDF 命中一律 eligible；DOMAIN 兜底按分数线
+        # （存量条目无此字段，ach_matrix 按其自己的存量规则判定）
+        "ach_eligible": _ach_eligible(match_info),
         "source": intel.get("source_name", ""),
         "impact": intel.get("impact", "")[:200]
     }
@@ -216,37 +239,60 @@ def main():
     tfidf_links = domain_links = 0
     link_report = []
 
+    # Pass 1: 全量匹配 + 报告（不限量，报告反映完整匹配情况）
+    candidates = []   # (hyp_id, intel, match)
     for idx, intel in enumerate(all_intel):
         matches = None
         if tfidf_ready:
             matches = match_intel_tfidf(intel_vecs[idx], hyp_vecs, hyps)
         if not matches:
-            matches = match_intel_to_hyp(intel, hyps)
-        if matches:
-            total_links += 1
-            tfidf_links += sum(1 for m in matches if m.get("method") == "tfidf")
-            domain_links += sum(1 for m in matches if m.get("method") != "tfidf")
-            report_entry = {
-                "intel_id": intel.get("id"),
-                "intel_title": (intel.get("cn_title", "") or intel.get("title", ""))[:80],
-                "matched_hyps": []
-            }
+            matches = match_intel_to_hyp(intel, hyps, min_score=DOMAIN_MIN_SCORE)
+        if not matches:
+            continue
+        total_links += 1
+        tfidf_links += sum(1 for m in matches if m.get("method") == "tfidf")
+        domain_links += sum(1 for m in matches if m.get("method") != "tfidf")
+        report_entry = {
+            "intel_id": intel.get("id"),
+            "intel_title": (intel.get("cn_title", "") or intel.get("title", ""))[:80],
+            "matched_hyps": []
+        }
+        for match in matches[:2]:
+            candidates.append((match["hyp_id"], intel, match))
+            report_entry["matched_hyps"].append({
+                "hyp_id": match["hyp_id"],
+                "hyp_title": match["hyp_title"],
+                "domains": match["domains"],
+                "method": match.get("method", "domain"),
+                "relevance_score": match.get("relevance_score", 0)
+            })
+        link_report.append(report_entry)
 
-            for match in matches[:2]:
-                hyp = next((h for h in hyps if h["id"] == match["hyp_id"]), None)
-                if hyp:
-                    updated = update_hyp_evidence(hyp, intel, match)
-                    total_updates += updated
-                    report_entry["matched_hyps"].append({
-                        "hyp_id": match["hyp_id"],
-                        "hyp_title": match["hyp_title"],
-                        "domains": match["domains"],
-                        "method": match.get("method", "domain"),
-                        "relevance_score": match.get("relevance_score", 0),
-                        "new_confidence": hyp.get("confidence")
-                    })
+    # Pass 2: 每假设每日 cap 择优记录（2026-09-12 证据准入收紧）。
+    # 排序：TF-IDF 命中优先（语义匹配）→ DOMAIN 分数降序 → 情报关键词密度(base_score)降序。
+    # update_hyp_evidence 内部按 intel_id/story_id 幂等去重，重复条目不计入 cap。
+    hyp_by_id = {h["id"]: h for h in hyps}
+    hyp_recorded = {}
 
-            link_report.append(report_entry)
+    def _sel_key(c):
+        hyp_id, intel, match = c
+        try:
+            base = float(intel.get("base_score") or 0)
+        except (TypeError, ValueError):
+            base = 0.0
+        return (0 if match.get("method") == "tfidf" else 1,
+                -float(match.get("relevance_score") or 0), -base)
+
+    for hyp_id, intel, match in sorted(candidates, key=_sel_key):
+        if hyp_recorded.get(hyp_id, 0) >= EVIDENCE_DAILY_CAP:
+            continue
+        hyp = hyp_by_id.get(hyp_id)
+        if not hyp:
+            continue
+        updated = update_hyp_evidence(hyp, intel, match)
+        total_updates += updated
+        if updated:
+            hyp_recorded[hyp_id] = hyp_recorded.get(hyp_id, 0) + 1
     
     HYP_FILE.write_text(json.dumps(hyps, ensure_ascii=False, indent=2), encoding="utf-8")
 
@@ -261,6 +307,7 @@ def main():
     print(f"Linked: {total_links}/{len(all_intel)} intel items")
     print(f"Evidence updates: {total_updates}")
     print(f"Match method: tfidf {tfidf_links} / domain 兜底 {domain_links}")
+    print(f"[LINK] 证据准入: 候选 {len(candidates)} → 记录 {total_updates} (cap={EVIDENCE_DAILY_CAP}/假设/日)")
 
 if __name__ == "__main__":
     main()

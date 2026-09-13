@@ -18,6 +18,23 @@ MAX_DIAGNOSE_PER_RUN = 20      # 每轮预算：最多诊断 20 条证据
 POSTERIOR_CAP = 0.95           # 防过度自信
 MATRIX_VERSION = 1
 
+# 2026-09-12 诊断准入：只消化 link_intel_hyp 标记为 ach_eligible 的证据
+# （TF-IDF 命中 / DOMAIN 高分），存量弱证据不再进队列——否则诊断速度(40/天)
+# 永远追不上历史灌入量(数千条)。翻 True 可回退全量消化存量。
+LEGACY_DEFAULT_ELIGIBLE = False
+
+
+def _ach_eligible(ev):
+    """证据是否值得 AI 诊断：新条目看 ach_eligible 标记，存量条目按 LEGACY 开关"""
+    if "ach_eligible" in ev:
+        return bool(ev.get("ach_eligible"))
+    if LEGACY_DEFAULT_ELIGIBLE:
+        try:
+            return float(ev.get("relevance") or 0) >= 0.4
+        except (TypeError, ValueError):
+            return False
+    return False
+
 _DIM_LABELS = {
     "accumulation_node": "积累制度",
     "spatial_layer": "空间修正",
@@ -70,7 +87,8 @@ class ACHMatrix:
     def find_undiagnosed(self, limit=None, newest_first=True):
         """major 节点 evidence_log 里还没进矩阵的证据。
         limit: 覆盖 MAX_DIAGNOSE_PER_RUN 的每轮预算（每日批用大值）
-        newest_first: 新证据优先（每日增量场景），False 则按日志顺序（历史积压场景）"""
+        newest_first: 新证据优先（每日增量场景），False 则按日志顺序（历史积压场景）
+        2026-09-12 诊断准入：只取 _ach_eligible 的强证据（见文件头）"""
         diagnosed = {ev["key"] for ev in self.data["evidence"]}
         out = []
         for h in self.majors:
@@ -78,7 +96,7 @@ class ACHMatrix:
                 if not isinstance(ev, dict) or not ev.get("summary"):
                     continue
                 key = evidence_key(ev)
-                if key not in diagnosed:
+                if key not in diagnosed and _ach_eligible(ev):
                     out.append({"key": key, "hyp_id": h["id"], "ev": ev})
         # 去重（同证据挂在多个假设下）
         seen, uniq = set(), []
