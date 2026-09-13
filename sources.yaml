@@ -817,11 +817,12 @@ keyword_rules:
     any: [失业, 就业, 毕业生, 失业率, "unemployment", "jobless", "labor market", "labour market", "hiring freeze", "layoff"]
     weight: 0.35
   青年就业危机:
-    any: [失业, NEET, 慢就业, "youth"]
-    must: [青年]
+    # 2026-09-13 实测原 must=[青年]+any 组合 7 天 0 命中 → 改短语 any
+    any: [青年失业, 失业青年, 毕业生失业, 慢就业]
     weight: 0.4
   青年就业危机_英文:
-    must: ["youth unemployment"]
+    # 2026-09-13 实测 must=[youth unemployment] 7 天 0 命中 → 短语族 any
+    any: ["youth unemployment", "graduate unemployment", "graduate jobless"]
     weight: 0.4
   社保与养老:
     any: [养老金, 社保, 退休, 延迟退休, "pension", "retirement age"]

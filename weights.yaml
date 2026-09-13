@@ -1,5 +1,13 @@
 # 权重参数配置 - 云端基础评分 + 本地深度研判共享
 # 所有权重可热改，无需改代码
+#
+# ⚠️ 2026-09-13 实测审计确认：本文件整体为死配置——
+#   ① CI 端 clean_dedup_score 实际收到的是 sources.yaml（main_cloud.py:87），本文件的
+#      source_weights/thresholds/time_decay 从未生效（现状靠代码默认值数值巧合维持）；
+#   ② load_weights()（load_intel.py:150）全仓零调用方；persona_boost（24 标签）从未接入评分。
+# 实际生效的参数：sources.yaml（keyword_weights/keyword_rules/源 weight）+ 代码默认值
+# （clean_dedup_score.py 顶部/函数签名）。改本文件不会有任何效果。
+# persona 标签接入评分留作后续独立选项（三观/画像个性化走 analyze/citizen_impact 注入已生效）。
 
 # 时效衰减：半衰期（小时），越新权重越高
 time_decay:

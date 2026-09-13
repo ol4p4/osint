@@ -83,7 +83,10 @@ def generate_briefing(intel_items, hyps, link_report):
     # Top stories
     briefing.append(f"## 今日重点情报")
     briefing.append(f"")
-    top_items = sorted(intel_items, key=lambda x: x.get("relevance", 0), reverse=True)[:10]
+    # 2026-09-13: relevance 字段已死(恒0), 改用统一相关分(优先 final_score 回退 base_score)
+    def _score(item):
+        return item.get("final_score") or item.get("base_score") or 0
+    top_items = sorted(intel_items, key=_score, reverse=True)[:10]
     for i, item in enumerate(top_items, 1):
         title = item.get("cn_title", "") or item.get("title", "")
         cat = item.get("category_cn", "")
@@ -128,8 +131,9 @@ def generate_briefing(intel_items, hyps, link_report):
     briefing.append(f"## 关键信号")
     briefing.append(f"")
     signals = []
+    # 2026-09-13: 阈值接统一相关分(原 relevance>=5 恒假导致本区恒空)
     for item in intel_items:
-        if item.get("relevance", 0) >= 5:
+        if _score(item) >= 0.6 or item.get("priority") == "high":
             signals.append(f"- **{item.get('cn_title', '') or item.get('title', '')}** ({item.get('source_name', '')})")
     for s in signals[:10]:
         briefing.append(s)

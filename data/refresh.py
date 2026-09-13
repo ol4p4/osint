@@ -4,7 +4,7 @@ r"""refresh.py - 拉取最新情报并重建仪表盘（薄壳入口）
 """
 import subprocess, sys, json, glob, os, re, time
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 # 2026-09-04 静默化: 计划任务 OsintRefresh 已改为 pythonw 运行(无控制台),
 # 子进程若不加 CREATE_NO_WINDOW, 每个控制台子程序(如 git.exe)会新建可见窗口闪屏
@@ -126,22 +126,138 @@ def rebuild_data():
 
     def _rel_score(it):
         try:
-            v = float(it.get('final_score') or 0) or float(it.get('base_score') or 0)
+            return float(it.get('final_score') or 0)
         except (TypeError, ValueError):
-            v = 0.0
-        return v
+            return 0.0
 
+    # 2026-09-13 筛选修复②-a: 统一量纲——本地 fetch_now/GDELT 条目此前绕过评分层
+    # (只有 base_score 无时间衰减), 与 CI 条目(final_score 含衰减)两套量纲混排且本地免衰减占优。
+    # 全部条目按 CI 同款公式重算"当前衰减下"的 final_score(只改内存不回写 jsonl;
+    # 日期解析用 _parse_dt 覆盖 RSS 邮件日期等全格式; 历史饱和分随 168h 窗口自然出清)。
+    def _decay_now(it):
+        try:
+            pub = datetime.strptime(_parse_dt(it.get('published_at')), '%Y-%m-%d %H:%M').replace(tzinfo=timezone.utc)
+            age_h = (datetime.now(timezone.utc) - pub).total_seconds() / 3600
+        except Exception:
+            return 0.1
+        if age_h < 0 or age_h >= 168:   # 未来戳/超窗: 可疑, 最低分
+            return 0.1
+        return max(0.5 ** (age_h / 48.0), 0.1)
+
+    # 2026-09-13 筛选修复②-a2: 历史条目去饱和。旧曲线(kw=min(sum,1.0))产的 base_score
+    # 全挤在 1.0~1.3 同分带, 保底带内部会退化回时间序。keywords_hit 里存有命中词与
+    # "规则:组名"——按当前词表恢复原始加权和 raw, 重套新曲线 raw/(raw+3), 并用
+    # base_old/旧kw 反推源权重。词表已删除的词贡献 0(可接受漂移), 不必等 168h 出清。
+    try:
+        import yaml as _yaml
+        _src = _yaml.safe_load((PROJECT / 'sources.yaml').read_text(encoding='utf-8')) or {}
+        _flat = _src.get('keyword_weights') or {}
+        _rules = _src.get('keyword_rules') or {}
+        _n2 = 0
+        for it in unique:
+            hits = it.get('keywords_hit') or []
+            if not hits:
+                continue
+            raw = 0.0
+            for w in hits:
+                if not isinstance(w, str):
+                    continue
+                if w.startswith('规则:'):
+                    g = _rules.get(w[3:]) or {}
+                    try:
+                        raw += float(g.get('weight', 0.3))
+                    except (TypeError, ValueError):
+                        raw += 0.3
+                else:
+                    raw += float(_flat.get(w, 0))
+            if raw <= 0:
+                continue
+            base_old = float(it.get('base_score') or 0)
+            kw_old = min(raw, 1.0)
+            weight = base_old / kw_old if kw_old > 0 else 1.0
+            kw_new = raw / (raw + 3.0)
+            if len(hits) >= 8:
+                kw_new *= 0.6   # 摘要/联播类天然海量命中(联播要闻21条命中~20词), 边际信息低
+            it['base_score'] = round(weight * kw_new, 3)
+            _n2 += 1
+        if _n2:
+            print(f"desaturate: {_n2} legacy items re-curved")
+    except Exception as e:
+        print(f"desaturate failed (non-blocking): {e}")
+
+    for it in unique:
+        try:
+            _base = float(it.get('base_score') or 0)
+        except (TypeError, ValueError):
+            _base = 0.0
+        it['final_score'] = round(min(_base * _decay_now(it), 1.0), 3)
+
+    # 2026-09-13 筛选修复②-b: 保底带改主题配额。实测: 加性打分下联播摘要/泛宏观深度文
+    # 天然多词命中(去饱和后仍 0.85+), 单主题高价值条目(失业/养老金/核电, 多为 1~2 词命中
+    # 0.53~0.67)在任何总分排序里都进不了前排——纯管道修复无法达成高价值进窗目标。
+    # 故按 persona.md 宏观信号清单划主题配额: 每类议题保证窗口代表席。
+    # 新鲜度=72h 硬门槛; 相关性=去衰减 base_score(标题匹配); 同事件 story 最多 2 条。
+    RESERVE_TOPICS = [
+        ("就业与落户", 12, ["失业", "毕业生", "落户", "户籍", "招工", "裁员", "招聘", "稳就业"]),
+        ("社保与养老", 8, ["养老金", "社保", "延迟退休", "养老保险", "养老金替代率"]),
+        ("能源与电力", 10, ["核电", "电网", "油价", "石油", "电力", "新能源"]),
+        ("贸易与供应链", 6, ["关税", "出口管制", "实体清单", "贸易摩擦"]),
+        ("房地产", 4, ["房地产", "楼市", "房贷", "房价"]),
+    ]
+    RESERVE_WINDOW_H = 72
+    STORY_CAP = 2
+    _cutoff = (datetime.now(timezone.utc) - timedelta(hours=RESERVE_WINDOW_H)).strftime('%Y-%m-%d %H:%M')
+
+    def _base_score(it):
+        try:
+            return float(it.get('base_score') or 0)
+        except (TypeError, ValueError):
+            return 0.0
+
+    def _title_text(it):
+        # 保底带匹配用标题+中文摘要（与审计基线口径一致; dry 标题常不含主题词而摘要有）
+        return (str(it.get('cn_title') or '') + ' ' + str(it.get('title') or '') + ' '
+                + str(it.get('cn_summary') or ''))
+
+    reserved = []
+    reserved_ids = set()
+    story_seen = {}
+    _reserve_stat = []
+    for _topic, _quota, _words in RESERVE_TOPICS:
+        _taken = 0
+        for it in sorted((x for x in unique if id(x) not in reserved_ids
+                          and _rank_time(x) >= _cutoff and _base_score(x) > 0
+                          and any(w in _title_text(x) for w in _words)),
+                         key=lambda x: (_base_score(x), _rank_time(x)), reverse=True):
+            if _taken >= _quota:
+                break
+            sid = it.get('story_id')
+            if sid:
+                if story_seen.get(sid, 0) >= STORY_CAP:
+                    continue
+                story_seen[sid] = story_seen.get(sid, 0) + 1
+            reserved.append(it)
+            reserved_ids.add(id(it))
+            _taken += 1
+        _reserve_stat.append(f"{_topic}:{_taken}")
+    print("window: reserve band " + ",".join(_reserve_stat) + f" (total {len(reserved)})")
+
+    # ② 剩余席位: 每源 15 条代表(排除保底带已占条目), 时间排序填满 200
     by_src = {}
     for it in unique:
+        if id(it) in reserved_ids:
+            continue
         src = it.get('source_name') or '_unknown'
         by_src.setdefault(src, []).append(it)
     capped = []
     for src, lst in by_src.items():
         lst.sort(key=lambda x: (_rel_score(x), _rank_time(x)), reverse=True)
         capped.extend(lst[:PER_SOURCE_CAP])
-    # 重新按时间排
-    capped.sort(key=lambda x: (_rank_time(x), x.get('relevance', 0)), reverse=True)
-    top200 = capped[:200]
+    capped.sort(key=lambda x: (_rank_time(x), _rel_score(x)), reverse=True)
+    top200 = reserved + capped[:max(0, 200 - len(reserved))]
+    top200.sort(key=lambda x: (_rank_time(x), _rel_score(x)), reverse=True)
+    print(f"window: {sum(1 for x in top200 if _rel_score(x) > 0)}/200 scored, "
+          f"reserve kept {len(reserved)}")
 
     output = {
         "generated_at": datetime.now().isoformat(),
