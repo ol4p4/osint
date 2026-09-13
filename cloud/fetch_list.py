@@ -114,7 +114,7 @@ class ListPageFetcher:
                 "summary": content[:200],
                 "published_at": published.isoformat() if published else datetime.now(timezone.utc).isoformat(),
                 "fetched_at": datetime.now(timezone.utc).isoformat(),
-                "base_score": round(min(base_score, 1.0), 3),
+                "base_score": round(base_score, 3),
                 "keywords_hit": keywords_hit,
                 "entities": self._extract_entities(content),
                 "lang": "zh"
@@ -159,7 +159,8 @@ class ListPageFetcher:
             if kw.lower() in text_lower:
                 hits.append(kw)
                 total_weight += weight
-        score = min(total_weight / 6.0, 1.0)
+        # 2026-09-13 与 fetch_rss 去饱和曲线对齐（score/(score+3.0)，见 fetch_rss._calc_keyword_score 注释）
+        score = round(total_weight / (total_weight + 3.0), 3) if total_weight > 0 else 0.0
         return hits, score
     
     def _extract_entities(self, text: str) -> List[str]:

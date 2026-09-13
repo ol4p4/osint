@@ -125,16 +125,18 @@ class TimeDecayScorer:
             pub = datetime.fromisoformat(published_at.replace("Z", "+00:00"))
             now = datetime.fromisoformat(fetched_at.replace("Z", "+00:00")) if fetched_at else datetime.now(timezone.utc)
             age_hours = (now - pub).total_seconds() / 3600
-            
-            if age_hours <= 0:
-                return 1.0
+
+            # 2026-09-13 修复: 未来时间戳曾拿满分 1.0 登顶仪表盘（源站脏日期 2 天宽限）；
+            # 现在负龄(未来)视为可疑给最低分；解析失败同样给最低分而非中间分 0.5
+            if age_hours < 0:
+                return self.min_score
             if age_hours >= self.max_age:
                 return self.min_score
-            
+
             decay = 0.5 ** (age_hours / self.half_life)
             return max(decay, self.min_score)
         except:
-            return 0.5
+            return self.min_score
 
 
 def load_config(config_path: str) -> Dict:
