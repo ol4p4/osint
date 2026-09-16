@@ -133,7 +133,9 @@ class MacroAnalyzer:
             + "\u53ea\u8f93\u51fa\u7eafJSON\u6570\u7ec4\uff0c\u4e0d\u8981\u5176\u4ed6\u5185\u5bb9\u3002"
         )
 
-    def _call_api(self, system_prompt, user_prompt):
+    def _call_api(self, system_prompt, user_prompt, timeout=180):
+        """timeout 可按调用调整：推理型模型（输出 thinking 过程）在长 prompt 下
+        180s 不够（实测 nemotron 40K 字符 prompt 连续超时），调用方传更大值。"""
         models = [{"model": self.model, "base_url": self.base_url, "api_key": self.api_key}] + self.fallback_models
         for i, m in enumerate(models):
             try:
@@ -158,8 +160,12 @@ class MacroAnalyzer:
                     "x-opencode-project": uuid.uuid4().hex[:8],
                     "x-opencode-request": uuid.uuid4().hex,
                 }
-                raw = _safe_ai_post(url, payload, headers, 180)
+                raw = _safe_ai_post(url, payload, headers, timeout)
                 result = json.loads(raw)
+                if "choices" not in result:
+                    # 有些网关在过载/拒答时返回非标准结构（error/message 字段），
+                    # 原先直接 result["choices"] 抛 KeyError: 'choices' 丢失上下文
+                    raise ValueError("unexpected response shape: " + raw[:300])
                 msg = result["choices"][0]["message"]
                 content = msg.get("content", "")
                 if not content:
@@ -169,6 +175,14 @@ class MacroAnalyzer:
                             content = val
                             break
                 if content and content.strip():
+                    # 推理型模型偶发把思维链当正文返回（nemotron 长生成实测：
+                    # content 直接是 "Here's a thinking process:..."，正文被挤掉）
+                    # 检测到即视为失败，走降级链换模型重试
+                    head = content.lstrip()[:120].lower()
+                    if head.startswith(("here's a thinking process", "here is a thinking process",
+                                        "let me think", "thinking process:")):
+                        raise ValueError("model returned reasoning trace instead of answer: "
+                                         + content.lstrip()[:120])
                     return content.strip()
                 raise ValueError("empty response")
             except Exception as e:

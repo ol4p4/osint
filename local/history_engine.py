@@ -48,22 +48,28 @@ def _log(msg):
 
 
 def _load_analyzers():
-    """主笔=Mimo 主链；副笔/裁判=Nemotron 单模型链。
-    MacroAnalyzer 构造本身不发起网络请求，_call_api 内置硬超时与降级。"""
+    """主笔=Mimo 主链；副笔/裁判=Nemotron 优先，失败降级到其他异血统模型。
+    MacroAnalyzer 构造本身不发起网络请求，_call_api 内置硬超时与降级。
+    2026-09-16：nemotron 长生成偶发返回思维链（非正文），单模型链会直接产出坏稿，
+    故给副笔挂降级链（排除 mimo，保证异血统对照不失效）。"""
     import yaml
     from analyze import MacroAnalyzer
 
     cfg = yaml.safe_load((PROJECT / "config.yaml").read_text(encoding="utf-8"))
     main = MacroAnalyzer(cfg, "", None)
+    fbs = cfg.get("api", {}).get("fallback_models", []) or []
     nemotron = None
-    for fb in cfg.get("api", {}).get("fallback_models", []) or []:
-        if "nemotron" in str(fb.get("model", "")):
+    others = []
+    for fb in fbs:
+        name = str(fb.get("model", ""))
+        if "nemotron" in name:
             nemotron = dict(fb)
-            break
+        else:
+            others.append(dict(fb))
     if nemotron:
         sub_cfg = copy.deepcopy(cfg)
         sub_cfg["api"]["model"] = nemotron["model"]
-        sub_cfg["api"]["fallback_models"] = []
+        sub_cfg["api"]["fallback_models"] = others
         sub = MacroAnalyzer(sub_cfg, "", None)
     else:
         sub = main
@@ -300,7 +306,9 @@ def cmd_draft(page, sec):
 - "该期规划是否被中断、被什么中断"——分期边界（政治经济阶段）与规划边界（五年行政周期）的错位处即分析价值最高处；
 - 本期问题属**工具层修正**（改政策工具/考核指标）还是**制度层修正**（触及财税/土地/户籍基础制度）——
   地方债务/房地产/青年就业等跨 6 轮、25 年复发的问题，反复用工具层手段应对是统一机制。"""
-    system = WRITER_RULES.format(chars=DRAFT_CHARS) + _worldview_for_writer()
+    # 三观只注入主笔：副笔须保持"异血统"对照，注入同一视角会让双稿退化为同视角重复
+    system_main = WRITER_RULES.format(chars=DRAFT_CHARS) + _worldview_for_writer()
+    system_sub = WRITER_RULES.format(chars=DRAFT_CHARS)
     user = f"""## 任务
 为《{spec["title"]}》起草第 {sec} 节。
 
@@ -317,10 +325,12 @@ def cmd_draft(page, sec):
 ## 输出
 单节正文，{DRAFT_CHARS} 字。"""
     drafts = []
-    for role, az in (("主笔Mimo", main), ("副笔Nemotron", sub)):
+    for role, az, sys_prompt in (("主笔Mimo", main, system_main), ("副笔Nemotron", sub, system_sub)):
         _log(f"起草 {page} 第{sec}节（{role}）…")
         try:
-            drafts.append((role, az._call_api(system, user)))
+            # 副笔为推理型模型，长 prompt 下 180s 不够（实测连续超时）→ 给 360s
+            to = 360 if az is sub else 180
+            drafts.append((role, az._call_api(sys_prompt, user, timeout=to)))
         except Exception as e:
             _log(f"{role} 失败: {e}")
     if not drafts:
@@ -329,12 +339,17 @@ def cmd_draft(page, sec):
         return 1
     diff = ""
     if len(drafts) == 2:
-        try:
-            diff = sub._call_api(
-                "你是审稿裁判。只输出两稿的实质性分歧清单：事实冲突/框架差异/评价差异逐条列出（每条一行，注明哪稿更强），没有分歧写「无实质分歧」。不评文风。",
-                f"## A稿（主笔）\n{drafts[0][1]}\n\n## B稿（副笔）\n{drafts[1][1]}")
-        except Exception as e:
-            diff = f"（分歧比对失败: {e}）"
+        judge_sys = ("你是审稿裁判。只输出两稿的实质性分歧清单：事实冲突/框架差异/评价差异逐条列出"
+                     "（每条一行，注明哪稿更强），没有分歧写「无实质分歧」。不评文风。")
+        judge_user = f"## A稿（主笔）\n{drafts[0][1]}\n\n## B稿（副笔）\n{drafts[1][1]}"
+        for attempt in (1, 2):
+            try:
+                diff = sub._call_api(judge_sys, judge_user, timeout=360)
+                break
+            except Exception as e:
+                _log(f"裁判第 {attempt} 次失败: {e}")
+                if attempt == 2:
+                    diff = f"（分歧比对失败两次: {e}）\n\n> 裁判不可用，请主编人工对照两稿分歧。"
     stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M")
     out = DRAFTS / f"{page}__sec{sec}_{stamp}_draft.md"
     parts = [f"# {page} 第{sec}节 双稿（{stamp}）\n"]
@@ -394,7 +409,7 @@ def cmd_verify(fname):
         try:
             verdict = sub._call_api(
                 "你是事实核查裁判，不持立场。检查给定历史文本：1) 内部矛盾 2) 与公认史实明显冲突的断言 3) 无出处却断言为事实的句子。逐条列出并引用原句；都无则写「未发现问题」。不评价观点与立场。",
-                f"{sec[:4000]}")
+                f"{sec[:4000]}", timeout=360)
             report.append(f"### {head}\n\n{verdict}\n")
         except Exception as e:
             report.append(f"### {head}\n\n（裁判失败: {e}）\n")

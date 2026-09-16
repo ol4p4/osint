@@ -9,12 +9,18 @@ api:
   api_key: ""  # 密钥已于2026-08-30从本文件移除（仓库PUBLIC曾泄露，须在OpenCode平台重置）；真实值在 config.local.yaml 或 GitHub Secret OPENCODE_API_KEY
   model: "mimo-v2.5-free"
   # 备用模型（主模型失败时降级）
+  # 2026-09-16 实测修正：deepseek-v4-flash-free 列在 /models 但调用返回
+  # "Model is unavailable"（死模型）；muse-spark 系地区受限（403 RegionError）。
+  # 替换为实测可用的 nemotron-3-ultra-free 与 ling-3.0-flash-fin-free。
   fallback_models:
     - base_url: "https://opencode.ai/zen/v1"
       model: "nemotron-3.5-lightning-free"
       api_key: ""  # 密钥已于2026-08-30从本文件移除（仓库PUBLIC曾泄露，须在OpenCode平台重置）；真实值在 config.local.yaml 或 GitHub Secret OPENCODE_API_KEY
     - base_url: "https://opencode.ai/zen/v1"
-      model: "deepseek-v4-flash-free"
+      model: "nemotron-3-ultra-free"
+      api_key: ""  # 密钥已于2026-08-30从本文件移除（仓库PUBLIC曾泄露，须在OpenCode平台重置）；真实值在 config.local.yaml 或 GitHub Secret OPENCODE_API_KEY
+    - base_url: "https://opencode.ai/zen/v1"
+      model: "ling-3.0-flash-fin-free"
       api_key: ""  # 密钥已于2026-08-30从本文件移除（仓库PUBLIC曾泄露，须在OpenCode平台重置）；真实值在 config.local.yaml 或 GitHub Secret OPENCODE_API_KEY
 
 # 运行模式
