@@ -37,7 +37,8 @@ NUM_RE = re.compile(r"(?<![\w.])(\d{1,3}(?:\.\d+)?)\s*(?:%|个百分点|倍|万�
 YEAR_RE = re.compile(r"^(19|20)\d{2}$")
 ANCHOR_RE = re.compile(r"【据[:：][^】]*】|【无据待查】")
 
-MAX_MATERIAL_CHARS = 12000
+MAX_MATERIAL_CHARS = 45000
+PER_MATERIAL_CHARS = 6000
 DRAFT_CHARS = "800-1200"
 SKELETON = "00-skeleton.md"
 
@@ -71,7 +72,10 @@ def _load_analyzers():
 
 
 def _materials():
-    """材料包：data/ 手工表 + 失业率历史序列摘要 + 宏观快照。供 --draft/--verify 共用。"""
+    """材料包：data/ 手工表 + 失业率历史序列摘要 + 宏观快照。供 --draft/--verify 共用。
+    2026-09-16 修复：原上限 12000 字符而 data/ 表已达 23000 字符，按字母序整包截断
+    把经济/社运/全球三类表全部挤出 AI 视野（V3 草案锚点名凭空捏造的根因）。
+    现改为逐表限额 + 总量上限，单表超限只截该表并显式标注。"""
     parts = []
     if DATA_DIR.exists():
         for f in sorted(DATA_DIR.glob("*")):
@@ -82,7 +86,9 @@ def _materials():
             except Exception:
                 continue
             if txt:
-                parts.append(f"### 材料:{f.name}\n{txt[:3500]}")
+                if len(txt) > PER_MATERIAL_CHARS:
+                    txt = txt[:PER_MATERIAL_CHARS] + "\n(本表超长截断)"
+                parts.append(f"### 材料:{f.name}\n{txt}")
     try:
         uh = json.loads((DATA / "cn_unemployment_history.json").read_text(encoding="utf-8"))
         lines = ["### 材料:cn_unemployment_history（失业率序列摘要）"]
@@ -94,17 +100,18 @@ def _materials():
                     seen[y] = p.get("value")
             compact = ", ".join(f"{y}:{v}" for y, v in sorted(seen.items())[:26])
             lines.append(f"- {name}: {compact}")
-        parts.append("\n".join(lines)[:3500])
+        parts.append("\n".join(lines)[:PER_MATERIAL_CHARS])
     except Exception as e:
         _log(f"失业率序列读取失败(跳过): {e}")
     try:
         mi = json.loads((DATA / "macro_indicators.json").read_text(encoding="utf-8"))
-        parts.append(f"### 材料:macro_indicators(最新快照)\n{json.dumps(mi, ensure_ascii=False)[:3500]}")
+        parts.append(f"### 材料:macro_indicators(最新快照)\n{json.dumps(mi, ensure_ascii=False)[:PER_MATERIAL_CHARS]}")
     except Exception as e:
         _log(f"宏观快照读取失败(跳过): {e}")
     pack = "\n\n".join(parts)
     if len(pack) > MAX_MATERIAL_CHARS:
-        pack = pack[:MAX_MATERIAL_CHARS] + "\n(材料包截断)"
+        _log(f"WARN 材料包总量 {len(pack)} 超上限 {MAX_MATERIAL_CHARS}，尾部截断（考虑精简 data/ 表）")
+        pack = pack[:MAX_MATERIAL_CHARS] + "\n(材料包总量截断)"
     return pack
 
 
@@ -115,6 +122,31 @@ def _material_numbers(pack):
         nums.add(m.group(0).lstrip("0") or "0")
         nums.add(m.group(0))
     return nums
+
+
+def _material_names(pack):
+    """材料包中实际存在的表名集合（含去扩展名/去括号注的短名），供锚点名比对。"""
+    names = set()
+    for m in re.finditer(r"^### 材料:(\S+)", pack, re.M):
+        full = m.group(1)
+        names.add(full)
+        names.add(full.split(".")[0])
+        short = re.sub(r"[（(].*$", "", full)
+        names.add(short)
+        names.add(short.replace(".md", "").replace(".json", ""))
+    return names
+
+
+def _bad_anchor_names(text, mat_names):
+    """锚点名校验：正文【据:xx】里的 xx 必须真实存在于材料包。
+    2026-09-16 新增——V3 草案出现 gdp_structure/debt_structure 等凭空锚点名，
+    原校验器只查数字不查锚名，整批假锚漏网。"""
+    bad = []
+    for m in re.finditer(r"【据[:：]([^】]+)】", text):
+        for name in re.split(r"[,，、;；\s]+", m.group(1).strip()):
+            if name and name not in mat_names:
+                bad.append(name)
+    return sorted(set(bad))
 
 
 def _skeleton_text():
@@ -161,31 +193,56 @@ def _worldview_for_writer():
         return ""
 
 
+def _anchor_legend(pack):
+    """合法锚点名清单（注入 prompt 用）：正文【据:xx】只能用这些名字。"""
+    names = sorted(n for n in _material_names(pack) if "." not in n and "（" not in n and "(" not in n)
+    if not names:
+        return ""
+    return ("\n## 合法锚点名（【据:xx】只能用以下名字，写错即判定为编造）\n"
+            + "、".join(names) + "\n")
+
+
 def cmd_outline():
     """总闸门：只产出分期表草案，等主编逐期确认。"""
     main, _ = _load_analyzers()
+    pack = _materials()
     system = WRITER_RULES.format(chars="不限") + _worldview_for_writer() + """
 6. 本任务只输出「分期表」，不写叙事正文。"""
     user = f"""任务：为《中国如何走到今天》综合大历史档案起草**分期表**。
 
-主编指令（2026-09-16 V3，必须落实）：
+主编指令（2026-09-16 V4，必须落实）：
 A. **每维一条贯穿主线**（认识是全面而综合的，经济不是孤立发展的——五维同等承重，每格都要
    有"目标-实效对证"深度而非事件罗列）：
    经济=债务与规划线（城投/土地财政 + 五年计划目标vs实效）；政治治理=制度化承诺vs执行落差
    （考核指挥棒变迁）；社会民生=青年失业形成史（扩招→学历通胀→体制内外二元→灵活就业）；
    对外=融入体系→利用体系→体系内反噬→体系外对冲四段；文化=官方叙事vs民间思潮（三次青年
-   心态大讨论为期界标志）。材料包 data/ 下 7 张表全部可锚【据:表名】。
-B. **维度互动链清单**（分期表之后必须附）：提炼 4-6 条跨期跨维的因果链，每条一句话讲清
+   心态大讨论为期界标志）。
+B. **维度互动链清单**（分期表之后必须附）：提炼 6-8 条跨期跨维的因果链，每条一句话讲清
    传导机制，例如：土地财政(经济)→房价(社会)→婚育推迟(人口/社会)→躺平叙事(文化)；
    分税制(政治)→平台经济(经济)→化债(经济)→社保缴费可持续性(社会)。
-C. 各维要点引用材料包节点，经济与社会两列引用最密；文化列的锚是文本/事件（【据:culture_official_vs_folk】）。
+C. 各维要点必须引用下方材料包的真实节点并标注【据:表名】；**锚点名只准用「合法锚点名」清单里的**，
+   编造表名会被校验器判定为幻觉。
+D. 政治维度须吸收 social movements 档案（群体性事件类型学/标志案例/治理工具）；
+   **P3-P6 期政治列必须引用【据:political_movements_archive】**（如厦门 PX 2007、乌坎 2011、
+   茂名 PX 2014、烂尾楼停贷潮 2022 等标志案例），不得只写"群体性事件上升"这类无锚表述。
+E. **全球对照是独立输出节，不是附注**：表后除「转折逻辑」「维度互动链」外，还必须附
+   「### 全球同期对照」一节（markdown 表格，列=中国分期/全球同期主要运动/时间重合但诉求结构
+   不同的具体差异），覆盖 P3-P7 全部五期。**全球侧每行的运动列举必须标注【据:global_protest_comparison】**，
+   中国侧对照案例标注【据:political_movements_archive】，差异分析须落到"诉求性质/组织形态/结果模式"
+   三轴中的至少两轴。禁止只写中方不引全球表。
+F. 文化维度须吸收词库档案【据:culture_internet_lexicon】（性别议题谱系/政治身份标签/
+   民族主义变种/舆论反转机制/2026 男性议题簇）。
+G. 最新数据（当期失业率等）优先锚【据:cn_unemployment_history】或【据:macro_indicators】。
 
 要求：
 1. 分 7 期左右（1978-1992 / 1992-2001 / 2001-2008 / 2008-2015 / 2015-2020 / 2020-2024 / 2024-今），主编可改。
 2. 每期给出：起止年、期名、该期主导矛盾（一句话）、五个维度各一句要点（须体现该维主线在该期的具体形态）、期终标志事件。
 3. 期与期的转折逻辑必须一句话讲清。
+{_anchor_legend(pack)}
+## 材料包（数字与锚点的唯一合法来源）
+{pack if pack else "（空：全部数字请标【无据待查】）"}
 
-输出：markdown 表格（列=#/期次/起止/期名/主导矛盾/经济/政治治理/社会民生/对外关系/文化思潮/期终标志事件），表后附「转折逻辑」清单与「维度互动链」清单两节。"""
+输出：markdown 表格（列=#/期次/起止/期名/主导矛盾/经济/政治治理/社会民生/对外关系/文化思潮/期终标志事件），表后附「转折逻辑」清单、「维度互动链」清单、「全球同期对照」清单共三节。"""
     _log("起草分期表（主笔 Mimo）…")
     try:
         out = main._call_api(system, user)
@@ -229,7 +286,8 @@ def cmd_draft(page, sec):
 ## 骨架（00-skeleton，分期与主导矛盾以此为准）
 {skel[:6000]}
 
-## 材料包（数字唯一合法来源）
+{_anchor_legend(pack)}
+## 材料包（数字与锚点的唯一合法来源）
 {pack if pack else "（空：全部数字请标【无据待查】）"}
 
 ## 输出
@@ -293,13 +351,18 @@ def cmd_verify(fname):
         return 1
     text = src.read_text(encoding="utf-8")
     spec = _page_spec(fname.split("__")[0])
-    loose = _unanchored_numbers(text, _material_numbers(_materials()))
+    pack = _materials()
+    loose = _unanchored_numbers(text, _material_numbers(pack))
+    bad_anchors = _bad_anchor_names(text, _material_names(pack))
     _, sub = _load_analyzers()
     sections = [s for s in re.split(r"\n(?=#{2,3} )", text) if s.strip()]
     report = [f"# 核查报告：{fname}", f"- 生成: {datetime.now(timezone.utc).isoformat(timespec='seconds')}",
               f"- 页面级别: {spec['level']}", ""]
     report.append("## 数值锚校验\n")
     report.append(f"未锚数字 {len(loose)} 处：" + (", ".join(loose[:60]) if loose else "无（全部数字有锚/豁免）"))
+    report.append("\n## 锚点名校验\n")
+    report.append(f"材料包中不存在的锚点名 {len(bad_anchors)} 个："
+                  + (", ".join(bad_anchors[:60]) if bad_anchors else "无（全部锚点可溯源）"))
     judge_scope = sections if spec["level"] == "strict" else sections[:1]
     report.append("\n## 幻觉裁判（Nemotron）\n")
     for sec in judge_scope:
