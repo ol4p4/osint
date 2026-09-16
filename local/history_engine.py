@@ -162,6 +162,18 @@ def _skeleton_text():
     return f.read_text(encoding="utf-8")
 
 
+def _final_text(text):
+    """主编定稿优先：双稿文件含「## 定稿」区时，verify/publish 只处理该区
+    （否则会把 A稿/B稿/裁判清单一起当正文校验和转正）。
+    2026-09-16：混合稿裁决流程需要。"""
+    m = re.search(r"^## 定稿[^\n]*$", text, re.M)
+    if not m:
+        return text
+    rest = text[m.end():]
+    n = re.search(r"^## ", rest, re.M)
+    return (rest[:n.start()] if n else rest).strip()
+
+
 def _page_spec(page):
     """页面元信息：骨架还是枝叶、输出标题、核查级别。"""
     if page.startswith("00"):
@@ -383,12 +395,16 @@ def _unanchored_numbers(text, mat_nums):
 
 
 def cmd_verify(fname):
-    """数值锚校验（全书）+ Nemotron 幻觉裁判（strict 级逐节，其余抽查首节）。"""
+    """数值锚校验（全书）+ Nemotron 幻觉裁判（strict 级逐节，其余抽查首节）。
+    文件含「## 定稿」区时只校验定稿（主编裁决后的正文）。"""
     src = DRAFTS / fname
     if not src.exists():
         _log(f"文件不存在: {src}")
         return 1
-    text = src.read_text(encoding="utf-8")
+    raw = src.read_text(encoding="utf-8")
+    text = _final_text(raw)
+    if text is not raw:
+        _log("检测到「定稿」区——只校验定稿正文（忽略 A/B 稿与裁判清单）")
     spec = _page_spec(fname.split("__")[0])
     pack = _materials()
     loose = _unanchored_numbers(text, _material_numbers(pack))
@@ -420,12 +436,16 @@ def cmd_verify(fname):
 
 
 def cmd_publish(fname):
-    """转正：drafts → macro-history/，更新 REVISIONS/index/log（幂等）。"""
+    """转正：drafts → macro-history/，更新 REVISIONS/index/log（幂等）。
+    文件含「## 定稿」区时只转正定稿（主编裁决后的正文）。"""
     src = DRAFTS / fname
     if not src.exists():
         _log(f"文件不存在: {src}")
         return 1
-    text = src.read_text(encoding="utf-8")
+    raw = src.read_text(encoding="utf-8")
+    text = _final_text(raw)
+    if text is not raw:
+        _log("检测到「定稿」区——只转正定稿正文（忽略 A/B 稿与裁判清单）")
     base = fname.split("__")[0]
     page = HIST / f"{base}.md"
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d")
