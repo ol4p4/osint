@@ -340,9 +340,10 @@ def cmd_draft(page, sec):
     for role, az, sys_prompt in (("主笔Mimo", main, system_main), ("副笔Nemotron", sub, system_sub)):
         _log(f"起草 {page} 第{sec}节（{role}）…")
         try:
-            # 副笔为推理型模型，长 prompt 下 180s 不够（实测连续超时）→ 给 360s
-            to = 360 if az is sub else 180
-            drafts.append((role, az._call_api(sys_prompt, user, timeout=to)))
+            # 主/副笔链都含推理型模型（nemotron 长生成实测需 198s+），统一给 360s：
+            # 2026-09-16 修——主笔曾设 180s，mimo 429 降级到 nemotron 时必然超时，
+            # 表现为"主笔全链失败"，实际是超时太短。
+            drafts.append((role, az._call_api(sys_prompt, user, timeout=360)))
         except Exception as e:
             _log(f"{role} 失败: {e}")
     if not drafts:
