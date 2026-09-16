@@ -16,6 +16,9 @@ from pathlib import Path
 
 MAX_DIAGNOSE_PER_RUN = 20      # 每轮预算：最多诊断 20 条证据
 POSTERIOR_CAP = 0.95           # 防过度自信
+POSTERIOR_FLOOR = 0.05         # 2026-09-16: 后验下限——LR 复利(20h/轮)会把连吃 I 的假设
+                               # 打到 0.0（实测 HM100 支17/驳44 → 0.0），0 表示"证据方向
+                               # 极不利"而非"绝对不可能"，保留 5% 供后续证据翻案
 MATRIX_VERSION = 1
 
 # 2026-09-12 诊断准入：只消化 link_intel_hyp 标记为 ach_eligible 的证据
@@ -171,11 +174,13 @@ class ACHMatrix:
 
     # ---------- 贝叶斯更新 ----------
     def bayesian_update(self, hyps):
-        """按矩阵重算每个 major 假设的后验置信度并写回 confidence"""
+        """按矩阵重算每个 major 假设的后验置信度并写回 confidence。
+        先验恒取 base_confidence（用户/AI 设定的原始锚点）——不用 confidence 兜底，
+        否则上一轮被压低的后验会变成下一轮的先验，LR 复利恶性循环（9-16 诊断）。"""
         hyp_by_id = {h["id"]: h for h in hyps}
         scores = {}
         for h in self.majors:
-            prior = float(h.get("base_confidence") or h.get("confidence") or 0.5)
+            prior = float(h.get("base_confidence") or 0.5)
             odds = prior / max(1 - prior, 0.01)
             support = refute = 0
             for ev in self.data["evidence"]:
@@ -188,7 +193,7 @@ class ACHMatrix:
                 elif d["code"] == "I":
                     refute += 1
             posterior = odds / (1 + odds)
-            posterior = min(posterior, POSTERIOR_CAP)
+            posterior = max(min(posterior, POSTERIOR_CAP), POSTERIOR_FLOOR)
             scores[h["id"]] = {"posterior": round(posterior, 3), "support": support,
                                "refute": refute}
             target = hyp_by_id.get(h["id"])
@@ -212,7 +217,7 @@ class ACHMatrix:
         for ev in self.data["evidence"]:
             neutral = {}
             for h in self.majors:
-                prior = float(h.get("base_confidence") or h.get("confidence") or 0.5)
+                prior = float(h.get("base_confidence") or 0.5)  # 与 bayesian_update 同源：恒取 base_confidence
                 odds = prior / max(1 - prior, 0.01)
                 for e2 in self.data["evidence"]:
                     if e2.get("key") == ev.get("key"):

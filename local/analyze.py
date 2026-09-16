@@ -81,10 +81,14 @@ class MacroAnalyzer:
             results.extend(self._analyze_single_batch(batch, macro_context))
         return results
     def _analyze_single_batch(self, items, macro_context):
+        # 2026-09-16 修复: cache 回退路径的条目缺 content 字段曾炸 KeyError('content')
+        # （9-14 周一 14:23 补跑时当日文件未产出 → main_local 回退旧 cache → Step2 崩溃），
+        # title/source_name 同样做防御（GDELT 等源字段不齐）
         items_json = json.dumps([{
-            "id": item["id"], "title": item["title"],
-            "source": item["source_name"],
-            "content": item["content"][:3000],
+            "id": item.get("id", ""), "title": item.get("title", ""),
+            "source": item.get("source_name", ""),
+            "content": (item.get("content") or item.get("content_preview")
+                        or item.get("summary") or "")[:3000],
             "keywords_hit": item.get("keywords_hit", []),
             "entities": item.get("entities", []),
             "base_score": item.get("final_score", 0),

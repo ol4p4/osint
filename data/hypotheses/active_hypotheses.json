@@ -86282,7 +86282,7 @@
     "level": "major",
     "title": "全球能源转型加速导致传统能源需求骤降",
     "direction": "toward",
-    "confidence": 0.0,
+    "confidence": 0.05,
     "base_confidence": 0.78,
     "deadline": "2027-09-05",
     "status": "active",
