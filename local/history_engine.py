@@ -13,8 +13,10 @@ AI 全部走 analyze.MacroAnalyzer._call_api（硬超时/模型降级链/opencod
   python local/history_engine.py --revision-suggest                 # 假设漂移 → 修订提示
 
 产物：
-  正式档案  D:\Codex输出\视频知识库\wiki\history\
-  工作区    D:\Codex输出\视频知识库\wiki\history\drafts\
+  正式档案  D:\Codex输出\视频知识库\wiki\macro-history\
+  工作区    D:\Codex输出\视频知识库\wiki\macro-history\drafts\
+  （2026-09-16 目录由 history/ 更名 macro-history/：避免与对话记录/版本历史混淆，
+   macro-history 取大历史观（macrohistory，布罗代尔长时段传统）之义）
 """
 import argparse
 import copy
@@ -27,7 +29,7 @@ from pathlib import Path
 PROJECT = Path(r"D:\osint")
 DATA = PROJECT / "data"
 KB_WIKI = Path(r"D:\Codex输出\视频知识库\wiki")
-HIST = KB_WIKI / "history"
+HIST = KB_WIKI / "macro-history"
 DRAFTS = HIST / "drafts"
 DATA_DIR = HIST / "data"
 
@@ -147,20 +149,43 @@ WRITER_RULES = """你是用户的历史分析撰稿人。硬规则：
 5. 输出纯 markdown 正文（不要 frontmatter，不要标题级 H1），各小节用 H3。"""
 
 
+def _worldview_for_writer():
+    """主笔注入用户三观（历史撰稿人应有用户的历史观视角）。
+    2026-09-16 补设计缺口；失败降级空串。副笔/裁判不注入（保持核查客观）。"""
+    try:
+        sys.path.insert(0, str(PROJECT))
+        from worldview_loader import build_worldview_prompt
+        wv = build_worldview_prompt()
+        return ("\n\n【用户三观】你的历史叙事与分析视角必须贴合此个人视角：\n" + wv + "\n") if wv else ""
+    except Exception:
+        return ""
+
+
 def cmd_outline():
     """总闸门：只产出分期表草案，等主编逐期确认。"""
     main, _ = _load_analyzers()
-    system = WRITER_RULES.format(chars="不限") + """
+    system = WRITER_RULES.format(chars="不限") + _worldview_for_writer() + """
 6. 本任务只输出「分期表」，不写叙事正文。"""
     user = f"""任务：为《中国如何走到今天》综合大历史档案起草**分期表**。
 
-要求：
-1. 分 7 期左右（参考但不限于：1978-1992 / 1992-2001 / 2001-2008 / 2008-2015 / 2015-2020 / 2020-2024 / 2024-今），主编可改。
-2. 每期给出：起止年、期名、该期主导矛盾（一句话）、五个维度（经济/政治治理/社会民生/对外关系/文化思潮）各一句要点、期终标志事件。
-3. 经济/社会民生要点尽量指出该期可用哪些数据序列支撑。
-4. 期与期的转折逻辑（为什么这一期结束）必须一句话讲清。
+主编指令（2026-09-16 V3，必须落实）：
+A. **每维一条贯穿主线**（认识是全面而综合的，经济不是孤立发展的——五维同等承重，每格都要
+   有"目标-实效对证"深度而非事件罗列）：
+   经济=债务与规划线（城投/土地财政 + 五年计划目标vs实效）；政治治理=制度化承诺vs执行落差
+   （考核指挥棒变迁）；社会民生=青年失业形成史（扩招→学历通胀→体制内外二元→灵活就业）；
+   对外=融入体系→利用体系→体系内反噬→体系外对冲四段；文化=官方叙事vs民间思潮（三次青年
+   心态大讨论为期界标志）。材料包 data/ 下 7 张表全部可锚【据:表名】。
+B. **维度互动链清单**（分期表之后必须附）：提炼 4-6 条跨期跨维的因果链，每条一句话讲清
+   传导机制，例如：土地财政(经济)→房价(社会)→婚育推迟(人口/社会)→躺平叙事(文化)；
+   分税制(政治)→平台经济(经济)→化债(经济)→社保缴费可持续性(社会)。
+C. 各维要点引用材料包节点，经济与社会两列引用最密；文化列的锚是文本/事件（【据:culture_official_vs_folk】）。
 
-输出：markdown 表格（列=#/期次/起止/期名/主导矛盾/经济/政治治理/社会民生/对外/文化/期终标志事件），表后附"转折逻辑"清单。"""
+要求：
+1. 分 7 期左右（1978-1992 / 1992-2001 / 2001-2008 / 2008-2015 / 2015-2020 / 2020-2024 / 2024-今），主编可改。
+2. 每期给出：起止年、期名、该期主导矛盾（一句话）、五个维度各一句要点（须体现该维主线在该期的具体形态）、期终标志事件。
+3. 期与期的转折逻辑必须一句话讲清。
+
+输出：markdown 表格（列=#/期次/起止/期名/主导矛盾/经济/政治治理/社会民生/对外关系/文化思潮/期终标志事件），表后附「转折逻辑」清单与「维度互动链」清单两节。"""
     _log("起草分期表（主笔 Mimo）…")
     try:
         out = main._call_api(system, user)
@@ -173,7 +198,7 @@ def cmd_outline():
     target = DRAFTS / "outline_分期表.md"
     body = (
         "---\ntitle: 分期表草案（待主编确认）\ncreated: %s\ntype: outline\nstatus: draft\n---\n\n"
-        "> 主编逐期确认/修改后，把确认版贴回 `wiki/history/00-skeleton.md` 的分期表并起草骨架正文。\n\n"
+        "> 主编逐期确认/修改后，把确认版贴回 `wiki/macro-history/00-skeleton.md` 的分期表并起草骨架正文。\n\n"
         % datetime.now(timezone.utc).strftime("%Y-%m-%d")
     ) + out
     target.write_text(body, encoding="utf-8")
@@ -191,10 +216,10 @@ def cmd_draft(page, sec):
     main, sub = _load_analyzers()
     pack = _materials()
     if not pack:
-        _log("材料包为空：往 wiki/history/data/ 放数据表后重试（数值锚会全部失败）")
+        _log("材料包为空：往 wiki/macro-history/data/ 放数据表后重试（数值锚会全部失败）")
     period_hint = f"骨架对应分期见下方材料。本节只写分期表第 {sec} 期相关内容。" if spec["kind"] == "skeleton" \
         else f"枝叶章节编号严格对齐骨架分期：本节只写骨架分期表中第 {sec} 期，期名与主导矛盾必须引用骨架原文。"
-    system = WRITER_RULES.format(chars=DRAFT_CHARS)
+    system = WRITER_RULES.format(chars=DRAFT_CHARS) + _worldview_for_writer()
     user = f"""## 任务
 为《{spec["title"]}》起草第 {sec} 节。
 
@@ -293,7 +318,7 @@ def cmd_verify(fname):
 
 
 def cmd_publish(fname):
-    """转正：drafts → history/，更新 REVISIONS/index/log（幂等）。"""
+    """转正：drafts → macro-history/，更新 REVISIONS/index/log（幂等）。"""
     src = DRAFTS / fname
     if not src.exists():
         _log(f"文件不存在: {src}")
@@ -308,14 +333,14 @@ def cmd_publish(fname):
         action = "追加修订"
     else:
         page.write_text(
-            f"---\ntitle: {base}\ncreated: {now}\nupdated: {now}\ntype: history\nstatus: published\nrelated_hyps: []\n---\n\n{text}",
+            f"---\ntitle: {base}\ncreated: {now}\nupdated: {now}\ntype: macro-history\nstatus: published\nrelated_hyps: []\n---\n\n{text}",
             encoding="utf-8")
         action = "新建"
     rev = HIST / "REVISIONS.md"
     with rev.open("a", encoding="utf-8") as f:
         f.write(f"- {now} {base}: {action}（{fname}）\n")
     for rel, marker, line in (
-            (KB_WIKI / "index.md", "history/", f"- [历史脉络档案](history/README.md) — 大历史认识：骨架+枝叶+事件卡\n"),
+            (KB_WIKI / "index.md", "macro-history/", f"- [历史脉络档案](macro-history/README.md) — 大历史认识：骨架+枝叶+事件卡\n"),
             (KB_WIKI / "log.md", now, f"- {now} 参谋系统 history_engine：{base} {action}（双稿+数值锚+裁判核查）\n")):
         try:
             content = rel.read_text(encoding="utf-8")

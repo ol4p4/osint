@@ -232,11 +232,14 @@ def score_items(items: List[Dict], config: Dict) -> List[Dict]:
 
 
 def filter_by_threshold(items: List[Dict], config: Dict) -> List[Dict]:
+    # 2026-09-13 阈值重校准: 关键词分改去饱和曲线后 final 分布整体下移
+    # (实测 72h: p90≈0.45, p95≈0.53), 旧 0.75/0.50/0.30 会让 high=0%。
+    # 新断点按实测分位: high≈top10%(0.45) / medium≈次25%(0.30) / low 次段(0.18)。
     thresholds = config.get("thresholds", {})
-    high = thresholds.get("high_priority", 0.75)
-    medium = thresholds.get("medium_priority", 0.50)
-    low = thresholds.get("low_priority", 0.30)
-    archive = thresholds.get("archive_only", 0.15)
+    high = thresholds.get("high_priority", 0.45)
+    medium = thresholds.get("medium_priority", 0.30)
+    low = thresholds.get("low_priority", 0.18)
+    archive = thresholds.get("archive_only", 0.0)
     
     for item in items:
         score = item.get("final_score", 0)

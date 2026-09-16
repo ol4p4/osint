@@ -372,7 +372,11 @@ class RSSFetcher:
         # 命中任一词即满分 → base_score 只剩源权重差异 → 窗口退化为纯时间窗，
         # 高价值条目 98.7% 被源配额挤出）。score/(score+3) 亚线性梯度：
         # 单强词 0.50 / 双词 0.65 / 命中越多越高但不封死，泛宏观长文不再与精准单命中同分。
-        return hits, round(score / (score + 3.0), 3) if score > 0 else 0.0
+        score = score / (score + 3.0) if score > 0 else 0.0
+        # 摘要/联播类天然海量命中（"新闻联播要闻21条"命中~20词），边际信息低 → 惩罚
+        if len(hits) >= 8:
+            score *= 0.6
+        return hits, round(score, 3)
     
     def _detect_lang(self, text):
         chinese_chars = len(re.findall(r"[\u4e00-\u9fff]", text))
