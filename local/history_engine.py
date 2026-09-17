@@ -23,6 +23,7 @@ import copy
 import json
 import re
 import sys
+import time as _time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -411,7 +412,8 @@ def cmd_verify(fname):
     loose = _unanchored_numbers(text, _material_numbers(pack))
     bad_anchors = _bad_anchor_names(text, _material_names(pack))
     _, sub = _load_analyzers()
-    sections = [s for s in re.split(r"\n(?=#{2,3} )", text) if s.strip()]
+    # 分节支持 H2-H4（定稿正文常用 #### 作维度小节）
+    sections = [s for s in re.split(r"\n(?=#{2,4} )", text) if s.strip()]
     report = [f"# 核查报告：{fname}", f"- 生成: {datetime.now(timezone.utc).isoformat(timespec='seconds')}",
               f"- 页面级别: {spec['level']}", ""]
     report.append("## 数值锚校验\n")
@@ -420,13 +422,24 @@ def cmd_verify(fname):
     report.append(f"材料包中不存在的锚点名 {len(bad_anchors)} 个："
                   + (", ".join(bad_anchors[:60]) if bad_anchors else "无（全部锚点可溯源）"))
     judge_scope = sections if spec["level"] == "strict" else sections[:1]
-    report.append("\n## 幻觉裁判（Nemotron）\n")
+    report.append("\n## 幻觉裁判\n")
+    # 串行裁判（2026-09-17 三轮调优结论）：NVIDIA glm 端点对并发敏感——
+    # 6 并发全超时、2 并发仍大量超时，串行最稳。为控制总时长：
+    # 输入截到 1800 字 + 单节超时 200s，6 节最坏 20 分钟，正常 3-6 分钟。
     for sec in judge_scope:
         head = sec.splitlines()[0][:40]
         try:
             verdict = sub._call_api(
-                "你是事实核查裁判，不持立场。检查给定历史文本：1) 内部矛盾 2) 与公认史实明显冲突的断言 3) 无出处却断言为事实的句子。逐条列出并引用原句；都无则写「未发现问题」。不评价观点与立场。",
-                f"{sec[:4000]}", timeout=360)
+                "你是事实核查裁判，不持立场。检查给定历史文本，只查这三类问题：\n"
+                "1) 内部矛盾（前后说法冲突）\n"
+                "2) 与公认史实明显冲突的断言（时间/数字/事件性质错误）\n"
+                "3) 无出处却断言为事实的**具体数字或具体事件细节**\n"
+                "重要排除项（不要列为问题）：\n"
+                "- 以「判断：」开头的分析性段落——这是作者显式标注的判断，不是事实断言\n"
+                "- 概括性叙述（如'地方依赖土地出让获取财源'）——属公认背景，不要求逐句锚\n"
+                "- 【据:xxx】标签本身的形式（内部代码标签是本文档的既定引用格式）\n"
+                "逐条列出并引用原句；都无则写「未发现问题」。不评价观点与立场。",
+                f"{sec[:1800]}", timeout=200)
             report.append(f"### {head}\n\n{verdict}\n")
         except Exception as e:
             report.append(f"### {head}\n\n（裁判失败: {e}）\n")

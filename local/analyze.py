@@ -9,9 +9,64 @@ from dataclasses import dataclass, asdict
 import urllib.request, urllib.error, uuid
 
 AI_ALLOWED_HOST = "opencode.ai"
+# 2026-09-17：OpenCode 免费层加客户端指纹校验（403 FreeTierError），非官方客户端被拒；
+# NVIDIA integrate 为可用备援通道（本地 key，显式白名单，自行鉴权计费）。
+# OpenRouter 曾接入但已移除：免费层日限 10 次请求，无实用价值。
+AI_ALLOWED_HOSTS = {"opencode.ai", "integrate.api.nvidia.com"}
+NVIDIA_BASE = "https://integrate.api.nvidia.com/v1"
+
+# OpenCode 模型名 → NVIDIA integrate 模型名（备援通道）
+# 2026-09-17 实测选型：nemotron 系是推理模型（长 prompt 吐思维链+超时），
+# kimi-k3 超时，gpt-oss-20b 返回空；glm-5.3 系实测稳定（43-90s/无思维链）。
+# 分流：主笔（mimo）→ glm-5.3 全量（生成质量优先）；裁判/副笔 → flash（速度优先）。
+_NV_SLUG_MAP = {
+    "mimo-v2.5-free": "z-ai/glm-5.3",
+    "nemotron-3.5-lightning-free": "z-ai/glm-5.3-flash",
+    "nemotron-3-ultra-free": "z-ai/glm-5.3-flash",
+    "ling-3.0-flash-fin-free": "z-ai/glm-5.3-flash",
+}
+
+
+def _nv_slug(model_name):
+    """OpenCode 模型名映射到 NVIDIA integrate 模型名；未收录返回空串（跳过该备援项）。"""
+    return _NV_SLUG_MAP.get(model_name, "")
+
+
+# ── 端点熔断器（2026-09-17 卡顿修复）────────────────────────────────
+# 背景：OpenCode 免费层 403 + OpenRouter 免费层 429 成为常态，每次调用都要
+# 白撞 8 个死端点（每个几秒），整轮裁判因此动辄 10 分钟。熔断后直接跳过。
+import time as _time
+
+_DEAD = {}          # (base_url, model) -> 解封时间戳
+_LAST_GOOD = [None]  # 最近成功的端点（优先复用）
+
+
+def _is_dead(key_id):
+    until = _DEAD.get(key_id)
+    if not until:
+        return False
+    if _time.time() >= until:
+        del _DEAD[key_id]
+        return False
+    return True
+
+
+def _mark_dead(key_id, err):
+    """按错误类型设熔断时长。
+
+    2026-09-17 调优：超时**不熔断**——NVIDIA glm 端点本身会 43-150s 波动，
+    一次超时不代表端点死了（曾因首节超时熔断 10 分钟，导致后续 5 节全部
+    circuit-open 跳过，整轮报废）。只有明确的鉴权/不存在错误（403/404）
+    才长熔断，限流（429）短熔断。"""
+    s = str(err)
+    if "403" in s or "404" in s:
+        _DEAD[key_id] = _time.time() + 1800
+    elif "429" in s:
+        _DEAD[key_id] = _time.time() + 180
+    # 超时/空响应/思维链：不熔断，下次调用可重试
 
 def _safe_ai_post(url, payload, headers, timeout=180):
-    """SSRF 防护：仅 https + opencode.ai 白名单 + 解析结果不得指向私有/环回/保留地址。
+    """SSRF 防护：仅 https + 白名单域名 + 解析结果不得指向私有/环回/保留地址。
     2026-09-12 加固慢速响应硬超时：socket timeout 防不了服务器收下请求后滴字节保活
     （http.client._read_status 每次 read 都有数据到达，180s 永不触发，实测挂死 22 分钟，
     faulthandler 栈定位于 ssl.read）。Windows 无 SIGALRM，改为白名单校验后
@@ -20,7 +75,7 @@ def _safe_ai_post(url, payload, headers, timeout=180):
     import socket, ipaddress, threading
     from urllib.parse import urlparse
     parsed = urlparse(url)
-    if parsed.scheme != "https" or (parsed.hostname or "") != AI_ALLOWED_HOST:
+    if parsed.scheme != "https" or (parsed.hostname or "") not in AI_ALLOWED_HOSTS:
         raise ValueError("blocked non-whitelisted AI endpoint: " + url)
     for info in socket.getaddrinfo(parsed.hostname, 443):
         ip = ipaddress.ip_address(info[4][0])
@@ -74,6 +129,15 @@ class MacroAnalyzer:
         self.temperature = ai_cfg.get("temperature", 0.3)
         self.max_tokens = ai_cfg.get("max_tokens_per_item", 800)
 
+    @staticmethod
+    def _nvidia_key():
+        """NVIDIA integrate 备援 key（OpenCode 免费层指纹校验后的可用通道）。"""
+        try:
+            from secrets_loader import get_nvidia_key
+            return get_nvidia_key()
+        except Exception:
+            return ""
+
     def analyze_batch(self, items, macro_context):
         results = []
         for i in range(0, len(items), self.batch_size):
@@ -98,7 +162,12 @@ class MacroAnalyzer:
         user_prompt = f"""\u4eca\u65e5\u60c5\u62a5 {len(items)} \u6761\uff08JSON\uff09\uff1a\n{items_json}\n\n\u8bf7\u5bf9\u6bcf\u6761\u60c5\u62a5\u8fdb\u884c\u56db\u7ef4\u7ed3\u6784\u7814\u5224\uff0c\u8f93\u51fa JSON \u6570\u7ec4\uff0c\u6bcf\u4e2a\u5143\u7d20\u5305\u542b\uff1a\n1. intel_id: \u60c5\u62a5ID\n2. macro_diagnosis: \u56db\u7ef4\u8bca\u65ad accumulation_node/spatial_layer/state_market_shift/class_interest\n3. structural_implication: \u7ed3\u6784\u6027\u542b\u4e49\n4. personal_action_space: window_months/concrete_moves/avoid_traps/signals_to_watch\n5. knowledge_links: \u53cc\u5411\u94fe\u63a5\u6570\u7ec4\n6. confidence: 1-10\u7f6e\u4fe1\u5ea6\n7. contradictions: \u77db\u76fe\u5f85\u9a8c\u8bc1\u70b9\n8. raw_reasoning: \u5b8c\u6574\u63a8\u7406\u94fe\n\u53ea\u8f93\u51fa\u7eafJSON\u6570\u7ec4\uff0c\u4e0d\u8981\u5176\u4ed6\u5185\u5bb9\u3002"""
 
         system_prompt = self._build_system_prompt(macro_context)
-        response = self._call_api(system_prompt, user_prompt)
+        try:
+            response = self._call_api(system_prompt, user_prompt)
+        except Exception as e:
+            # 主分析链路的降级语义：全部模型不可用时返回空结果集（不中断批次）
+            print("[AI] batch analyze degraded (all models unavailable): " + str(e)[:120])
+            return []
         return self._parse_response(response, items)
 
     def _build_system_prompt(self, macro_context):
@@ -135,9 +204,36 @@ class MacroAnalyzer:
 
     def _call_api(self, system_prompt, user_prompt, timeout=180):
         """timeout 可按调用调整：推理型模型（输出 thinking 过程）在长 prompt 下
-        180s 不够（实测 nemotron 40K 字符 prompt 连续超时），调用方传更大值。"""
-        models = [{"model": self.model, "base_url": self.base_url, "api_key": self.api_key}] + self.fallback_models
+        180s 不够（实测 nemotron 40K 字符 prompt 连续超时），调用方传更大值。
+
+        降级链（2026-09-17 定稿）：
+          1. OpenCode（免费层已加客户端指纹校验，403；靠熔断器快速跳过）
+          2. NVIDIA integrate（本地 key，glm-5.3 系实测 43-90s 稳定）
+        OpenRouter 已移除：免费层日限 10 次请求，无实用价值（用户 2026-09-17 确认）。
+
+        卡顿修复：
+        1) 熔断器 _DEAD：403/404 标记 30 分钟、429 标记 3 分钟，后续跳过；
+        2) 单次尝试限时 min(timeout, 150)s；
+        3) 优先复用上次成功的通道。"""
+        models = [{"model": self.model, "base_url": self.base_url, "api_key": self.api_key}] + list(self.fallback_models)
+        nv_key = self._nvidia_key()
+        if nv_key:
+            # NVIDIA integrate 备援通道（本地有 NVIDIA key 时启用）
+            nv_seen = set()
+            for name in [self.model] + [m.get("model", "") for m in self.fallback_models]:
+                slug = _nv_slug(str(name))
+                if slug and slug not in nv_seen:
+                    nv_seen.add(slug)
+                    models.append({"model": slug, "base_url": NVIDIA_BASE, "api_key": nv_key})
+        # 优先复用上次成功的通道（同进程内连续调用场景）
+        if _LAST_GOOD[0]:
+            models.sort(key=lambda m: 0 if (m.get("base_url"), m.get("model")) == _LAST_GOOD[0] else 1)
+        last_err = None
         for i, m in enumerate(models):
+            key_id = (m.get("base_url", ""), m.get("model", ""))
+            if _is_dead(key_id):
+                last_err = last_err or RuntimeError(f"endpoint circuit-open: {key_id[1]}")
+                continue
             try:
                 api_base = m.get("base_url", self.base_url).rstrip("/")
                 key = m.get("api_key") or self.api_key
@@ -160,7 +256,10 @@ class MacroAnalyzer:
                     "x-opencode-project": uuid.uuid4().hex[:8],
                     "x-opencode-request": uuid.uuid4().hex,
                 }
-                raw = _safe_ai_post(url, payload, headers, timeout)
+                # 单次尝试限时：防止某个卡住的端点把整轮预算烧光
+                # （2026-09-17：cap 从 150s 提到 240s——NVIDIA glm 在 1800 字
+                #  输入下实测需 43-200s，150s 会误杀正常请求）
+                raw = _safe_ai_post(url, payload, headers, min(timeout, 240))
                 result = json.loads(raw)
                 if "choices" not in result:
                     # 有些网关在过载/拒答时返回非标准结构（error/message 字段），
@@ -183,13 +282,19 @@ class MacroAnalyzer:
                                         "let me think", "thinking process:")):
                         raise ValueError("model returned reasoning trace instead of answer: "
                                          + content.lstrip()[:120])
+                    _LAST_GOOD[0] = key_id
                     return content.strip()
                 raise ValueError("empty response")
             except Exception as e:
+                _mark_dead(key_id, e)
+                last_err = e
                 print("[AI] model " + m["model"] + " failed: " + str(e))
                 if i == len(models) - 1:
                     raise
-        return "[]"
+        # 全部模型要么熔断跳过要么失败：必须抛错，不能静默返回 "[]"
+        # （2026-09-17 修：熔断 continue 会让循环到不了 last index，异常被吞，
+        #  裁判因此拿到空数组当"未发现问题"，属静默失败）
+        raise last_err or RuntimeError("all models unavailable (circuit-open or failed)")
 
     def _parse_response(self, response, original_items):
         response = re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]", "", response)
