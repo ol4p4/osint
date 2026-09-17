@@ -16,14 +16,20 @@ AI_ALLOWED_HOSTS = {"opencode.ai", "integrate.api.nvidia.com"}
 NVIDIA_BASE = "https://integrate.api.nvidia.com/v1"
 
 # OpenCode 模型名 → NVIDIA integrate 模型名（备援通道）
-# 2026-09-17 实测选型：nemotron 系是推理模型（长 prompt 吐思维链+超时），
-# kimi-k3 超时，gpt-oss-20b 返回空；glm-5.3 系实测稳定（43-90s/无思维链）。
-# 分流：主笔（mimo）→ glm-5.3 全量（生成质量优先）；裁判/副笔 → flash（速度优先）。
+# 2026-09-17 实测选型（重要修正）：
+#   gpt-oss-20b 是推理模型，**默认会陷入思考循环**（"说一个字"烧 4096 token 仍无 content），
+#   但加 reasoning_effort=low 后 2 秒返回正常答案；真实裁判任务 20s vs glm-flash 173s 空响应。
+#   → 裁判/副笔用 gpt-oss-20b（快、稳）；主笔生成用 glm-5.3（中文长文质量好）。
 _NV_SLUG_MAP = {
     "mimo-v2.5-free": "z-ai/glm-5.3",
-    "nemotron-3.5-lightning-free": "z-ai/glm-5.3-flash",
-    "nemotron-3-ultra-free": "z-ai/glm-5.3-flash",
-    "ling-3.0-flash-fin-free": "z-ai/glm-5.3-flash",
+    "nemotron-3.5-lightning-free": "openai/gpt-oss-20b",
+    "nemotron-3-ultra-free": "openai/gpt-oss-20b",
+    "ling-3.0-flash-fin-free": "openai/gpt-oss-20b",
+}
+
+# 推理型模型的思考量控制（不加会陷入思考循环，content 永远为空）
+_NV_REASONING_EFFORT = {
+    "openai/gpt-oss-20b": "low",
 }
 
 
@@ -238,7 +244,7 @@ class MacroAnalyzer:
                 api_base = m.get("base_url", self.base_url).rstrip("/")
                 key = m.get("api_key") or self.api_key
                 url = api_base + "/chat/completions"
-                payload = json.dumps({
+                body = {
                     "model": m["model"],
                     "messages": [
                         {"role": "system", "content": system_prompt},
@@ -246,7 +252,12 @@ class MacroAnalyzer:
                     ],
                     "temperature": self.temperature,
                     "max_tokens": 8192,
-                }).encode("utf-8")
+                }
+                # 推理型模型需限制思考量，否则陷入思考循环（content 永远为空）
+                eff = _NV_REASONING_EFFORT.get(m["model"])
+                if eff:
+                    body["reasoning_effort"] = eff
+                payload = json.dumps(body).encode("utf-8")
                 headers = {
                     "Content-Type": "application/json",
                     "Authorization": "Bearer " + key,
