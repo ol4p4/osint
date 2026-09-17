@@ -239,17 +239,15 @@ class MacroAnalyzer:
         1) 熔断器 _DEAD：403/404 标记 30 分钟、429 标记 3 分钟，后续跳过；
         2) 单次尝试限时 min(timeout, 240)s；
         3) 优先复用上次成功的通道。"""
-        models = [{"model": self.model, "base_url": self.base_url, "api_key": self.api_key}] + list(self.fallback_models)
-        # 小红书 dots 通道（2026-09-17 接入）：实测 1s 响应，比 NVIDIA 快一个数量级，
-        # 因此排在 NVIDIA **之前**——避免 NVIDIA 端点故障时白等 240s×N 才轮到它。
+        models = []
+        # 小红书 dots 通道（2026-09-17 接入）：实测 1s 响应，比 NVIDIA 快一个数量级。
+        # 放在**链首**——OpenCode 已全线 403、NVIDIA 端点故障时，前面每一个都是白等
+        # （2026-09-17 实测：dots 排 NVIDIA 后面时，主笔仍要等 4×240s 才轮到，常超时失败）。
         dots_key = self._dots_key()
         if dots_key:
-            dots_seen = set()
-            for name in [self.model] + [m.get("model", "") for m in self.fallback_models]:
-                slug = _dots_slug(str(name))
-                if slug and slug not in dots_seen:
-                    dots_seen.add(slug)
-                    models.append({"model": slug, "base_url": DOTS_BASE, "api_key": dots_key})
+            models.append({"model": _dots_slug(self.model), "base_url": DOTS_BASE, "api_key": dots_key})
+        models.append({"model": self.model, "base_url": self.base_url, "api_key": self.api_key})
+        models.extend(self.fallback_models)
         nv_key = self._nvidia_key()
         if nv_key:
             # NVIDIA integrate 备援通道（本地有 NVIDIA key 时启用）
