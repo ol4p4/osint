@@ -61,3 +61,24 @@ def get_nvidia_key() -> str:
     优先读 CI 同名变量 NVIDIA_API_KEY，其次读本地 CODEX_API_KEY_____3。
     """
     return os.environ.get("NVIDIA_API_KEY", "") or os.environ.get("CODEX_API_KEY_____3", "")
+
+
+def get_dots_key() -> str:
+    """小红书 dots 备援 key（第三通道，2026-09-17 接入）。
+
+    端点 note3-prev-api.askdiandian.com（OpenAI 兼容），模型 dots3-note-prev。
+    实测 1 秒响应，是 NVIDIA 端点故障时的可靠备援。
+    key 来源：环境变量 DOTS_API_KEY / INGEST_API_KEY，或本地配置文件。
+    """
+    key = os.environ.get("DOTS_API_KEY", "") or os.environ.get("INGEST_API_KEY", "")
+    if key:
+        return key
+    local = _ROOT / "config.local.yaml"
+    if local.exists():
+        try:
+            import yaml
+            cfg = yaml.safe_load(local.read_text(encoding="utf-8")) or {}
+            return (cfg.get("dots") or {}).get("api_key", "") or ""
+        except Exception:
+            pass
+    return ""

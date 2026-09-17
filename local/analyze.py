@@ -9,11 +9,14 @@ from dataclasses import dataclass, asdict
 import urllib.request, urllib.error, uuid
 
 AI_ALLOWED_HOST = "opencode.ai"
-# 2026-09-17：OpenCode 免费层加客户端指纹校验（403 FreeTierError），非官方客户端被拒；
-# NVIDIA integrate 为可用备援通道（本地 key，显式白名单，自行鉴权计费）。
-# OpenRouter 曾接入但已移除：免费层日限 10 次请求，无实用价值。
-AI_ALLOWED_HOSTS = {"opencode.ai", "integrate.api.nvidia.com"}
+# AI 通道白名单（2026-09-17 多通道备援）：
+#   1. OpenCode（默认）——免费层已加客户端指纹校验，非官方客户端 403，靠熔断器跳过
+#   2. NVIDIA integrate——本地 key，gpt-oss-20b（+reasoning_effort=low）/ glm-5.3
+#   3. 小红书 dots——note3-prev-api.askdiandian.com（双通道备援，实测 1s 响应）
+# OpenRouter 已移除（免费层日限 10 次请求）
+AI_ALLOWED_HOSTS = {"opencode.ai", "integrate.api.nvidia.com", "note3-prev-api.askdiandian.com"}
 NVIDIA_BASE = "https://integrate.api.nvidia.com/v1"
+DOTS_BASE = "https://note3-prev-api.askdiandian.com/v1"
 
 # OpenCode 模型名 → NVIDIA integrate 模型名（备援通道）
 # 2026-09-17 实测选型（重要修正）：
@@ -36,6 +39,11 @@ _NV_REASONING_EFFORT = {
 def _nv_slug(model_name):
     """OpenCode 模型名映射到 NVIDIA integrate 模型名；未收录返回空串（跳过该备援项）。"""
     return _NV_SLUG_MAP.get(model_name, "")
+
+
+def _dots_slug(model_name):
+    """OpenCode 模型名 → 小红书 dots 模型名（第三通道，2026-09-17 接入）。"""
+    return "dots3-note-prev"
 
 
 # ── 端点熔断器（2026-09-17 卡顿修复）────────────────────────────────
@@ -144,6 +152,15 @@ class MacroAnalyzer:
         except Exception:
             return ""
 
+    @staticmethod
+    def _dots_key():
+        """小红书 dots 备援 key（第三通道，2026-09-17 接入）。"""
+        try:
+            from secrets_loader import get_dots_key
+            return get_dots_key()
+        except Exception:
+            return ""
+
     def analyze_batch(self, items, macro_context):
         results = []
         for i in range(0, len(items), self.batch_size):
@@ -214,14 +231,25 @@ class MacroAnalyzer:
 
         降级链（2026-09-17 定稿）：
           1. OpenCode（免费层已加客户端指纹校验，403；靠熔断器快速跳过）
-          2. NVIDIA integrate（本地 key，glm-5.3 系实测 43-90s 稳定）
+          2. NVIDIA integrate（本地 key；gpt-oss-20b / glm-5.3）
+          3. 小红书 dots（note3-prev-api.askdiandian.com；实测 1s 响应）
         OpenRouter 已移除：免费层日限 10 次请求，无实用价值（用户 2026-09-17 确认）。
 
         卡顿修复：
         1) 熔断器 _DEAD：403/404 标记 30 分钟、429 标记 3 分钟，后续跳过；
-        2) 单次尝试限时 min(timeout, 150)s；
+        2) 单次尝试限时 min(timeout, 240)s；
         3) 优先复用上次成功的通道。"""
         models = [{"model": self.model, "base_url": self.base_url, "api_key": self.api_key}] + list(self.fallback_models)
+        # 小红书 dots 通道（2026-09-17 接入）：实测 1s 响应，比 NVIDIA 快一个数量级，
+        # 因此排在 NVIDIA **之前**——避免 NVIDIA 端点故障时白等 240s×N 才轮到它。
+        dots_key = self._dots_key()
+        if dots_key:
+            dots_seen = set()
+            for name in [self.model] + [m.get("model", "") for m in self.fallback_models]:
+                slug = _dots_slug(str(name))
+                if slug and slug not in dots_seen:
+                    dots_seen.add(slug)
+                    models.append({"model": slug, "base_url": DOTS_BASE, "api_key": dots_key})
         nv_key = self._nvidia_key()
         if nv_key:
             # NVIDIA integrate 备援通道（本地有 NVIDIA key 时启用）
@@ -267,6 +295,10 @@ class MacroAnalyzer:
                     "x-opencode-project": uuid.uuid4().hex[:8],
                     "x-opencode-request": uuid.uuid4().hex,
                 }
+                if "askdiandian" in api_base:
+                    # 小红书 dots 网关要求 api-key 头（Authorization 之外）
+                    headers["api-key"] = key
+                    headers.pop("x-opencode-client", None)
                 # 单次尝试限时：防止某个卡住的端点把整轮预算烧光
                 # （2026-09-17：cap 从 150s 提到 240s——NVIDIA glm 在 1800 字
                 #  输入下实测需 43-200s，150s 会误杀正常请求）
