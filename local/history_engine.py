@@ -401,6 +401,10 @@ def _unanchored_numbers(text, mat_nums):
 def cmd_verify(fname):
     """数值锚校验（全书）+ Nemotron 幻觉裁判（strict 级逐节，其余抽查首节）。
     文件含「## 定稿」区时只校验定稿（主编裁决后的正文）。"""
+    # 2026-09-18 修：接受裸文件名或完整路径。曾传完整路径时 fname.split("__")[0]
+    # 变成绝对路径前缀 → _page_spec 判成 normal 级 → 裁判只拿到首个标题行，
+    # 属静默降级（报告看似正常、实际未核查任何正文）。
+    fname = Path(fname).name
     src = DRAFTS / fname
     if not src.exists():
         _log(f"文件不存在: {src}")
@@ -415,7 +419,18 @@ def cmd_verify(fname):
     bad_anchors = _bad_anchor_names(text, _material_names(pack))
     _, sub = _load_analyzers()
     # 分节支持 H2-H4（定稿正文常用 #### 作维度小节）
-    sections = [s for s in re.split(r"\n(?=#{2,4} )", text) if s.strip()]
+    # 2026-09-18 修：H3 期标题会被切成"只有标题行"的独立碎片节，
+    # 裁判收到纯标题后回"请把正文贴过来"（等于没核查）——把碎片并入下一节。
+    raw_sections = [s for s in re.split(r"\n(?=#{2,4} )", text) if s.strip()]
+    sections, buf = [], ""
+    for s in raw_sections:
+        if len(s.splitlines()) > 1 and "\n".join(s.splitlines()[1:]).strip():
+            sections.append(buf + s)
+            buf = ""
+        else:
+            buf += s + "\n\n"
+    if buf.strip():
+        sections.append(buf)
     report = [f"# 核查报告：{fname}", f"- 生成: {datetime.now(timezone.utc).isoformat(timespec='seconds')}",
               f"- 页面级别: {spec['level']}", ""]
     report.append("## 数值锚校验\n")
