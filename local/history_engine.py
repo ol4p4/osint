@@ -38,7 +38,8 @@ NUM_RE = re.compile(r"(?<![\w.])(\d{1,3}(?:\.\d+)?)\s*(?:%|个百分点|倍|万�
 YEAR_RE = re.compile(r"^(19|20)\d{2}$")
 ANCHOR_RE = re.compile(r"【据[:：][^】]*】|【无据待查】")
 
-MAX_MATERIAL_CHARS = 45000
+MAX_MATERIAL_CHARS = 60000   # 2026-09-19 从 45000 上调：data/ 增长至 14 张表，
+                             # 旧上限导致尾部整表被截断（=从 AI 视野消失，曾致幻觉锚点）
 PER_MATERIAL_CHARS = 6000
 DRAFT_CHARS = "800-1200"
 SKELETON = "00-skeleton.md"

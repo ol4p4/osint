@@ -178,12 +178,46 @@ def fetch_te_china_indicator(page_slug, label_keyword):
 
 
 def _parse_caixin_unrate(article_url, page_text):
-    """从财新文章 markdown/HTML 解析 4 个分年龄组失业率值"""
+    """从财新文章 markdown/HTML 解析 4 个分年龄组失业率值
+
+    2026-09-19 修：财新有两种句式，旧正则会把合并句式的第一个数字错配给 30-59。
+    - 合并式：「25—29岁、30—59岁劳动力失业率分别录得 7.1%、4.0%」
+      → 前一个数字属 25-29，后一个属 30-59；旧的 "30—59岁[^\\d]{0,60}?(\\d)%" 会
+        从"30—59岁"往后找第一个数字，但因为 7.1% 出现在 25-29 之后、30-59 之前的位置
+        受 60 字窗口影响，实测抓成了 7.1（正确值应为 4.0）。
+    - 分离式：「30—59岁劳动力失业率…维持在 3.9%」→ 旧正则正常。
+    修复策略：先尝试"分别录得 A%、B%"模式精确配对；失败再退回旧正则。
+    """
     import re
     m16 = re.search(r"16[—\-]24岁[^\d]{0,60}?(\d+\.?\d*)%", page_text)
-    m25 = re.search(r"25[—\-]29岁[^\d]{0,60}?(\d+\.?\d*)%", page_text)
-    m30 = re.search(r"30[—\-]59岁[^\d]{0,60}?(\d+\.?\d*)%", page_text)
     mtotal = re.search(r"全国城镇调查失业率[^\d]{0,30}?(\d+\.?\d*)%", page_text)
+
+    # 配对句式（三种，2026-09-19 实测汇总）：
+    #   A「25—29岁、30—59岁…分别录得 7.1%、4.0%」
+    #   B「25—29岁和30—59岁…调查失业率为 7.4% 和 4.2%」
+    #   C「25—29岁、30—59岁劳动力失业率分别为 7.1%、4.0%」
+    # 通用做法：先定位含 25-29 与 30-59 的句子片段（两种年龄表述需在 60 字内相邻），
+    # 再按出场顺序取该片段内的百分比——第一个归 25-29、第二个归 30-59。
+    pair = None
+    seg = re.search(
+        r"25[—\-]29岁[^。]{0,60}?30[—\-]59岁[^。]{0,100}", page_text)
+    if seg:
+        pcts = re.findall(r"(\d+\.?\d*)%", seg.group(0))
+        if len(pcts) >= 2:
+            pair = (float(pcts[0]), float(pcts[1]))
+    if pair:
+        v25, v30 = pair
+    else:
+        m25 = re.search(r"25[—\-]29岁[^\d]{0,60}?(\d+\.?\d*)%", page_text)
+        m30 = re.search(r"30[—\-]59岁[^\d]{0,60}?(\d+\.?\d*)%", page_text)
+        v25 = float(m25.group(1)) if m25 else None
+        v30 = float(m30.group(1)) if m30 else None
+
+    # 自洽性校验：30-59 是劳动力主体，其失业率不应高于总量
+    if v30 is not None and mtotal:
+        if v30 > float(mtotal.group(1)):
+            v30 = None  # 拒绝写入不自洽值（宁可缺，不可错）
+
     if not m16:
         return None
     rec = {
@@ -191,10 +225,10 @@ def _parse_caixin_unrate(article_url, page_text):
         "source_url": article_url,
         "source": "NBS-via-Caixin",
     }
-    if m25:
-        rec["cn_25_29"] = float(m25.group(1))
-    if m30:
-        rec["cn_30_59"] = float(m30.group(1))
+    if v25 is not None:
+        rec["cn_25_29"] = v25
+    if v30 is not None:
+        rec["cn_30_59"] = v30
     if mtotal:
         rec["cn_total"] = float(mtotal.group(1))
     um = re.search(r"/(\d{4})-(\d{2})-\d{2}/", article_url)
