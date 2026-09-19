@@ -138,6 +138,8 @@ python -c "..." # 见 daily_run.ps1 Step3，或等 OsintWeekly 周一 09:30 自�
 - **bat 文件避免 `%VAR%\path` 模式**：cmd 解析时 `\r` 会被当 carriage return 吞一个字符（`%OUTDIR%\refresh.py` → `efresh.py`），导致"不是内部或外部命令"。bat 里路径直接写绝对路径（**用正斜杠更稳**：`D:/osint/data/refresh.py` Windows 也认），不要混用 `%VAR%` + 反斜杠。
 - **serve.py 进程管理**：agent 会话内用 `Start-Process`/后台任务启动的进程会随会话清理被杀（用户浏览器随即 ERR_CONNECTION_REFUSED）。正确方式：`Start-ScheduledTask -TaskName OsintDashboard`（进程挂 Task Scheduler 下，脱离会话树；任务本身 Interactive 即可）。**开机自启已停用（2026-09-05 用户决策）**：OsintDashboard 任务的登录触发器已 Enabled=False，任务保留用于手动拉起；想恢复自启把触发器 Enabled 改回 True。
 - 批量改多文件前先 `git status` 确认影响范围；禁止 `push --force`、`reset --hard` 丢未提交内容。
+- **正则抓取多值句必须验证语义归属**（2026-09-19 踩坑）：财新失业率文章有三种句式（「25—29岁、30—59岁…分别录得 A%、B%」/「…为 A% 和 B%」/「30—59岁…维持在 A%」），旧正则一律往后找第一个数字，把 25-29 岁的值错配给了 30-59 岁，污染 5 处下游正文。**修法**：①按年龄段出场顺序配对取值；②加**逻辑自洽闸门**（分项不应大于总量——30-59 岁是劳动力主体，其失业率不可能高于城镇调查失业率总量）。规则：**数值型抓取管道必须内置自洽校验，宁可缺不可错**。
+- **引用任何下游数据前先做合理性检验**：均值/分项/总量之间若有包含关系，先算一遍能否自洽。历史档案写作时若核对过「30-59 vs 总量 5.3%」，本可当场发现这个 bug。
 - `falsification_criteria` 为空时会在验证时自动从 indicators/sub_propositions 的 `threshold_refute` 回填，不要手填重复值。
 
 ## read-macro 集成（2026-09 落地）
