@@ -24044,6 +24044,94 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "1c19c464ffd5f381"
+        ],
+        "story_ids": [],
+        "summary": "美国对伊朗军事行动已花费436亿美元，不包括中东基地损失",
+        "domains": [],
+        "relevance": 0.141,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "f09837969ba3c596"
+        ],
+        "story_ids": [
+          "st_8d4c863fa3"
+        ],
+        "summary": "【安理会举行联合国秘书长遴选第三轮意向性投票】金十数据9月18日讯，当地时间9月18日，联合国安理会就新任秘书长人选进行",
+        "domains": [],
+        "relevance": 0.131,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "6690e094de20c040"
+        ],
+        "story_ids": [],
+        "summary": "联合国：刚果（金）东部冲突加剧 超7万人流离失所",
+        "domains": [],
+        "relevance": 0.12,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "bb4785e3f9506b63"
+        ],
+        "story_ids": [],
+        "summary": "【联合国官员：美伊战争首月令阿拉伯经济体损失1500亿美元】金十数据9月18日讯，联合国西亚经济社会委员会执行秘书Ran",
+        "domains": [
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "394494f6f6b2186d"
+        ],
+        "story_ids": [
+          "st_7d4fac3efb"
+        ],
+        "summary": "美国8月份制造业产值出人意料萎缩 受到成本上升的压力",
+        "domains": [
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "b1c8138cef52a73a"
+        ],
+        "story_ids": [],
+        "summary": "美国8月份制造业产值出人意料出现今年以来首次萎缩",
+        "domains": [
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -27451,6 +27539,98 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "89962122618e1d51"
+        ],
+        "story_ids": [
+          "st_c1801a85e6"
+        ],
+        "summary": "欧洲主要股指盘中跌幅扩大",
+        "domains": [],
+        "relevance": 0.225,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "1fbc39f8e291f810"
+        ],
+        "story_ids": [],
+        "summary": "“衰退交易”要失效了？冈拉克担忧美国下一次衰退变成债务危机",
+        "domains": [],
+        "relevance": 0.132,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "c816e2dea157f9c0"
+        ],
+        "story_ids": [],
+        "summary": "Industry news outlet ShippingWatch reports Maersk has ordere",
+        "domains": [
+          "经济",
+          "供应链"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "e26c85388130a97f"
+        ],
+        "story_ids": [],
+        "summary": "Container-shipping index (Europe route) front-month contract",
+        "domains": [
+          "经济",
+          "供应链"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "3078a1f41a956a42"
+        ],
+        "story_ids": [],
+        "summary": "【交通运输部党组理论学习中心组举行2026年第九次集体学习】刘伟强调，要更加自觉地把习近平总书记主旨讲话和重要贺信精神贯",
+        "domains": [
+          "供应链"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "b1d350b49ec6b4e0"
+        ],
+        "story_ids": [
+          "st_2d2f56c812"
+        ],
+        "summary": "特斯拉被曝启动新一轮机器人业务量产审厂，多家供应链企业回应",
+        "domains": [
+          "供应链"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -29678,6 +29858,101 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "ddc376a09ffbaee1"
+        ],
+        "story_ids": [],
+        "summary": "货币化进程基本结束，意味着什么？",
+        "domains": [],
+        "relevance": 0.121,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "16fdd6dc333de5dd"
+        ],
+        "story_ids": [],
+        "summary": "日本央行行长植田和男称：日本央行、美联储与欧洲央行似乎都在对中东局势带来通胀压力等相同因素作出反应。",
+        "domains": [
+          "经济",
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "7e2b28c8720548e7"
+        ],
+        "story_ids": [],
+        "summary": "日本政策利率创31年新高",
+        "domains": [
+          "经济",
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "aef735c328258bbe"
+        ],
+        "story_ids": [],
+        "summary": "【道富环球：日本央行加息至1.25%后或转谨慎】金十数据9月18日讯，道富环球投资管理表示，在日本央行将政策利率上调至1",
+        "domains": [
+          "经济",
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "e501797d0a46e939"
+        ],
+        "story_ids": [],
+        "summary": "日本央行决议点评：进一步加息预期降温，利率上限可能在2%以下",
+        "domains": [
+          "经济",
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "61b9b3593a116086"
+        ],
+        "story_ids": [
+          "st_7462e59c3d"
+        ],
+        "summary": "日本央行行长植田和男：应参照通胀和经济状况来评估收益率水平。 “政策阶段的转变”意味着当前政策目标的目的在于将基础通胀稳定在2%左右。 难以判断金融环境是...",
+        "domains": [
+          "经济",
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
       }
     ],
     "version": 3,
@@ -29795,6 +30070,32 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "8abbeb1950490909"
+        ],
+        "story_ids": [],
+        "summary": "【国际移民组织：经海路抵欧移民和难民显著减少】国际移民组织17日发布消息说，今年以来，通过海路抵达欧洲的移民和难民显著减",
+        "domains": [],
+        "relevance": 0.234,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "e05025e677c6f866"
+        ],
+        "story_ids": [],
+        "summary": "白宫公告：对部分非移民工人实施美国入境限制。 总统特朗普将H-1B签证入境限制延长12个月至2027年9月。",
+        "domains": [],
+        "relevance": 0.128,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -29824,7 +30125,7 @@
         "last_updated": "2025",
         "data_source": "WorldBank",
         "threshold_eval": {
-          "checked_at": "2026-09-18",
+          "checked_at": "2026-09-19",
           "value": 14.9114314271952,
           "refute_expr": "到2028年联合国人口司预测中国老年抚养比为19.5%，低于20%阈值；到2030年韩国老年抚养比达21%但中国仍低于20%",
           "support_expr": "老年抚养比到2030年三国均超20%",
@@ -29867,13 +30168,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -31936,18 +32237,112 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "1159800ea77cc6a4"
+        ],
+        "story_ids": [
+          "st_d3bd59dda5"
+        ],
+        "summary": "葡萄牙批准增发养老金与减税方案 以缓解生活成本压力",
+        "domains": [
+          "社保"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "0317a8886c855523"
+        ],
+        "story_ids": [
+          "st_0d4e4bd18f"
+        ],
+        "summary": "【新华保险：聘任李文峰为公司副总裁】新华保险公告称，公司第九届董事会第十二次会议审议通过议案，同意聘任李文峰为公司副总裁",
+        "domains": [
+          "社保"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "5ca045199874d722"
+        ],
+        "story_ids": [],
+        "summary": "【中国出版：财务总监李学焦退休离任 臧永清代行职责】中国出版公告称，公司董事会近日收到财务总监李学焦的辞职信，李学焦因达",
+        "domains": [
+          "社保"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "26cb404d10001a0a"
+        ],
+        "story_ids": [],
+        "summary": "大众汽车集团：根据 2024 年末达成的 “大众未来” 协议，集团预计将产生额外重组费用，源于提前退休方案扩容以及计划出",
+        "domains": [
+          "社保"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "649e48bd629db358"
+        ],
+        "story_ids": [],
+        "summary": "【孟凡利分别会见中国人保谭炯、中国节能廖家生】9月18日，广东省委副书记、省长孟凡利在广州分别会见中国人民保险集团股份有",
+        "domains": [
+          "社保"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "c9d156f43c5381d1"
+        ],
+        "story_ids": [],
+        "summary": "人保再保险获批变更营业场所",
+        "domains": [
+          "社保"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -35049,6 +35444,39 @@
         "relevance": 0.667,
         "ach_eligible": true,
         "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "d623a3e9190fe447"
+        ],
+        "story_ids": [],
+        "summary": "9月18日会员早报：美国10年期通胀保值国债收益率连创新高 美国就业数据创近年新低",
+        "domains": [
+          "青年",
+          "经济"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "5cb9de6f7a406300"
+        ],
+        "story_ids": [
+          "st_52b4df09bd"
+        ],
+        "summary": "住房城乡建设部：满足新市民、青年人和住房困难且收入不高的城镇工薪群体基本住房需求",
+        "domains": [
+          "青年"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "36氪-快讯",
         "impact": ""
       }
     ],
@@ -40706,18 +41134,108 @@
         "ach_eligible": true,
         "source": "新浪财经-滚动新闻",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "5c1b3fab790736a8"
+        ],
+        "story_ids": [],
+        "summary": "内河游轮成消费新增长点，中青年和境外游客增长迅速",
+        "domains": [],
+        "relevance": 0.135,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "6cf4a5d73617218b"
+        ],
+        "story_ids": [],
+        "summary": "【全球债市再遇抛售 市场关注全球紧缩周期升级可能性】周五，全球主要公债收益率再度走高，抛售潮卷土重来。本周美联储与日本央",
+        "domains": [
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "21e083542ee68c45"
+        ],
+        "story_ids": [],
+        "summary": "【日本央行货币政策决议五大核心要点】以下是日本央行货币政策决议及行长植田和男新闻发布会的核心要点：\n1、日本央行如市场普",
+        "domains": [
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "b5451f3e3cdb37f4"
+        ],
+        "story_ids": [],
+        "summary": "美联储与日银相继加息，若想日元升值，植田需给出更鹰派指引",
+        "domains": [
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "19a9a5bb05b63645"
+        ],
+        "story_ids": [],
+        "summary": "国际金尚未排除假突破风险，日本更可能通过干预应对日元再次暴跌？ | Live分析更新中",
+        "domains": [
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "06bcfe7096996d6f"
+        ],
+        "story_ids": [
+          "st_a2e9407db5"
+        ],
+        "summary": "【日元跌幅扩大 此前日本央行行长植田和男就加息释放矛盾信号】在日本央行行长植田和男就未来加息路径释放矛盾信号后，日元兑美",
+        "domains": [
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -43168,18 +43686,47 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "92cb178b93f1fd87"
+        ],
+        "story_ids": [],
+        "summary": "GO Markets:就业韧性下黄金反应需拆解",
+        "domains": [],
+        "relevance": 0.156,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "d623a3e9190fe447"
+        ],
+        "story_ids": [],
+        "summary": "9月18日会员早报：美国10年期通胀保值国债收益率连创新高 美国就业数据创近年新低",
+        "domains": [
+          "青年",
+          "经济"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -44746,6 +45293,105 @@
         "ach_eligible": true,
         "source": "第一财经-新闻",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "96064733503add6f"
+        ],
+        "story_ids": [],
+        "summary": "【经济日报：把单次流量转化为链式消费】即便赛事散场、演出落幕，但消费仍在升温。持一张“浙BA”球票，便能解锁跨城文旅礼遇",
+        "domains": [],
+        "relevance": 0.167,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "78bc2f7bb97ce962"
+        ],
+        "story_ids": [
+          "st_1d2b722417"
+        ],
+        "summary": "楼市现房销售已是大势所趋，房企投资拿地将有何变化？",
+        "domains": [
+          "经济",
+          "房地产"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "95167c77d4ca26dc"
+        ],
+        "story_ids": [
+          "st_f689b62a9a"
+        ],
+        "summary": "【*ST九鼎：2026年9月18日收到证监会立案告知书】*ST九鼎公告，公司因对2023-2024年存货及投资性房地产核",
+        "domains": [
+          "经济",
+          "房地产"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "8aaac5d322e62a1b"
+        ],
+        "story_ids": [
+          "st_602449d8a1"
+        ],
+        "summary": "Ministry of Housing and Urban‑Rural Development to accelerate urban renewal legislation",
+        "domains": [
+          "经济",
+          "房地产"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "edd39cedc1b07d0f"
+        ],
+        "story_ids": [],
+        "summary": "美国30年期房贷利率冲上7%！房地产市场困境加剧",
+        "domains": [
+          "经济",
+          "房地产"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "83840e21966b4e17"
+        ],
+        "story_ids": [],
+        "summary": "美国中期选举前物价全面上涨 房贷利率逼近7%",
+        "domains": [
+          "经济",
+          "房地产"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -45936,18 +46582,110 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "4af3dbf2f902017a"
+        ],
+        "story_ids": [],
+        "summary": "【中原地产：香港二手房价格按周上涨0.5%】中原地产在网站上表示，在9月7日至13日当周，衡量香港二手房价格的中原城市领",
+        "domains": [],
+        "relevance": 0.158,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "a7374ffcc8669c43"
+        ],
+        "story_ids": [],
+        "summary": "路透调查：英国房价预计在2026年上涨1.3%，2027年上涨2.0%，2028年上涨3.3%（第二季度调查分别为1.8",
+        "domains": [],
+        "relevance": 0.125,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "7ce0acb49956b865"
+        ],
+        "story_ids": [
+          "st_d93d0a9931"
+        ],
+        "summary": "【住建部：“十五五”时期将扩大住房公积金制度覆盖面】9月18日，住房和城乡建设部房地产市场监管司司长‌张雪涛在国新办新闻",
+        "domains": [
+          "房地产"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "3fc3d7e2b762d030"
+        ],
+        "story_ids": [],
+        "summary": "房地产板块震荡拉升 绿地控股涨停",
+        "domains": [
+          "房地产"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "33b1ac621c7b61eb"
+        ],
+        "story_ids": [
+          "st_f9672d90a2"
+        ],
+        "summary": "中国住建部：房地产市场进入存量时代",
+        "domains": [
+          "房地产"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "cd4d3675de55071c"
+        ],
+        "story_ids": [
+          "st_39ebd5b497"
+        ],
+        "summary": "我国房地产进入存量时代，现房销售是大势所趋……住建部发布会要点速览",
+        "domains": [
+          "房地产"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -45974,7 +46712,7 @@
         "last_updated": "2024",
         "data_source": "WorldBank",
         "threshold_eval": {
-          "checked_at": "2026-09-18",
+          "checked_at": "2026-09-19",
           "value": 56.6789524134646,
           "refute_expr": "世界银行数据显示最终消费占GDP比重连续三年上升每年超0.5个百分点；居民消费率超60%并保持两年；消费对GDP增长贡献率连续五年超投资",
           "support_expr": "居民消费率持续走低",
@@ -64273,18 +65011,98 @@
         "ach_eligible": true,
         "source": "新浪财经-滚动新闻",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "96064733503add6f"
+        ],
+        "story_ids": [],
+        "summary": "【经济日报：把单次流量转化为链式消费】即便赛事散场、演出落幕，但消费仍在升温。持一张“浙BA”球票，便能解锁跨城文旅礼遇",
+        "domains": [],
+        "relevance": 0.171,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "ef3987a76fcb31a9"
+        ],
+        "story_ids": [],
+        "summary": "【文旅部：鼓励地方综合运用消费券、消费补贴等方式促进文化消费】文化和旅游部印发《文化产业发展“十五五”规划》，其中提出，",
+        "domains": [],
+        "relevance": 0.157,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "c9f44e1a76436788"
+        ],
+        "story_ids": [],
+        "summary": "十部门：支持汽车流通消费改革试点城市将促进房车消费列为改革任务",
+        "domains": [],
+        "relevance": 0.151,
+        "ach_eligible": true,
+        "source": "36氪-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "b4989a3d68910a5f"
+        ],
+        "story_ids": [],
+        "summary": "【冯仑被限制高消费】天眼查法律诉讼信息显示，近日，三亚万通健康开发管理有限公司新增一条限制消费令，案号为（2026）琼0",
+        "domains": [],
+        "relevance": 0.151,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "5c1b3fab790736a8"
+        ],
+        "story_ids": [],
+        "summary": "内河游轮成消费新增长点，中青年和境外游客增长迅速",
+        "domains": [],
+        "relevance": 0.13,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "5b68f838578b4e03"
+        ],
+        "story_ids": [],
+        "summary": "【今日重点关注的财经数据与事件：2026年9月18日 周五】<br/>① 14:00 德国8月PPI月率<br/>② 1",
+        "domains": [
+          "经济"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -64424,6 +65242,32 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "e26b361939328adc"
+        ],
+        "story_ids": [],
+        "summary": "【安彩高科：拟出售闲置铑粉 交易价1.14亿元】安彩高科公告称，公司拟向永兴鹏琨环保有限公司出售闲置贵金属铑粉，净重56",
+        "domains": [],
+        "relevance": 0.132,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "607e61f1dad0186a"
+        ],
+        "story_ids": [],
+        "summary": "光为何反弹？ 产业当前焦点与边际热点，大小光的差异化在哪？",
+        "domains": [],
+        "relevance": 0.121,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -64453,7 +65297,7 @@
         "last_updated": "2023",
         "data_source": "WorldBank",
         "threshold_eval": {
-          "checked_at": "2026-09-18",
+          "checked_at": "2026-09-19",
           "value": 2.57729,
           "refute_expr": "OECD数据显示半导体/新能源/AI研发支出占总研发比例连续两年降超5%；政策文件中这些领域关键词出现频率年度环比降超15%；政府补贴或税收优惠金额减少超20%",
           "support_expr": "半导体/新能源/AI成为国家战略重点",
@@ -67953,18 +68797,122 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "a0017960559c4d98"
+        ],
+        "story_ids": [],
+        "summary": "9月19日收盘：美股涨跌不一 芯片股反弹 费城半导体指数涨超2% 油价回落至100美元下方",
+        "domains": [
+          "能源",
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "4add204edd317711"
+        ],
+        "story_ids": [
+          "st_05c1f9e7a7"
+        ],
+        "summary": "图谱动态 | 聚焦离散制造场景赋能 《2026 AI+高端制造产业应用图谱》项目组赴上海电气核电集团调研",
+        "domains": [
+          "能源",
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "5c2d5ef60620240d"
+        ],
+        "story_ids": [
+          "st_cffe1db663"
+        ],
+        "summary": "AI数据中心又带火一项“新清洁能源”！Meta、谷歌押注长时储能，最长可存100小时",
+        "domains": [
+          "能源",
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "9162664c27d66ae1"
+        ],
+        "story_ids": [
+          "st_cb452af3cd"
+        ],
+        "summary": "【协鑫能科牛曙斌：协鑫AI能源交易服务综合解决方案已构建全国服务能力】金十数据9月18日讯，9月17日至18日，2026",
+        "domains": [
+          "能源",
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "48698ba40eba6827"
+        ],
+        "story_ids": [],
+        "summary": "【华源证券：首予潍柴动力“买入”评级，AI电力时代公司价值重塑】华源证券研报指出，潍柴动力柴发+气发+SOFC三轮驱动，",
+        "domains": [
+          "能源",
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "93c80f884b739a64"
+        ],
+        "story_ids": [
+          "st_a0b0cf92da"
+        ],
+        "summary": "道指迎半年最惨一周！芯片股尾盘狂拉闪迪暴涨近11%，原油跳水金银反弹",
+        "domains": [
+          "能源",
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -68226,18 +69174,33 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "3cde315d6b742b28"
+        ],
+        "story_ids": [
+          "st_7936df5f19"
+        ],
+        "summary": "东京补贴加持 特斯拉售价低于古董劳力士",
+        "domains": [],
+        "relevance": 0.19,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -73827,6 +74790,96 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "166120b83c6804f9"
+        ],
+        "story_ids": [],
+        "summary": "韩国总统：韩国不会派兵介入伊朗战争",
+        "domains": [],
+        "relevance": 0.121,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "6cf4a5d73617218b"
+        ],
+        "story_ids": [],
+        "summary": "【全球债市再遇抛售 市场关注全球紧缩周期升级可能性】周五，全球主要公债收益率再度走高，抛售潮卷土重来。本周美联储与日本央",
+        "domains": [
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "21e083542ee68c45"
+        ],
+        "story_ids": [],
+        "summary": "【日本央行货币政策决议五大核心要点】以下是日本央行货币政策决议及行长植田和男新闻发布会的核心要点：\n1、日本央行如市场普",
+        "domains": [
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "b5451f3e3cdb37f4"
+        ],
+        "story_ids": [],
+        "summary": "美联储与日银相继加息，若想日元升值，植田需给出更鹰派指引",
+        "domains": [
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "19a9a5bb05b63645"
+        ],
+        "story_ids": [],
+        "summary": "国际金尚未排除假突破风险，日本更可能通过干预应对日元再次暴跌？ | Live分析更新中",
+        "domains": [
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "06bcfe7096996d6f"
+        ],
+        "story_ids": [
+          "st_a2e9407db5"
+        ],
+        "summary": "【日元跌幅扩大 此前日本央行行长植田和男就加息释放矛盾信号】在日本央行行长植田和男就未来加息路径释放矛盾信号后，日元兑美",
+        "domains": [
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
       }
     ],
     "version": 3,
@@ -75556,6 +76609,100 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "1159800ea77cc6a4"
+        ],
+        "story_ids": [
+          "st_d3bd59dda5"
+        ],
+        "summary": "葡萄牙批准增发养老金与减税方案 以缓解生活成本压力",
+        "domains": [
+          "社保"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "0317a8886c855523"
+        ],
+        "story_ids": [
+          "st_0d4e4bd18f"
+        ],
+        "summary": "【新华保险：聘任李文峰为公司副总裁】新华保险公告称，公司第九届董事会第十二次会议审议通过议案，同意聘任李文峰为公司副总裁",
+        "domains": [
+          "社保"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "5ca045199874d722"
+        ],
+        "story_ids": [],
+        "summary": "【中国出版：财务总监李学焦退休离任 臧永清代行职责】中国出版公告称，公司董事会近日收到财务总监李学焦的辞职信，李学焦因达",
+        "domains": [
+          "社保"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "26cb404d10001a0a"
+        ],
+        "story_ids": [],
+        "summary": "大众汽车集团：根据 2024 年末达成的 “大众未来” 协议，集团预计将产生额外重组费用，源于提前退休方案扩容以及计划出",
+        "domains": [
+          "社保"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "649e48bd629db358"
+        ],
+        "story_ids": [],
+        "summary": "【孟凡利分别会见中国人保谭炯、中国节能廖家生】9月18日，广东省委副书记、省长孟凡利在广州分别会见中国人民保险集团股份有",
+        "domains": [
+          "社保"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "c9d156f43c5381d1"
+        ],
+        "story_ids": [],
+        "summary": "人保再保险获批变更营业场所",
+        "domains": [
+          "社保"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -75604,13 +76751,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -75700,18 +76847,44 @@
         "ach_eligible": true,
         "source": "联合早报-中国",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "395b92c1e63c97a2"
+        ],
+        "story_ids": [],
+        "summary": "【200亿湖北社保科创基金正式投入运营】目前，湖北社保科创基金三只下层基金长江科创基金、武汉江城科创基金、武汉武创战新基",
+        "domains": [],
+        "relevance": 0.193,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "981a98236d3c344f"
+        ],
+        "story_ids": [],
+        "summary": "号外！大成基金韩创要撤？",
+        "domains": [],
+        "relevance": 0.171,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -75757,6 +76930,34 @@
         "relevance": 0.126,
         "source": "新浪财经-滚动新闻",
         "impact": "资产线：企业年金规模扩大，增强养老金保障，促进金融市场稳定。"
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "86a4fdf05abb4ac9"
+        ],
+        "story_ids": [],
+        "summary": "法国总理勒科尔尼提出540亿欧元节支计划 拟削减养老金支出",
+        "domains": [],
+        "relevance": 0.175,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "0548bd505cc4eac7"
+        ],
+        "story_ids": [
+          "st_d3bd59dda5"
+        ],
+        "summary": "【葡萄牙批准增发养老金与减税方案，以缓解生活成本压力】葡萄牙政府批准向逾200万退休人员增发养老金，同时推出个人所得税减",
+        "domains": [],
+        "relevance": 0.16,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -75800,18 +77001,31 @@
         "relevance": 0.129,
         "source": "36氪-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "86a4fdf05abb4ac9"
+        ],
+        "story_ids": [],
+        "summary": "法国总理勒科尔尼提出540亿欧元节支计划 拟削减养老金支出",
+        "domains": [],
+        "relevance": 0.122,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -77277,18 +78491,102 @@
         "ach_eligible": true,
         "source": "华尔街见闻-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "c5a1a44c88f766b5"
+        ],
+        "story_ids": [],
+        "summary": "原银保监会副主席陈文辉：一级市场局部过热，需进一步与二级市场打通",
+        "domains": [],
+        "relevance": 0.194,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "630934a05e4b6f5e"
+        ],
+        "story_ids": [],
+        "summary": "美债收益率飙破5%后，资金开始“抢债”！",
+        "domains": [],
+        "relevance": 0.183,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "5806d56052ac88b5"
+        ],
+        "story_ids": [
+          "st_aa852d1ba2"
+        ],
+        "summary": "法国10年期债收益率周五涨超12个基点，两年期德债收益率本周涨超8个基点",
+        "domains": [],
+        "relevance": 0.164,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "1eec012a1b6275ab"
+        ],
+        "story_ids": [
+          "st_fc5e48fc78"
+        ],
+        "summary": "财联社9月18日电，日本40年期国债收益率上升2.0个基点至4.135%，5年期国债收益率下跌3个基点至2.265%。",
+        "domains": [],
+        "relevance": 0.152,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "880772eb65db9faa"
+        ],
+        "story_ids": [],
+        "summary": "动荡交易周收官，美债收益率基本持平",
+        "domains": [],
+        "relevance": 0.148,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "0548bd505cc4eac7"
+        ],
+        "story_ids": [
+          "st_d3bd59dda5"
+        ],
+        "summary": "【葡萄牙批准增发养老金与减税方案，以缓解生活成本压力】葡萄牙政府批准向逾200万退休人员增发养老金，同时推出个人所得税减",
+        "domains": [],
+        "relevance": 0.145,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -77473,18 +78771,31 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": "第一层：对普通公民无影响，属国企正常人事更替。"
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "cd675171da427fe8"
+        ],
+        "story_ids": [],
+        "summary": "“退休副省长家丢了243万元茅台名酒”上热搜",
+        "domains": [],
+        "relevance": 0.15,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -77602,18 +78913,31 @@
         "ach_eligible": true,
         "source": "财联社-电报",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "cd675171da427fe8"
+        ],
+        "story_ids": [],
+        "summary": "“退休副省长家丢了243万元茅台名酒”上热搜",
+        "domains": [],
+        "relevance": 0.162,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -89065,6 +90389,96 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "981a98236d3c344f"
+        ],
+        "story_ids": [],
+        "summary": "号外！大成基金韩创要撤？",
+        "domains": [],
+        "relevance": 0.281,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "395b92c1e63c97a2"
+        ],
+        "story_ids": [],
+        "summary": "【200亿湖北社保科创基金正式投入运营】目前，湖北社保科创基金三只下层基金长江科创基金、武汉江城科创基金、武汉武创战新基",
+        "domains": [],
+        "relevance": 0.272,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "ade2047a730fd2ec"
+        ],
+        "story_ids": [
+          "st_2160b397b3"
+        ],
+        "summary": "【财政部：1—8月，全国政府性基金预算支出51948亿元，同比下降17%】金十数据9月18日讯，财政部公布2026年1—",
+        "domains": [],
+        "relevance": 0.127,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "2dc77dbbd2c90ff4"
+        ],
+        "story_ids": [],
+        "summary": "“新债王”警告：下一次美国衰退可能引发财政危机",
+        "domains": [],
+        "relevance": 0.12,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "33410af21704b9e2"
+        ],
+        "story_ids": [
+          "st_4894d26e73"
+        ],
+        "summary": "【贝莱德有望赢得800亿美元荷兰养老基金委托】贝莱德已被选为荷兰养老基金组合BpfBouw的首选管理人，该组合资产规模近",
+        "domains": [
+          "社保",
+          "金融"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "0368b2d166b75f23"
+        ],
+        "story_ids": [
+          "st_7ac670be2a"
+        ],
+        "summary": "金十图示：2026年09月18日（周五）富时中国A50指数成分股今日收盘行情一览：保险、证券午后延续涨势，银行股全天走势",
+        "domains": [
+          "社保",
+          "金融"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -89129,13 +90543,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -89201,18 +90615,33 @@
         "ach_eligible": true,
         "source": "第一财经-新闻",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "e7a0997cf638c907"
+        ],
+        "story_ids": [
+          "st_2160b397b3"
+        ],
+        "summary": "财政部：1—8月全国财政收入156633亿元 同比增长5.7%",
+        "domains": [],
+        "relevance": 0.141,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -102187,6 +103616,94 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "56321f2c5a6a5cf1"
+        ],
+        "story_ids": [],
+        "summary": "【经济日报：能源转型不是油气简单退出】国家发展改革委、国家能源局印发的《石油天然气发展“十五五”规划》（以下简称《规划》",
+        "domains": [],
+        "relevance": 0.145,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "6f713aedbc4daa3a"
+        ],
+        "story_ids": [],
+        "summary": "【新能源车消费者研究报告：续航真实性是最大槽点】近日，尼尔森IQ发布《2026年全球新能源车消费者研究报告》。这份覆盖全",
+        "domains": [],
+        "relevance": 0.136,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "f9972f63a54bf930"
+        ],
+        "story_ids": [],
+        "summary": "【机构报告：企业应尽快设立或完善2030年前100%可再生能源消费与运营范围碳中和目标】近日，国际环保机构绿色和平、清华",
+        "domains": [],
+        "relevance": 0.12,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "7cfdaf639330a3a9"
+        ],
+        "story_ids": [
+          "st_9089dfd808"
+        ],
+        "summary": "【荷兰国际：能源价格冲击或促使美联储与欧央行 12 月各加息 25 个基点】荷兰国际集团策略师预计，美联储与欧洲央行将在",
+        "domains": [
+          "能源"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "c7cab112931574ce"
+        ],
+        "story_ids": [],
+        "summary": "【拉加德：能源涨价不会自动引发货币紧缩】欧洲央行行长克里斯蒂娜·拉加德向欧元区各国财长表示，能源价格上涨并不会自动触发货",
+        "domains": [
+          "能源"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "389f9c1c6d0cc53b"
+        ],
+        "story_ids": [
+          "st_89c91efc70"
+        ],
+        "summary": "【中国光伏行业协会光伏储能应用专业委员会第一届委员大会第二次会议顺利召开】金十数据9月18日讯，2026年9月17日，中",
+        "domains": [
+          "能源"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
       }
     ],
     "version": 3,
@@ -111478,6 +112995,84 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "97c2b497923e9f59"
+        ],
+        "story_ids": [],
+        "summary": "【万华化学成立新能源材料科技公司】 企查查APP显示，近日，万华（潍坊）新能源材料科技有限公司成立，法定代表人为邹杰，注",
+        "domains": [],
+        "relevance": 0.196,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "6f713aedbc4daa3a"
+        ],
+        "story_ids": [],
+        "summary": "【新能源车消费者研究报告：续航真实性是最大槽点】近日，尼尔森IQ发布《2026年全球新能源车消费者研究报告》。这份覆盖全",
+        "domains": [],
+        "relevance": 0.163,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "9b65dc2de78fcf0c"
+        ],
+        "story_ids": [],
+        "summary": "【赣锋锂业：披露繁峙迅越新能源财务及股权情况】赣锋锂业公告称，截至公告披露日，深圳易储持有繁峙迅越新能源科技有限公司10",
+        "domains": [],
+        "relevance": 0.154,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "841aadb594024049"
+        ],
+        "story_ids": [],
+        "summary": "301155，终止10亿元“海力高端能源装备制造项目”，改投新项目",
+        "domains": [],
+        "relevance": 0.14,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "d09e78f21c714aca"
+        ],
+        "story_ids": [],
+        "summary": "十部门：鼓励发展新能源房车，提高房车智能化、绿色化水平",
+        "domains": [],
+        "relevance": 0.129,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "6c9e6112c0e7520b"
+        ],
+        "story_ids": [],
+        "summary": "新能源车险定价浮动幅度拟变大！中小险企又一大考题？",
+        "domains": [],
+        "relevance": 0.128,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -111718,18 +113313,46 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "362b55d7fef1619d"
+        ],
+        "story_ids": [
+          "st_5c06ee1d13"
+        ],
+        "summary": "美国法官裁定：特朗普政府取消70亿美元太阳能项目违法",
+        "domains": [],
+        "relevance": 0.144,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "6bb19612b3843b04"
+        ],
+        "story_ids": [],
+        "summary": "Aiko Solar: Jinan plant's first 3GW module capacity now fully operational",
+        "domains": [],
+        "relevance": 0.139,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -112016,18 +113639,59 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "3ffe5f989b3f530e"
+        ],
+        "story_ids": [],
+        "summary": "斩获206GWh储能大单！锂电巨头子公司锁定全球储能龙头五年供货 | 盘后公告精选",
+        "domains": [],
+        "relevance": 0.272,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "8dcdbb651c57a6fa"
+        ],
+        "story_ids": [
+          "st_89c91efc70"
+        ],
+        "summary": "【中国光伏行业协会光伏储能应用专业委员会第一届委员大会第二次会议顺利召开】2026年9月17日，中国光伏行业协会光伏储能",
+        "domains": [],
+        "relevance": 0.15,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "0b866a967fd23cb5"
+        ],
+        "story_ids": [],
+        "summary": "中创新航午前涨超7% 动力与储能业务双轮驱动盈利向上",
+        "domains": [],
+        "relevance": 0.125,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -112614,18 +114278,57 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "ab5312e5540b8c44"
+        ],
+        "story_ids": [],
+        "summary": "【美国或从战略石油储备释放更多石油】美国能源部长克里斯・赖特表示，随着油价走高、期货深度贴水推升原油需求，新一轮战略石油",
+        "domains": [],
+        "relevance": 0.19,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "77aa2839590b14ab"
+        ],
+        "story_ids": [],
+        "summary": "美国财政部签发与俄罗斯相关的通用许可证131J，允许与石油公司LukOil相关的运营持续至10月22日。",
+        "domains": [],
+        "relevance": 0.157,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "135e92023ce00997"
+        ],
+        "story_ids": [],
+        "summary": "埃克森美孚拉响警报：煤炭使用正加速全球变暖",
+        "domains": [],
+        "relevance": 0.15,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -112900,18 +114603,33 @@
         "ach_eligible": true,
         "source": "华尔街见闻-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "aeb072a8183682a2"
+        ],
+        "story_ids": [
+          "st_05dea1130b"
+        ],
+        "summary": "国家能源局等部门部署煤炭安全稳产保供工作",
+        "domains": [],
+        "relevance": 0.131,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -112919,7 +114637,7 @@
     "level": "major",
     "title": "美加贸易摩擦升级引发全球供应链重构",
     "direction": "toward",
-    "confidence": 0.798,
+    "confidence": 0.899,
     "base_confidence": 0.72,
     "deadline": "2027-03-05",
     "status": "active",
@@ -114938,6 +116656,64 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "4668247d709a88b9"
+        ],
+        "story_ids": [],
+        "summary": "美加利差扩大叠加贸易担忧情绪施压加元，美元兑加元逼近1.4000关口",
+        "domains": [],
+        "relevance": 0.22,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "e2f8213d7b6cf13a"
+        ],
+        "story_ids": [],
+        "summary": "【文旅部：优化升级文化产品贸易，大力发展文化服务贸易，创新发展数字文化贸易，提升高附加值文化产品和服务在对外文化贸易中的",
+        "domains": [],
+        "relevance": 0.122,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "c816e2dea157f9c0"
+        ],
+        "story_ids": [],
+        "summary": "Industry news outlet ShippingWatch reports Maersk has ordere",
+        "domains": [
+          "经济",
+          "供应链"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "e26c85388130a97f"
+        ],
+        "story_ids": [],
+        "summary": "Container-shipping index (Europe route) front-month contract",
+        "domains": [
+          "经济",
+          "供应链"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
       }
     ],
     "version": 3,
@@ -115207,6 +116983,19 @@
         "relevance": 0.123,
         "ach_eligible": true,
         "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "e2f8213d7b6cf13a"
+        ],
+        "story_ids": [],
+        "summary": "【文旅部：优化升级文化产品贸易，大力发展文化服务贸易，创新发展数字文化贸易，提升高附加值文化产品和服务在对外文化贸易中的",
+        "domains": [],
+        "relevance": 0.185,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
         "impact": ""
       }
     ],
@@ -123055,18 +124844,103 @@
         "ach_eligible": true,
         "source": "新浪财经-滚动新闻",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "3ac8cd8a66edc1d9"
+        ],
+        "story_ids": [],
+        "summary": "【惠康科技：当前公司出口美国的关税税率为35%】惠康科技9月18日在证券公司策略会上表示，当前公司出口美国的关税税率为3",
+        "domains": [],
+        "relevance": 0.433,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "da9be0fcdf90224d"
+        ],
+        "story_ids": [],
+        "summary": "消息：美国对产能过剩加征关税预计推迟至习特会后",
+        "domains": [],
+        "relevance": 0.15,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "475820209290661a"
+        ],
+        "story_ids": [
+          "st_0a844600dd"
+        ],
+        "summary": "【加拿大7月抛售美股创纪录】金十数据9月18日讯，加拿大统计局17日发布数据显示，今年7月加拿大投资者大幅削减海外证券投",
+        "domains": [],
+        "relevance": 0.132,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "754388164f6310e0"
+        ],
+        "story_ids": [],
+        "summary": "ATFX:USDCAD八连阳 加拿大央行再不加息就晚了",
+        "domains": [],
+        "relevance": 0.127,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "fdd7aee349bee330"
+        ],
+        "story_ids": [
+          "st_c8e055638a"
+        ],
+        "summary": "爱尔兰财政部长Simon Harris对媒体淡化了有关特朗普可能因加拿大寻求欧盟准成员国地位而对欧盟加征关税的担忧。",
+        "domains": [],
+        "relevance": 0.124,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "328a95ed350720e1"
+        ],
+        "story_ids": [],
+        "summary": "美国众议院议长约翰逊：创纪录的经济增长即将到来！亚特兰大联储GDPNow模型目前预计，第三季度经济增长率将达到5.1%。",
+        "domains": [
+          "地缘政治",
+          "经济"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -139083,18 +140957,102 @@
         "ach_eligible": true,
         "source": "华尔街见闻-全球",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "754388164f6310e0"
+        ],
+        "story_ids": [],
+        "summary": "ATFX:USDCAD八连阳 加拿大央行再不加息就晚了",
+        "domains": [],
+        "relevance": 0.302,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "475820209290661a"
+        ],
+        "story_ids": [
+          "st_0a844600dd"
+        ],
+        "summary": "【加拿大7月抛售美股创纪录】金十数据9月18日讯，加拿大统计局17日发布数据显示，今年7月加拿大投资者大幅削减海外证券投",
+        "domains": [],
+        "relevance": 0.284,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "77a05c1fce56ea10"
+        ],
+        "story_ids": [],
+        "summary": "【瑞银、加拿大皇家银行现预计英国央行将于 11 月加息】瑞银与加拿大皇家银行资本市场部目前预计，受能源价格上涨带来的高通",
+        "domains": [],
+        "relevance": 0.211,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "722d207d98b6ea88"
+        ],
+        "story_ids": [],
+        "summary": "加拿大7月抛售美股创纪录",
+        "domains": [],
+        "relevance": 0.2,
+        "ach_eligible": true,
+        "source": "36氪-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "5f3f97ac17a74f54"
+        ],
+        "story_ids": [
+          "st_463139bdb7"
+        ],
+        "summary": "【阳普医疗：全资子公司产品获得加拿大卫生部认证】金十数据9月18日讯，阳普医疗公告称，公司全资子公司阳普器械收到加拿大卫",
+        "domains": [],
+        "relevance": 0.191,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "cbbd507f8b0e41e7"
+        ],
+        "story_ids": [
+          "st_e0d270adf1"
+        ],
+        "summary": "光大期货：9月18日农产品日报",
+        "domains": [],
+        "relevance": 0.19,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -141241,6 +143199,100 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "f310ef59f107233d"
+        ],
+        "story_ids": [],
+        "summary": "【中煤能源在太原成立供应链管理公司】企查查APP显示，近日，中煤能源供应链管理（太原）有限责任公司成立，经营范围包含供应",
+        "domains": [],
+        "relevance": 0.129,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "3078a1f41a956a42"
+        ],
+        "story_ids": [],
+        "summary": "【交通运输部党组理论学习中心组举行2026年第九次集体学习】刘伟强调，要更加自觉地把习近平总书记主旨讲话和重要贺信精神贯",
+        "domains": [
+          "供应链"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "b1d350b49ec6b4e0"
+        ],
+        "story_ids": [
+          "st_2d2f56c812"
+        ],
+        "summary": "特斯拉被曝启动新一轮机器人业务量产审厂，多家供应链企业回应",
+        "domains": [
+          "供应链"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "59741e5ac759b412"
+        ],
+        "story_ids": [
+          "st_93b5875d44"
+        ],
+        "summary": "【特斯拉被曝启动机器人量产审厂，多家供应链企业回应】金十数据9月18日讯，近日有消息称，特斯拉相关团队已于9月16日落地",
+        "domains": [
+          "供应链"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "abf9490cc42ddfba"
+        ],
+        "story_ids": [],
+        "summary": "【擎仓机器人程岩：物流供应链是具身智能产业落地最好的切入点】在今日举办的2026科技创变者大会上，擎仓机器人创始人程岩表",
+        "domains": [
+          "供应链"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "9edd35377ec5d3ae"
+        ],
+        "story_ids": [
+          "st_11fc2edcc6"
+        ],
+        "summary": "【顺丰控股：2026年8月合计收入254.89亿元，同比增长2.83%】顺丰控股公告，2026年8月速运物流业务收入18",
+        "domains": [
+          "供应链"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -141686,18 +143738,96 @@
         "ach_eligible": true,
         "source": "联合早报-中国",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "8718e4bc3cef12cd"
+        ],
+        "story_ids": [],
+        "summary": "China attracted RMB 479.95 bln in FDI Jan-Aug 2026",
+        "domains": [],
+        "relevance": 0.197,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "e3e18464a9403bde"
+        ],
+        "story_ids": [],
+        "summary": "高规格会议部署先进制造业：加快新兴产业规模应用",
+        "domains": [],
+        "relevance": 0.144,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "13f2faedb057795f"
+        ],
+        "story_ids": [],
+        "summary": "中国首次召开全国先进制造业大会 中媒：释放重要信号",
+        "domains": [],
+        "relevance": 0.137,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "e0f03ee4b8aa81f3"
+        ],
+        "story_ids": [],
+        "summary": "工信部：实施新一轮制造业重点产业链高质量发展行动 实施“人工智能+制造”行动",
+        "domains": [],
+        "relevance": 0.135,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "f31c4d779f16e5ae"
+        ],
+        "story_ids": [],
+        "summary": "【人民日报金社平：持续做大做强先进制造业】现代化产业体系，中国经济的战略依托；先进制造业，现代化产业体系的骨干。 “完整",
+        "domains": [],
+        "relevance": 0.135,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "4e8ae31b1b4d21fe"
+        ],
+        "story_ids": [],
+        "summary": "丰田计划在制造业务中部署40万台机器人，助力生产自动化",
+        "domains": [],
+        "relevance": 0.128,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -141793,18 +143923,59 @@
         "ach_eligible": true,
         "source": "36氪-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "4e5915205177ca3b"
+        ],
+        "story_ids": [],
+        "summary": "港立法会谴责美国对黎智英案发表污蔑抹黑言论",
+        "domains": [],
+        "relevance": 0.195,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "7ebea8cfb017ee29"
+        ],
+        "story_ids": [],
+        "summary": "韩国对中国进口工字钢反倾销措施再延长五年",
+        "domains": [],
+        "relevance": 0.135,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "355637091ab542dd"
+        ],
+        "story_ids": [
+          "st_d89863b910"
+        ],
+        "summary": "财联社9月18日电，海关数据显示，中国8月份稀土及其制品出口10,822吨，同比降17.6%；8月份氧化铝出口43万吨，同比增135.8%。",
+        "domains": [],
+        "relevance": 0.132,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -162838,6 +165009,102 @@
         "ach_eligible": true,
         "source": "华尔街见闻-全球",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "eb675b2f116c1ceb"
+        ],
+        "story_ids": [
+          "st_d77495f6fa"
+        ],
+        "summary": "【文旅部：支持量子科技、具身智能、脑机接口、第六代移动通信等未来产业技术在文化产业的应用】近日，文化和旅游部发布《文化产",
+        "domains": [
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "3f93f75f91fdc076"
+        ],
+        "story_ids": [],
+        "summary": "图谱动态 | 调研收官！走访30家制造标杆后，我们看清了AI赋能制造的真实现状与瓶颈",
+        "domains": [
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "1ef4e3b4b94bd7ec"
+        ],
+        "story_ids": [
+          "st_b4b5e33d24"
+        ],
+        "summary": "【长三角AI4S算力集群正式启用】金十数据9月18日讯，近日，长三角AI4S算力集群在上海启用，标志着上海在科学智能算力",
+        "domains": [
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "d2adc1f039e81f12"
+        ],
+        "story_ids": [],
+        "summary": "【港股收评：恒指收涨0.60%，芯片股连日走强】金十数据9月18日讯，今日，港股两大指数开涨后震荡走高，恒生指数盘中一度",
+        "domains": [
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "d60eff021bda9140"
+        ],
+        "story_ids": [],
+        "summary": "美联储论文：要想释放AI经济效应，光推广使用不够，得降价！",
+        "domains": [
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "599fa8969801680a"
+        ],
+        "story_ids": [
+          "st_7a9ddcb5d0"
+        ],
+        "summary": "A股四大指数集体高开，AI硬件侧明显升温",
+        "domains": [
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": ""
       }
     ],
     "version": 3,
@@ -183691,6 +185958,102 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "eb675b2f116c1ceb"
+        ],
+        "story_ids": [
+          "st_d77495f6fa"
+        ],
+        "summary": "【文旅部：支持量子科技、具身智能、脑机接口、第六代移动通信等未来产业技术在文化产业的应用】近日，文化和旅游部发布《文化产",
+        "domains": [
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "3f93f75f91fdc076"
+        ],
+        "story_ids": [],
+        "summary": "图谱动态 | 调研收官！走访30家制造标杆后，我们看清了AI赋能制造的真实现状与瓶颈",
+        "domains": [
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "1ef4e3b4b94bd7ec"
+        ],
+        "story_ids": [
+          "st_b4b5e33d24"
+        ],
+        "summary": "【长三角AI4S算力集群正式启用】金十数据9月18日讯，近日，长三角AI4S算力集群在上海启用，标志着上海在科学智能算力",
+        "domains": [
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "d2adc1f039e81f12"
+        ],
+        "story_ids": [],
+        "summary": "【港股收评：恒指收涨0.60%，芯片股连日走强】金十数据9月18日讯，今日，港股两大指数开涨后震荡走高，恒生指数盘中一度",
+        "domains": [
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "d60eff021bda9140"
+        ],
+        "story_ids": [],
+        "summary": "美联储论文：要想释放AI经济效应，光推广使用不够，得降价！",
+        "domains": [
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "599fa8969801680a"
+        ],
+        "story_ids": [
+          "st_7a9ddcb5d0"
+        ],
+        "summary": "A股四大指数集体高开，AI硬件侧明显升温",
+        "domains": [
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -184089,18 +186452,59 @@
         "ach_eligible": true,
         "source": "36氪-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "6138bf548914f07f"
+        ],
+        "story_ids": [],
+        "summary": "美国制造业复苏突然“踩刹车”：8月产值意外下降0.3%，产能利用率降至五个月低点",
+        "domains": [],
+        "relevance": 0.255,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "7bb4b9154ce2446e"
+        ],
+        "story_ids": [],
+        "summary": "台积电代工涨价传导？AMD全系芯片据称Q4起涨10%，与英特尔同步逆势提价",
+        "domains": [],
+        "relevance": 0.227,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "455d38721ff4d063"
+        ],
+        "story_ids": [
+          "st_eebd5770cf"
+        ],
+        "summary": "9月19日热门中概股多数上涨，阿里巴巴涨超4%，台积电涨超1%",
+        "domains": [],
+        "relevance": 0.226,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -184405,18 +186809,31 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "541d5754169d84ac"
+        ],
+        "story_ids": [],
+        "summary": "9月19日美股成交前20：存储芯片爆发 美光涨约4% 闪迪大涨11% 美光高管称内存短缺短期难缓解",
+        "domains": [],
+        "relevance": 0.12,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -184550,6 +186967,34 @@
         "relevance": 0.126,
         "ach_eligible": true,
         "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "99dce2efb217bfc6"
+        ],
+        "story_ids": [
+          "st_a99a24a8bb"
+        ],
+        "summary": "【网传相关全极耳磷酸铁锂电池存在原材料供货问题？蔚蓝锂芯：不属实】就“网传公司21700—2.6Ah全极耳磷酸铁锂电池存",
+        "domains": [],
+        "relevance": 0.144,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "afbd8ad398307b3e"
+        ],
+        "story_ids": [],
+        "summary": "北京：推动关键核心技术攻关，支持推理专用芯片、模型轻量化、边缘端部署等技术攻关",
+        "domains": [],
+        "relevance": 0.132,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
         "impact": ""
       }
     ],
@@ -184712,18 +187157,72 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": "第一层：短期无直接影响，长期或改变关键矿产进口格局与价格。"
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "9b39a5f911f13a55"
+        ],
+        "story_ids": [
+          "st_d89863b910"
+        ],
+        "summary": "中国8月份稀土及其制品出口10,822吨，同比降17.6%；1-8月累计稀土及其制品出口87,682吨，同比增3.2%。",
+        "domains": [],
+        "relevance": 0.238,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "580dca5b9e8e4f1f"
+        ],
+        "story_ids": [],
+        "summary": "【北方稀土：聘任崔凌霄为公司高级管理人员】北方稀土公告称，公司聘任崔凌霄为高级管理人员。崔凌霄1970年2月出生，研究生",
+        "domains": [],
+        "relevance": 0.16,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "93a0e0f9e1a1f7bc"
+        ],
+        "story_ids": [],
+        "summary": "路透：贝森特周末将与何立峰讨论AI、贸易及稀土",
+        "domains": [],
+        "relevance": 0.159,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "6d0d420d92539674"
+        ],
+        "story_ids": [],
+        "summary": "北方稀土：第九届董事会第十六次会议决议公告",
+        "domains": [],
+        "relevance": 0.129,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -185128,18 +187627,59 @@
         "ach_eligible": true,
         "source": "财联社-电报",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "bb323a70b36961a0"
+        ],
+        "story_ids": [],
+        "summary": "财联社9月18日电，广期所品种仓单及变化如下：碳酸锂期货仓单41105手，环比上个交易日减少2478手；多晶硅期货仓单25120手，环比上个交易日增加30手；工业硅期货...",
+        "domains": [],
+        "relevance": 0.174,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "c102cd96990dd80b"
+        ],
+        "story_ids": [],
+        "summary": "广期所：自2026年9月22日交易时起，碳酸锂期货LC2610、LC2611、LC2612、LC2701、LC2702、",
+        "domains": [],
+        "relevance": 0.173,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "0c9737352f5acae6"
+        ],
+        "story_ids": [
+          "st_2bd8d66193"
+        ],
+        "summary": "广期所调整碳酸锂期货相关合约交易指令每次最小开仓下单数量、交易手续费标准及交易限额",
+        "domains": [],
+        "relevance": 0.132,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -199232,6 +201772,94 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "dddaaaf298ff9f20"
+        ],
+        "story_ids": [],
+        "summary": "苏起：习特二会台湾非焦点 美对台军售恐令北京翻脸",
+        "domains": [],
+        "relevance": 0.206,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "670c612c515437f7"
+        ],
+        "story_ids": [],
+        "summary": "胡塞武装攻势升级，特朗普政府推进243亿美元沙特战机军售案",
+        "domains": [],
+        "relevance": 0.141,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "bb4785e3f9506b63"
+        ],
+        "story_ids": [],
+        "summary": "【联合国官员：美伊战争首月令阿拉伯经济体损失1500亿美元】金十数据9月18日讯，联合国西亚经济社会委员会执行秘书Ran",
+        "domains": [
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "394494f6f6b2186d"
+        ],
+        "story_ids": [
+          "st_7d4fac3efb"
+        ],
+        "summary": "美国8月份制造业产值出人意料萎缩 受到成本上升的压力",
+        "domains": [
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "b1c8138cef52a73a"
+        ],
+        "story_ids": [],
+        "summary": "美国8月份制造业产值出人意料出现今年以来首次萎缩",
+        "domains": [
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "8be0d974751a65ac"
+        ],
+        "story_ids": [],
+        "summary": "特朗普称将决定是否恢复对伊朗大规模作战",
+        "domains": [
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
       }
     ],
     "version": 3,
@@ -199659,13 +202287,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -199764,18 +202392,44 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "4e5915205177ca3b"
+        ],
+        "story_ids": [],
+        "summary": "港立法会谴责美国对黎智英案发表污蔑抹黑言论",
+        "domains": [],
+        "relevance": 0.185,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "670c612c515437f7"
+        ],
+        "story_ids": [],
+        "summary": "胡塞武装攻势升级，特朗普政府推进243亿美元沙特战机军售案",
+        "domains": [],
+        "relevance": 0.166,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -200080,6 +202734,62 @@
         "summary": "【海关总署吴海平副署长会见布基纳法索海关总署署长伊夫·卡凡多】9月16日下午，海关总署副署长吴海平在署会见布基纳法索海关",
         "domains": [],
         "relevance": 0.157,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "cfa755ed21482624"
+        ],
+        "story_ids": [],
+        "summary": "伊朗外交部发言人：他们对制裁一国民生这件事视而不见，转而就一张商店会员卡的制裁发表郑重声明。这套宣传说辞粗糙且漏洞百出，",
+        "domains": [],
+        "relevance": 0.209,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "2cddb1c49a8c3a08"
+        ],
+        "story_ids": [],
+        "summary": "港支联会领袖判监 欧议会吁制裁中国和香港官员",
+        "domains": [],
+        "relevance": 0.192,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "2c1408b1b453813b"
+        ],
+        "story_ids": [
+          "st_2f6d73032a"
+        ],
+        "summary": "美总统特朗普签署针对俄罗斯和伊朗的制裁法案",
+        "domains": [],
+        "relevance": 0.157,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "9515bce419a53e34"
+        ],
+        "story_ids": [
+          "st_c156cafcb5"
+        ],
+        "summary": "【回应欧盟第21轮制裁 俄扩大禁止入境人员名单】俄罗斯外交部网站9月18日通报，针对欧盟7月23日通过的第21轮对俄制裁",
+        "domains": [],
+        "relevance": 0.141,
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": ""
@@ -200474,18 +203184,100 @@
         "ach_eligible": true,
         "source": "新浪财经-滚动新闻",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "cfa755ed21482624"
+        ],
+        "story_ids": [],
+        "summary": "伊朗外交部发言人：他们对制裁一国民生这件事视而不见，转而就一张商店会员卡的制裁发表郑重声明。这套宣传说辞粗糙且漏洞百出，",
+        "domains": [],
+        "relevance": 0.197,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "2cddb1c49a8c3a08"
+        ],
+        "story_ids": [],
+        "summary": "港支联会领袖判监 欧议会吁制裁中国和香港官员",
+        "domains": [],
+        "relevance": 0.194,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "7ce34da004b785d9"
+        ],
+        "story_ids": [
+          "st_2f6d73032a"
+        ],
+        "summary": "【美总统特朗普签署针对俄罗斯和伊朗的制裁法案】9月18日，美国白宫发布声明表示，美国总统特朗普当日签署了《2026年林赛·格雷厄姆制裁俄罗斯和伊朗法案》。该...",
+        "domains": [],
+        "relevance": 0.162,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "9515bce419a53e34"
+        ],
+        "story_ids": [
+          "st_c156cafcb5"
+        ],
+        "summary": "【回应欧盟第21轮制裁 俄扩大禁止入境人员名单】俄罗斯外交部网站9月18日通报，针对欧盟7月23日通过的第21轮对俄制裁",
+        "domains": [],
+        "relevance": 0.16,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "97d5334f0092b01a"
+        ],
+        "story_ids": [],
+        "summary": "奥利里称美国国会明年初将重新审议《清晰法案》 加密税收立法推进",
+        "domains": [],
+        "relevance": 0.133,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "9ff38a9bac9b6ae9"
+        ],
+        "story_ids": [],
+        "summary": "十部门：完善房车相关金融产品和服务，推动金融机构多渠道支持房车消费",
+        "domains": [],
+        "relevance": 0.129,
+        "ach_eligible": true,
+        "source": "36氪-快讯",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -207311,18 +210103,108 @@
         "ach_eligible": true,
         "source": "OilPrice-News",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "42c7ef014b991330"
+        ],
+        "story_ids": [],
+        "summary": "【半导体板块持续走高，东微半导涨停】半导体板块持续走高，东微半导涨停，燧原科技、国民技术、富创精密涨超10%。",
+        "domains": [],
+        "relevance": 0.132,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "bb2aaa13d50640d5"
+        ],
+        "story_ids": [],
+        "summary": "美伊冲突搅动油轮市场，巨型油轮订购潮席卷全球",
+        "domains": [],
+        "relevance": 0.122,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "ea1a7d64589f5e96"
+        ],
+        "story_ids": [],
+        "summary": "U.S. allies fret over how Trump might play his Taiwan hand with Xi",
+        "domains": [
+          "科技",
+          "地缘政治"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "Japan Times",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "ab5fffb103684ccc"
+        ],
+        "story_ids": [],
+        "summary": "Ukraine President Zelenskiy thanked US President Trump for s",
+        "domains": [
+          "科技",
+          "地缘政治"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "659206f53b9e6b96"
+        ],
+        "story_ids": [],
+        "summary": "Taiwan Weighted Index closed up 892.75 points (+1.93%) at 47",
+        "domains": [
+          "科技",
+          "地缘政治"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "83b705eaafaf8d1a"
+        ],
+        "story_ids": [],
+        "summary": "Navigation warning: military training in Beibu Gulf, China",
+        "domains": [
+          "科技",
+          "地缘政治"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -211918,6 +214800,104 @@
         "ach_eligible": true,
         "source": "新浪财经-滚动新闻",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "60634f463e8042e3"
+        ],
+        "story_ids": [],
+        "summary": "市场监管总局：引导经营主体从“低价内卷”向“品质竞争、价值竞争”转变",
+        "domains": [],
+        "relevance": 0.132,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "622dba30bf503731"
+        ],
+        "story_ids": [],
+        "summary": "【镇洋发展：PVC装置2026年9月19日起临时停产不超4个月】镇洋发展公告，受中东地缘政治冲突影响，公司计划自2026",
+        "domains": [],
+        "relevance": 0.129,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "788cfaf8b9c2c5a7"
+        ],
+        "story_ids": [
+          "st_34ba38e29a"
+        ],
+        "summary": "美联储施密德：投票支持加息，近期数据显示通胀趋势超过3%。加息是朝着恢复2%通胀目标迈出的一步。当前通胀问题不仅仅是能源",
+        "domains": [
+          "能源",
+          "经济"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "1ca5affcb3c04b6a"
+        ],
+        "story_ids": [
+          "st_a1854c7e50"
+        ],
+        "summary": "【经济日报金观平：莫以产能过剩之名行贸易保护之实】近期，一些海外机构持续炒作中国新能源、高端制造等领域所谓的“产能过剩”",
+        "domains": [
+          "能源",
+          "经济"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "118e5a5a951cd4a6"
+        ],
+        "story_ids": [
+          "st_bea47ba2ce"
+        ],
+        "summary": "闫国春任中国国家电力投资集团总经理",
+        "domains": [
+          "能源",
+          "经济"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "df40f699cc060a7e"
+        ],
+        "story_ids": [
+          "st_edf78bab84"
+        ],
+        "summary": "指剔除能源的通胀“也过热” 堪萨斯城联储行长支持加息",
+        "domains": [
+          "能源",
+          "经济"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
       }
     ],
     "version": 3,
@@ -213248,6 +216228,92 @@
         "ach_eligible": true,
         "source": "华尔街见闻-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "2ed5317c3def0cf9"
+        ],
+        "story_ids": [
+          "st_c10bfb3e54"
+        ],
+        "summary": "【更多液化天然气经霍尔木兹海峡外运，生产商全力保障通航】本周至少两船液化天然气通过霍尔木兹海峡。生产商正想方设法增加供气",
+        "domains": [],
+        "relevance": 0.304,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "d6dbd23c5e7012a9"
+        ],
+        "story_ids": [],
+        "summary": "【韩国总统称不会向霍尔木兹海峡派兵“介入战争”】当地时间18日，韩国总统李在明就是否会向霍尔木兹海峡派兵一事，在记者会上",
+        "domains": [],
+        "relevance": 0.283,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "954cb315a6dd20a9"
+        ],
+        "story_ids": [
+          "st_a50496b88f"
+        ],
+        "summary": "李在明：韩国不会向霍尔木兹海峡部署军事力量",
+        "domains": [],
+        "relevance": 0.259,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "be61aec5305ac734"
+        ],
+        "story_ids": [
+          "st_0907407736"
+        ],
+        "summary": "法国总统：美伊短期内难以就霍尔木兹海峡达成协议",
+        "domains": [],
+        "relevance": 0.242,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "626a666c6085ac7f"
+        ],
+        "story_ids": [
+          "st_b07a698f18"
+        ],
+        "summary": "英国海上贸易行动办公室：一油轮在霍尔木兹海峡遇袭",
+        "domains": [],
+        "relevance": 0.227,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "c2d6b09300b03bf5"
+        ],
+        "story_ids": [],
+        "summary": "贸易消息人士周五称，沙特本月和已从霍尔木兹海峡内的拉斯坦努拉港售出约6000万桶原油，用于在阿曼苏哈尔港通过船对船转运装",
+        "domains": [],
+        "relevance": 0.195,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -214265,18 +217331,102 @@
         "ach_eligible": true,
         "source": "华尔街见闻-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "954cb315a6dd20a9"
+        ],
+        "story_ids": [
+          "st_a50496b88f"
+        ],
+        "summary": "李在明：韩国不会向霍尔木兹海峡部署军事力量",
+        "domains": [],
+        "relevance": 0.175,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "d6dbd23c5e7012a9"
+        ],
+        "story_ids": [],
+        "summary": "【韩国总统称不会向霍尔木兹海峡派兵“介入战争”】当地时间18日，韩国总统李在明就是否会向霍尔木兹海峡派兵一事，在记者会上",
+        "domains": [],
+        "relevance": 0.174,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "2ed5317c3def0cf9"
+        ],
+        "story_ids": [
+          "st_c10bfb3e54"
+        ],
+        "summary": "【更多液化天然气经霍尔木兹海峡外运，生产商全力保障通航】本周至少两船液化天然气通过霍尔木兹海峡。生产商正想方设法增加供气",
+        "domains": [],
+        "relevance": 0.171,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "be61aec5305ac734"
+        ],
+        "story_ids": [
+          "st_0907407736"
+        ],
+        "summary": "法国总统：美伊短期内难以就霍尔木兹海峡达成协议",
+        "domains": [],
+        "relevance": 0.149,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "38ad8ff38901379d"
+        ],
+        "story_ids": [],
+        "summary": "伊斯兰革命卫队：在霍尔木兹海峡击中悬挂多哥国旗的油轮",
+        "domains": [],
+        "relevance": 0.149,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "1126836f7bdd723d"
+        ],
+        "story_ids": [],
+        "summary": "WTI原油、布伦特原油均跌超1%",
+        "domains": [],
+        "relevance": 0.142,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -214732,13 +217882,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -214851,6 +218001,32 @@
         "relevance": 0.157,
         "ach_eligible": true,
         "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "ab5312e5540b8c44"
+        ],
+        "story_ids": [],
+        "summary": "【美国或从战略石油储备释放更多石油】美国能源部长克里斯・赖特表示，随着油价走高、期货深度贴水推升原油需求，新一轮战略石油",
+        "domains": [],
+        "relevance": 0.22,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "56321f2c5a6a5cf1"
+        ],
+        "story_ids": [],
+        "summary": "【经济日报：能源转型不是油气简单退出】国家发展改革委、国家能源局印发的《石油天然气发展“十五五”规划》（以下简称《规划》",
+        "domains": [],
+        "relevance": 0.134,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
         "impact": ""
       }
     ],
@@ -215199,18 +218375,31 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "7d0b45e5b3b05ac5"
+        ],
+        "story_ids": [],
+        "summary": "【中国核建：子公司签署台山核电核岛安装工程合同】中国核建公告称，公司子公司中国核工业二三建设有限公司近期签署广东台山核电",
+        "domains": [],
+        "relevance": 0.171,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -215755,18 +218944,44 @@
         "ach_eligible": true,
         "source": "财联社-电报",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "fd43fc9373c12338"
+        ],
+        "story_ids": [],
+        "summary": "花旗：宁德时代9月产量或环比跌3% 短期市场情绪低迷",
+        "domains": [],
+        "relevance": 0.136,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "aa6dd206d5181c11"
+        ],
+        "story_ids": [],
+        "summary": "【品种交易逻辑】产线冷修偏慢叠加厂库高企，玻璃“金九银十”备货能否破解高库存魔咒？稳产稳供政策放宽年内产量上限，焦煤下行",
+        "domains": [],
+        "relevance": 0.129,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -215774,7 +218989,7 @@
     "level": "major",
     "title": "AI技术成本上升触发宏观经济波动与金融风险",
     "direction": "toward",
-    "confidence": 0.074,
+    "confidence": 0.116,
     "base_confidence": 0.55,
     "deadline": "2027-09-05",
     "status": "active",
@@ -220874,6 +224089,88 @@
         "ach_eligible": true,
         "source": "Yonhap News",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "657944a74d831562"
+        ],
+        "story_ids": [],
+        "summary": "美债收益率上涨之际，短期美债借券成本飙升，交易员大举布局空仓",
+        "domains": [],
+        "relevance": 0.146,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "0fdf177cca598500"
+        ],
+        "story_ids": [
+          "st_1527c7cf9a"
+        ],
+        "summary": "报道：能源成本飙升 欧元集团主席考虑召开紧急会议",
+        "domains": [],
+        "relevance": 0.146,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "851a2f884aa2a5dd"
+        ],
+        "story_ids": [
+          "st_7a71167420"
+        ],
+        "summary": "中国央行副行长陆磊称AI带来新型金融风险",
+        "domains": [],
+        "relevance": 0.143,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "2fe86b36d84fe67c"
+        ],
+        "story_ids": [],
+        "summary": "AI数据中心公司Nscale公开递交美股IPO申请，英伟达持股超5%",
+        "domains": [],
+        "relevance": 0.141,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "353dfa14fa0430b2"
+        ],
+        "story_ids": [],
+        "summary": "英伟达参与投资的数据中心公司Nscale申请美国IPO",
+        "domains": [],
+        "relevance": 0.13,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "7c4334152fe21fc3"
+        ],
+        "story_ids": [],
+        "summary": "【英伟达多名高管披露股票变动 黄仁勋出售约4.6万股】金十数据9月19日讯，英伟达（NVDA.O）多名高管向美国SEC披",
+        "domains": [],
+        "relevance": 0.121,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
       }
     ],
     "version": 3,
@@ -221240,6 +224537,58 @@
         "ach_eligible": true,
         "source": "财联社-电报",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "3b7b7cc764e446d5"
+        ],
+        "story_ids": [],
+        "summary": "AI的资本开支陷阱：几万亿美元砸下去，赚钱的却是别人",
+        "domains": [],
+        "relevance": 0.197,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "f02ab5dd81cf3de4"
+        ],
+        "story_ids": [],
+        "summary": "【科技企业成港股再融资主力 全球资本真金白银加码中国硬科技资产】2026年，港股再融资市场迎来显著扩容。Wind数据显示",
+        "domains": [],
+        "relevance": 0.154,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "7bfa876f22bcc498"
+        ],
+        "story_ids": [],
+        "summary": "中国工业5.0：十年12万亿美元的资本开支超级周期",
+        "domains": [],
+        "relevance": 0.138,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "0b3c8c9a4db4213c"
+        ],
+        "story_ids": [],
+        "summary": "美股“盈利泡沫”要破？高盛：增速回落并非断崖崩塌",
+        "domains": [],
+        "relevance": 0.128,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -221450,18 +224799,44 @@
         "ach_eligible": true,
         "source": "新浪财经-滚动新闻",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "3b7b7cc764e446d5"
+        ],
+        "story_ids": [],
+        "summary": "AI的资本开支陷阱：几万亿美元砸下去，赚钱的却是别人",
+        "domains": [],
+        "relevance": 0.247,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "7bfa876f22bcc498"
+        ],
+        "story_ids": [],
+        "summary": "中国工业5.0：十年12万亿美元的资本开支超级周期",
+        "domains": [],
+        "relevance": 0.189,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -222055,18 +225430,98 @@
         "ach_eligible": true,
         "source": "新浪财经-滚动新闻",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "3098583012b89748"
+        ],
+        "story_ids": [
+          "st_634a21ff19"
+        ],
+        "summary": "大模型初创公司Naive AI估值达14亿美元",
+        "domains": [],
+        "relevance": 0.236,
+        "ach_eligible": true,
+        "source": "36氪-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "647cd235dfab3c3c"
+        ],
+        "story_ids": [],
+        "summary": "三家AI公司估值超5万亿美元、超过45年科技IPO首日估值总和，VC“分散投资”逻辑正在失效",
+        "domains": [],
+        "relevance": 0.216,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "e471acf2a3ca95f4"
+        ],
+        "story_ids": [],
+        "summary": "特朗普政府据悉考虑设立网络安全孵化器，资助研发并培育初创企业",
+        "domains": [],
+        "relevance": 0.201,
+        "ach_eligible": true,
+        "source": "36氪-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "8b9c37871c857eeb"
+        ],
+        "story_ids": [],
+        "summary": "财联社9月18日电，据报道，人工智能初创公司Naive AI估值达14亿美元，准备于本月发布其首个大语言模型。",
+        "domains": [],
+        "relevance": 0.143,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "906b01d22930d7ef"
+        ],
+        "story_ids": [],
+        "summary": "联想创投宋春雨：联想十年投资330家科创企业，AI产业下一站是千行百业",
+        "domains": [],
+        "relevance": 0.142,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "04d46a85b4545b5c"
+        ],
+        "story_ids": [],
+        "summary": "AI笔记设备初创公司PlaudAI目标今年销售额5亿美元，计划后年赴美上市",
+        "domains": [],
+        "relevance": 0.13,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -226649,6 +230104,102 @@
         "ach_eligible": true,
         "source": "华尔街见闻-全球",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "24e7c880e57378aa"
+        ],
+        "story_ids": [],
+        "summary": "Wuhan targets 200 bln yuan AI sector, digital core industries to reach 20% of GDP by 2030",
+        "domains": [
+          "科技",
+          "经济"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "7fd0d0dcd76fbaa7"
+        ],
+        "story_ids": [],
+        "summary": "【外资看好中国AI发展前景】近日，摩根士丹利发布的研报指出，中国消费端AI可变现收入的潜在市场规模将从2026年的约54",
+        "domains": [
+          "科技",
+          "经济"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "6f0e86ab98cf1f41"
+        ],
+        "story_ids": [],
+        "summary": "Federal Reserve's Schmid said he voted to support a rate hik",
+        "domains": [
+          "科技",
+          "经济"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "c58c24fcf6845f82"
+        ],
+        "story_ids": [],
+        "summary": "Italy's finance minister said the ECB's rate hikes cannot so",
+        "domains": [
+          "科技",
+          "经济"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "41271fff72f13956"
+        ],
+        "story_ids": [],
+        "summary": "Fed Governor Schmid said high inflation signals a supply-dem",
+        "domains": [
+          "科技",
+          "经济"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "94f4960db20bd110"
+        ],
+        "story_ids": [],
+        "summary": "印度芯片计划投资承诺达120亿美元",
+        "domains": [
+          "科技",
+          "经济"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -226857,18 +230408,31 @@
         "ach_eligible": true,
         "source": "36氪-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "3700aacaa4f513fe"
+        ],
+        "story_ids": [],
+        "summary": "【教育部：预计9-11月全国举办校园招聘活动超9000场，提供岗位信息超1200万个】9月17日，教育部2027届高校毕",
+        "domains": [],
+        "relevance": 0.163,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -227014,18 +230578,46 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "a990c5c7a575e3c4"
+        ],
+        "story_ids": [],
+        "summary": "【美国工厂生产因成本上升而意外萎缩】金十数据9月18日讯，受投入成本上升及企业设备生产放缓影响，美国8月份工厂产量意外下",
+        "domains": [],
+        "relevance": 0.157,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "a52336bfef732630"
+        ],
+        "story_ids": [
+          "st_7d4fac3efb"
+        ],
+        "summary": "【美国8月份制造业产值出人意料萎缩 受到成本上升的压力】由于制造商面临投入成本上升，以及企业设备生产降温，美国8月份制造",
+        "domains": [],
+        "relevance": 0.127,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-18",
+      "checked_at": "2026-09-19",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-18"
+      "intel_adjusted_at": "2026-09-19"
     }
   },
   {
@@ -227464,6 +231056,84 @@
         "ach_eligible": true,
         "source": "新浪财经-滚动新闻",
         "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "2db88107bfc2d94a"
+        ],
+        "story_ids": [],
+        "summary": "【文化产业发展“十五五”规划出炉 明确七方面重点任务】近日，文化和旅游部发布《文化产业发展“十五五”规划》（以下简称《规",
+        "domains": [],
+        "relevance": 0.199,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "3692f37472f5f7c2"
+        ],
+        "story_ids": [],
+        "summary": "《文化产业发展“十五五”规划》印发：到2030年文化产业规模、整体实力和综合效益实现跃升",
+        "domains": [],
+        "relevance": 0.183,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "734fa397818c6e30"
+        ],
+        "story_ids": [],
+        "summary": "Fed Governor Bowman made no comment on the economic or monet",
+        "domains": [],
+        "relevance": 0.178,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "ff007cba11a0ced4"
+        ],
+        "story_ids": [],
+        "summary": "【欧美日接连加息 海外货币政策环境转向紧缩】9月18日，日本央行结束为期两天的货币政策会议，宣布将政策利率由1.0%上调",
+        "domains": [],
+        "relevance": 0.165,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "59ece1766717aa43"
+        ],
+        "story_ids": [],
+        "summary": "《文化产业发展“十五五”规划》印发：鼓励文化企业国际化经营",
+        "domains": [],
+        "relevance": 0.161,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "71bc9dbb76fcfcb8"
+        ],
+        "story_ids": [],
+        "summary": "Pet insurance or savings account: What’s the best way to plan for a big vet bill?",
+        "domains": [],
+        "relevance": 0.15,
+        "ach_eligible": true,
+        "source": "MarketWatch-TopStories",
+        "impact": ""
       }
     ],
     "last_verified": "",
@@ -227653,6 +231323,32 @@
         "summary": "CKGSB Q3 2026 investor survey: listed companies' net profit growth recovers; market confidence lags",
         "domains": [],
         "relevance": 0.127,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "07221f30b44e56b8"
+        ],
+        "story_ids": [],
+        "summary": "U.S. Treasury issued Russia-related general license 131J, pe",
+        "domains": [],
+        "relevance": 0.213,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "734fa397818c6e30"
+        ],
+        "story_ids": [],
+        "summary": "Fed Governor Bowman made no comment on the economic or monet",
+        "domains": [],
+        "relevance": 0.128,
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": ""
@@ -227912,6 +231608,32 @@
         "relevance": 0.141,
         "ach_eligible": true,
         "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "4dbbbbedc646b96b"
+        ],
+        "story_ids": [],
+        "summary": "China's Shanghai Composite Index closed up 36.27 points, or",
+        "domains": [],
+        "relevance": 0.178,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-19",
+        "intel_ids": [
+          "144e1f5ac82e418e"
+        ],
+        "story_ids": [],
+        "summary": "S. Korea logs public account deficit for 6th consecutive year in 2025: BOK",
+        "domains": [],
+        "relevance": 0.133,
+        "ach_eligible": true,
+        "source": "Yonhap News",
         "impact": ""
       }
     ],
