@@ -39,18 +39,41 @@ INDICATORS = [
 
 
 def parse_multpl_pe(md):
-    """multpl.com S&P 500 PE 解析 - 表格 '| Aug 31, 2026 | †<br>29.63 |'"""
+    """multpl.com S&P 500 PE 解析
+    兼容两种输入：firecrawl markdown 表格 '| Aug 31, 2026 | †<br>29.63 |'
+    和直接抓的原始 HTML '<td>Sep 18, 2026</td><td>… 26.07</td>'（2026-09-19 加）
+    """
+    out = []
+    # 先试 markdown 表格格式
     pattern = re.compile(
         r"\|\s*([A-Z][a-z]{2}\s+\d{1,2},\s+\d{4})\s*\|[^|]*?(\d+\.?\d*)\s*\|"
     )
-    rows = pattern.findall(md)
-    out = []
-    for date_str, val_str in rows:
+    for date_str, val_str in pattern.findall(md):
         try:
             dt = datetime.strptime(date_str, "%b %d, %Y")
             out.append({"date": dt.strftime("%Y-%m"), "value": float(val_str)})
         except ValueError:
             pass
+    if out:
+        return out
+    # HTML 表格格式：td 里的日期 + 其后第一个数字（剥 abbr 标签与 &nbsp; 类实体）
+    cell = re.compile(r"<td>(.*?)</td>", re.S)
+    cells = [re.sub(r"<[^>]+>", "", c) for c in cell.findall(md)]
+    cells = [c.replace("&#x2002;", " ").replace("&nbsp;", " ").replace("†", "").strip() for c in cells]
+    pending_date = None
+    for c in cells:
+        dm = re.match(r"([A-Z][a-z]{2}\s+\d{1,2},\s+\d{4})$", c)
+        if dm:
+            pending_date = dm.group(1)
+            continue
+        vm = re.match(r"^(\d+\.?\d*)$", c)
+        if vm and pending_date:
+            try:
+                dt = datetime.strptime(pending_date, "%b %d, %Y")
+                out.append({"date": dt.strftime("%Y-%m"), "value": float(vm.group(1))})
+            except ValueError:
+                pass
+            pending_date = None
     return out
 
 
@@ -133,6 +156,11 @@ def main():
         md = Path(md_file).read_text(encoding="utf-8", errors="replace")
         parser_fn = PARSERS.get(source, parse_gurufocus_pe)
         points = parser_fn(md)
+        if not points:
+            # 2026-09-19 修复: parse 0 点时拒绝写盘——此前 stale 空壳覆盖旧指标,
+            # 152 点历史被一个坏 HTML 毁掉
+            print(f"parse 0 points for {ind_id}, refuse to overwrite existing record")
+            sys.exit(1)
         # 合并已有数据 (避免后续 --fetch 覆盖前面的)
         prev = {}
         if OUT.exists():
@@ -148,8 +176,12 @@ def main():
             prev = json.loads(OUT.read_text(encoding="utf-8"))
             result["indicators"] = prev.get("indicators", {})
             for ind_id, rec in result["indicators"].items():
-                if rec.get("history"):
-                    rec["percentile_10y"] = percentile_rank(rec["history"], rec.get("value"))
+                # 2026-09-19 修复: 字段名是 history_10y 不是 history(此前 percentile 永不重算)
+                hist = rec.get("history_10y") or rec.get("history") or []
+                if hist:
+                    rec["percentile_10y"] = percentile_rank(
+                        [p["value"] if isinstance(p, dict) else p for p in hist],
+                        rec.get("value"))
         print("calc mode: 重新算 percentile 写盘")
     else:
         # 默认模式: 提示用户用 firecrawl MCP 抓 + --fetch 喂入

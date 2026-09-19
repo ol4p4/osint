@@ -341,6 +341,41 @@ def fetch_unemployment_history():
     return r.returncode == 0
 
 
+def check_valuation():
+    """估值分位面板数据看护（2026-09-19 挂调度，此前孤儿脚本停在 09-03）。
+    fetch_index_valuation.py 无自主抓取能力（数据需 firecrawl MCP 抓 3 个 URL 落
+    raw_*.md 后 --fetch 喂入），这里只做两件事：
+    ① 数据陈旧 >7 天时打醒目提醒（agent/用户看到后手动 firecrawl 更新）；
+    ② 顺手跑 --calc 重算 percentile（无外部调用，秒级，保持字段一致）。
+    """
+    val_file = BASE / "index_valuation.json"
+    if not val_file.exists():
+        print("valuation: index_valuation.json 不存在——需 firecrawl 抓 3 个估值页后 --fetch 喂入")
+        return False
+    try:
+        prev = json.loads(val_file.read_text(encoding="utf-8"))
+        upd = prev.get("updated_at", "")
+        m = re.search(r"(\d{4})-(\d{2})-(\d{2})", upd)
+        if m:
+            d = datetime(int(m.group(1)), int(m.group(2)), int(m.group(3)))
+            age_d = (datetime.now() - d).days
+            if age_d > 7:
+                print(f"valuation: 数据已陈旧 {age_d} 天({m.group(1)}-{m.group(2)}-{m.group(3)})——"
+                      f"请用 firecrawl 抓 multpl/gurufocus 3 个 URL 后 "
+                      f"python tools/fetch_index_valuation.py --fetch ... 更新")
+    except Exception as e:
+        print(f"valuation: 读取检查失败: {e}")
+    r = subprocess.run(
+        [sys.executable, str(PROJECT / "tools" / "fetch_index_valuation.py"), "--calc"],
+        cwd=str(PROJECT), capture_output=True, text=True, creationflags=_NO_WINDOW
+    )
+    if r.stdout:
+        print(f"valuation: {r.stdout.strip()[:150]}")
+    if r.returncode != 0 and r.stderr:
+        print(f"valuation stderr: {r.stderr.strip()[:150]}")
+    return True
+
+
 def ensure_rsshub():
     """探测本地 RSSHub (localhost:1200)。2026-09-04 去掉 docker start/run 逻辑:
     本地不再拉起容器 (用户决策)——路由源走公共镜像兜底链 (slarker/rssforever),
@@ -556,6 +591,7 @@ if __name__ == "__main__":
             _step(run_calibration, "calibration")
             _step(fetch_macro, "fetch_macro")
             _step(fetch_unemployment_history, "unrate_history")
+            _step(check_valuation, "valuation")   # 估值分位看护(陈旧提醒+重算, 2026-09-19)
             _step(gen_html, "gen_html")
             print(f"=== Done: {count} intel ===")
     finally:

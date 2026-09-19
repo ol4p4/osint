@@ -24,6 +24,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 AI_ALLOWED_HOST = "opencode.ai"
+DOTS_BASE = "https://note3-prev-api.askdiandian.com/v1"  # 备援通道（2026-09-19 接入，analyze.py 同款）
 MAX_PER_RUN = 50
 BATCH_SIZE = 5
 
@@ -42,9 +43,9 @@ GRADUATE_CONTEXT = (
 
 
 def _safe_ai_post(url, payload, headers, timeout=120):
-    """SSRF 防护：仅 https + opencode.ai 白名单 + 解析结果不得指向私有/环回/保留地址"""
+    """SSRF 防护：仅 https + 白名单域名 + 解析结果不得指向私有/环回/保留地址"""
     parsed = urlparse(url)
-    if parsed.scheme != "https" or (parsed.hostname or "") != AI_ALLOWED_HOST:
+    if parsed.scheme != "https" or (parsed.hostname or "") not in (AI_ALLOWED_HOST, urlparse(DOTS_BASE).hostname):
         raise ValueError("blocked non-whitelisted AI endpoint: " + url)
     for info in socket.getaddrinfo(parsed.hostname, 443):
         ip = ipaddress.ip_address(info[4][0])
@@ -55,8 +56,19 @@ def _safe_ai_post(url, payload, headers, timeout=120):
         return resp.read().decode("utf-8")
 
 
+def _dots_key():
+    """小红书 dots 备援 key（2026-09-19 接入；secrets_loader 与 analyze.py 同源）"""
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+        from secrets_loader import get_dots_key
+        return get_dots_key()
+    except Exception:
+        return ""
+
+
 def call_ai(config, prompt):
-    """走 OpenCode Zen 免费代理（参谋长 Mimo，失败依次降级 fallback 模型）"""
+    """走 OpenCode Zen 免费代理（参谋长 Mimo，失败依次降级 fallback 模型）。
+    2026-09-19 加 dots 备援放链首：OpenCode 免费层 429 限流常态时，前面每个都是白等。"""
     api_cfg = config.get("api", {})
     try:
         sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -64,8 +76,12 @@ def call_ai(config, prompt):
         key = get_opencode_key()
     except Exception:
         key = api_cfg.get("api_key", "")
-    attempts = [{"base_url": api_cfg.get("base_url"), "model": api_cfg.get("model"),
-                 "api_key": key}]
+    attempts = []
+    dkey = _dots_key()
+    if dkey:
+        attempts.append({"base_url": DOTS_BASE, "model": "dots3-note-prev", "api_key": dkey})
+    attempts.append({"base_url": api_cfg.get("base_url"), "model": api_cfg.get("model"),
+                     "api_key": key})
     for fb in (api_cfg.get("fallback_models") or []):
         fb = dict(fb)
         fb["api_key"] = fb.get("api_key") or key
@@ -88,9 +104,20 @@ def call_ai(config, prompt):
                 "x-opencode-client": "cli",
                 "x-opencode-session": uuid.uuid4().hex,
             }
+            if "askdiandian" in url:
+                headers["api-key"] = m.get("api_key") or ""
+                headers.pop("x-opencode-client", None)
             raw = _safe_ai_post(url, payload, headers, 150)
             result = json.loads(raw)
-            content = result["choices"][0]["message"].get("content", "")
+            msg = result["choices"][0]["message"]
+            content = msg.get("content", "")
+            if not content:
+                # dots3 推理模型偶发把正文放 reasoning_content，max_tokens 紧时 content 先空
+                for k in ("reasoning_content", "reasoning"):
+                    v = msg.get(k, "")
+                    if v and v.strip():
+                        content = v
+                        break
             if content and content.strip():
                 return content.strip()
             raise ValueError("empty response")

@@ -285,6 +285,12 @@ PM 视角审计发现：每小时线和云端线质量在线，短板集中在�
    - 实测 Docker 全程关闭：46 源中受影响 10 源 10/10 覆盖、377 条/24h（镜像限流时某源可能暂缺，下一轮自动恢复）
    - Docker 开着时本地容器仍优先（更快；公共镜像有匿名限流，勿长期裸奔依赖）
    - 历史排查步骤（RSSHub 时代）见 `C:\Users\admin\.zcode\cli\memories\projects\osint-d824a33e2ef30701\memory\osint-rsshub-local-bootstrap.md`
+12. **AI 全线 403/429——研判/翻译断供排查顺序**（2026-09-19 实战复盘：09-17 起 70 轮全 0 产出）：
+   - **先看错误码**：`403 + "error code: 1010"` = Cloudflare 指纹封禁（拦无 UA/Python 默认 UA 的请求），与 key/配额无关；`429 + FreeUsageLimitError` = OpenCode 免费层限流（会滚动恢复）；两者常叠加。
+   - **排查顺序**：①`curl https://opencode.ai` 测出口 → ②带 key 用 curl 测 `/chat/completions`（curl 能过说明只是 Python 层被拦）→ ③查 refresh 日志 grep 403/429 定断供起始日。
+   - **自愈路径**：dots 备援通道（note3-prev-api.askdiandian.com，key 在 config.local.yaml `dots.api_key`）已在 analyze.py / citizen_impact.py / translate_local.py 三处放链首；NVIDIA 备援（integrate.api.nvidia.com）实测超时不可用；OpenCode 429 时每小时 refresh 自动重试自然恢复。
+   - **translate_local 的 dots 截断坑**：dots3 是推理模型，reasoning 计入 max_tokens（翻译批 reasoning ~8k 字符），max_tokens=4096 时正文被截成非法 JSON（Unterminated string）——已提到 12288。
+   - 伴随症状：git pull 连不上 github.com（github 巨慢 >10s）、GDELT 429、ACH 诊断返回非 JSON——都是同一网络故障的表现，先修网络出口再查各管线。
 
 ## 数据量级真相（2026-08-30 诊断 / 2026-09-13 筛选修复后更新）
 - ~~关键词表是中文、47 源以英文为主、每日命中 0~3 条~~ → 2026-09-05 起词表已扩到 153 词（63 英 + 90 中）+ keyword_rules 5 组；实测语料 79.5% 为中文（本地直连源为主力），语言错配已非主要矛盾
@@ -331,6 +337,8 @@ PM 视角审计发现：每小时线和云端线质量在线，短板集中在�
 - [ ] 旧目录 `C:\Users\admin\Documents\osint` 确认后删除（含 git 历史，删前确认不再回滚）
 - [ ] 对话引擎观点卡的 time_horizon_months 有时与用户回答的到期日不一致（AI 浓缩偏差，可加后校验）
 - [ ] mimo-v2.5-free 代理偶发 empty response / HTTP 400：批量 AI 脚本都应带兜底 + 预算超时（ach_daily_batch 已按此设计，失败条下轮重试）
+- [ ] dots 通道稳定性观察（2026-09-19 接入）：dots3-note-prev 实测 ~1s 响应但为推理模型；若出现系统性截断/降智，优先降 dots 优先级回链中而非删通道
+- [ ] 估值面板 CSI300/HSI 数据源：gurufocus 反爬 403（urllib 直抓被拦），history 停在 9-03 的 14 点；需 firecrawl 或改源后 `--fetch` 喂入；S&P500 已补全 10 年 1870 点（multpl 直抓 OK，parser 已兼容原始 HTML）
 
 ---
-*最后更新：2026-09-13 - 筛选算法修复（去饱和曲线 + 主题配额保底带 + 量纲统一 + 死字段治理）*
+*最后更新：2026-09-19 - 403 断供修复（dots 备援三处接入）+ 估值面板挂调度看护 + 数据自愈（16 天陈旧→今日）*

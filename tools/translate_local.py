@@ -2,6 +2,7 @@
 - 复用 local/analyze.py 已配的 SSRF 白名单 (_safe_ai_post)
 - 同 cloud/translate.py 的批 5 + JSON 输出 + 3 字段 (cn_title/cn_summary/impact)
 - 适用: 本地 refresh.py hourly 跑, 走 OpenCode Zen mimo-v2.5-free 翻译 Top 200
+- 2026-09-19: OpenCode 免费层 429/403 常态化, 加小红书 dots 备援通道(链首, analyze.py 同款)
 """
 import json
 import os
@@ -16,15 +17,19 @@ from pathlib import Path
 ROOT = Path(r"D:\osint")
 sys.path.insert(0, str(ROOT))
 
-# 复用 local/analyze.py 的白名单 + SSRF 防护
+# 复用 local/analyze.py 的白名单 + SSRF 防护（analyze._safe_ai_post 已含 dots 域）
 from local.analyze import _safe_ai_post  # noqa: E402
-from secrets_loader import get_opencode_key  # noqa: E402
+from secrets_loader import get_opencode_key, get_dots_key  # noqa: E402
 
 # 模型降级链 (实测可用: mimo + nemotron; 其他 deepseek-v4-flash-free 报 400)
 MODEL_CHAIN = [
     "mimo-v2.5-free",
     "nemotron-3.5-lightning-free",
 ]
+
+# 备援通道: 小红书 dots (2026-09-19 接入, 实测 ~1s 响应; OpenCode 限流时顶上)
+DOTS_BASE = "https://note3-prev-api.askdiandian.com/v1"
+DOTS_MODEL = "dots3-note-prev"
 
 API_BASE = "https://opencode.ai/zen/v1"
 TIMEOUT = 90  # 90s/批, 3 条/批 (单条 ~15s, 5 条 + JSON 拼装 ~60-90s)
@@ -73,27 +78,39 @@ def translate_batch(items, api_key, deadline=None):
 
         prompt = _build_prompt()
         batch_done = False
-        for model in MODEL_CHAIN:
+        # 通道链: dots 备援在链首(有 key 时), 后接 OpenCode 模型链——限流时不再逐模型白等
+        channels = []
+        dkey = get_dots_key()
+        if dkey:
+            channels.append({"base_url": DOTS_BASE, "model": DOTS_MODEL, "api_key": dkey})
+        channels.extend({"base_url": API_BASE, "model": m, "api_key": api_key} for m in MODEL_CHAIN)
+        for ch in channels:
             if batch_done:
                 break
+            model = ch["model"]
             payload = json.dumps({
-                "model": model,
+                "model": ch["model"],
                 "messages": [{"role": "user", "content": prompt + "\n\n" + "\n".join(texts)}],
                 "temperature": 0.3,
-                "max_tokens": 4096,
+                # 2026-09-19: dots3 是推理模型, reasoning 计入 max_tokens（实测翻译批 reasoning ~8k 字符）,
+                # 4096 时正文常被截成非法 JSON (Unterminated string); 提到 12288 降截断率
+                "max_tokens": 12288,
             }).encode("utf-8")
             headers = {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + api_key,
+                "Authorization": "Bearer " + ch["api_key"],
                 "User-Agent": "opencode/latest/1.3.15/cli",
                 "x-opencode-client": "cli",
                 "x-opencode-session": uuid.uuid4().hex,
                 "x-opencode-project": uuid.uuid4().hex[:8],
                 "x-opencode-request": uuid.uuid4().hex,
             }
+            if "askdiandian" in ch["base_url"]:
+                headers["api-key"] = ch["api_key"]
+                headers.pop("x-opencode-client", None)
             for attempt in range(2):
                 try:
-                    url = API_BASE + "/chat/completions"
+                    url = ch["base_url"].rstrip("/") + "/chat/completions"
                     raw = _safe_ai_post(url, payload, headers, TIMEOUT)
                     result = json.loads(raw)
                     msg = result["choices"][0]["message"]
