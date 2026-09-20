@@ -6,7 +6,13 @@ r"""ach_matrix.py - PLAN-2 M1：ACH 竞争性假设矩阵（CIA Heuer 方法论�
   3. 贝叶斯校准：odds(H) × ΠLR → 后验，confidence 有概率语义且上限 0.95
 
 判定码：C=一致(lr≥1.2) / I=不一致(lr≤0.8) / N=中性(lr=1.0)
-LR 锚定：证据命中 indicators[].threshold_refute → lr≤0.5；threshold_support → lr≥1.5
+
+2026-09-20 LR 推导下沉：模型只报 code + conf(把握度 0~1)，LR 由 derive_lr() 在代码里算。
+  动因：实测 388 条证据的 LR 分布严重塌缩——C 有 76/111 集中在 1.5、I 有 46/108 集中在 0.5，
+  即模型在照抄 prompt 里的示例值，而非做概率推理（官方 JEV 文档亦明言"模型不是计算器"）。
+  改造后 conf 是模型的自然输出（"你有多确定"），LR 是代码的确定性函数，可复算、可调参。
+  兼容：老行只有 lr 没有 conf，record() 回退读 lr；新行同时存 code/conf/lr，
+  日后调 LR_C_STRENGTH/LR_I_STRENGTH 可直接用存量 conf 重算，无需重跑 AI。
 矩阵持久化：data/hypotheses/ach_matrix.json（随周循环更新）
 """
 import hashlib
@@ -25,6 +31,40 @@ MATRIX_VERSION = 1
 # （TF-IDF 命中 / DOMAIN 高分），存量弱证据不再进队列——否则诊断速度(40/天)
 # 永远追不上历史灌入量(数千条)。翻 True 可回退全量消化存量。
 LEGACY_DEFAULT_ELIGIBLE = False
+
+# 2026-09-20 LR 推导锚点：conf(把握度 0~1) → LR
+#   LR = 1 + conf * (STRENGTH - 1)，conf=1 达最大强度，conf=0 退化为中性 1.0
+#   取值参照改造前实测分布（C 主峰 1.5 / I 主峰 0.5），使新旧口径可比，
+#   历史后验不会因本次改动整体漂移。
+LR_C_STRENGTH = 1.5   # C 的最大似然比：conf=1 → lr=1.5
+LR_I_STRENGTH = 0.5   # I 的最小似然比：conf=1 → lr=0.5
+LR_CONF_FLOOR = 0.0   # conf 下限（模型可表达"几乎不相关"）
+LR_CONF_CAP = 1.0     # conf 上限（不放大到 2.0——过度自信是历史教训，见 POSTERIOR_CAP）
+
+
+def derive_lr(code, conf, strength_c=LR_C_STRENGTH, strength_i=LR_I_STRENGTH):
+    """由判定码 + 把握度推导似然比（确定性函数，可复算可调参）。
+
+    code=C → LR ∈ [1.0, strength_c]，conf 越大越接近上限
+    code=I → LR ∈ [strength_i, 1.0]，conf 越大越接近下限
+    code=N → 恒 1.0（中性证据不参与贝叶斯更新）
+
+    把握度低时自动向 1.0（中性）收缩，避免"低把握 + 极端 LR"污染后验。
+    conf 无法解析时按 0.5 处理（调用方 record() 对"字段缺失"另有更保守的
+    回退：走旧格式读 lr，都没有则 1.0，即不更新后验）。
+    """
+    if code == "N":
+        return 1.0
+    try:
+        c = float(conf)
+    except (TypeError, ValueError):
+        c = 0.5   # 缺省：中等把握
+    c = max(LR_CONF_FLOOR, min(LR_CONF_CAP, c))
+    if code == "C":
+        return round(1.0 + c * (strength_c - 1.0), 3)
+    if code == "I":
+        return round(1.0 - c * (1.0 - strength_i), 3)
+    return 1.0
 
 
 def _ach_eligible(ev):
@@ -84,7 +124,7 @@ class ACHMatrix:
         known = {h["id"] for h in self.majors}
         for ev in self.data["evidence"]:
             for hid in known - set(ev.get("diagnosis", {})):
-                ev["diagnosis"][hid] = {"code": "N", "lr": 1.0, "note": "新假设，默认中性"}
+                ev["diagnosis"][hid] = {"code": "N", "lr": 1.0, "conf": 1.0, "note": "新假设，默认中性"}
 
     # ---------- 证据发现 ----------
     def find_undiagnosed(self, limit=None, newest_first=True):
@@ -113,22 +153,31 @@ class ACHMatrix:
 
     # ---------- AI 诊断 ----------
     def ai_diagnose(self, evidence_entry, analyzer):
-        """一次 AI 调用：单条证据 × 全部 major 假设 → 判定码 + LR + 理由"""
+        """一次 AI 调用：单条证据 × 全部 major 假设 → 判定码 + 把握度 + 理由
+
+        2026-09-20 起模型只报 code + conf，不再自报 LR——LR 由 derive_lr() 推导。
+        保持"一次调用看全部假设"的跨假设比较能力（实测 138 处 C/I 判给了
+        TF-IDF 未预挂载的假设，拆成独立调用会丢失这部分信号）。
+        """
         hyp_list = [{"id": h["id"], "title": h.get("title", ""),
                      "falsification": (h.get("falsification_criteria") or "")[:150]}
                     for h in self.majors]
         system = ("你是情报分析教员，教授 CIA 的 ACH（竞争性假设分析）方法。"
                   "对一条证据，逐个假设判定：C=证据与假设预期一致；I=证据与假设预期相斥（证伪信号，最重要）；"
-                  "N=无关。并给出似然比 LR=P(证据|假设)/P(证据|非假设)。证伪优先，诊断性优先。")
+                  "N=无关。证伪优先，诊断性优先。"
+                  "注意：你只负责判断方向与把握度，不要做任何数值计算。")
         prompt = (
             "证据：\n" + json.dumps({"date": evidence_entry["ev"].get("date"),
                                      "summary": evidence_entry["ev"].get("summary", "")[:300],
                                      "source": evidence_entry["ev"].get("source", "")}, ensure_ascii=False)
             + "\n\n竞争假设列表(JSON)：\n" + json.dumps(hyp_list, ensure_ascii=False)
             + "\n\n严格只输出 JSON 数组（不要 markdown）："
-              '[{"hyp_id":"原id","code":"C|I|N","lr":1.0,"note":"一句诊断理由(≤40字)"}]'
-              "\n注意：lr 范围 0.3~2.0；C 取 >1.2，I 取 <0.8，N 取 1.0 左右。"
-              "若证据命中某假设的证伪判据(falsification)，该假设必须判 I 且 lr≤0.5。")
+              '[{"hyp_id":"原id","code":"C|I|N","conf":0.8,"note":"一句诊断理由(≤40字)"}]'
+              "\nconf = 你对这个判定码的把握度，0~1 的小数："
+              "0.9+=证据明确指向该方向；0.6~0.8=较有把握；0.3~0.5=勉强相关/倾向性判断；"
+              "≤0.2=几乎无法判断（这种情况应改判 N）。"
+              "请给出真实区分度，不要所有条目都给同一个数值。"
+              "若证据命中某假设的证伪判据(falsification)，该假设必须判 I 且 conf≥0.8。")
 
         response = analyzer._call_api(system, prompt)
         import re
@@ -148,23 +197,42 @@ class ACHMatrix:
         raise ValueError("AI 输出 JSON 不完整")
 
     def record(self, evidence_entry, diagnosis):
-        """写入/更新一条证据的矩阵行"""
+        """写入/更新一条证据的矩阵行。
+
+        LR 来源优先级（2026-09-20）：
+          1) 有 conf → derive_lr(code, conf) 代码推导（新口径）
+          2) 无 conf 但有 lr → 沿用模型自报值并钳制（旧口径，兼容历史/外部调用）
+        同时落盘 code/conf/lr 三字段：日后调 LR_*_STRENGTH 可用存量 conf 重算 LR，
+        无需重跑 AI。
+        """
         known = {h["id"] for h in self.majors}
         row = {"key": evidence_entry["key"], "date": evidence_entry["ev"].get("date", ""),
                "summary": evidence_entry["ev"].get("summary", "")[:120], "diagnosis": {}}
         for d in diagnosis:
             if isinstance(d, dict) and d.get("hyp_id") in known:
                 code = d.get("code", "N")
-                lr = d.get("lr", 1.0)
-                try:
-                    lr = max(0.3, min(2.0, float(lr)))
-                except (TypeError, ValueError):
-                    lr = 1.0
                 if code not in ("C", "I", "N"):
                     code = "N"
-                row["diagnosis"][d["hyp_id"]] = {"code": code, "lr": lr, "note": str(d.get("note", ""))[:60]}
+                if d.get("conf") is not None:
+                    conf = d.get("conf")
+                    try:
+                        conf = max(LR_CONF_FLOOR, min(LR_CONF_CAP, float(conf)))
+                    except (TypeError, ValueError):
+                        conf = 0.5
+                    lr = derive_lr(code, conf)
+                else:
+                    # 旧格式回退：模型自报 lr
+                    conf = None
+                    try:
+                        lr = max(0.3, min(2.0, float(d.get("lr", 1.0))))
+                    except (TypeError, ValueError):
+                        lr = 1.0
+                entry = {"code": code, "lr": lr, "note": str(d.get("note", ""))[:60]}
+                if conf is not None:
+                    entry["conf"] = round(conf, 3)
+                row["diagnosis"][d["hyp_id"]] = entry
         for hid in known - set(row["diagnosis"]):
-            row["diagnosis"][hid] = {"code": "N", "lr": 1.0, "note": "未判定"}
+            row["diagnosis"][hid] = {"code": "N", "lr": 1.0, "conf": 1.0, "note": "未判定"}
 
         for i, ev in enumerate(self.data["evidence"]):
             if ev["key"] == row["key"]:
