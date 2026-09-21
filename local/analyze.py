@@ -71,8 +71,16 @@ def _mark_dead(key_id, err):
     2026-09-17 调优：超时**不熔断**——NVIDIA glm 端点本身会 43-150s 波动，
     一次超时不代表端点死了（曾因首节超时熔断 10 分钟，导致后续 5 节全部
     circuit-open 跳过，整轮报废）。只有明确的鉴权/不存在错误（403/404）
-    才长熔断，限流（429）短熔断。"""
+    才长熔断，限流（429）短熔断。
+
+    2026-09-21 补充：**内容安全拦截的 403 不熔断**——那是 prompt 内容触发的
+    （实测 dots 对含敏感内容的批次返 governance.content_safety_input_rejected），
+    端点本身健康、换个 prompt 立刻可用。误熔断会把可用通道拉黑 30 分钟，
+    放大成整轮失败（本次踩坑：Step2 全程 403 而独立进程同 key 测试全 200）。
+    """
     s = str(err)
+    if "content_safety" in s or "safety system" in s or "content safety" in s.lower():
+        return   # 内容触发，端点健康，不熔断
     if "403" in s or "404" in s:
         _DEAD[key_id] = _time.time() + 1800
     elif "429" in s:
@@ -201,10 +209,42 @@ class MacroAnalyzer:
         """判断是否为解析失败产生的占位结果。"""
         return (result.structural_implication or "").startswith("AI 分析失败")
 
+    @staticmethod
+    def _is_content_block(err):
+        """识别内容安全拦截（dots 的 governance.content_safety_input_rejected）。
+
+        2026-09-21 定位：dots 网关对 prompt 做内容安全审查，命中即返回 403
+        `{"error_type":"governance.content_safety_input_rejected"}`。
+        实测 10 条批次里只要有 1 条涉政敏感（如"习特会"），**整批 10 条全被拒**，
+        而逐条单发时其余 9 条全部正常。这类 403 与鉴权失败同码不同因，
+        必须区分处理：不能熔断端点（端点健康），也不能整批放弃（丢 9 条）。
+        """
+        s = str(err)
+        return "content_safety" in s or "safety system" in s or "content safety" in s.lower()
+
     def _analyze_single_batch(self, items, macro_context):
         # 2026-09-16 修复: cache 回退路径的条目缺 content 字段曾炸 KeyError('content')
         # （9-14 周一 14:23 补跑时当日文件未产出 → main_local 回退旧 cache → Step2 崩溃），
         # title/source_name 同样做防御（GDELT 等源字段不齐）
+        system_prompt = self._build_system_prompt(macro_context)
+        try:
+            return self._analyze_one_call(items, macro_context, system_prompt)
+        except Exception as e:
+            if self._is_content_block(e) and len(items) > 1:
+                # 内容审查拦截：某条敏感内容拖垮整批 → 拆半递归，隔离问题条目
+                print(f"[AI] 批次被内容安全拦截（{len(items)} 条），拆半重试以隔离敏感条目")
+                mid = len(items) // 2
+                return (self._analyze_single_batch(items[:mid], macro_context)
+                        + self._analyze_single_batch(items[mid:], macro_context))
+            if self._is_content_block(e):
+                # 单条仍被拦：该条确实敏感，记占位结果跳过（不拖累其他批次）
+                print("[AI] 单条被内容安全拦截，记占位结果跳过")
+                return [self._fallback_result(items[0], "内容安全拦截：" + str(e)[:120])]
+            # 主分析链路的降级语义：全部模型不可用时返回空结果集（不中断批次）
+            print("[AI] batch analyze degraded (all models unavailable): " + str(e)[:120])
+            return []
+
+    def _analyze_one_call(self, items, macro_context, system_prompt):
         items_json = json.dumps([{
             "id": item.get("id", ""), "title": item.get("title", ""),
             "source": item.get("source_name", ""),
@@ -218,16 +258,10 @@ class MacroAnalyzer:
 
         user_prompt = f"""\u4eca\u65e5\u60c5\u62a5 {len(items)} \u6761\uff08JSON\uff09\uff1a\n{items_json}\n\n\u8bf7\u5bf9\u6bcf\u6761\u60c5\u62a5\u8fdb\u884c\u56db\u7ef4\u7ed3\u6784\u7814\u5224\uff0c\u8f93\u51fa JSON \u6570\u7ec4\uff0c\u6bcf\u4e2a\u5143\u7d20\u5305\u542b\uff1a\n1. intel_id: \u60c5\u62a5ID\n2. macro_diagnosis: \u56db\u7ef4\u8bca\u65ad accumulation_node/spatial_layer/state_market_shift/class_interest\n3. structural_implication: \u7ed3\u6784\u6027\u542b\u4e49\n4. personal_action_space: window_months/concrete_moves/avoid_traps/signals_to_watch\n5. knowledge_links: \u53cc\u5411\u94fe\u63a5\u6570\u7ec4\n6. confidence: 1-10\u7f6e\u4fe1\u5ea6\n7. contradictions: \u77db\u76fe\u5f85\u9a8c\u8bc1\u70b9\n8. raw_reasoning: \u5b8c\u6574\u63a8\u7406\u94fe\n\u53ea\u8f93\u51fa\u7eafJSON\u6570\u7ec4\uff0c\u4e0d\u8981\u5176\u4ed6\u5185\u5bb9\u3002"""
 
-        system_prompt = self._build_system_prompt(macro_context)
-        try:
-            # 2026-09-21：timeout 由默认 180s 提到 240s（即 _safe_ai_post 的 cap 上限）。
-            # 实测唯一可用通道 dots 在 10 条/批（约 14K 字符 prompt）下需 137s，
-            # 逼近 180s 会频繁误杀正常请求；240s 留出余量。
-            response = self._call_api(system_prompt, user_prompt, timeout=240)
-        except Exception as e:
-            # 主分析链路的降级语义：全部模型不可用时返回空结果集（不中断批次）
-            print("[AI] batch analyze degraded (all models unavailable): " + str(e)[:120])
-            return []
+        # 2026-09-21：timeout 由默认 180s 提到 240s（即 _safe_ai_post 的 cap 上限）。
+        # 实测唯一可用通道 dots 在 10 条/批（约 14K 字符 prompt）下需 137s，
+        # 逼近 180s 会频繁误杀正常请求；240s 留出余量。
+        response = self._call_api(system_prompt, user_prompt, timeout=240)
         return self._parse_response(response, items)
 
     def _build_system_prompt(self, macro_context):
@@ -368,9 +402,28 @@ class MacroAnalyzer:
                     return content.strip()
                 raise ValueError("empty response")
             except Exception as e:
+                # 2026-09-21：HTTPError 的 str() 只有 "HTTP Error 403: Forbidden"，
+                # 不含响应体——而 dots 的内容安全拦截信息（error_type=governance.
+                # content_safety_input_rejected）只在响应体里。这里补读一次 body
+                # 并合并进异常消息，使 _is_content_block 能区分"内容触发"与
+                # "鉴权失败"（同为 403，处理方式完全相反：前者不熔断、拆半重试）。
+                if isinstance(e, urllib.error.HTTPError):
+                    try:
+                        detail = e.read().decode("utf-8", "replace")[:400]
+                    except Exception:
+                        detail = ""
+                    if detail:
+                        e = RuntimeError(f"HTTP {e.code} {e.reason} | {detail}")
                 _mark_dead(key_id, e)
+                # 内容安全拦截要**立即抛出**，不能继续降级链：
+                # 这是 prompt 内容触发的，与通道健康无关——继续试只会白等
+                # 其余通道的完整超时链（实测多花 8 分钟），而且 last_err 会被
+                # 后面的超时覆盖，导致调用方拿到的错误信息丢失 content_safety
+                # 标记，拆半重试逻辑因此失效（本次踩坑）。
+                if self._is_content_block(e):
+                    raise
                 last_err = e
-                print("[AI] model " + m["model"] + " failed: " + str(e))
+                print("[AI] model " + m["model"] + " failed: " + str(e)[:300])
                 if i == len(models) - 1:
                     raise
         # 全部模型要么熔断跳过要么失败：必须抛错，不能静默返回 "[]"

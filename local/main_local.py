@@ -9,6 +9,7 @@ import sys
 import os
 import re
 import time
+import tempfile as _tempfile
 import yaml
 import json
 from datetime import datetime, timezone, timedelta
@@ -67,6 +68,30 @@ def _wait_for_today_intel(config, output_dir, max_wait_s=600, interval_s=30):
         waited += interval_s
     print(f"    等待超时（{max_wait_s}s），当日文件仍未就绪")
     return None
+
+
+def _wait_for_ai_quota_free(max_wait_s=1800, interval_s=60):
+    """等 refresh 的 AI 密集步骤让出配额。
+
+    2026-09-21：根因是**配额争抢**而非通道故障。实测 18:35 Step2 启动、
+    18:36 refresh 跑完 impact_now（单轮 35 次 AI 调用）期间，Step2 全程收到
+    dots HTTP 403；而同一时刻用同一 key 的独立进程测试全部 200。
+    refresh 的 impact_now 会写 osint_ai_heavy.lock，这里轮询等它释放。
+    拿不到就继续（让 AI 层自己的降级链处理），不无限阻塞。
+    """
+    lock = Path(_tempfile.gettempdir()) / "osint_ai_heavy.lock"
+    if not lock.exists():
+        return True
+    waited = 0
+    while waited < max_wait_s:
+        if not lock.exists():
+            print(f"    AI 配额已让出（等待 {waited}s）")
+            return True
+        print(f"    等待 AI 配额释放（refresh 密集步骤占用中，已等 {waited}s）")
+        time.sleep(interval_s)
+        waited += interval_s
+    print(f"    等待 AI 配额超时（{max_wait_s}s），继续执行（靠降级链兜底）")
+    return False
 
 
 def main():
@@ -182,6 +207,8 @@ def main():
               f"（跳过 {intel_count - max_items} 条，缓存快照仍为全量 {intel_count} 条）")
     
     print("\n[4/6] AI 深度分析（四维政治经济学框架）...")
+    # 先等 refresh 的 AI 密集步骤（impact_now/translate）让出配额，避免争抢触发 403
+    _wait_for_ai_quota_free()
     analyses = analyze_intel(config, persona, kb, intel_items)
     analysis_count = len(analyses)
     print(f"    分析完成: {analysis_count} 条")

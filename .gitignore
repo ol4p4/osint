@@ -15,6 +15,11 @@ data/*
 !data/rebuild_hyps.py
 !data/watchdog.ps1
 !data/hypotheses/
+# hypotheses 目录内仍需排除：目录级 ! 规则会覆盖上面的 *.bak，导致时间戳备份入库
+data/hypotheses/*.bak_*
+data/hypotheses/*.bak
+# ACH 诊断流水日志（体积大、可由矩阵重建，不入库）
+data/hypotheses/diagnosis_log.jsonl
 
 # 截图等大文件不入库
 *.png

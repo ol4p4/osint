@@ -2,7 +2,7 @@ r"""refresh.py - 拉取最新情报并重建仪表盘（薄壳入口）
 由计划任务 OsintRefresh 每小时调用，也可手动运行。
 同步/翻译/日志逻辑在仓库 D:\osint\cloud\local_sync.py（便于 git 管理与交接）。
 """
-import subprocess, sys, json, glob, os, re, time
+import subprocess, sys, json, glob, os, re, time, tempfile as _tempfile
 from pathlib import Path
 from datetime import datetime, timedelta, timezone
 
@@ -453,19 +453,44 @@ def impact_now():
     vs 日新增 ~360 条 → 覆盖仅 8%, 仪表盘"后面不再分析"的根因)。
     本地每小时跑 50 条/900s 预算, 日吞吐上限 ~1200 条, 可追平新增。
     失败不阻塞 refresh (次日轮续跑, 未研判条目无 impact_level 自然重试)。
+
+    2026-09-21：本步骤实测单轮打 35 次 AI 调用（与 translate_now 共用 dots 配额）。
+    与周循环 Step2（60 条 × 6 批）重叠时会把配额占满，导致对方收到 403——
+    实测 18:35 Step2 启动、18:36 refresh 跑完 impact_now(35 次) 时，Step2 全程 403，
+    而同一时刻独立进程测试同一 key 全部 200。故加 ai_heavy.lock 互斥：
+    拿不到锁就跳过本轮（下一小时自然重试），不阻塞 refresh 主流程。
     """
-    r = subprocess.run(
-        [sys.executable, str(PROJECT / "cloud" / "citizen_impact.py"),
-         "--dir", str(BASE), "--max", "50", "--budget", "900"],
-        cwd=str(PROJECT), capture_output=True, text=True, timeout=960,
-        creationflags=_NO_WINDOW,
-    )
-    if r.stdout:
-        for line in r.stdout.splitlines():
-            if "[IMPACT]" in line:
-                print(f"impact_now: {line.strip()}")
-    if r.returncode != 0 and r.stderr:
-        print(f"impact_now stderr: {r.stderr.strip()[:200]}")
+    lock = Path(_tempfile.gettempdir()) / "osint_ai_heavy.lock"
+    if lock.exists():
+        try:
+            age_min = (time.time() - lock.stat().st_mtime) / 60
+        except OSError:
+            age_min = 0
+        if age_min < 30:   # 30 分钟内视为有 AI 密集任务在跑
+            print(f"impact_now: 跳过（AI 密集任务占用中，锁龄 {age_min:.1f} 分钟）")
+            return
+    try:
+        lock.write_text(str(os.getpid()), encoding="utf-8")
+    except OSError:
+        pass
+    try:
+        r = subprocess.run(
+            [sys.executable, str(PROJECT / "cloud" / "citizen_impact.py"),
+             "--dir", str(BASE), "--max", "50", "--budget", "900"],
+            cwd=str(PROJECT), capture_output=True, text=True, timeout=960,
+            creationflags=_NO_WINDOW,
+        )
+        if r.stdout:
+            for line in r.stdout.splitlines():
+                if "[IMPACT]" in line:
+                    print(f"impact_now: {line.strip()}")
+        if r.returncode != 0 and r.stderr:
+            print(f"impact_now stderr: {r.stderr.strip()[:200]}")
+    finally:
+        try:
+            lock.unlink()
+        except OSError:
+            pass
 
 
 def run_hypothesis_chain():

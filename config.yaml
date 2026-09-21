@@ -59,7 +59,11 @@ ai_analysis:
   # 唯一可用通道 dots 实测 137s/批 → 需 3.8 小时，Step2 自 8-30 起从未跑完。
   # 60 条约 14 分钟，与周任务窗口匹配；调大前先确认 AI 通道吞吐。
   max_items: 60
-  batch_size: 10               # 每批送 AI 的条数
+  # 每批送 AI 的条数。2026-09-21 由 10 降到 5：dots 服务端把单次输出封顶在
+  # 约 8-9K token（请求 32768 也只给 ~9000），10 条 × 8 字段的 JSON 恰好
+  # 撞上这个上限 → 数组中途截断 → 靠 _salvage_items 抢救，实测仍有 10% 条目
+  # 退化成占位结果。5 条/批让单批输出降到约一半，不再触顶。
+  batch_size: 5
   temperature: 0.3
   max_tokens_per_item: 800
   # 单次请求的输出预算（含推理模型 reasoning，实测 dots3 的 reasoning 与正文
