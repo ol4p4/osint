@@ -356,13 +356,31 @@ Output JSON array, each: {{"claim":"...","indicator":"measurable metric","data_s
                 from ach_matrix import ACHMatrix
                 ach = ACHMatrix(self.output_dir / "hypotheses" / "ach_matrix.json", majors)
                 undiag = ach.find_undiagnosed()
+                # 2026-09-21: 优先走 JEV 决策模型（0.66s/条 vs mimo 45s/条），失败回退
+                jev = None
+                try:
+                    from jev_client import JevClient
+                    _j = JevClient(caller="weekly_cycle")
+                    if _j.available:
+                        jev = _j
+                        print("[ACH] 决策层: JEV (jev-latest)")
+                except Exception:
+                    pass
                 if undiag:
                     print(f"[ACH] 诊断 {len(undiag)} 条证据 × {len(majors)} 个 major 假设")
                     for e in undiag:
                         try:
-                            diag = ach.ai_diagnose(e, self.analyzer)
+                            diag = ach.ai_diagnose(e, self.analyzer, jev=jev)
                             ach.record(e, diag)
                         except Exception as ex:
+                            if jev is not None:
+                                try:
+                                    diag = ach.ai_diagnose(e, self.analyzer, jev=None)
+                                    ach.record(e, diag)
+                                    print("[ACH] JEV 失败已回退 mimo: " + str(ex)[:70])
+                                    continue
+                                except Exception as ex2:
+                                    ex = ex2
                             print("[ACH] diagnose failed: " + str(ex))
                     ach.bayesian_update(hyps)
                     ach.sensitivity_analysis()  # P0-4：逐条证据中性化看排名稳定性

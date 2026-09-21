@@ -152,13 +152,33 @@ class ACHMatrix:
         return uniq[:(limit if limit else MAX_DIAGNOSE_PER_RUN)]
 
     # ---------- AI 诊断 ----------
-    def ai_diagnose(self, evidence_entry, analyzer):
-        """一次 AI 调用：单条证据 × 全部 major 假设 → 判定码 + 把握度 + 理由
+    def ai_diagnose(self, evidence_entry, analyzer, jev=None):
+        """单条证据 × 全部 major 假设 → 判定码 + 把握度 + 理由
 
         2026-09-20 起模型只报 code + conf，不再自报 LR——LR 由 derive_lr() 推导。
         保持"一次调用看全部假设"的跨假设比较能力（实测 138 处 C/I 判给了
         TF-IDF 未预挂载的假设，拆成独立调用会丢失这部分信号）。
+
+        2026-09-21 起优先走 JEV（决策专用模型，实测 0.66s/条 vs mimo 45s/条）：
+          jev 参数传入 JevClient 实例则走 JEV；未传/不可用则回退 analyzer（mimo）。
+          JEV 无 note 字段（架构上不生成文本），note 留空——下游不消费（见 record()）。
         """
+        if jev is not None and getattr(jev, "available", False):
+            return self._diagnose_jev(evidence_entry, jev)
+        return self._diagnose_llm(evidence_entry, analyzer)
+
+    def _diagnose_jev(self, evidence_entry, jev):
+        """JEV 路径：一次请求 8 个 Choice 并行 → code/conf（LR 由 record 推导）"""
+        ev = evidence_entry["ev"]
+        state = "证据（" + str(ev.get("date", "")) + "）：" + str(ev.get("summary", ""))[:400]
+        got = jev.diagnose_evidence(state, self.majors)
+        if not got:
+            raise ValueError("JEV 未返回任何判定")
+        return [{"hyp_id": hid, "code": v["code"], "conf": v["conf"], "note": ""}
+                for hid, v in got.items()]
+
+    def _diagnose_llm(self, evidence_entry, analyzer):
+        """通用大模型路径（mimo）：索取 code + conf + note，JSON 解析容错"""
         hyp_list = [{"id": h["id"], "title": h.get("title", ""),
                      "falsification": (h.get("falsification_criteria") or "")[:150]}
                     for h in self.majors]

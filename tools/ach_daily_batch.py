@@ -35,6 +35,8 @@ def main():
     ap.add_argument("--force", action="store_true", help="忽略 20h 节流")
     ap.add_argument("--throttle-hours", type=float, default=18.0,
                     help="低于链的 20h 节流，避免边界上偶发 skip")
+    ap.add_argument("--no-jev", action="store_true",
+                    help="强制走 mimo（默认优先 JEV 决策模型）")
     args = ap.parse_args()
 
     if not args.force and not args.dry and STATE_FILE.exists():
@@ -78,17 +80,46 @@ def main():
     config = yaml.safe_load((PROJECT / "config.yaml").read_text(encoding="utf-8"))
     analyzer = MacroAnalyzer(config, "", kb)
 
+    # 2026-09-21: 优先走 JEV 决策模型（实测 0.66s/条 vs mimo 45s/条）；
+    # 未配 key / 调用失败则回退 analyzer（mimo）。--no-jev 可强制走旧路径。
+    jev = None
+    if not args.no_jev:
+        try:
+            from jev_client import JevClient
+            jev = JevClient(caller="ach_daily_batch")
+            if jev.available:
+                print("[ACH-BATCH] 决策层: JEV (jev-latest)")
+            else:
+                print("[ACH-BATCH] 决策层: mimo（JEV key 未配置）")
+                jev = None
+        except Exception as ex:
+            print(f"[ACH-BATCH] 决策层: mimo（JEV 初始化失败: {str(ex)[:60]}）")
+            jev = None
+    else:
+        print("[ACH-BATCH] 决策层: mimo（--no-jev）")
+
     deadline_ts = time.time() + args.budget
-    done = failed = 0
+    done = failed = jev_failed = 0
     for e in undiag:
         if time.time() > deadline_ts:
             print(f"[ACH-BATCH] 预算用尽，剩余 {len(undiag) - done - failed} 条下轮继续")
             break
         try:
-            diag = ach.ai_diagnose(e, analyzer)
+            diag = ach.ai_diagnose(e, analyzer, jev=jev)
             ach.record(e, diag)
             done += 1
         except Exception as ex:
+            # JEV 失败时对同一条回退 mimo，避免因决策层故障丢证据
+            if jev is not None:
+                jev_failed += 1
+                try:
+                    diag = ach.ai_diagnose(e, analyzer, jev=None)
+                    ach.record(e, diag)
+                    done += 1
+                    print(f"[ACH-BATCH] JEV 失败已回退 mimo: {str(ex)[:70]}")
+                    continue
+                except Exception as ex2:
+                    ex = ex2
             failed += 1
             print(f"[ACH-BATCH] diagnose failed: {str(ex)[:100]}")
     if done:
@@ -107,6 +138,8 @@ def main():
     STATE_FILE.write_text(str(time.time()), encoding="utf-8")
     print(f"[ACH-BATCH] 完成: 诊断 {done} 条, 失败 {failed}, 矩阵共 "
           f"{len(ach.data['evidence'])} 行 -> {STATE_FILE}")
+    if jev_failed:
+        print(f"[ACH-BATCH] JEV 失败 {jev_failed} 条（已回退 mimo，不影响覆盖）")
 
 
 if __name__ == "__main__":

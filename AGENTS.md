@@ -74,6 +74,9 @@ AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key �
 | `tools/fill_deadline.py` | P0-2 一次性脚本（跑一次即弃）：AI 提议 1~24 个月验证期限回填 deadline，失败按 level 兜底（small 3/medium 6/major 12/mega 24 月）；2026-09-05 已跑 71/71 全回填 |
 | `tools/cluster_stories.py` | P0-3 事件聚类：纯标准库 TF-IDF（中文2-gram）+ 余弦 + 并查集，**不引入 sklearn**；`assign_story_ids(items)` 供 refresh/link_intel_hyp 调用；三重闸门参数（SIM_THRESHOLD=0.65/时间48h/同源12h/摘要0.30）在文件头 |
 | `local/calibration.py` | P0-1 校准评分：读 resolutions.jsonl 算 Brier + Murphy 三分解 + 十桶校准曲线 → `data/calibration.json`；refresh.py 自动调 |
+| `local/jev_client.py` | **JEV 决策模型客户端**（2026-09-21）：System One API 调用 + SSRF 白名单 + 用量记账 + 重试；`diagnose_evidence()` 供 ACH 用 |
+| `tools/jev_probe.py` | JEV Phase 0 探针：A/B 对比历史判定 + 人工金标准测试 |
+| `tools/jev_usage.py` | JEV 用量账本（API 无用量端点，本地记账）→ `data/jev_usage.json` |
 | `tools/fetch_macro_indicators.py` | 宏观指标抓取（汇率/利率/GDP/CPI/失业率，12个指标），产物 `data/macro_indicators.json`，refresh.py 自动调用；`--history` 子命令抓 NBS 分年龄组失业率历史月度序列 |
 | `tools/fetch_now.py` | 本地 24h 全量拉取（**仅国内源**，`scope:ci` 的 33 个外国源跳过——境外源一律由 CI 在 GitHub Actions 上采集，本地拉不动是常态），append 到今日 jsonl；refresh.py 自动调 |
 | `tools/translate_local.py` | 本地 OpenCode Zen 翻译（mimo-v2.5-free + nemotron 降级），每跑 30 条 6 分钟，写回 jsonl；refresh.py 自动调，**本地 hourly 翻译 18-30 条/6min，CI 翻译吞吐瓶颈解决** |
@@ -294,9 +297,24 @@ PM 视角审计发现：每小时线和云端线质量在线，短板集中在�
 | 项 | 状态 |
 |---|---|
 | `tools/jev_probe.py` | Phase 0 探针（A/B 对比 + 金标准测试），已按实测教训固化简单提问模板 |
+| `local/jev_client.py` | **JEV 客户端**（2026-09-21）：自带 SSRF 白名单（`JEV_HOST`）+ 用量记账 + 3 次重试 |
+| `tools/jev_usage.py` | **用量账本**：API 无用量端点（`/v1/usage` 等全 404），只能本地记账 |
 | 提问模板 | **不要把 falsification_criteria 塞进 instructions**（实测减半表现） |
-| 接入状态 | **未接入主链**。ACH 仍走 mimo；JEV 仅探针验证 |
+| **接入状态** | **已接入 ACH 主链**：`ai_diagnose(..., jev=)` 优先 JEV，失败自动回退 mimo |
+| 调用方 | `tools/ach_daily_batch.py`（`--no-jev` 可强制回退）、`local/hypothesis_engine.py` 周循环 |
 | 本地复刻 | **不需要**（中文够用）。备选 `jaredpalmer/kev`（Qwen 底座，含训练代码） |
+
+**架构要点**：JEV 走**独立客户端**（`local/jev_client.py`），**不经过 `analyze._call_api`**——因此
+**不需要往 `analyze.py` 的 `AI_ALLOWED_HOSTS` 加 `api.typesafe.ai`**，避免无谓扩大 `_call_api` 的攻击面。
+JEV 客户端自带同规格 SSRF 守卫（仅 https + 白名单域名 + 拒绝私有/环回地址）。
+
+**用量追踪**：TypeSafe **没有用量查询端点**（实测 `/v1/usage`、`/v1/account`、`/v1/me`、
+`/v1/credits` 全部 404，只有 `/v1/models` 可用），所以用量必须本地记账：
+`data/jev_usage.json` 按日/按调用方累计，`python tools/jev_usage.py` 查看。
+定价 $0.042/Mtok 输入、输出免费——实测 5 条证据约 4900 token = $0.0002。
+
+**回退设计**：`ai_diagnose(e, analyzer, jev=)` 中 jev 为 None 或 `available=False` 时自动走 mimo；
+JEV 调用抛错时调用方会对同一条回退 mimo 重试一次，避免因决策层故障丢证据（实测遇 `503 no healthy upstream` 可正确回退）。
 
 **限流提示**：官方限流动态调整（250k tok/s、1200 req/min），实测偶发失败条，下轮重试即可。
 
@@ -409,10 +427,11 @@ PM 视角审计发现：每小时线和云端线质量在线，短板集中在�
 - [ ] **ACH LR 新口径观察**（2026-09-20 起）：新诊断行带 conf 字段，观察 conf 分布是否真有梯度（旧口径是抄 prompt 的塌缩分布）；若仍塌缩则进一步减少 prompt 中的数值示例。调参入口 `LR_C_STRENGTH`/`LR_I_STRENGTH`，存量 conf 可重算 LR 无需重跑 AI
 - [ ] 两段式门控（未做）：93% 判定是 N，且 4627/4652 条证据只挂 1 个假设——"相关吗"前置问题大部分可由代码用挂载关系直接回答，无需模型。预计诊断量降至 1/5 以下
 - [ ] 僵尸假设处理（数据暴露）：`中国社保走韩国老路`（388 条中仅 1 条 I、0 条 C）与 `东亚三国现代化进程趋同`（4C+2I）几乎从不被有效诊断，疑为假设过抽象无法证伪或情报源未覆盖；会一直占 ACH 排名但无信息量
-- [ ] **JEV 接入主链**（Phase 0 已完成，见 §"JEV 决策模型接入"）：实测中文可用（金标准 83%、0.66s/条、68倍吞吐），下一步是把 `ai_diagnose` 切到 JEV + 用 `probabilities[choice]` 喂 `derive_lr()`；**注意提问模板必须用简单措辞**（带证伪判据实测减半表现）
+- [x] **JEV 接入主链**（2026-09-21 完成）：`local/jev_client.py` + `tools/jev_usage.py`，`ai_diagnose(jev=)` 优先 JEV（0.66s/条）失败回退 mimo；实测中文可用（金标准 83%）、提问模板必须用简单措辞
+- [ ] **JEV 吞吐红利释放**：接入后单条 45s→0.66s，`ach_daily_batch` 的 1500s 预算从 ~33 条/天可提到 ~2000 条/天，`MAX_DIAGNOSE_PER_RUN` 与 `BATCH` 上限可放宽（先观察一周稳定性再调）
 - [ ] **历史 C/I 标签质量差**（Phase 0 暴露）：mimo 把「韩国加息」「日经指数涨跌」「黄金欧元行情」判给「AI成本上升」假设，属过度联想。这批标签既污染 ACH 后验，也不能当 A/B 基准；需评估是否用 JEV 重刷历史矩阵
 - [ ] 官方 `confidence` 字段警告：第三方逆向 + 实测确认 `c=(P_max−1/K)/(1−1/K)` 是分布集中度归一化，**非正确性估计**；做阈值分流/校准须用 `probabilities`
-- [ ] JEV 限流观察：官方限流动态调整（250k tok/s、1200 req/min），实测偶发失败条；若接入主链需加重试
+- [ ] JEV 服务稳定性观察：实测遇 `503 no healthy upstream`（3 次重试后回退 mimo 成功）；官方限流动态调整（250k tok/s、1200 req/min），若失败率上升需调 `RETRY_ATTEMPTS`
 
 ---
-*最后更新：2026-09-21 - JEV Phase 0 实测完成（中文可用/金标准83%/提问方式比语言更关键）+ ACH LR 推导下沉*
+*最后更新：2026-09-21 - JEV 接入 ACH 主链（客户端+用量账本+回退）+ Phase 0 实测完成 + ACH LR 推导下沉*
