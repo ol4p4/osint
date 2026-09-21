@@ -30721,7 +30721,7 @@
         "last_updated": "2025",
         "data_source": "WorldBank",
         "threshold_eval": {
-          "checked_at": "2026-09-20",
+          "checked_at": "2026-09-21",
           "value": 14.9114314271952,
           "refute_expr": "到2028年联合国人口司预测中国老年抚养比为19.5%，低于20%阈值；到2030年韩国老年抚养比达21%但中国仍低于20%",
           "support_expr": "老年抚养比到2030年三国均超20%",
@@ -30729,7 +30729,7 @@
           "support_parsed": false,
           "signal": "none"
         },
-        "verify_status": "no_source"
+        "verify_status": "needs_ai"
       }
     ],
     "falsification_criteria": "到2028年联合国人口司预测中国老年抚养比为19.5%，低于20%阈值；到2030年韩国老年抚养比达21%但中国仍低于20%",
