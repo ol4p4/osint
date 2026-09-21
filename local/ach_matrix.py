@@ -168,14 +168,20 @@ class ACHMatrix:
         return self._diagnose_llm(evidence_entry, analyzer)
 
     def _diagnose_jev(self, evidence_entry, jev):
-        """JEV 路径：一次请求 8 个 Choice 并行 → code/conf（LR 由 record 推导）"""
+        """JEV 路径：两段式（Noul 议题门控 → Choice 方向判断）
+
+        2026-09-21 二次实测：单段式「预期是否一致」有系统性误判——JEV 把
+        「铁路客运创新高」「原油跳水」「A股高开」这类与议题无关的内容判成
+        inconsistent（字面理解为"不支持该假设"），噪声被大量吸入导致后验塌缩。
+        改为两段式后，门控先滤掉无关内容（实测噪声相关性 0.01~0.04）。
+        """
         ev = evidence_entry["ev"]
         state = "证据（" + str(ev.get("date", "")) + "）：" + str(ev.get("summary", ""))[:400]
-        got = jev.diagnose_evidence(state, self.majors)
+        got = jev.gate_and_diagnose(state, self.majors)
         if not got:
             raise ValueError("JEV 未返回任何判定")
-        return [{"hyp_id": hid, "code": v["code"], "conf": v["conf"], "note": ""}
-                for hid, v in got.items()]
+        return [{"hyp_id": hid, "code": v["code"], "conf": v["conf"], "note": "",
+                 "gate": v.get("gate")} for hid, v in got.items()]
 
     def _diagnose_llm(self, evidence_entry, analyzer):
         """通用大模型路径（mimo）：索取 code + conf + note，JSON 解析容错"""
@@ -216,7 +222,7 @@ class ACHMatrix:
                     return json.loads(response[start:i + 1])
         raise ValueError("AI 输出 JSON 不完整")
 
-    def record(self, evidence_entry, diagnosis):
+    def record(self, evidence_entry, diagnosis, model=None):
         """写入/更新一条证据的矩阵行。
 
         LR 来源优先级（2026-09-20）：
@@ -224,10 +230,17 @@ class ACHMatrix:
           2) 无 conf 但有 lr → 沿用模型自报值并钳制（旧口径，兼容历史/外部调用）
         同时落盘 code/conf/lr 三字段：日后调 LR_*_STRENGTH 可用存量 conf 重算 LR，
         无需重跑 AI。
+
+        **判定记忆（2026-09-21）**：row 带 `model`（判定来源）+ `diagnosed_at`（时间），
+        并把每次判定追加到 data/hypotheses/diagnosis_log.jsonl（append-only）。
+        动机：此前 437 行判定无来源、无时间戳、无历史——是"静态快照"而非"可追溯过程"，
+        导致重跑时无法对比新旧、无法回滚单条、无法区分 JEV 与 mimo 的判定。
         """
         known = {h["id"] for h in self.majors}
+        now = time.strftime("%Y-%m-%dT%H:%M:%S")
         row = {"key": evidence_entry["key"], "date": evidence_entry["ev"].get("date", ""),
-               "summary": evidence_entry["ev"].get("summary", "")[:120], "diagnosis": {}}
+               "summary": evidence_entry["ev"].get("summary", "")[:120], "diagnosis": {},
+               "model": model or "unknown", "diagnosed_at": now}
         for d in diagnosis:
             if isinstance(d, dict) and d.get("hyp_id") in known:
                 code = d.get("code", "N")
@@ -250,15 +263,53 @@ class ACHMatrix:
                 entry = {"code": code, "lr": lr, "note": str(d.get("note", ""))[:60]}
                 if conf is not None:
                     entry["conf"] = round(conf, 3)
+                # 两段式门控的相关性概率（仅 JEV 路径有）——留痕供日后调阈值
+                if d.get("gate") is not None:
+                    try:
+                        entry["gate"] = round(float(d["gate"]), 3)
+                    except (TypeError, ValueError):
+                        pass
                 row["diagnosis"][d["hyp_id"]] = entry
         for hid in known - set(row["diagnosis"]):
             row["diagnosis"][hid] = {"code": "N", "lr": 1.0, "conf": 1.0, "note": "未判定"}
 
+        prev = None
         for i, ev in enumerate(self.data["evidence"]):
             if ev["key"] == row["key"]:
+                prev = ev
                 self.data["evidence"][i] = row
-                return
-        self.data["evidence"].append(row)
+                break
+        else:
+            self.data["evidence"].append(row)
+
+        self._append_diagnosis_log(row, prev)
+
+    def _append_diagnosis_log(self, row, prev):
+        """追加式诊断日志（append-only，永不覆盖）——判定记忆的追溯载体。
+
+        记录每次判定的来源/时间/判定码，prev 为被覆盖的上一版（含来源）。
+        落盘 data/hypotheses/diagnosis_log.jsonl，供：
+          - 重跑前后对比（同一 key 的判定演化）
+          - 区分 JEV / mimo 的判定
+          - 出问题回滚单条
+        失败静默——记账不该阻断主流程。
+        """
+        try:
+            log = self.file.parent / "diagnosis_log.jsonl"
+            rec = {
+                "at": row.get("diagnosed_at"),
+                "key": row.get("key"),
+                "summary": (row.get("summary") or "")[:80],
+                "model": row.get("model"),
+                "codes": {hid: d.get("code") for hid, d in (row.get("diagnosis") or {}).items()},
+                "prev_model": (prev or {}).get("model"),
+                "prev_codes": ({hid: d.get("code") for hid, d in (prev.get("diagnosis") or {}).items()}
+                               if prev else None),
+            }
+            with log.open("a", encoding="utf-8") as f:
+                f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+        except Exception:
+            pass
 
     # ---------- 贝叶斯更新 ----------
     def bayesian_update(self, hyps):

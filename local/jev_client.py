@@ -129,7 +129,22 @@ class JevClient:
     def build_ach_questions(majors):
         """8 个假设 → 8 个 Choice 问题（一次请求并行求值）。
 
-        ⚠️ 提问措辞是性能关键：实测带证伪判据会让一致率减半（见文件头）。
+        ⚠️ 提问措辞是性能关键。**2026-09-21 二次实测的重要教训**：
+        首版问法「与假设的预期是否一致」有**系统性误判**——JEV 把它字面理解为
+        "这条消息是否支持该假设成立"，于是把「铁路客运创新高」「原油跳水」
+        「A股高开」这类**与议题完全无关**的内容判成 inconsistent（"不支持升级"），
+        把「日经低开」判成 consistent。结果噪声被大量吸入（台海 C/I 从 20 → 32 条），
+        后验被打到地板值 0.050。
+
+        实测三种问法对照（噪声=铁路/原油/A股，真信号=台海实弹演习）：
+          问法A「预期是否一致」    → 噪声全判 inconsistent(0.63~0.79)  ❌
+          问法B「是否涉及该议题」  → 噪声全判 unrelated(1.00)          ✅
+          问法C Noul「是否直接涉及」→ 噪声 0.01~0.04 / 真信号 0.95     ✅ 最佳
+
+        **结论：方向判断必须以"议题相关性"为前提。** 故改用两段式：
+          第一段 Noul 门控「是否直接涉及该假设的议题」→ 低于阈值直接判 N
+          第二段 仅对通过门控的假设做 Choice 方向判断
+        见 gate_and_diagnose()。
         """
         qs = {}
         for h in majors:
@@ -143,6 +158,81 @@ class JevClient:
                 },
             }
         return qs
+
+    @staticmethod
+    def build_gate_questions(majors):
+        """第一段：议题相关性门控（Noul，每假设一问）。
+
+        问「是否直接涉及该假设的议题」而非「预期是否一致」——实测前者能干净地
+        把无关内容（铁路/原油/股市）判到 0.01~0.04，后者会误判为"相斥"。
+        """
+        return {"g_" + h["id"]: {
+            "type": "noul",
+            "instructions": "这条证据的内容是否直接涉及「" + h.get("title", "") + "」这一议题？",
+        } for h in majors}
+
+    @staticmethod
+    def build_direction_questions(majors_subset):
+        """第二段：仅对通过门控的假设判方向（Choice）"""
+        qs = {}
+        for h in majors_subset:
+            qs["d_" + h["id"]] = {
+                "type": "choice",
+                "instructions": "这条证据与假设「" + h.get("title", "") + "」的预期是否一致？",
+                "criteria": {
+                    "consistent": "证据支持该假设的预期",
+                    "inconsistent": "证据与该假设的预期相斥",
+                    "neutral": "证据与该假设无关",
+                },
+            }
+        return qs
+
+    def gate_and_diagnose(self, evidence_text, majors, gate_threshold=0.08, timeout=120):
+        """两段式诊断（推荐入口）：先门控议题相关性，再对相关假设判方向。
+
+        第一段：Noul 问「是否直接涉及该假设的议题」→ 概率 < gate_threshold 直接判 N
+        第二段：仅对通过门控的假设问 Choice 方向
+
+        收益（实测）：噪声被干净滤除，避免"无关内容被误判为相斥"导致的
+        后验塌缩；且第二段问题数大减（通常 8 → 1~3），成本与延迟同步下降。
+
+        **阈值 0.08 的实测依据**（台海假设，2026-09-21）：
+            噪声样本 gate：铁路 0.01 / 原油 0.02 / A股 0.02 / 日经 0.03
+            真信号 gate：核潜艇 0.14 / 防务开支翻倍 0.14 / 台海巡艇 0.18 / 实弹演习 0.86
+        噪声上界 0.04 与真信号下界 0.14 之间有 3.5 倍间隔，取中点偏下 0.08 稳妥。
+        调参入口即本参数；已落盘的 gate 值可用于重算（无需重跑 AI）。
+
+        返回 {hyp_id: {"code","conf","probs","gate"}}；gate 为第一段相关性概率。
+        """
+        d1 = self.systemone(evidence_text, self.build_gate_questions(majors), timeout=timeout)
+        a1 = d1.get("answers") or {}
+        gates, passed = {}, []
+        for h in majors:
+            g = a1.get("g_" + h["id"]) or {}
+            p = float(g.get("noul", 0.0))
+            gates[h["id"]] = round(p, 3)
+            if p >= gate_threshold:
+                passed.append(h)
+
+        out = {}
+        for h in majors:
+            if h["id"] not in [x["id"] for x in passed]:
+                out[h["id"]] = {"code": "N", "conf": round(1.0 - gates[h["id"]], 3),
+                                "probs": {}, "gate": gates[h["id"]]}
+
+        if passed:
+            d2 = self.systemone(evidence_text, self.build_direction_questions(passed), timeout=timeout)
+            a2 = d2.get("answers") or {}
+            for h in passed:
+                a = a2.get("d_" + h["id"]) or {}
+                choice = a.get("choice")
+                probs = a.get("probabilities") or {}
+                out[h["id"]] = {
+                    "code": CODE_MAP.get(choice, "N"),
+                    "conf": round(float(probs.get(choice, 0.0)), 3),
+                    "probs": probs, "gate": gates[h["id"]],
+                }
+        return out
 
     def diagnose_evidence(self, evidence_text, majors, timeout=120):
         """单条证据 × 全部 major 假设 → {hyp_id: {"code","conf","probs"}}

@@ -106,7 +106,7 @@ def main():
             break
         try:
             diag = ach.ai_diagnose(e, analyzer, jev=jev)
-            ach.record(e, diag)
+            ach.record(e, diag, model=("jev" if jev is not None else "mimo"))
             done += 1
         except Exception as ex:
             # JEV 失败时对同一条回退 mimo，避免因决策层故障丢证据
@@ -114,7 +114,7 @@ def main():
                 jev_failed += 1
                 try:
                     diag = ach.ai_diagnose(e, analyzer, jev=None)
-                    ach.record(e, diag)
+                    ach.record(e, diag, model="mimo")
                     done += 1
                     print(f"[ACH-BATCH] JEV 失败已回退 mimo: {str(ex)[:70]}")
                     continue

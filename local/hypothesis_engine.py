@@ -371,12 +371,12 @@ Output JSON array, each: {{"claim":"...","indicator":"measurable metric","data_s
                     for e in undiag:
                         try:
                             diag = ach.ai_diagnose(e, self.analyzer, jev=jev)
-                            ach.record(e, diag)
+                            ach.record(e, diag, model=("jev" if jev is not None else "mimo"))
                         except Exception as ex:
                             if jev is not None:
                                 try:
                                     diag = ach.ai_diagnose(e, self.analyzer, jev=None)
-                                    ach.record(e, diag)
+                                    ach.record(e, diag, model="mimo")
                                     print("[ACH] JEV 失败已回退 mimo: " + str(ex)[:70])
                                     continue
                                 except Exception as ex2:
