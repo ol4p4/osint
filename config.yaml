@@ -52,6 +52,21 @@ knowledge_base:
   entities_dir: "wiki\\entities"
   comparisons_dir: "wiki\\comparisons"
 
+# AI 深度分析参数
+ai_analysis:
+  # 每次送入 AI 的情报条数上限（按 final_score 降序取 Top N）
+  # 2026-09-21 新增：此前全量送入，实测 1006 条 × batch_size 10 = 101 批，
+  # 唯一可用通道 dots 实测 137s/批 → 需 3.8 小时，Step2 自 8-30 起从未跑完。
+  # 60 条约 14 分钟，与周任务窗口匹配；调大前先确认 AI 通道吞吐。
+  max_items: 60
+  batch_size: 10               # 每批送 AI 的条数
+  temperature: 0.3
+  max_tokens_per_item: 800
+  # 单次请求的输出预算（含推理模型 reasoning，实测 dots3 的 reasoning 与正文
+  # 体量相当）。此前硬编码 8192 → 10 条 × 8 字段必截断（只写出 7 条）。
+  # dots 实测接受 65536，取 32768 留余量。
+  max_tokens_budget: 32768
+
 # 输出格式控制
 output:
   brief:

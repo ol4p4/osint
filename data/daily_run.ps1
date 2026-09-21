@@ -62,6 +62,9 @@ try {
         -Cwd $localDir
 
     # Step 2: Run main analysis (generates brief, dashboard, wiki)
+    # 2026-09-21：main_local 内部已加「等当日情报文件就绪」闸门——
+    # 周任务补跑时刻可能落在整点，与每小时 OsintRefresh 只差数秒启动，
+    # 此前会退到陈旧缓存（实测分析了 9-14 的 1006 条，与当日仅 4 条交集）
     Invoke-PyStep -Name "2/5 Running main analysis" `
         -PyArgs @('main_local.py') -Cwd $localDir
 
@@ -72,9 +75,10 @@ try {
         -PyArgs @('D:\osint\verify_hypotheses.py')
 
     # Step 3: Run hypothesis engine (idempotent: materialized views skipped, resolved_at 跳过已验证)
+    # 2026-09-21：改用 run_weekly_cycle.py 入口——原先的 `python -c` 单行
+    # 未传 intel_items，AI 周报的 week_intel 恒为空，连续两周写「情报总条数 0」
     Invoke-PyStep -Name "3/5 Running hypothesis engine weekly cycle" `
-        -PyArgs @('-c', "import sys; sys.path.insert(0,'.'); from analyze import MacroAnalyzer; from load_knowledge import load_knowledge; from hypothesis_engine import HypothesisEngine; import yaml; config=yaml.safe_load(open(r'D:\osint\config.yaml','r',encoding='utf-8')); kb=load_knowledge(r'D:\Codex输出\视频知识库'); kb.load_all(); analyzer=MacroAnalyzer(config,'',kb); engine=HypothesisEngine(config,kb,analyzer); engine.run_weekly_cycle()") `
-        -Cwd $localDir
+        -PyArgs @('run_weekly_cycle.py') -Cwd $localDir
 
     # Step 3.5: Policy tracker (read-macro weekly observation card)
     Invoke-PyStep -Name "3.5/5 Running policy tracker" `

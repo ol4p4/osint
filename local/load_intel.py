@@ -22,23 +22,28 @@ def load_from_local(date_str: str = None, cache_dir: str = None) -> List[Dict[st
     if date_str is None:
         date_str = datetime.now(timezone.utc).strftime("%Y%m%d")
     
+    # 2026-09-21 修复路径优先级：产物目录本体（CI + 本地采集合并结果）是当日权威数据，
+    # 必须排在 cache 快照之前。此前 cache/intel_{date}.jsonl 排第一，而该文件是
+    # main_local 自己写的快照——周任务 13:00:00 与 refresh 13:00:10 只差 3 秒启动时，
+    # refresh 的 git pull 尚未落地，这里全部路径落空，调用方回退到按 mtime 取 cache，
+    # 抓到 9-14 的旧快照，Step2 遂分析了 1006 条 9-11/9-12 的陈旧情报。
     paths = [
+        Path(cache_dir).parent / f"intel_{date_str}.jsonl",
+        Path(cache_dir).parent / f"intel_{date_str}.json",
+        # cache 快照降为次选：仅当产物目录当日文件缺失时使用
         Path(cache_dir) / f"intel_{date_str}.jsonl",
         Path(cache_dir) / f"intel_{date_str}.json",
-        # CI final 数据直接落在产物目录本体（local_sync 合并的位置），必须优先于 cwd
-        Path(cache_dir).parent / f"intel_{date_str}.jsonl",
         Path(".") / f"intel_{date_str}.jsonl",
         Path(".") / f"intel_{date_str}.json",
     ]
-    
+
     for p in paths:
         if p.exists():
             items = []
-            with open(p, "r", encoding="utf-8") as f:
-                for line in f:
-                    line = line.strip()
-                    if line:
-                        items.append(json.loads(line))
+            for line in p.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if line:
+                    items.append(json.loads(line))
             print(f"[LOAD] 本地加载 {len(items)} 条: {p}")
             return items
     

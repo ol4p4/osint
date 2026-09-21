@@ -142,6 +142,9 @@ class MacroAnalyzer:
         self.batch_size = ai_cfg.get("batch_size", 10)
         self.temperature = ai_cfg.get("temperature", 0.3)
         self.max_tokens = ai_cfg.get("max_tokens_per_item", 800)
+        # 输出预算（含推理模型的 reasoning）：默认 32768，实测 dots 接受 65536。
+        # 此前硬编码 8192，对"10 条 × 8 字段"的批次必然截断（见 _parse_response 注释）。
+        self.max_tokens_budget = int(ai_cfg.get("max_tokens_budget", 32768))
 
     @staticmethod
     def _nvidia_key():
@@ -162,11 +165,42 @@ class MacroAnalyzer:
             return ""
 
     def analyze_batch(self, items, macro_context):
+        """逐批分析；连续多批无有效产出时提前放弃。
+
+        2026-09-21：AI 通道全线不可用时（dots 长 prompt 超时 + 其余 403），
+        原实现会对每批都白撞完整的降级链（实测单批约 8 分钟），60 条约 6 批
+        要空转近 50 分钟才结束。改为连续 CONSECUTIVE_FAIL_LIMIT 批无**有效**产出
+        即中止，让 Step2 快速失败，把时间留给下次调度。
+
+        注意判据是"有效产出"而非"非空列表"：解析失败时 _parse_response 会
+        返回一批 fallback 占位结果（structural_implication="AI 分析失败，需人工复核"），
+        列表非空但毫无信息量——用非空判断会让熔断永不触发（首版踩过）。
+        """
         results = []
+        CONSECUTIVE_FAIL_LIMIT = 3
+        consecutive_empty = 0
         for i in range(0, len(items), self.batch_size):
             batch = items[i:i + self.batch_size]
-            results.extend(self._analyze_single_batch(batch, macro_context))
+            got = self._analyze_single_batch(batch, macro_context)
+            usable = [r for r in got if not self._is_fallback(r)]
+            if usable:
+                consecutive_empty = 0
+                results.extend(got)
+            else:
+                consecutive_empty += 1
+                print(f"[AI] batch {i // self.batch_size + 1} 无有效产出"
+                      f"（连续 {consecutive_empty}/{CONSECUTIVE_FAIL_LIMIT}）")
+                if consecutive_empty >= CONSECUTIVE_FAIL_LIMIT:
+                    print("[AI] 连续多批无有效产出，判定 AI 通道不可用，提前中止分析")
+                    break
+                results.extend(got)   # 保留占位结果，便于人工复核是哪几条
         return results
+
+    @staticmethod
+    def _is_fallback(result):
+        """判断是否为解析失败产生的占位结果。"""
+        return (result.structural_implication or "").startswith("AI 分析失败")
+
     def _analyze_single_batch(self, items, macro_context):
         # 2026-09-16 修复: cache 回退路径的条目缺 content 字段曾炸 KeyError('content')
         # （9-14 周一 14:23 补跑时当日文件未产出 → main_local 回退旧 cache → Step2 崩溃），
@@ -186,7 +220,10 @@ class MacroAnalyzer:
 
         system_prompt = self._build_system_prompt(macro_context)
         try:
-            response = self._call_api(system_prompt, user_prompt)
+            # 2026-09-21：timeout 由默认 180s 提到 240s（即 _safe_ai_post 的 cap 上限）。
+            # 实测唯一可用通道 dots 在 10 条/批（约 14K 字符 prompt）下需 137s，
+            # 逼近 180s 会频繁误杀正常请求；240s 留出余量。
+            response = self._call_api(system_prompt, user_prompt, timeout=240)
         except Exception as e:
             # 主分析链路的降级语义：全部模型不可用时返回空结果集（不中断批次）
             print("[AI] batch analyze degraded (all models unavailable): " + str(e)[:120])
@@ -277,7 +314,11 @@ class MacroAnalyzer:
                         {"role": "user", "content": user_prompt}
                     ],
                     "temperature": self.temperature,
-                    "max_tokens": 8192,
+                    # 2026-09-21：8192 太小——dots3 是推理模型，reasoning 计入配额
+                    # （实测 10 条批次的 reasoning 7159 + 正文 6331 字符 ≈ 13K），
+                    # 8192 会在数组中途截断，10 条只写出 7 条。
+                    # 实测 dots 接受 65536，取 32768 留足余量（正文 + reasoning 双份）。
+                    "max_tokens": self.max_tokens_budget,
                 }
                 # 推理型模型需限制思考量，否则陷入思考循环（content 永远为空）
                 eff = _NV_REASONING_EFFORT.get(m["model"])
@@ -363,6 +404,16 @@ class MacroAnalyzer:
         if not data:
             try: data = json.loads(response)
             except: pass
+        # 2026-09-21 新增：逐条抢救截断的 JSON 数组。
+        # 背景：dots3 是推理模型，reasoning 计入 max_tokens（实测 10 条批次的
+        # reasoning 达 7159 字符），真实输出常在数组中途被截断——实测 10 条只
+        # 写出 7 条就断在半个字符串里，整体 json.loads 必失败，全部退化成占位结果。
+        # 这里按 "{" 起、配对 "}" 止逐条提取，能救回已完整输出的那几条。
+        if not data:
+            salvaged = self._salvage_items(response)
+            if salvaged:
+                print(f"[AI] JSON 整体解析失败，逐条抢救出 {len(salvaged)} 条")
+                data = salvaged
         if not data:
             print("[AI] JSON parse failed, using fallback")
             return [self._fallback_result(item, response) for item in original_items]
@@ -371,13 +422,13 @@ class MacroAnalyzer:
             try:
                 r = AnalysisResult(
                     intel_id=d.get("intel_id", ""),
-                    macro_diagnosis=d.get("macro_diagnosis", {}),
-                    structural_implication=d.get("structural_implication", ""),
-                    personal_action_space=d.get("personal_action_space", {}),
-                    knowledge_links=d.get("knowledge_links", []),
-                    confidence=d.get("confidence", 5),
-                    contradictions=d.get("contradictions", ""),
-                    raw_reasoning=d.get("raw_reasoning", "")
+                    macro_diagnosis=self._norm_dict(d.get("macro_diagnosis")),
+                    structural_implication=self._norm_text(d.get("structural_implication")),
+                    personal_action_space=self._norm_dict(d.get("personal_action_space")),
+                    knowledge_links=d.get("knowledge_links", []) if isinstance(d.get("knowledge_links", []), list) else [],
+                    confidence=self._norm_conf(d.get("confidence", 5)),
+                    contradictions=self._norm_text(d.get("contradictions")),
+                    raw_reasoning=self._norm_text(d.get("raw_reasoning"))
                 )
                 results.append(r)
             except Exception as e:
@@ -385,6 +436,112 @@ class MacroAnalyzer:
         while len(results) < len(original_items):
             results.append(self._fallback_result(original_items[len(results)], response))
         return results
+
+    @staticmethod
+    def _norm_text(val):
+        """把模型可能返回的 dict/list 压平成文本。
+
+        2026-09-21：实测模型会把 structural_implication 按子字段输出成
+        {"accumulation_node": "...", "spatial_layer": "..."}，而 schema 要求字符串。
+        下游 render_*/policy_tracker 直接对其做字符串切片，遇 dict 会 KeyError。
+        这里统一压平，保住内容不丢。
+        """
+        if val is None:
+            return ""
+        if isinstance(val, str):
+            return val
+        return MacroAnalyzer._flat(val)
+
+    @staticmethod
+    def _flat(v):
+        if isinstance(v, str):
+            return v
+        if isinstance(v, dict):
+            return "；".join(f"{k}: {MacroAnalyzer._flat(x)}" for k, x in v.items())
+        if isinstance(v, list):
+            return "、".join(MacroAnalyzer._flat(x) for x in v)
+        return str(v)
+
+    @staticmethod
+    def _norm_dict(val):
+        """确保是 dict（下游按 key 取值，模型偶尔返回字符串或列表）。
+
+        2026-09-21：模型常把 macro_diagnosis 直接写成一句自然语言（而非四个子键），
+        下游按 accumulation_node 等 key 取值会拿不到内容。这里保留原值的同时，
+        按已知子键名做一次文本回填，避免信息丢失。
+        """
+        if isinstance(val, dict):
+            return val
+        text = MacroAnalyzer._flat(val) if val is not None else ""
+        if not text:
+            return {}
+        out = {"summary": text}
+        for key in ("accumulation_node", "spatial_layer", "state_market_shift", "class_interest"):
+            if key in text:
+                # 从 "key: 内容" 形式里切出该键的值（到下一个键名或串尾）
+                m = re.search(re.escape(key) + r"[:：]\s*(.+?)(?=(?:accumulation_node|spatial_layer|state_market_shift|class_interest)[:：]|$)", text)
+                if m:
+                    out[key] = m.group(1).strip(" ；;")
+        return out
+
+    @staticmethod
+    def _norm_conf(val):
+        """置信度归一到 1-10 整数（模型可能给字符串或越界值）。
+
+        2026-09-21：实测模型常漏给 confidence（或给 0/空），原先默认 5 但
+        抢救路径里拿到的是 None → int(None) 失败 → 落到 5；此处显式兜底。
+        """
+        try:
+            n = float(val)
+        except (TypeError, ValueError):
+            return 5
+        if n <= 0:
+            return 5
+        if n <= 1:          # 模型给了 0~1 的比例值 → 映射到 1-10
+            n *= 10
+        return max(1, min(10, int(round(n))))
+
+    @staticmethod
+    def _salvage_items(response):
+        """从截断的 JSON 数组里逐条提取完整对象。
+
+        按括号配对扫描，遇到配平的 {...} 就尝试解析；截断在半个对象里时，
+        该对象自然被丢弃，前面的完整对象全部保住。
+        字符串内的花括号需跳过（用 in_string 状态机跟踪转义）。
+        """
+        items = []
+        depth = 0
+        obj_start = -1
+        in_string = False
+        escaped = False
+        for idx, ch in enumerate(response):
+            if in_string:
+                if escaped:
+                    escaped = False
+                elif ch == "\\":
+                    escaped = True
+                elif ch == '"':
+                    in_string = False
+                continue
+            if ch == '"':
+                in_string = True
+            elif ch == "{":
+                if depth == 0:
+                    obj_start = idx
+                depth += 1
+            elif ch == "}":
+                if depth > 0:
+                    depth -= 1
+                    if depth == 0 and obj_start >= 0:
+                        chunk = response[obj_start:idx + 1]
+                        try:
+                            obj = json.loads(chunk)
+                            if isinstance(obj, dict) and obj.get("intel_id"):
+                                items.append(obj)
+                        except json.JSONDecodeError:
+                            pass
+                        obj_start = -1
+        return items
 
     def _fallback_result(self, item, raw):
         return AnalysisResult(

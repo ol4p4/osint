@@ -7,9 +7,11 @@
 
 import sys
 import os
+import re
+import time
 import yaml
 import json
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
@@ -20,6 +22,51 @@ from analyze import analyze_intel
 from render_brief import render_brief
 from render_dashboard import render_dashboard
 from render_wiki import render_wiki
+
+
+def _fresh_count(items, days=3):
+    """统计 published_at 落在近 N 天内的条目数（返回 (fresh_count, newest_past_date)）。
+
+    2026-09-21 踩坑：最初实现取 max(published_at) 算"最新距今几天"，
+    但语料里混着源站错误时间戳的未来条目（实测有 2026-11-17），
+    max 恒取到未来日期 → 年龄为负 → 闸门永远通过，形同虚设。
+    改为**计数**：未来日期天然不落在 [今天-N, 今天] 区间内，不会污染判定。
+    只看"有没有足量新鲜条目"，而不是"最极端那条的日期"。
+    """
+    today = datetime.now(timezone.utc).replace(tzinfo=None)
+    lo = (today - timedelta(days=days)).strftime("%Y-%m-%d")
+    hi = today.strftime("%Y-%m-%d")
+    fresh = 0
+    newest_past = ""
+    for it in items:
+        pub = str(it.get("published_at") or "")[:10]
+        if lo <= pub <= hi:
+            fresh += 1
+            if pub > newest_past:
+                newest_past = pub
+    return fresh, newest_past
+
+
+def _wait_for_today_intel(config, output_dir, max_wait_s=600, interval_s=30):
+    """等当日情报文件就绪（周任务与 refresh 抢跑时的兜底）。
+
+    根因：OsintWeekly 周一 09:30 触发，机器不可用时由 StartWhenAvailable 补跑，
+    补跑时刻可能恰好落在整点——与每小时 OsintRefresh 只差数秒启动，
+    此时 refresh 的 git pull 尚未落地，当日文件不存在，Step2 就会退到陈旧缓存。
+    这里显式等待，超时则返回 None 交由调用方决定。"""
+    today = datetime.now(timezone.utc).strftime("%Y%m%d")
+    target = Path(output_dir) / f"intel_{today}.jsonl"
+    waited = 0
+    while waited < max_wait_s:
+        if target.exists() and target.stat().st_size > 0:
+            print(f"    当日情报文件已就绪: {target.name} "
+                  f"({target.stat().st_size / 1024:.0f} KB)")
+            return target
+        print(f"    等待当日情报文件 {target.name} ... ({waited}s/{max_wait_s}s)")
+        time.sleep(interval_s)
+        waited += interval_s
+    print(f"    等待超时（{max_wait_s}s），当日文件仍未就绪")
+    return None
 
 
 def main():
@@ -54,31 +101,85 @@ def main():
     print(f"    宏观概念: {macro_count} 个")
     
     print("\n[3/6] 加载情报数据...")
+    # 先等当日文件就绪（与 refresh 抢跑时，git pull 未落地会导致读到旧数据）
+    if not _wait_for_today_intel(config, output_dir):
+        print("    当日情报不可用，退出（宁可不跑，不用陈旧数据）")
+        return 1
+
     intel_items = load_intel(config)
     if not intel_items:
-        print("    未找到情报数据，尝试从缓存加载...")
-        cache_files = list(Path(cache_dir).glob("intel_*.jsonl"))
-        if cache_files:
-            latest = max(cache_files, key=lambda p: p.stat().st_mtime)
-            print(f"    找到缓存: {latest}")
-            for line in latest.read_text(encoding="utf-8").splitlines():
+        # 2026-09-21 修复：原实现 max(cache_files, key=mtime) 有两个坑——
+        # ① 周任务与 refresh 抢跑时（间隔 3 秒），当日产物文件尚未落地，
+        #    这里会抓到任意旧快照（实测抓到 9-14 的 1006 条，与当日仅 4 条交集）；
+        # ② mtime 排序会把 main_local 自己刚写的当日空壳快照排在前面。
+        # 改为按文件名日期取最新，再叠加内容新鲜度闸门。
+        MAX_CACHE_AGE_DAYS = 2
+        dated = []
+        for fp in Path(cache_dir).glob("intel_*.jsonl"):
+            m = re.match(r"intel_(\d{8})\.jsonl$", fp.name)
+            if m:
+                dated.append((m.group(1), fp))
+        if dated:
+            dated.sort(key=lambda t: t[0], reverse=True)
+            newest_date, newest_path = dated[0]
+            today = datetime.now(timezone.utc).strftime("%Y%m%d")
+            age_days = (datetime.strptime(today, "%Y%m%d")
+                        - datetime.strptime(newest_date, "%Y%m%d")).days
+            if age_days > MAX_CACHE_AGE_DAYS:
+                print(f"    最新缓存 {newest_path.name} 已过期 {age_days} 天"
+                      f"（上限 {MAX_CACHE_AGE_DAYS} 天），拒绝用陈旧数据")
+                print("    请先跑 refresh.py 拉取当日情报后重试")
+                return 1
+            print(f"    找到缓存: {newest_path}（{age_days} 天前）")
+            for line in newest_path.read_text(encoding="utf-8").splitlines():
                 line = line.strip()
                 if line:
                     intel_items.append(json.loads(line))
-    
+
     if not intel_items:
         print("    无可用情报数据，退出")
         return 1
-    
+
+    all_intel = intel_items          # 全量：写入缓存快照，保持当日数据的完整镜像
     intel_count = len(intel_items)
     print(f"    加载情报: {intel_count} 条")
-    
+
+    # 内容新鲜度闸门：文件名日期不可信（旧数据会被写进当日命名的缓存），
+    # 必须按 published_at 判断，超期则拒绝分析，避免污染 analysis_*.jsonl。
+    # 用"近 N 天条目数"而非"最新一条距今几天"——后者会被未来日期脏数据绕过。
+    MAX_CONTENT_AGE_DAYS = int(config.get("ai_analysis", {}).get("max_content_age_days", 3))
+    MIN_FRESH_ITEMS = int(config.get("ai_analysis", {}).get("min_fresh_items", 5))
+    fresh_n, newest_past = _fresh_count(intel_items, MAX_CONTENT_AGE_DAYS)
+    if fresh_n < MIN_FRESH_ITEMS:
+        print(f"    近 {MAX_CONTENT_AGE_DAYS} 天内仅 {fresh_n} 条情报"
+              f"（下限 {MIN_FRESH_ITEMS} 条），数据陈旧，拒绝分析")
+        print("    请先跑 refresh.py 拉取当日情报后重试")
+        return 1
+    print(f"    内容新鲜度: 近 {MAX_CONTENT_AGE_DAYS} 天 {fresh_n} 条"
+          f"（最新 {newest_past or 'N/A'}）")
+
     date_str = datetime.now(timezone.utc).strftime("%Y%m%d")
     cache_file = Path(cache_dir) / f"intel_{date_str}.jsonl"
     cache_file.write_text(
-        "\n".join(json.dumps(item, ensure_ascii=False) for item in intel_items) + "\n",
+        "\n".join(json.dumps(item, ensure_ascii=False) for item in all_intel) + "\n",
         encoding="utf-8")
     print(f"    缓存已更新: {cache_file}")
+
+    # 2026-09-21 修复：AI 分析条数上限。此前全量送入（实测 1006 条 × batch_size 10
+    # = 101 批，唯一可用通道 dots 实测 137s/批 → 需 3.8 小时，Step2 自 8-30 起从未跑完）。
+    # 按 final_score 降序取 Top N（同分按发布时间新的优先），默认 60 条约 14 分钟。
+    ai_cfg = config.get("ai_analysis", {})
+    max_items = int(ai_cfg.get("max_items", 60))
+    if intel_count > max_items:
+        def _rank_key(it):
+            try:
+                score = float(it.get("final_score") or 0)
+            except (TypeError, ValueError):
+                score = 0.0
+            return (score, str(it.get("published_at") or ""))
+        intel_items = sorted(intel_items, key=_rank_key, reverse=True)[:max_items]
+        print(f"    按 final_score 取 Top {max_items} 条进入 AI 分析"
+              f"（跳过 {intel_count - max_items} 条，缓存快照仍为全量 {intel_count} 条）")
     
     print("\n[4/6] AI 深度分析（四维政治经济学框架）...")
     analyses = analyze_intel(config, persona, kb, intel_items)

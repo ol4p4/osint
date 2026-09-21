@@ -69,7 +69,8 @@ AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key �
 | `local/dialogue_engine.py` | P2a 对话引擎：5 轮追问(WHAT/WHY/HOW/WHEN/WHO)→观点卡→`feed_to_hypothesis` 进假设树 |
 | `local/question_generator.py` | P2b 问题生成器：分析摘要→开放性问题，落 `questions/` |
 | `local/kb_linker.py` | 知识库双向链接：假设/观点卡写 `视频知识库\wiki\hypotheses|views` + index.md + log.md（幂等） |
-| `local/render_wiki.py` / `main_local.py` | 旧渲染管线（daily_run.ps1 的 Step2 用） |
+| `local/render_wiki.py` / `main_local.py` | 旧渲染管线（daily_run.ps1 的 Step2 用）；main_local 内置三道数据闸门：`_wait_for_today_intel`（等当日文件就绪 600s）+ `_fresh_count`（近 3 天计数，防陈旧）+ Top N 截断（`ai_analysis.max_items`，默认 60） |
+| `local/run_weekly_cycle.py` | **周循环入口**（2026-09-21 新增）：加载当日情报 → `engine.run_weekly_cycle(intel_items=...)`。替代原先 daily_run.ps1 里的 `python -c` 单行——那个写法没传 intel_items，导致 AI 周报连续两周写「情报总条数 0」 |
 | `verify_hypotheses.py` | 假设自动验证（FRED/Frankfurter/GoldAPI/WorldBank，域名白名单在 `ALLOWED_HOSTS`；2026-09-05 P0-2 重写：`parse_threshold()` 真比较数值、指标值优先读本地 macro_indicators.json、无源标 `no_source`/叙述阈值标 `needs_ai` 留给周循环 AI 裁判） |
 | `tools/fill_deadline.py` | P0-2 一次性脚本（跑一次即弃）：AI 提议 1~24 个月验证期限回填 deadline，失败按 level 兜底（small 3/medium 6/major 12/mega 24 月）；2026-09-05 已跑 71/71 全回填 |
 | `tools/cluster_stories.py` | P0-3 事件聚类：纯标准库 TF-IDF（中文2-gram）+ 余弦 + 并查集，**不引入 sklearn**；`assign_story_ids(items)` 供 refresh/link_intel_hyp 调用；三重闸门参数（SIM_THRESHOLD=0.65/时间48h/同源12h/摘要0.30）在文件头 |
@@ -144,6 +145,13 @@ python -c "..." # 见 daily_run.ps1 Step3，或等 OsintWeekly 周一 09:30 自�
 - **正则抓取多值句必须验证语义归属**（2026-09-19 踩坑）：财新失业率文章有三种句式（「25—29岁、30—59岁…分别录得 A%、B%」/「…为 A% 和 B%」/「30—59岁…维持在 A%」），旧正则一律往后找第一个数字，把 25-29 岁的值错配给了 30-59 岁，污染 5 处下游正文。**修法**：①按年龄段出场顺序配对取值；②加**逻辑自洽闸门**（分项不应大于总量——30-59 岁是劳动力主体，其失业率不可能高于城镇调查失业率总量）。规则：**数值型抓取管道必须内置自洽校验，宁可缺不可错**。
 - **引用任何下游数据前先做合理性检验**：均值/分项/总量之间若有包含关系，先算一遍能否自洽。历史档案写作时若核对过「30-59 vs 总量 5.3%」，本可当场发现这个 bug。
 - `falsification_criteria` 为空时会在验证时自动从 indicators/sub_propositions 的 `threshold_refute` 回填，不要手填重复值。
+- **新鲜度/合法性闸门一律用「计数」而非「取极值」**（2026-09-21 踩坑）：首版 `_content_age_days` 取 `max(published_at)` 算年龄，但语料混着源站错误时间戳的未来条目（实测 2026-11-17）→ max 恒取未来 → 年龄 **-57 天** → 闸门永远通过。改用 `_fresh_count()` 统计「近 N 天内条目数」，未来日期天然落在区间外。**任何用极值做判据的校验，先问：脏数据能否顶到极值端？**
+- **跨进程共享的快照文件必须校验内容，不能只信文件名**（2026-09-21）：`cache/intel_{今天}.jsonl` 由 main_local 自己写入，上游抓到旧数据时会顶着当日文件名——实测 9-21 的缓存装的是 9-14 的 1006 条（与当日仅 4 条交集）。
+- **AI 分析量必须与通道吞吐匹配**（2026-09-21）：`条数 ÷ batch_size × 单批耗时` 先算一遍再上线。Step2 曾全量送 1006 条 = 101 批 × dots 实测 137s/批 = 3.8 小时，自 8-30 起**静默挂起从未跑完**（CPU 0.7s/84 分钟，不报错不退出）。**"能跑"不等于"跑得完"**。
+- **两个定时任务抢跑是结构性问题**（2026-09-21）：OsintWeekly 用 StartWhenAvailable 补跑时落点不可控（曾压在整点，与 OsintRefresh 只差 3 秒）。消费"另一进程正在写入的数据"必须有等待/重试闸门（`_wait_for_today_intel`），不能假定数据已就绪。
+- **排查进程挂起的手法**：CPU 增量 + 网络字节增量**双零** = 挂起（非慢速推进）；`Get-CimInstance Win32_Process` 的 `ReadTransferCount` 判断"是否在等网络"；对比缓存内容与真实数据的 **id 交集**，可立刻证伪"它在处理正确数据"的假设。
+- **推理模型的 reasoning 计入 max_tokens**（2026-09-21 踩坑）：dots3-note-prev 生成 10 条 × 8 字段 JSON 时，reasoning 实测 7159 字符、正文 6331 字符，`max_tokens=8192` 会在数组中途截断。**长输出任务的 max_tokens 必须按 reasoning + 正文双份估算**；同时解析侧要有逐条抢救（`_salvage_items`），不能指望整体 `json.loads`。
+- **AI 输出必须过规范化层再喂下游**（2026-09-21）：模型返回的字段类型不固定（该给字符串的给 dict、confidence 给 0 或空）。下游做字符串切片/按 key 取值前，统一走 `_norm_text`/`_norm_dict`/`_norm_conf`——**先规范化，再消费**，别让 schema 违约渗进渲染层。
 
 ## read-macro 集成（2026-09 落地）
 
@@ -334,6 +342,29 @@ JEV 调用抛错时调用方会对同一条回退 mimo 重试一次，避免因�
 
 **遗留观察**：①周一 09:30 数据窗口问题（CI 10:12 + refresh 整点 → 09:30 时当日数据必缺）——周报用 cache 回退可接受，Step2 修复后不再崩；②HM100 驳 44 是"能源转型利空传统能源"假设吃满了能源类快讯的 I 判定，方法论上 ACH 诊断对高频同质证据的累计惩罚偏重，观察 2-3 周再定是否引入证据去重加权。
 
+## 周循环 9-21 复盘（2026-09-21，Step2 三大缺陷修复）
+
+周一补跑（机器 12:51 开机 → StartWhenAvailable 13:00 补跑）。**任务最终跑完（14:40），但过程不健康**：Step2 卡死 84 分钟被人工终止，靠隔离机制兜底；且它分析的根本不是当日数据。三份产物落盘，ACH 矩阵 421→437 行，新口径 `conf` 字段 392 条。
+
+| 问题 | 根因 | 修复 |
+|---|---|---|
+| **Step2 分析的是 9-14 的陈旧数据**（1006 条，9-11/9-12 发布，与当日仅 4 条交集） | 周任务 13:00:00 与 OsintRefresh 13:00:10 只差 3 秒启动，refresh 的 git pull 未落地 → `load_intel` 全部路径落空 → main_local 兜底 `max(cache_files, key=mtime)` 抓到 9-14 旧快照 | ①`load_intel` 路径优先级改为**产物目录优先**（cache 快照降次选）；②main_local 加 `_wait_for_today_intel()` 等当日文件就绪（上限 600s）；③缓存回退改按文件名日期取最新（不再用 mtime） |
+| **Step2 自 8-30 起从未跑完** | 全量送入 AI：1006 条 × batch_size 10 = 101 批，唯一可用通道 dots 实测 **137s/批** → 需 3.8 小时 | config.yaml 新增 `ai_analysis.max_items: 60`（按 final_score 降序取 Top N，约 14 分钟）；**缓存快照仍写全量**，只有 AI 分析截断 |
+| **AI 周报连续两周写「本周情报总条数为 0」** | `daily_run.ps1` 以 `python -c "...run_weekly_cycle()"` 单行调用，**未传 intel_items** → `_save_ai_weekly_summary` 的 week_intel 恒为空（库里实际有 4.5 万条） | 新增入口 `local/run_weekly_cycle.py`（显式加载当日情报并传入）；daily_run.ps1 Step3 改调该脚本 |
+| policy_tracker 零命中 | 唯一输入 `analysis_*.jsonl` 停在 8-20/8-30（Step2 从不产出的级联失败） | Step2 修复后自然恢复 |
+| dots 通道长 prompt 逼近超时 | 分析批 14K 字符 prompt 实测 137s，默认 `timeout=180` 余量不足 | `_analyze_single_batch` 显式传 `timeout=240`（`_safe_ai_post` cap 上限） |
+| **AI 返回了但 `JSON parse failed`，60 条分析全退化成占位结果** | dots3 是**推理模型，reasoning 计入 max_tokens**（实测 10 条批次 reasoning 达 7159 字符）→ 真实输出在数组中途被截断（实测 10 条只写出 7 条，断在半个字符串里）→ 整体 `json.loads` 必失败。旧"截断修复"只找最后一个 `}`，救不回来 | 新增 `_salvage_items()`：括号配对状态机逐条提取完整对象，截断处的半条丢弃、前面的全保住（实测 **0 → 6 条**） |
+| 模型返回的字段结构不符 schema（`structural_implication` 给成 dict、`confidence` 给 0/空） | 下游 `render_*`/`policy_tracker` 直接做字符串切片，遇 dict 抛 KeyError；confidence 走 `int(None)` 失败 | 新增 `_norm_text`/`_norm_dict`/`_norm_conf` 规范化层：dict 压平成文本（内容不丢）、缺失子键按已知键名回填、conf 归一到 1-10（0~1 比例值自动 ×10） |
+| AI 通道全线不可用时 Step2 空转近 50 分钟 | 每批都白撞完整降级链（实测单批约 8 分钟），60 条 6 批 | `analyze_batch` 加连续失败熔断（`CONSECUTIVE_FAIL_LIMIT=3`）；**判据是"有效产出"而非"非空列表"**——解析失败会返回一批 fallback 占位结果，用非空判断熔断永不触发（首版踩过） |
+
+**关键教训（已固化为规则）**：
+- **新鲜度闸门必须用「计数」而非「最大值」**：首版实现取 `max(published_at)` 算"最新距今几天"，但语料混着源站错误时间戳的未来条目（实测 2026-11-17）→ max 恒取未来 → 年龄算成 **-57 天** → 闸门永远通过、形同虚设。改为统计「近 N 天内条目数」（`_fresh_count`），未来日期天然不落在区间内，不会污染判定。**任何"取极值做校验"的闸门都要先问：脏数据能不能顶到极值端？**
+- **文件名日期不可信**：main_local 会把加载到的数据原样写进 `cache/intel_{今天}.jsonl`，一旦上游抓到旧数据，陈旧内容就顶着当日文件名。**跨进程共享的快照文件必须校验内容，不能只信文件名**。
+- **两个定时任务抢跑是结构性问题**：周任务用 StartWhenAvailable 补跑时，落点不可控（这次正好压在整点）。凡是消费"另一进程正在写入的数据"，都要有等待/重试闸门，不能假定数据已就绪。
+- **AI 分析量必须与通道吞吐匹配**：接入新数据源或改批大小时，先算 `条数 ÷ batch_size × 单批耗时`，与任务窗口比对。**"能跑"不等于"跑得完"**——Step2 的失败方式是静默挂起（CPU 0.7s/84 分钟），不报错、不退出，只靠超时兜底。
+
+**排查手法（可复用）**：进程 CPU 增量 + 网络字节增量双零 = 挂起（非慢速推进）；`Get-CimInstance Win32_Process` 的 `ReadTransferCount` 是判断"是否在等网络"的可靠指标；对比"缓存文件内容 vs 当日真实数据"的 id 交集，能立刻证伪"它在分析正确数据"的假设。
+
 ## 系统通电修复（2026-09-10，审计驱动）
 
 审计发现 P0/P1 成果「代码就位但未通电」——verify/link 只挂 CI 而 CI 上必然静默跳过、周任务因电源条件从未成功。本轮修复：
@@ -429,6 +460,9 @@ JEV 调用抛错时调用方会对同一条回退 mimo 重试一次，避免因�
 - [ ] 僵尸假设处理（数据暴露）：`中国社保走韩国老路`（388 条中仅 1 条 I、0 条 C）与 `东亚三国现代化进程趋同`（4C+2I）几乎从不被有效诊断，疑为假设过抽象无法证伪或情报源未覆盖；会一直占 ACH 排名但无信息量
 - [x] **JEV 接入主链**（2026-09-21 完成）：`local/jev_client.py` + `tools/jev_usage.py`，`ai_diagnose(jev=)` 优先 JEV（0.66s/条）失败回退 mimo；实测中文可用（金标准 83%）、提问模板必须用简单措辞
 - [ ] **JEV 吞吐红利释放**：接入后单条 45s→0.66s，`ach_daily_batch` 的 1500s 预算从 ~33 条/天可提到 ~2000 条/天，`MAX_DIAGNOSE_PER_RUN` 与 `BATCH` 上限可放宽（先观察一周稳定性再调）
+- [ ] **Step2 分析量观察**（2026-09-21 起）：`ai_analysis.max_items` 暂定 60（约 14 分钟）。若 dots 吞吐改善或改走 JEV，可上调；同时观察 `analysis_*.jsonl` 是否开始正常日产（此前停在 8-20/8-30，是 Step2 从不跑完的直接证据）
+- [ ] **周循环与 refresh 抢跑根治**（2026-09-21 缓解未根治）：当前靠 `_wait_for_today_intel`（600s 等待）兜底；更彻底的做法是让 OsintWeekly 触发器错开整点（如 09:35），或让 refresh 写一个"数据就绪"标志文件供周任务轮询
+- [ ] **AI 周报零情报护栏复核**（2026-09-21）：修复后首次周报应显示真实条数；若仍写"总条数为 0"，检查 `run_weekly_cycle.load_week_intel` 的闸门是否误拦
 - [ ] **历史 C/I 标签质量差**（Phase 0 暴露）：mimo 把「韩国加息」「日经指数涨跌」「黄金欧元行情」判给「AI成本上升」假设，属过度联想。这批标签既污染 ACH 后验，也不能当 A/B 基准；需评估是否用 JEV 重刷历史矩阵
 - [ ] 官方 `confidence` 字段警告：第三方逆向 + 实测确认 `c=(P_max−1/K)/(1−1/K)` 是分布集中度归一化，**非正确性估计**；做阈值分流/校准须用 `probabilities`
 - [ ] JEV 服务稳定性观察：实测遇 `503 no healthy upstream`（3 次重试后回退 mimo 成功）；官方限流动态调整（250k tok/s、1200 req/min），若失败率上升需调 `RETRY_ATTEMPTS`
