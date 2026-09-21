@@ -82,3 +82,24 @@ def get_dots_key() -> str:
         except Exception:
             pass
     return ""
+
+
+def get_jev_key() -> str:
+    """TypeSafe JEV 决策模型 key（2026-09-20 接入）。
+
+    端点 api.typesafe.ai/v1（System One API，POST /systemone），模型 jev-latest。
+    用途：ACH 证据诊断（code/conf 判定），见 docs/JEV落地方案-2026-09-20.md。
+    key 来源：环境变量 TYPESAFE_API_KEY，或本地配置文件 jev.api_key。
+    """
+    key = os.environ.get("TYPESAFE_API_KEY", "")
+    if key:
+        return key
+    local = _ROOT / "config.local.yaml"
+    if local.exists():
+        try:
+            import yaml
+            cfg = yaml.safe_load(local.read_text(encoding="utf-8")) or {}
+            return (cfg.get("jev") or {}).get("api_key", "") or ""
+        except Exception:
+            pass
+    return ""
