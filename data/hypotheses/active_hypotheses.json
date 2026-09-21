@@ -28030,8 +28030,27 @@
       "hyp_e2b46e32_sub3",
       "hyp_e2b46e32_sub4"
     ],
-    "indicators": [],
-    "falsification_criteria": "根据国际劳工组织数据，到2025年中日韩三国青年失业率（15-24岁）平均值差异大于5个百分点；根据彭博房地产指数，到2030年中日韩主要城市房价波动相关系数低于0.6；根据OECD政策报告，到2024年三国应对经济刺激的财政支出占GDP比例差异超过2%",
+    "indicators": [
+      {
+        "name": "青年劳动市场政策与失业率收敛度",
+        "source": "ILOSTAT、中国国家统计局、日本总务省统计局、韩国统计厅",
+        "threshold_support": "到 2027 年，中国、日本、韩国的 15-24 岁青年失业率较 2026 年均呈现下降趋势，且三国青年失业率的最大值与最小值之差较 2026 年收窄 20% 以上。",
+        "threshold_refute": "到 2027 年，三国中至少有一国青年失业率较 2026 年大幅上升（升幅超过 20%），或者三国青年失业率的最大差距较 2026 年进一步扩大。"
+      },
+      {
+        "name": "房地产价格指数与风险政策同步性",
+        "source": "中国国家统计局、日本不动产经济研究所、韩国国土交通部、IMF WEO",
+        "threshold_support": "到 2027 年，中日韩三国的新建住宅价格指数同比变动方向一致（均上涨或均下跌），且涨跌幅绝对值差异均在 3 个百分点以内；同时，三国均出台了针对房地产企业债务风险的系统性处置政策。",
+        "threshold_refute": "到 2027 年，三国住宅价格指数同比变动方向出现分化（如一国上涨而另一国下跌），或涨跌幅绝对值差异超过 5 个百分点；或者某国未能出台系统性房地产风险处置政策。"
+      },
+      {
+        "name": "老龄化应对与退休年龄改革趋同",
+        "source": "UN WPP、中国人力资源和社会保障部、日本厚生劳动省、韩国保健福祉部",
+        "threshold_support": "到 2027 年，中国、日本、韩国均在国家层面立法或出台了具体的延迟退休政策，且三国的政策目标退休年龄均不低于 65 岁；同时，三国在提高生育率或养老保障方面的财政支出占 GDP 比重较 2026 年均有所上升。",
+        "threshold_refute": "到 2027 年，三国中至少有一国未出台任何延迟退休的实质性政策，或者三国的政策目标退休年龄出现超过 5 岁的巨大差异；或者三国在老龄化相关财政支出上呈现相反走势（如一国大幅削减而另一国大幅增加）。"
+      }
+    ],
+    "falsification_criteria": "到 2027 年，三国中至少有一国青年失业率较 2026 年大幅上升（升幅超过 20%），或者三国青年失业率的最大差距较 2026 年进一步扩大。；到 2027 年，三国住宅价格指数同比变动方向出现分化（如一国上涨而另一国下跌），或涨跌幅绝对值差异超过 5 个百分点；或者某国未能出台系统性房地产风险处置政策。；到 2027 年，三国中至少有一国未出台任何延迟退休的实质性政策，或者三国的政策目标退休年龄出现超过 5 岁的巨大差异；或者三国在老龄化相关财政支出上呈现相反走势（如一国大幅削减而另一国大幅增加）。",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -30539,7 +30558,13 @@
       }
     ],
     "version": 3,
-    "deadline_source": "ai_proposed"
+    "deadline_source": "ai_proposed",
+    "_prev_thresholds": {
+      "falsification_criteria": "根据国际劳工组织数据，到2025年中日韩三国青年失业率（15-24岁）平均值差异大于5个百分点；根据彭博房地产指数，到2030年中日韩主要城市房价波动相关系数低于0.6；根据OECD政策报告，到2024年三国应对经济刺激的财政支出占GDP比例差异超过2%",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T12:57:46"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "hyp_e2b46e32_sub1",
@@ -30557,8 +30582,33 @@
       "hyp_e2b46e32_sub1_s2"
     ],
     "weight": 0.5,
-    "indicators": [],
-    "falsification_criteria": "根据世界银行预测，到2030年韩国老年抚养比（65+/15-64）低于18%；根据各国财政部数据，到2025年中日韩养老金支出占GDP比例差异超过3个百分点；根据移民政策分析，到2028年中国实施严格移民限制而日本放宽移民政策",
+    "indicators": [
+      {
+        "name": "老年抚养比年均增速",
+        "source": "联合国人口司世界人口展望(UN WPP)",
+        "threshold_support": "到2027年，中国、日本、韩国三国的老年抚养比较2026年水平的年均增速差异不超过2个百分点",
+        "threshold_refute": "到2027年，任一国家的老年抚养比年均增速与其他两国差异超过2个百分点"
+      },
+      {
+        "name": "65岁以上人口劳动参与率变化",
+        "source": "国际劳工组织ILOSTAT",
+        "threshold_support": "到2027年，三国65岁以上人口劳动参与率较2026年水平均呈上升趋势，且增幅差异不超过3个百分点",
+        "threshold_refute": "到2027年，任一国家65岁以上人口劳动参与率下降，或三国增幅差异超过5个百分点"
+      },
+      {
+        "name": "养老金替代率调整幅度",
+        "source": "OECD养老金统计数据库",
+        "threshold_support": "到2027年，三国净养老金替代率较2026年水平的变化方向一致（同升或同降），且变化幅度差异不超过5个百分点",
+        "threshold_refute": "到2027年，三国养老金替代率变化方向不一致，或变化幅度差异超过10个百分点"
+      },
+      {
+        "name": "社会保障支出占GDP比重变化",
+        "source": "IMF WEO",
+        "threshold_support": "到2027年，三国社会保障支出占GDP比重较2026年水平均呈上升趋势，且增幅差异不超过1个百分点",
+        "threshold_refute": "到2027年，任一国家社会保障支出占GDP比重下降，或三国增幅差异超过2个百分点"
+      }
+    ],
+    "falsification_criteria": "到2027年，任一国家的老年抚养比年均增速与其他两国差异超过2个百分点；到2027年，任一国家65岁以上人口劳动参与率下降，或三国增幅差异超过5个百分点；到2027年，三国养老金替代率变化方向不一致，或变化幅度差异超过10个百分点；到2027年，任一国家社会保障支出占GDP比重下降，或三国增幅差异超过2个百分点",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -30695,7 +30745,13 @@
       }
     ],
     "version": 1,
-    "deadline_source": "ai_proposed"
+    "deadline_source": "ai_proposed",
+    "_prev_thresholds": {
+      "falsification_criteria": "根据世界银行预测，到2030年韩国老年抚养比（65+/15-64）低于18%；根据各国财政部数据，到2025年中日韩养老金支出占GDP比例差异超过3个百分点；根据移民政策分析，到2028年中国实施严格移民限制而日本放宽移民政策",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T12:57:46"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "hyp_e2b46e32_sub1_s1",
@@ -30789,15 +30845,12 @@
     "indicators": [
       {
         "name": "法定退休年龄变化",
-        "source": "各国人社部",
-        "current_value": null,
-        "target_value": null,
-        "threshold_support": "延迟退休/养老金改革政策趋同",
-        "threshold_refute": "根据各国人社部数据，到2025年日本将法定退休年龄从62岁延迟至65岁而中国维持在60岁，差异大于2年；到2026年韩国推出养老金改革但未调整退休年龄，与日本政策方向不同",
-        "verify_status": "no_source"
+        "source": "中国人力资源和社会保障部、日本厚生劳动省、韩国保健福祉部",
+        "threshold_support": "到2027年，中国法定退休年龄较2026年提高，且日本和韩国法定退休年龄较2026年未降低",
+        "threshold_refute": "到2027年，中国法定退休年龄较2026年未提高，或日本或韩国法定退休年龄较2026年降低"
       }
     ],
-    "falsification_criteria": "根据各国人社部数据，到2025年日本将法定退休年龄从62岁延迟至65岁而中国维持在60岁，差异大于2年；到2026年韩国推出养老金改革但未调整退休年龄，与日本政策方向不同",
+    "falsification_criteria": "到2027年，中国法定退休年龄较2026年未提高，或日本或韩国法定退休年龄较2026年降低",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -33091,7 +33144,23 @@
       "signal_state": "s0_r0",
       "confidence_applied": false,
       "intel_adjusted_at": "2026-09-21"
-    }
+    },
+    "_prev_thresholds": {
+      "falsification_criteria": "根据各国人社部数据，到2025年日本将法定退休年龄从62岁延迟至65岁而中国维持在60岁，差异大于2年；到2026年韩国推出养老金改革但未调整退休年龄，与日本政策方向不同",
+      "indicators": [
+        {
+          "name": "法定退休年龄变化",
+          "source": "各国人社部",
+          "current_value": null,
+          "target_value": null,
+          "threshold_support": "延迟退休/养老金改革政策趋同",
+          "threshold_refute": "根据各国人社部数据，到2025年日本将法定退休年龄从62岁延迟至65岁而中国维持在60岁，差异大于2年；到2026年韩国推出养老金改革但未调整退休年龄，与日本政策方向不同",
+          "verify_status": "no_source"
+        }
+      ],
+      "rewritten_at": "2026-09-21T12:57:46"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "hyp_e2b46e32_sub2",
@@ -33109,8 +33178,27 @@
       "hyp_e2b46e32_sub2_s2"
     ],
     "weight": 0.5,
-    "indicators": [],
-    "falsification_criteria": "判据1：如果2024-2025年东亚三国（中国、日本、韩国）青年失业率（15-24岁）年度变化率相关系数低于0.5（数据源：ILO/各国统计局），则不同步，证伪趋同；判据2：如果ILO报告显示青年失业率教育背景构成在2024年趋势相反（如中国高等教育失业率上升而韩国下降），则结构性问题未趋同；判据3：如果有里程碑事件如中国青年失业率政策调整但日韩未跟进，且2025年数据显示分歧扩大，则证伪。",
+    "indicators": [
+      {
+        "name": "青年失业率跨国差异",
+        "source": "ILOSTAT",
+        "threshold_support": "到2027年，中国、日本、韩国三国15-24岁青年失业率的标准差较2026年水平下降20%以上",
+        "threshold_refute": "到2027年，三国青年失业率的标准差较2026年水平下降不足20%或上升"
+      },
+      {
+        "name": "青年失业率与整体失业率比率的跨国差异",
+        "source": "ILOSTAT",
+        "threshold_support": "到2027年，三国青年失业率（15-24岁）与整体失业率（25岁以上）的比率的变异系数较2026年水平下降20%以上",
+        "threshold_refute": "到2027年，该变异系数较2026年水平下降不足20%或上升"
+      },
+      {
+        "name": "青年长期失业率占比的跨国差异",
+        "source": "ILOSTAT",
+        "threshold_support": "到2027年，三国失业持续时间超过12个月的青年失业者占总青年失业人数的比例的标准差较2026年水平下降20%以上",
+        "threshold_refute": "到2027年，该标准差较2026年水平下降不足20%或上升"
+      }
+    ],
+    "falsification_criteria": "到2027年，三国青年失业率的标准差较2026年水平下降不足20%或上升；到2027年，该变异系数较2026年水平下降不足20%或上升；到2027年，该标准差较2026年水平下降不足20%或上升",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -36424,7 +36512,13 @@
       }
     ],
     "version": 1,
-    "deadline_source": "ai_proposed"
+    "deadline_source": "ai_proposed",
+    "_prev_thresholds": {
+      "falsification_criteria": "判据1：如果2024-2025年东亚三国（中国、日本、韩国）青年失业率（15-24岁）年度变化率相关系数低于0.5（数据源：ILO/各国统计局），则不同步，证伪趋同；判据2：如果ILO报告显示青年失业率教育背景构成在2024年趋势相反（如中国高等教育失业率上升而韩国下降），则结构性问题未趋同；判据3：如果有里程碑事件如中国青年失业率政策调整但日韩未跟进，且2025年数据显示分歧扩大，则证伪。",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T12:57:46"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "hyp_e2b46e32_sub2_s1",
@@ -36441,16 +36535,13 @@
     "weight": 0.3,
     "indicators": [
       {
-        "name": "青年NEET率",
-        "source": "ILO/OECD",
-        "current_value": null,
-        "target_value": null,
-        "threshold_support": "青年NEET率东亚三国同步上升",
-        "threshold_refute": "判据1：如果ILO数据到2024年底显示中国青年NEET率年增长5%，而日本下降1%（阈值：年增长率差异超过3%），则不同步；判据2：如果OECD数据表明2023-2024年东亚三国NEET率趋势无同步性（如相关系数低于0.7）；最能证伪阈值：NEET率同步变化率指标低于0.7。",
-        "verify_status": "no_source"
+        "name": "青年NEET率同步上升",
+        "source": "ILOSTAT、OECD、中国国家统计局、日本总务省统计局、韩国统计厅",
+        "threshold_support": "到2027年，中国、日本、韩国三国的青年NEET率均较2026年水平上升，且每个国家的增幅不低于20%。",
+        "threshold_refute": "到2027年，中国、日本、韩国三国中至少有一个国家的青年NEET率较2026年水平未上升，或增幅低于20%。"
       }
     ],
-    "falsification_criteria": "判据1：如果ILO数据到2024年底显示中国青年NEET率年增长5%，而日本下降1%（阈值：年增长率差异超过3%），则不同步；判据2：如果OECD数据表明2023-2024年东亚三国NEET率趋势无同步性（如相关系数低于0.7）；最能证伪阈值：NEET率同步变化率指标低于0.7。",
+    "falsification_criteria": "到2027年，中国、日本、韩国三国中至少有一个国家的青年NEET率较2026年水平未上升，或增幅低于20%。",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -42360,7 +42451,23 @@
       "signal_state": "s0_r0",
       "confidence_applied": false,
       "intel_adjusted_at": "2026-09-21"
-    }
+    },
+    "_prev_thresholds": {
+      "falsification_criteria": "判据1：如果ILO数据到2024年底显示中国青年NEET率年增长5%，而日本下降1%（阈值：年增长率差异超过3%），则不同步；判据2：如果OECD数据表明2023-2024年东亚三国NEET率趋势无同步性（如相关系数低于0.7）；最能证伪阈值：NEET率同步变化率指标低于0.7。",
+      "indicators": [
+        {
+          "name": "青年NEET率",
+          "source": "ILO/OECD",
+          "current_value": null,
+          "target_value": null,
+          "threshold_support": "青年NEET率东亚三国同步上升",
+          "threshold_refute": "判据1：如果ILO数据到2024年底显示中国青年NEET率年增长5%，而日本下降1%（阈值：年增长率差异超过3%），则不同步；判据2：如果OECD数据表明2023-2024年东亚三国NEET率趋势无同步性（如相关系数低于0.7）；最能证伪阈值：NEET率同步变化率指标低于0.7。",
+          "verify_status": "no_source"
+        }
+      ],
+      "rewritten_at": "2026-09-21T12:57:46"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "hyp_e2b46e32_sub2_s2",
@@ -42378,15 +42485,12 @@
     "indicators": [
       {
         "name": "本科以上就业占比",
-        "source": "各国统计局",
-        "current_value": null,
-        "target_value": null,
-        "threshold_support": "学历通胀导致就业门槛同步提高",
-        "threshold_refute": "判据1：如果2024年各国统计局数据显示本科以上就业占比变化不同步（如中国占比年增长2%，韩国下降1%，差异超过5%），则门槛未同步提高；判据2：如果有调查如OECD技能调查表明2023-2024年就业门槛要求未普遍提升；最能证伪阈值：本科以上就业占比在三国年变化率标准差超过2%。",
-        "verify_status": "no_source"
+        "source": "中国国家统计局",
+        "threshold_support": "到2027年，本科以上就业占比较2026年水平增长5%以上",
+        "threshold_refute": "到2027年，本科以上就业占比较2026年水平下降或增长不足2%"
       }
     ],
-    "falsification_criteria": "判据1：如果2024年各国统计局数据显示本科以上就业占比变化不同步（如中国占比年增长2%，韩国下降1%，差异超过5%），则门槛未同步提高；判据2：如果有调查如OECD技能调查表明2023-2024年就业门槛要求未普遍提升；最能证伪阈值：本科以上就业占比在三国年变化率标准差超过2%。",
+    "falsification_criteria": "到2027年，本科以上就业占比较2026年水平下降或增长不足2%",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -45048,7 +45152,23 @@
       "signal_state": "s0_r0",
       "confidence_applied": false,
       "intel_adjusted_at": "2026-09-21"
-    }
+    },
+    "_prev_thresholds": {
+      "falsification_criteria": "判据1：如果2024年各国统计局数据显示本科以上就业占比变化不同步（如中国占比年增长2%，韩国下降1%，差异超过5%），则门槛未同步提高；判据2：如果有调查如OECD技能调查表明2023-2024年就业门槛要求未普遍提升；最能证伪阈值：本科以上就业占比在三国年变化率标准差超过2%。",
+      "indicators": [
+        {
+          "name": "本科以上就业占比",
+          "source": "各国统计局",
+          "current_value": null,
+          "target_value": null,
+          "threshold_support": "学历通胀导致就业门槛同步提高",
+          "threshold_refute": "判据1：如果2024年各国统计局数据显示本科以上就业占比变化不同步（如中国占比年增长2%，韩国下降1%，差异超过5%），则门槛未同步提高；判据2：如果有调查如OECD技能调查表明2023-2024年就业门槛要求未普遍提升；最能证伪阈值：本科以上就业占比在三国年变化率标准差超过2%。",
+          "verify_status": "no_source"
+        }
+      ],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "hyp_e2b46e32_sub3",
@@ -45066,8 +45186,27 @@
       "hyp_e2b46e32_sub3_s2"
     ],
     "weight": 0.5,
-    "indicators": [],
-    "falsification_criteria": "判据1：如果2024年中国房地产价格指数下跌15%但社会消费品零售总额增长率保持稳定或上升（数据源：国家统计局），则路径不相似；判据2：如果有比较研究显示2023-2024年房地产泡沫破裂但消费萎缩在不同国家触发点不同；判据3：如果有政策干预如降息但消费未受影响，且2025年数据分歧。",
+    "indicators": [
+      {
+        "name": "新建商品住宅价格指数与居民消费支出增速的同步变动",
+        "source": "中国国家统计局",
+        "threshold_support": "到2027年，如果新建商品住宅价格指数同比涨幅较2026年下降超过20%，同时居民消费支出同比增速较2026年下降超过15%，则支持假设。",
+        "threshold_refute": "如果两者变动方向相反，或下降幅度差异超过10个百分点，则证伪假设。"
+      },
+      {
+        "name": "房地产开发投资增速与消费者信心指数的背离度",
+        "source": "中国国家统计局、中国人民银行",
+        "threshold_support": "到2027年，如果房地产开发投资同比增速较2026年下降超过20%，同时消费者信心指数较2026年下降超过10点，则支持假设。",
+        "threshold_refute": "如果房地产开发投资增速下降而消费者信心指数上升，则证伪假设。"
+      },
+      {
+        "name": "商品房销售面积增速与社会消费品零售总额增速的联动性",
+        "source": "中国国家统计局",
+        "threshold_support": "到2027年，如果商品房销售面积同比增速较2026年下降超过20%，同时社会消费品零售总额同比增速较2026年下降超过15%，则支持假设。",
+        "threshold_refute": "如果两者变动方向相反，或下降幅度差异超过10个百分点，则证伪假设。"
+      }
+    ],
+    "falsification_criteria": "如果两者变动方向相反，或下降幅度差异超过10个百分点，则证伪假设。；如果房地产开发投资增速下降而消费者信心指数上升，则证伪假设。；如果两者变动方向相反，或下降幅度差异超过10个百分点，则证伪假设。",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -46906,7 +47045,13 @@
       }
     ],
     "version": 1,
-    "deadline_source": "ai_proposed"
+    "deadline_source": "ai_proposed",
+    "_prev_thresholds": {
+      "falsification_criteria": "判据1：如果2024年中国房地产价格指数下跌15%但社会消费品零售总额增长率保持稳定或上升（数据源：国家统计局），则路径不相似；判据2：如果有比较研究显示2023-2024年房地产泡沫破裂但消费萎缩在不同国家触发点不同；判据3：如果有政策干预如降息但消费未受影响，且2025年数据分歧。",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "hyp_e2b46e32_sub3_s1",
@@ -71313,8 +71458,27 @@
       "hyp_d26158d3_sub3",
       "hyp_d26158d3_sub4"
     ],
-    "indicators": [],
-    "falsification_criteria": "2025年，中国企业社保缴费率未下调，与2024年持平，而韩国1997年后十年内费率持续下降；到2028年，中国延迟退休政策未实施，韩国在2005年已实现全国社保统筹，中国在2030年前未完成省级统筹；2026年数据显示，社保基金缺口率低于韩国当年水平，改革路径分叉。",
+    "indicators": [
+      {
+        "name": "养老保险单位缴费比例调整",
+        "source": "中国人力资源和社会保障部, 韩国保健福祉部",
+        "threshold_support": "到2027年，中国城镇企业职工基本养老保险单位缴费比例较2026年水平下降超过1个百分点，呈现与韩国1997-2010年改革期间相似的降费率趋势。",
+        "threshold_refute": "到2027年，中国养老保险单位缴费比例较2026年水平未下降或上升，与韩国降费率路径背离。"
+      },
+      {
+        "name": "法定退休年龄调整",
+        "source": "中国人力资源和社会保障部, 韩国劳动部",
+        "threshold_support": "到2027年，中国正式实施渐进式延迟退休政策，将法定退休年龄较2026年水平提高至少1岁，与韩国1997年后逐步提高退休年龄的路径一致。",
+        "threshold_refute": "到2027年，中国未实施延迟退休政策，法定退休年龄保持2026年水平，与韩国路径不一致。"
+      },
+      {
+        "name": "养老保险全国统筹覆盖率",
+        "source": "中国人力资源和社会保障部, 韩国国民年金公团",
+        "threshold_support": "到2027年，中国实现企业职工基本养老保险全国统筹全覆盖，所有省份均纳入全国统筹系统，与韩国1997年后建立全国统一养老金体系的进程相似。",
+        "threshold_refute": "到2027年，中国全国统筹覆盖率未达到100%，仍存在省份未纳入全国统筹，与韩国全国统筹路径不一致。"
+      }
+    ],
+    "falsification_criteria": "到2027年，中国养老保险单位缴费比例较2026年水平未下降或上升，与韩国降费率路径背离。；到2027年，中国未实施延迟退休政策，法定退休年龄保持2026年水平，与韩国路径不一致。；到2027年，中国全国统筹覆盖率未达到100%，仍存在省份未纳入全国统筹，与韩国全国统筹路径不一致。",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -77159,7 +77323,18 @@
       }
     ],
     "version": 3,
-    "deadline_source": "level_default"
+    "deadline_source": "level_default",
+    "_prev_thresholds": {
+      "falsification_criteria": "2025年，中国企业社保缴费率未下调，与2024年持平，而韩国1997年后十年内费率持续下降；到2028年，中国延迟退休政策未实施，韩国在2005年已实现全国社保统筹，中国在2030年前未完成省级统筹；2026年数据显示，社保基金缺口率低于韩国当年水平，改革路径分叉。",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": [
+      2010
+    ],
+    "quality_issues": [
+      "过期判定年份 2010"
+    ]
   },
   {
     "id": "hyp_d26158d3_sub1",
@@ -77177,8 +77352,21 @@
       "hyp_d26158d3_sub1_s2"
     ],
     "weight": 0.5,
-    "indicators": [],
-    "falsification_criteria": "从2023年到2027年，企业养老保险缴费率每年下降0.5%，无上升迹象；2026年费率上调2%，打破先降后升周期；人社部数据显示，费率在2024-2028年间波动但无明确周期性趋势，标准差低于1%。",
+    "indicators": [
+      {
+        "name": "企业职工基本养老保险单位缴费比例",
+        "source": "中国人力资源和社会保障部（人社部）",
+        "threshold_support": "到2027年，在2026年水平基础上，该比例先降低至少0.5个百分点，随后又回升至少0.5个百分点",
+        "threshold_refute": "到2027年，该比例未出现先降后升的变化，而是持续下降、持续上升或保持不变"
+      },
+      {
+        "name": "企业职工基本养老保险基金累计结余同比增速",
+        "source": "中国人力资源和社会保障部（人社部）",
+        "threshold_support": "到2027年，该同比增速较2026年水平先下降后上升，与费率变化周期一致",
+        "threshold_refute": "到2027年，该同比增速未呈现先降后升的态势，而是持续下降、持续上升或保持稳定"
+      }
+    ],
+    "falsification_criteria": "到2027年，该比例未出现先降后升的变化，而是持续下降、持续上升或保持不变；到2027年，该同比增速未呈现先降后升的态势，而是持续下降、持续上升或保持稳定",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -79083,7 +79271,13 @@
       }
     ],
     "version": 1,
-    "deadline_source": "level_default"
+    "deadline_source": "level_default",
+    "_prev_thresholds": {
+      "falsification_criteria": "从2023年到2027年，企业养老保险缴费率每年下降0.5%，无上升迹象；2026年费率上调2%，打破先降后升周期；人社部数据显示，费率在2024-2028年间波动但无明确周期性趋势，标准差低于1%。",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "hyp_d26158d3_sub1_s1",
@@ -79319,8 +79513,21 @@
       "hyp_d26158d3_sub2_s2"
     ],
     "weight": 0.5,
-    "indicators": [],
-    "falsification_criteria": "2024-2028年养老金替代率年均增长0.5%，来源人社部数据；到2027年养老金替代率稳定在45%以上，来源国务院政策报告；2026年起养老金增长率连续两年超过工资增长率，来源国家统计局",
+    "indicators": [
+      {
+        "name": "城镇职工基本养老保险平均替代率",
+        "source": "中国人力资源和社会保障部",
+        "threshold_support": "到2027年，平均替代率较2026年水平下降5%以上",
+        "threshold_refute": "到2027年，平均替代率较2026年水平下降不足5%或上升"
+      },
+      {
+        "name": "中日养老金替代率差距",
+        "source": "OECD",
+        "threshold_support": "到2027年，日本与中国养老金替代率的差距较2026年水平扩大5%以上",
+        "threshold_refute": "到2027年，差距较2026年水平未扩大或缩小"
+      }
+    ],
+    "falsification_criteria": "到2027年，平均替代率较2026年水平下降不足5%或上升；到2027年，差距较2026年水平未扩大或缩小",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -79390,7 +79597,13 @@
       }
     ],
     "version": 1,
-    "deadline_source": "level_default"
+    "deadline_source": "level_default",
+    "_prev_thresholds": {
+      "falsification_criteria": "2024-2028年养老金替代率年均增长0.5%，来源人社部数据；到2027年养老金替代率稳定在45%以上，来源国务院政策报告；2026年起养老金增长率连续两年超过工资增长率，来源国家统计局",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "hyp_d26158d3_sub2_s1",
@@ -81193,8 +81406,33 @@
       "hyp_d26158d3_sub3_s2"
     ],
     "weight": 0.5,
-    "indicators": [],
-    "falsification_criteria": "到2025年底，中国延迟退休相关法律变更次数少于韩国1997-2010年期间的3次；中国延迟退休年龄调整幅度小于韩国同期5岁增幅；中国政策出台时间表显示推进节奏明显慢于韩国，例如2025年才启动类似进程",
+    "indicators": [
+      {
+        "name": "法定退休年龄的年度提高幅度",
+        "source": "中国人力资源和社会保障部（人社部）",
+        "threshold_support": "到2027年，中国法定退休年龄（以男性为例）较2026年水平提高1年（例如从60岁提高至61岁），且提高节奏与韩国1997-2010年间每年提高0.5-1年的模式类似。",
+        "threshold_refute": "到2027年，中国法定退休年龄较2026年水平没有提高或提高幅度不足1年（例如仅提高6个月或更少）。"
+      },
+      {
+        "name": "养老金最低缴费年限的延长",
+        "source": "中国人力资源和社会保障部（人社部）",
+        "threshold_support": "到2027年，中国基本养老保险最低缴费年限较2026年水平提高1年以上（例如从15年提高至16年或更多），反映延迟退休推进节奏与韩国1997-2010年间逐步延长缴费年限的做法一致。",
+        "threshold_refute": "到2027年，中国基本养老保险最低缴费年限较2026年水平没有提高或提高不足1年。"
+      },
+      {
+        "name": "老年劳动参与率的变化",
+        "source": "中国国家统计局或ILOSTAT",
+        "threshold_support": "到2027年，中国60-64岁男性人口劳动参与率较2026年水平增长10%以上，且增长趋势与韩国1997-2010年间延迟退休后老年劳动参与率上升的模式类似。",
+        "threshold_refute": "到2027年，中国60-64岁男性人口劳动参与率较2026年水平增长不足10%或出现下降。"
+      },
+      {
+        "name": "延迟退休政策覆盖群体的扩展速度",
+        "source": "中国人力资源和社会保障部（人社部）",
+        "threshold_support": "到2027年，中国延迟退休政策覆盖的行业或职业群体数量较2026年水平增长50%以上（例如从部分试点扩展至全国主要行业），扩展节奏与韩国1997-2010年间逐步推广延迟退休的节奏类似。",
+        "threshold_refute": "到2027年，中国延迟退休政策覆盖的行业或职业群体数量较2026年水平增长不足50%或没有扩展。"
+      }
+    ],
+    "falsification_criteria": "到2027年，中国法定退休年龄较2026年水平没有提高或提高幅度不足1年（例如仅提高6个月或更少）。；到2027年，中国基本养老保险最低缴费年限较2026年水平没有提高或提高不足1年。；到2027年，中国60-64岁男性人口劳动参与率较2026年水平增长不足10%或出现下降。；到2027年，中国延迟退休政策覆盖的行业或职业群体数量较2026年水平增长不足50%或没有扩展。",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -81270,7 +81508,21 @@
       }
     ],
     "version": 1,
-    "deadline_source": "level_default"
+    "deadline_source": "level_default",
+    "_prev_thresholds": {
+      "falsification_criteria": "到2025年底，中国延迟退休相关法律变更次数少于韩国1997-2010年期间的3次；中国延迟退休年龄调整幅度小于韩国同期5岁增幅；中国政策出台时间表显示推进节奏明显慢于韩国，例如2025年才启动类似进程",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": [
+      2010
+    ],
+    "quality_issues": [
+      "过期判定年份 2010",
+      "过期判定年份 2010",
+      "过期判定年份 2010",
+      "过期判定年份 2010"
+    ]
   },
   {
     "id": "hyp_d26158d3_sub3_s1",
@@ -81583,8 +81835,27 @@
       "hyp_d26158d3_sub4_s2"
     ],
     "weight": 0.5,
-    "indicators": [],
-    "falsification_criteria": "财政部报告显示2023-2025年社保基金缺口占GDP比例连续下降；政府财政报告未提及社保基金压力或显示社保基金盈余；社保基金收支数据显示缺口没有扩大而是收窄",
+    "indicators": [
+      {
+        "name": "城镇职工基本养老保险基金当期缺口",
+        "source": "中国人力资源和社会保障部",
+        "threshold_support": "到2027年，当期基金支出减当期基金收入的缺口较2026年水平增长20%以上",
+        "threshold_refute": "到2027年，该缺口较2026年水平下降或增长不足20%"
+      },
+      {
+        "name": "财政对社保基金的补贴占一般公共预算支出的比例",
+        "source": "中国财政部",
+        "threshold_support": "到2027年，财政对社保基金的补贴占一般公共预算支出的比例较2026年水平上升20%以上",
+        "threshold_refute": "到2027年，该比例较2026年水平下降或上升不足20%"
+      },
+      {
+        "name": "城镇职工基本养老保险基金累计结余可支付月数",
+        "source": "中国人力资源和社会保障部",
+        "threshold_support": "到2027年，城镇职工基本养老保险基金累计结余可支付月数较2026年水平下降30%以上",
+        "threshold_refute": "到2027年，可支付月数较2026年水平下降不足30%或上升"
+      }
+    ],
+    "falsification_criteria": "到2027年，该缺口较2026年水平下降或增长不足20%；到2027年，该比例较2026年水平下降或上升不足20%；到2027年，可支付月数较2026年水平下降不足30%或上升",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -93295,7 +93566,13 @@
       }
     ],
     "version": 1,
-    "deadline_source": "level_default"
+    "deadline_source": "level_default",
+    "_prev_thresholds": {
+      "falsification_criteria": "财政部报告显示2023-2025年社保基金缺口占GDP比例连续下降；政府财政报告未提及社保基金压力或显示社保基金盈余；社保基金收支数据显示缺口没有扩大而是收窄",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "hyp_d26158d3_sub4_s1",
@@ -93484,8 +93761,27 @@
       "HM100_A",
       "HM100_B"
     ],
-    "indicators": [],
-    "falsification_criteria": "国际能源署报告预测全球煤炭需求到2030年年均增长1%，未出现骤降；中国海关数据显示2023年石油进口量同比增长8%；全球能源消费中传统能源占比维持在80%以上至2025年。",
+    "indicators": [
+      {
+        "name": "全球煤炭消费量",
+        "source": "国际能源署（IEA）",
+        "threshold_support": "到2027年，全球煤炭消费量较2026年水平下降15%以上",
+        "threshold_refute": "到2027年，全球煤炭消费量较2026年水平下降不足5%或增长"
+      },
+      {
+        "name": "全球石油消费量",
+        "source": "国际能源署（IEA）",
+        "threshold_support": "到2027年，全球石油消费量较2026年水平下降10%以上",
+        "threshold_refute": "到2027年，全球石油消费量较2026年水平下降不足3%或增长"
+      },
+      {
+        "name": "全球天然气消费量",
+        "source": "国际能源署（IEA）",
+        "threshold_support": "到2027年，全球天然气消费量较2026年水平下降12%以上",
+        "threshold_refute": "到2027年，全球天然气消费量较2026年水平下降不足4%或增长"
+      }
+    ],
+    "falsification_criteria": "到2027年，全球煤炭消费量较2026年水平下降不足5%或增长；到2027年，全球石油消费量较2026年水平下降不足3%或增长；到2027年，全球天然气消费量较2026年水平下降不足4%或增长",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -106719,7 +107015,13 @@
       }
     ],
     "version": 3,
-    "deadline_source": "level_default"
+    "deadline_source": "level_default",
+    "_prev_thresholds": {
+      "falsification_criteria": "国际能源署报告预测全球煤炭需求到2030年年均增长1%，未出现骤降；中国海关数据显示2023年石油进口量同比增长8%；全球能源消费中传统能源占比维持在80%以上至2025年。",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM100_A",
@@ -106737,8 +107039,27 @@
       "HM100_A_s2"
     ],
     "weight": 0.5,
-    "indicators": [],
-    "falsification_criteria": "国家能源局数据显示2023年新能源装机量增速为7%，低于行业预测的12%；风电和光伏装机容量在2024年第一季度环比下降5%；行业调查显示新能源项目投资额2023年同比减少15%。",
+    "indicators": [
+      {
+        "name": "中国新增太阳能装机容量",
+        "source": "中国国家能源局",
+        "threshold_support": "到 2027 年，中国新增太阳能装机容量较 2026 年增长 20% 以上",
+        "threshold_refute": "到 2027 年，中国新增太阳能装机容量较 2026 年增长低于 10%"
+      },
+      {
+        "name": "全球新能源投资总额",
+        "source": "国际能源署（IEA）",
+        "threshold_support": "到 2027 年，全球新能源投资总额较 2026 年增长 15% 以上",
+        "threshold_refute": "到 2027 年，全球新能源投资总额较 2026 年增长低于 5%"
+      },
+      {
+        "name": "中国、日本、韩国新能源装机总量",
+        "source": "国际能源署（IEA）",
+        "threshold_support": "到 2027 年，中国、日本、韩国三国新能源装机总量较 2026 年增长 20% 以上",
+        "threshold_refute": "到 2027 年，中国、日本、韩国三国新能源装机总量较 2026 年增长低于 10%"
+      }
+    ],
+    "falsification_criteria": "到 2027 年，中国新增太阳能装机容量较 2026 年增长低于 10%；到 2027 年，全球新能源投资总额较 2026 年增长低于 5%；到 2027 年，中国、日本、韩国三国新能源装机总量较 2026 年增长低于 10%",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -116276,7 +116597,13 @@
       }
     ],
     "version": 1,
-    "deadline_source": "level_default"
+    "deadline_source": "level_default",
+    "_prev_thresholds": {
+      "falsification_criteria": "国家能源局数据显示2023年新能源装机量增速为7%，低于行业预测的12%；风电和光伏装机容量在2024年第一季度环比下降5%；行业调查显示新能源项目投资额2023年同比减少15%。",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM100_A_s1",
@@ -116293,16 +116620,13 @@
     "weight": 0.3,
     "indicators": [
       {
-        "name": "全球新增可再生能源装机",
+        "name": "全球太阳能和风电年新增装机容量",
         "source": "IEA",
-        "current_value": null,
-        "target_value": null,
-        "threshold_support": "太阳能+风电年装机超500GW",
-        "threshold_refute": "IEA 2024年度报告显示2023年全球太阳能和风电新增装机总和低于500GW；BloombergNEF 2025年Q1预测2024年全球太阳能和风电年装机量为490GW，未达500GW阈值；中国国家能源局2024年数据显示中国太阳能和风电装机占比下降，全球总和低于500GW。",
-        "verify_status": "no_source"
+        "threshold_support": "到2026年，全球太阳能和风电年新增装机容量超过500GW",
+        "threshold_refute": "到2026年，全球太阳能和风电年新增装机容量不超过500GW"
       }
     ],
-    "falsification_criteria": "IEA 2024年度报告显示2023年全球太阳能和风电新增装机总和低于500GW；BloombergNEF 2025年Q1预测2024年全球太阳能和风电年装机量为490GW，未达500GW阈值；中国国家能源局2024年数据显示中国太阳能和风电装机占比下降，全球总和低于500GW。",
+    "falsification_criteria": "到2026年，全球太阳能和风电年新增装机容量不超过500GW",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -116579,7 +116903,23 @@
       "signal_state": "s0_r0",
       "confidence_applied": false,
       "intel_adjusted_at": "2026-09-21"
-    }
+    },
+    "_prev_thresholds": {
+      "falsification_criteria": "IEA 2024年度报告显示2023年全球太阳能和风电新增装机总和低于500GW；BloombergNEF 2025年Q1预测2024年全球太阳能和风电年装机量为490GW，未达500GW阈值；中国国家能源局2024年数据显示中国太阳能和风电装机占比下降，全球总和低于500GW。",
+      "indicators": [
+        {
+          "name": "全球新增可再生能源装机",
+          "source": "IEA",
+          "current_value": null,
+          "target_value": null,
+          "threshold_support": "太阳能+风电年装机超500GW",
+          "threshold_refute": "IEA 2024年度报告显示2023年全球太阳能和风电新增装机总和低于500GW；BloombergNEF 2025年Q1预测2024年全球太阳能和风电年装机量为490GW，未达500GW阈值；中国国家能源局2024年数据显示中国太阳能和风电装机占比下降，全球总和低于500GW。",
+          "verify_status": "no_source"
+        }
+      ],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM100_A_s2",
@@ -116598,14 +116938,11 @@
       {
         "name": "全球储能装机容量",
         "source": "BloombergNEF",
-        "current_value": null,
-        "target_value": null,
-        "threshold_support": "储能装机量年增60%以上",
-        "threshold_refute": "BloombergNEF 2024年报告指出2023年全球储能装机容量年增长率仅为45%，低于60%阈值；国际能源署2024年中期预测显示2024年底储能装机年增长率将放缓至50%；中国储能行业协会2024年Q3数据若显示中国储能装机增长低于55%，则整体增长可能达不到60%。",
-        "verify_status": "no_source"
+        "threshold_support": "到 2027 年，全球储能装机容量（BloombergNEF）较 2026 年水平增长 60% 以上",
+        "threshold_refute": "到 2027 年，全球储能装机容量（BloombergNEF）较 2026 年水平增长不足 60%"
       }
     ],
-    "falsification_criteria": "BloombergNEF 2024年报告指出2023年全球储能装机容量年增长率仅为45%，低于60%阈值；国际能源署2024年中期预测显示2024年底储能装机年增长率将放缓至50%；中国储能行业协会2024年Q3数据若显示中国储能装机增长低于55%，则整体增长可能达不到60%。",
+    "falsification_criteria": "到 2027 年，全球储能装机容量（BloombergNEF）较 2026 年水平增长不足 60%",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -116957,7 +117294,23 @@
       "signal_state": "s0_r0",
       "confidence_applied": false,
       "intel_adjusted_at": "2026-09-21"
-    }
+    },
+    "_prev_thresholds": {
+      "falsification_criteria": "BloombergNEF 2024年报告指出2023年全球储能装机容量年增长率仅为45%，低于60%阈值；国际能源署2024年中期预测显示2024年底储能装机年增长率将放缓至50%；中国储能行业协会2024年Q3数据若显示中国储能装机增长低于55%，则整体增长可能达不到60%。",
+      "indicators": [
+        {
+          "name": "全球储能装机容量",
+          "source": "BloombergNEF",
+          "current_value": null,
+          "target_value": null,
+          "threshold_support": "储能装机量年增60%以上",
+          "threshold_refute": "BloombergNEF 2024年报告指出2023年全球储能装机容量年增长率仅为45%，低于60%阈值；国际能源署2024年中期预测显示2024年底储能装机年增长率将放缓至50%；中国储能行业协会2024年Q3数据若显示中国储能装机增长低于55%，则整体增长可能达不到60%。",
+          "verify_status": "no_source"
+        }
+      ],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM100_B",
@@ -116975,8 +117328,33 @@
       "HM100_B_s2"
     ],
     "weight": 0.5,
-    "indicators": [],
-    "falsification_criteria": "标普500能源板块P/E比率在2024年底仍低于历史10年均值；Bloomberg数据显示2024年传统能源企业EV/EBITDA比率未超过过去5年平均水平；OPEC减产事件后至2025年Q1，能源股估值未相应提升，仍低于重估阈值。",
+    "indicators": [
+      {
+        "name": "MSCI世界能源指数远期市盈率",
+        "source": "MSCI",
+        "threshold_support": "到2027年，MSCI世界能源指数的远期市盈率较2026年水平增长20%以上",
+        "threshold_refute": "到2027年，MSCI世界能源指数的远期市盈率较2026年水平增长低于5%或下降"
+      },
+      {
+        "name": "中国A股煤炭板块市净率",
+        "source": "中国证券指数有限公司",
+        "threshold_support": "到2027年，中国A股煤炭板块的平均市净率较2026年水平回升30%以上",
+        "threshold_refute": "到2027年，中国A股煤炭板块的平均市净率较2026年水平下降或增长低于10%"
+      },
+      {
+        "name": "S&P 500能源板块资本支出与折旧摊销比率",
+        "source": "S&P Capital IQ",
+        "threshold_support": "到2027年，S&P 500能源板块的资本支出与折旧摊销比率较2026年水平提高15%以上",
+        "threshold_refute": "到2027年，S&P 500能源板块的资本支出与折旧摊销比率较2026年水平下降或持平"
+      },
+      {
+        "name": "全球传统能源企业平均股息收益率",
+        "source": "彭博社",
+        "threshold_support": "到2027年，全球传统能源企业的平均股息收益率较2026年水平下降10%以上",
+        "threshold_refute": "到2027年，全球传统能源企业的平均股息收益率较2026年水平上升或持平"
+      }
+    ],
+    "falsification_criteria": "到2027年，MSCI世界能源指数的远期市盈率较2026年水平增长低于5%或下降；到2027年，中国A股煤炭板块的平均市净率较2026年水平下降或增长低于10%；到2027年，S&P 500能源板块的资本支出与折旧摊销比率较2026年水平下降或持平；到2027年，全球传统能源企业的平均股息收益率较2026年水平上升或持平",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -117044,7 +117422,13 @@
       }
     ],
     "version": 1,
-    "deadline_source": "ai_proposed"
+    "deadline_source": "ai_proposed",
+    "_prev_thresholds": {
+      "falsification_criteria": "标普500能源板块P/E比率在2024年底仍低于历史10年均值；Bloomberg数据显示2024年传统能源企业EV/EBITDA比率未超过过去5年平均水平；OPEC减产事件后至2025年Q1，能源股估值未相应提升，仍低于重估阈值。",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM100_B_s1",
@@ -117061,16 +117445,13 @@
     "weight": 0.3,
     "indicators": [
       {
-        "name": "石油行业估值倍数",
+        "name": "石油行业EV/EBITDA",
         "source": "Bloomberg",
-        "current_value": null,
-        "target_value": null,
-        "threshold_support": "石油公司EV/EBITDA低于历史均值",
-        "threshold_refute": "Bloomberg数据显示2024年全球石油公司平均EV/EBITDA比率高于过去20年历史均值；IEA报告预测石油需求下降但石油公司估值在2025年Q2回升至均值以上；埃克森美孚或壳牌等主要石油公司2024年财报显示EV/EBITDA高于历史均值。",
-        "verify_status": "no_source"
+        "threshold_support": "到2027年，石油行业EV/EBITDA低于其历史均值",
+        "threshold_refute": "到2027年，石油行业EV/EBITDA高于或等于其历史均值"
       }
     ],
-    "falsification_criteria": "Bloomberg数据显示2024年全球石油公司平均EV/EBITDA比率高于过去20年历史均值；IEA报告预测石油需求下降但石油公司估值在2025年Q2回升至均值以上；埃克森美孚或壳牌等主要石油公司2024年财报显示EV/EBITDA高于历史均值。",
+    "falsification_criteria": "到2027年，石油行业EV/EBITDA高于或等于其历史均值",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -117633,7 +118014,23 @@
       "signal_state": "s0_r0",
       "confidence_applied": false,
       "intel_adjusted_at": "2026-09-21"
-    }
+    },
+    "_prev_thresholds": {
+      "falsification_criteria": "Bloomberg数据显示2024年全球石油公司平均EV/EBITDA比率高于过去20年历史均值；IEA报告预测石油需求下降但石油公司估值在2025年Q2回升至均值以上；埃克森美孚或壳牌等主要石油公司2024年财报显示EV/EBITDA高于历史均值。",
+      "indicators": [
+        {
+          "name": "石油行业估值倍数",
+          "source": "Bloomberg",
+          "current_value": null,
+          "target_value": null,
+          "threshold_support": "石油公司EV/EBITDA低于历史均值",
+          "threshold_refute": "Bloomberg数据显示2024年全球石油公司平均EV/EBITDA比率高于过去20年历史均值；IEA报告预测石油需求下降但石油公司估值在2025年Q2回升至均值以上；埃克森美孚或壳牌等主要石油公司2024年财报显示EV/EBITDA高于历史均值。",
+          "verify_status": "no_source"
+        }
+      ],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM100_B_s2",
@@ -117652,14 +118049,11 @@
       {
         "name": "煤炭企业债券利差",
         "source": "Wind",
-        "current_value": null,
-        "target_value": null,
-        "threshold_support": "煤炭企业融资成本上升",
-        "threshold_refute": "煤炭企业债券利差（Wind数据）在2024年Q2前持续低于100基点；煤炭企业平均银行贷款利率在2024年内下降超过1.5个百分点；煤炭企业信用评级升级事件在2024年发生至少一起",
-        "verify_status": "no_source"
+        "threshold_support": "到2027年，煤炭企业债券利差较2026年水平上升20%以上",
+        "threshold_refute": "到2027年，煤炭企业债券利差较2026年水平下降10%以上"
       }
     ],
-    "falsification_criteria": "煤炭企业债券利差（Wind数据）在2024年Q2前持续低于100基点；煤炭企业平均银行贷款利率在2024年内下降超过1.5个百分点；煤炭企业信用评级升级事件在2024年发生至少一起",
+    "falsification_criteria": "到2027年，煤炭企业债券利差较2026年水平下降10%以上",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -117962,7 +118356,23 @@
       "signal_state": "s0_r0",
       "confidence_applied": false,
       "intel_adjusted_at": "2026-09-21"
-    }
+    },
+    "_prev_thresholds": {
+      "falsification_criteria": "煤炭企业债券利差（Wind数据）在2024年Q2前持续低于100基点；煤炭企业平均银行贷款利率在2024年内下降超过1.5个百分点；煤炭企业信用评级升级事件在2024年发生至少一起",
+      "indicators": [
+        {
+          "name": "煤炭企业债券利差",
+          "source": "Wind",
+          "current_value": null,
+          "target_value": null,
+          "threshold_support": "煤炭企业融资成本上升",
+          "threshold_refute": "煤炭企业债券利差（Wind数据）在2024年Q2前持续低于100基点；煤炭企业平均银行贷款利率在2024年内下降超过1.5个百分点；煤炭企业信用评级升级事件在2024年发生至少一起",
+          "verify_status": "no_source"
+        }
+      ],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM101",
@@ -117978,8 +118388,27 @@
       "HM101_A",
       "HM101_B"
     ],
-    "indicators": [],
-    "falsification_criteria": "美加双边贸易额在2024年全年同比下降低于5%（数据源：美国商务部）；无重大跨国公司宣布生产转移，或转移规模小于预期；美加贸易关系改善，签署新的合作协议，时间在2024年底前",
+    "indicators": [
+      {
+        "name": "美加双边货物贸易额",
+        "source": "美国人口普查局、加拿大统计局",
+        "threshold_support": "到2027年，美加双边货物贸易额较2026年水平下降15%以上，表明贸易摩擦升级导致双边贸易显著萎缩",
+        "threshold_refute": "到2027年，美加双边货物贸易额较2026年水平下降不足5%或保持增长，表明贸易摩擦未对双边贸易流量造成重大冲击"
+      },
+      {
+        "name": "美加加权平均关税税率",
+        "source": "世界贸易组织关税数据库",
+        "threshold_support": "到2027年，美加加权平均关税税率较2026年水平上升50%以上，表明贸易摩擦升级引发关税壁垒增加",
+        "threshold_refute": "到2027年，美加加权平均关税税率较2026年水平保持稳定或下降，表明未出现显著的关税升级"
+      },
+      {
+        "name": "美国从中国进口货物额",
+        "source": "美国人口普查局",
+        "threshold_support": "到2027年，美国从中国进口货物额较2026年水平下降20%以上，表明全球供应链重构导致中国对美出口减少",
+        "threshold_refute": "到2027年，美国从中国进口货物额较2026年水平下降不足10%或保持稳定，表明供应链重构未显著影响中国对美出口"
+      }
+    ],
+    "falsification_criteria": "到2027年，美加双边货物贸易额较2026年水平下降不足5%或保持增长，表明贸易摩擦未对双边贸易流量造成重大冲击；到2027年，美加加权平均关税税率较2026年水平保持稳定或下降，表明未出现显著的关税升级；到2027年，美国从中国进口货物额较2026年水平下降不足10%或保持稳定，表明供应链重构未显著影响中国对美出口",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -120244,7 +120673,13 @@
       }
     ],
     "version": 3,
-    "deadline_source": "ai_proposed"
+    "deadline_source": "ai_proposed",
+    "_prev_thresholds": {
+      "falsification_criteria": "美加双边贸易额在2024年全年同比下降低于5%（数据源：美国商务部）；无重大跨国公司宣布生产转移，或转移规模小于预期；美加贸易关系改善，签署新的合作协议，时间在2024年底前",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM101_A",
@@ -120262,8 +120697,33 @@
       "HM101_A_s2"
     ],
     "weight": 0.5,
-    "indicators": [],
-    "falsification_criteria": "北美自由贸易协定（USMCA）成员国在2024年内确认协议继续有效，无退出行动；三国间贸易争端通过现有机制解决，无重大贸易壁垒增加；北美自贸区框架下的贸易额在2024年增长超过3%",
+    "indicators": [
+      {
+        "name": "区域内贸易依存度",
+        "source": "联合国商品贸易统计数据库（UN Comtrade）",
+        "threshold_support": "到 2027 年，北美三国间贸易额占各自总贸易额的比例较 2026 年下降超过 15%",
+        "threshold_refute": "到 2027 年，该比例保持稳定或较 2026 年有所上升"
+      },
+      {
+        "name": "原产地规则贸易摩擦案件数",
+        "source": "美国国际贸易委员会、墨西哥经济部、加拿大边境服务局",
+        "threshold_support": "到 2027 年，因原产地规则合规问题引发的贸易延误或关税申诉案件数量较 2026 年增加 50% 以上",
+        "threshold_refute": "到 2027 年，案件数量较 2026 年无显著变化或有所减少"
+      },
+      {
+        "name": "区域内直接投资流量",
+        "source": "联合国贸易和发展会议（UNCTAD）世界投资报告",
+        "threshold_support": "到 2027 年，北美三国间相互直接投资流量较 2026 年下降超过 30%",
+        "threshold_refute": "到 2027 年，直接投资流量保持稳定或较 2026 年有所增长"
+      },
+      {
+        "name": "跨境劳动力流动限制",
+        "source": "美国国土安全部、墨西哥国家移民局、加拿大移民、难民和公民部",
+        "threshold_support": "到 2027 年，三国间跨境工作签证发放总量较 2026 年下降超过 40%",
+        "threshold_refute": "到 2027 年，签证发放量保持稳定或较 2026 年有所增加"
+      }
+    ],
+    "falsification_criteria": "到 2027 年，该比例保持稳定或较 2026 年有所上升；到 2027 年，案件数量较 2026 年无显著变化或有所减少；到 2027 年，直接投资流量保持稳定或较 2026 年有所增长；到 2027 年，签证发放量保持稳定或较 2026 年有所增加",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -120540,7 +121000,13 @@
       }
     ],
     "version": 1,
-    "deadline_source": "ai_proposed"
+    "deadline_source": "ai_proposed",
+    "_prev_thresholds": {
+      "falsification_criteria": "北美自由贸易协定（USMCA）成员国在2024年内确认协议继续有效，无退出行动；三国间贸易争端通过现有机制解决，无重大贸易壁垒增加；北美自贸区框架下的贸易额在2024年增长超过3%",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM101_A_s1",
@@ -120558,15 +121024,12 @@
     "indicators": [
       {
         "name": "美加汽车关税税率",
-        "source": "美国贸易代表",
-        "current_value": null,
-        "target_value": null,
-        "threshold_support": "美国对加拿大汽车关税超25%",
-        "threshold_refute": "美国贸易代表办公室确认美加汽车关税税率不超过25%，在2024年全年；海关数据显示，2024年上半年从加拿大进口汽车的平均关税税率为24.9%或更低；无新的关税政策宣布，现有税率维持现状",
-        "verify_status": "no_source"
+        "source": "美国贸易代表办公室（USTR）",
+        "threshold_support": "到2027年，美加汽车关税税率超过25%",
+        "threshold_refute": "到2027年，美加汽车关税税率不超过25%"
       }
     ],
-    "falsification_criteria": "美国贸易代表办公室确认美加汽车关税税率不超过25%，在2024年全年；海关数据显示，2024年上半年从加拿大进口汽车的平均关税税率为24.9%或更低；无新的关税政策宣布，现有税率维持现状",
+    "falsification_criteria": "到2027年，美加汽车关税税率不超过25%",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -128660,7 +129123,23 @@
       "signal_state": "s0_r0",
       "confidence_applied": false,
       "intel_adjusted_at": "2026-09-21"
-    }
+    },
+    "_prev_thresholds": {
+      "falsification_criteria": "美国贸易代表办公室确认美加汽车关税税率不超过25%，在2024年全年；海关数据显示，2024年上半年从加拿大进口汽车的平均关税税率为24.9%或更低；无新的关税政策宣布，现有税率维持现状",
+      "indicators": [
+        {
+          "name": "美加汽车关税税率",
+          "source": "美国贸易代表",
+          "current_value": null,
+          "target_value": null,
+          "threshold_support": "美国对加拿大汽车关税超25%",
+          "threshold_refute": "美国贸易代表办公室确认美加汽车关税税率不超过25%，在2024年全年；海关数据显示，2024年上半年从加拿大进口汽车的平均关税税率为24.9%或更低；无新的关税政策宣布，现有税率维持现状",
+          "verify_status": "no_source"
+        }
+      ],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM101_A_s2",
@@ -128677,16 +129156,13 @@
     "weight": 0.3,
     "indicators": [
       {
-        "name": "加拿大报复关税清单",
+        "name": "加拿大报复关税清单是否涉及农产品税号",
         "source": "加拿大财政部",
-        "current_value": null,
-        "target_value": null,
-        "threshold_support": "加拿大对美报复性关税涉及农产品",
-        "threshold_refute": "加拿大财政部在2024年12月31日前公布的报复性关税清单中，农产品类目数量为0；2024年加拿大对美农产品出口额同比增长超过10%；美国商务部报告确认加拿大关税措施不涉及农产品",
-        "verify_status": "no_source"
+        "threshold_support": "到2027年，清单中包含至少一个农产品税号",
+        "threshold_refute": "到2027年，清单中不包含任何农产品税号"
       }
     ],
-    "falsification_criteria": "加拿大财政部在2024年12月31日前公布的报复性关税清单中，农产品类目数量为0；2024年加拿大对美农产品出口额同比增长超过10%；美国商务部报告确认加拿大关税措施不涉及农产品",
+    "falsification_criteria": "到2027年，清单中不包含任何农产品税号",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -144956,7 +145432,23 @@
       "signal_state": "s0_r0",
       "confidence_applied": false,
       "intel_adjusted_at": "2026-09-21"
-    }
+    },
+    "_prev_thresholds": {
+      "falsification_criteria": "加拿大财政部在2024年12月31日前公布的报复性关税清单中，农产品类目数量为0；2024年加拿大对美农产品出口额同比增长超过10%；美国商务部报告确认加拿大关税措施不涉及农产品",
+      "indicators": [
+        {
+          "name": "加拿大报复关税清单",
+          "source": "加拿大财政部",
+          "current_value": null,
+          "target_value": null,
+          "threshold_support": "加拿大对美报复性关税涉及农产品",
+          "threshold_refute": "加拿大财政部在2024年12月31日前公布的报复性关税清单中，农产品类目数量为0；2024年加拿大对美农产品出口额同比增长超过10%；美国商务部报告确认加拿大关税措施不涉及农产品",
+          "verify_status": "no_source"
+        }
+      ],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM101_B",
@@ -144974,8 +145466,33 @@
       "HM101_B_s2"
     ],
     "weight": 0.5,
-    "indicators": [],
-    "falsification_criteria": "2024年东南亚制造业FDI年增长率低于2023年水平；印度制造业FDI流入在2024年季度环比下降；跨国公司调查显示计划向东南亚/印度转移供应链的企业比例较去年下降",
+    "indicators": [
+      {
+        "name": "中国对东南亚和印度出口份额",
+        "source": "联合国商品贸易数据库（UN Comtrade）",
+        "threshold_support": "到2027年，中国对东南亚和印度出口占中国总出口比重较2026年水平增长10%以上",
+        "threshold_refute": "到2027年，中国对东南亚和印度出口占中国总出口比重较2026年水平下降或无显著增长"
+      },
+      {
+        "name": "东南亚和印度吸收外商直接投资流量",
+        "source": "联合国贸易和发展会议（UNCTAD）",
+        "threshold_support": "到2027年，东南亚和印度主要经济体（如越南、印度）吸收的FDI总额较2026年水平增长20%以上",
+        "threshold_refute": "到2027年，东南亚和印度主要经济体吸收的FDI总额较2026年水平下降"
+      },
+      {
+        "name": "中国对东南亚和印度制造业直接投资存量",
+        "source": "中国商务部",
+        "threshold_support": "到2027年，中国对东南亚和印度制造业直接投资存量较2026年水平增长15%以上",
+        "threshold_refute": "到2027年，中国对东南亚和印度制造业直接投资存量较2026年水平下降"
+      },
+      {
+        "name": "东南亚和印度制造业出口全球份额",
+        "source": "世界贸易组织（WTO）",
+        "threshold_support": "到2027年，东南亚和印度制造业出口占全球制造业出口总额比重较2026年水平增长5%以上",
+        "threshold_refute": "到2027年，东南亚和印度制造业出口占全球制造业出口总额比重较2026年水平下降"
+      }
+    ],
+    "falsification_criteria": "到2027年，中国对东南亚和印度出口占中国总出口比重较2026年水平下降或无显著增长；到2027年，东南亚和印度主要经济体吸收的FDI总额较2026年水平下降；到2027年，中国对东南亚和印度制造业直接投资存量较2026年水平下降；到2027年，东南亚和印度制造业出口占全球制造业出口总额比重较2026年水平下降",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -147383,7 +147900,13 @@
       }
     ],
     "version": 1,
-    "deadline_source": "ai_proposed"
+    "deadline_source": "ai_proposed",
+    "_prev_thresholds": {
+      "falsification_criteria": "2024年东南亚制造业FDI年增长率低于2023年水平；印度制造业FDI流入在2024年季度环比下降；跨国公司调查显示计划向东南亚/印度转移供应链的企业比例较去年下降",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM101_B_s1",
@@ -147402,14 +147925,11 @@
       {
         "name": "东南亚制造业FDI",
         "source": "UNCTAD",
-        "current_value": null,
-        "target_value": null,
-        "threshold_support": "越南/印度制造业FDI年增30%以上",
-        "threshold_refute": "UNCTAD 2024年报告显示越南制造业FDI年增长率为25%（低于30%）；印度制造业FDI年增长率在2024年为28%（低于30%）；越南和印度制造业FDI总额年增长率合计为29%（低于30%）",
-        "verify_status": "no_source"
+        "threshold_support": "到2027年，东南亚制造业FDI在2027年第二季度的值较2026年第二季度的值增长30%以上",
+        "threshold_refute": "到2027年，东南亚制造业FDI在2027年第二季度的值较2026年第二季度的值增长低于30%"
       }
     ],
-    "falsification_criteria": "UNCTAD 2024年报告显示越南制造业FDI年增长率为25%（低于30%）；印度制造业FDI年增长率在2024年为28%（低于30%）；越南和印度制造业FDI总额年增长率合计为29%（低于30%）",
+    "falsification_criteria": "到2027年，东南亚制造业FDI在2027年第二季度的值较2026年第二季度的值增长低于30%",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -147973,7 +148493,23 @@
       "signal_state": "s0_r0",
       "confidence_applied": false,
       "intel_adjusted_at": "2026-09-21"
-    }
+    },
+    "_prev_thresholds": {
+      "falsification_criteria": "UNCTAD 2024年报告显示越南制造业FDI年增长率为25%（低于30%）；印度制造业FDI年增长率在2024年为28%（低于30%）；越南和印度制造业FDI总额年增长率合计为29%（低于30%）",
+      "indicators": [
+        {
+          "name": "东南亚制造业FDI",
+          "source": "UNCTAD",
+          "current_value": null,
+          "target_value": null,
+          "threshold_support": "越南/印度制造业FDI年增30%以上",
+          "threshold_refute": "UNCTAD 2024年报告显示越南制造业FDI年增长率为25%（低于30%）；印度制造业FDI年增长率在2024年为28%（低于30%）；越南和印度制造业FDI总额年增长率合计为29%（低于30%）",
+          "verify_status": "no_source"
+        }
+      ],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM101_B_s2",
@@ -147992,14 +148528,11 @@
       {
         "name": "中国对美出口占比",
         "source": "海关总署",
-        "current_value": null,
-        "target_value": null,
-        "threshold_support": "中国对美出口占比降至15%以下",
-        "threshold_refute": "中国海关总署2024年年度数据显示中国对美出口占比为15.2%；2024年第二季度中国对美出口占比为15.1%（未降至15%以下）；连续三年数据中国对美出口占比保持在15%以上",
-        "verify_status": "no_source"
+        "threshold_support": "到2027年，中国对美出口占比低于15%且较2026年水平下降",
+        "threshold_refute": "到2027年，中国对美出口占比高于或等于15%或较2026年水平没有下降"
       }
     ],
-    "falsification_criteria": "中国海关总署2024年年度数据显示中国对美出口占比为15.2%；2024年第二季度中国对美出口占比为15.1%（未降至15%以下）；连续三年数据中国对美出口占比保持在15%以上",
+    "falsification_criteria": "到2027年，中国对美出口占比高于或等于15%或较2026年水平没有下降",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -148212,7 +148745,23 @@
       "signal_state": "s0_r0",
       "confidence_applied": false,
       "intel_adjusted_at": "2026-09-21"
-    }
+    },
+    "_prev_thresholds": {
+      "falsification_criteria": "中国海关总署2024年年度数据显示中国对美出口占比为15.2%；2024年第二季度中国对美出口占比为15.1%（未降至15%以下）；连续三年数据中国对美出口占比保持在15%以上",
+      "indicators": [
+        {
+          "name": "中国对美出口占比",
+          "source": "海关总署",
+          "current_value": null,
+          "target_value": null,
+          "threshold_support": "中国对美出口占比降至15%以下",
+          "threshold_refute": "中国海关总署2024年年度数据显示中国对美出口占比为15.2%；2024年第二季度中国对美出口占比为15.1%（未降至15%以下）；连续三年数据中国对美出口占比保持在15%以上",
+          "verify_status": "no_source"
+        }
+      ],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM102",
@@ -148228,8 +148777,27 @@
       "HM102_A",
       "HM102_B"
     ],
-    "indicators": [],
-    "falsification_criteria": "在2024年底前，AI服务器全球出货量年增长率低于10%（数据源：IDC预测报告），表明算力供应过剩；关键材料如硅晶圆价格连续六个季度下降超过15%（数据源：SEMI报告），证伪材料短缺；AI技术商业化收入增长率在2023年Q4达到40%以上（数据源：麦肯锡AI指数），表明速度未受限",
+    "indicators": [
+      {
+        "name": "中国集成电路进口额",
+        "source": "中国海关总署",
+        "threshold_support": "到2027年，中国集成电路进口额年增长率较2026年低于15%",
+        "threshold_refute": "到2027年，中国集成电路进口额年增长率较2026年超过35%"
+      },
+      {
+        "name": "中国稀土氧化物出口量",
+        "source": "中国海关总署",
+        "threshold_support": "到2027年，中国稀土氧化物出口量较2026年下降5%以上",
+        "threshold_refute": "到2027年，中国稀土氧化物出口量较2026年增长5%以上"
+      },
+      {
+        "name": "全球AI软件收入",
+        "source": "IDC",
+        "threshold_support": "到2027年，全球AI软件收入年增长率较2026年低于20%",
+        "threshold_refute": "到2027年，全球AI软件收入年增长率较2026年超过40%"
+      }
+    ],
+    "falsification_criteria": "到2027年，中国集成电路进口额年增长率较2026年超过35%；到2027年，中国稀土氧化物出口量较2026年增长5%以上；到2027年，全球AI软件收入年增长率较2026年超过40%",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -169534,7 +170102,13 @@
       }
     ],
     "version": 3,
-    "deadline_source": "level_default"
+    "deadline_source": "level_default",
+    "_prev_thresholds": {
+      "falsification_criteria": "在2024年底前，AI服务器全球出货量年增长率低于10%（数据源：IDC预测报告），表明算力供应过剩；关键材料如硅晶圆价格连续六个季度下降超过15%（数据源：SEMI报告），证伪材料短缺；AI技术商业化收入增长率在2023年Q4达到40%以上（数据源：麦肯锡AI指数），表明速度未受限",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM102_A",
@@ -169552,8 +170126,33 @@
       "HM102_A_s2"
     ],
     "weight": 0.5,
-    "indicators": [],
-    "falsification_criteria": "在2024年Q2，NVIDIA GPU平均交货时间缩短至8周以内（数据源：供应链跟踪服务），证伪供给瓶颈；全球AI芯片产能利用率在2023年第四季度降至85%以下（数据源：TrendForce），表明瓶颈缓解；AI芯片库存水平在2024年第一季度环比增加20%（数据源：半导体行业协会），表明供给充足",
+    "indicators": [
+      {
+        "name": "AI芯片平均交货周期",
+        "source": "世界半导体贸易统计组织",
+        "threshold_support": "到2027年，AI芯片平均交货周期较2026年水平延长20%以上",
+        "threshold_refute": "到2027年，AI芯片平均交货周期较2026年水平缩短20%以上"
+      },
+      {
+        "name": "中国AI芯片产能利用率",
+        "source": "中国国家统计局",
+        "threshold_support": "到2027年，中国AI芯片产能利用率较2026年水平提高10个百分点以上",
+        "threshold_refute": "到2027年，中国AI芯片产能利用率较2026年水平下降10个百分点以上"
+      },
+      {
+        "name": "AI芯片库存周转率",
+        "source": "国际半导体设备与材料协会",
+        "threshold_support": "到2027年，AI芯片库存周转率较2026年水平下降20%以上",
+        "threshold_refute": "到2027年，AI芯片库存周转率较2026年水平上升20%以上"
+      },
+      {
+        "name": "AI芯片进口价格指数",
+        "source": "中国海关总署",
+        "threshold_support": "到2027年，AI芯片进口价格指数较2026年水平上涨20%以上",
+        "threshold_refute": "到2027年，AI芯片进口价格指数较2026年水平下跌10%以上"
+      }
+    ],
+    "falsification_criteria": "到2027年，AI芯片平均交货周期较2026年水平缩短20%以上；到2027年，中国AI芯片产能利用率较2026年水平下降10个百分点以上；到2027年，AI芯片库存周转率较2026年水平上升20%以上；到2027年，AI芯片进口价格指数较2026年水平下跌10%以上",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -190671,7 +191270,13 @@
       }
     ],
     "version": 1,
-    "deadline_source": "level_default"
+    "deadline_source": "level_default",
+    "_prev_thresholds": {
+      "falsification_criteria": "在2024年Q2，NVIDIA GPU平均交货时间缩短至8周以内（数据源：供应链跟踪服务），证伪供给瓶颈；全球AI芯片产能利用率在2023年第四季度降至85%以下（数据源：TrendForce），表明瓶颈缓解；AI芯片库存水平在2024年第一季度环比增加20%（数据源：半导体行业协会），表明供给充足",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM102_A_s1",
@@ -191602,8 +192207,27 @@
       "HM102_B_s2"
     ],
     "weight": 0.5,
-    "indicators": [],
-    "falsification_criteria": "判据1：未来12个月内，全球主要经济体（美、日、欧、韩）均未启动关键矿物（锂、钴、稀土）的国家级战略储备动用或大规模商业化替代方案；判据2：至2025年底，动力电池钠离子等替代技术全球量产市场份额未超过10%，且其成本未降至磷酸铁锂电池成本的80%以下；判据3：国际能源署（IEA）或美国地质调查局（USGS）年度报告未将关键矿物供应链中断风险评级调至“高”或以上。",
+    "indicators": [
+      {
+        "name": "中国关键矿物出口总量",
+        "source": "中国海关总署",
+        "threshold_support": "到2027年，中国稀土、锂、钴出口总量较2026年水平下降15%以上",
+        "threshold_refute": "到2027年，中国关键矿物出口总量较2026年水平持平或增长"
+      },
+      {
+        "name": "关键矿物现货价格指数",
+        "source": "世界银行商品价格数据",
+        "threshold_support": "到2027年，世界银行统计的碳酸锂和钴现货均价较2026年水平上涨50%以上",
+        "threshold_refute": "到2027年，关键矿物现货均价较2026年水平下跌或涨幅低于10%"
+      },
+      {
+        "name": "关键矿物交易所库存",
+        "source": "伦敦金属交易所、上海期货交易所",
+        "threshold_support": "到2027年，LME钴库存和SHFE锂库存较2026年水平下降50%以上",
+        "threshold_refute": "到2027年，关键矿物交易所库存较2026年水平持平或增长"
+      }
+    ],
+    "falsification_criteria": "到2027年，中国关键矿物出口总量较2026年水平持平或增长；到2027年，关键矿物现货均价较2026年水平下跌或涨幅低于10%；到2027年，关键矿物交易所库存较2026年水平持平或增长",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -191762,7 +192386,13 @@
       }
     ],
     "version": 1,
-    "deadline_source": "level_default"
+    "deadline_source": "level_default",
+    "_prev_thresholds": {
+      "falsification_criteria": "判据1：未来12个月内，全球主要经济体（美、日、欧、韩）均未启动关键矿物（锂、钴、稀土）的国家级战略储备动用或大规模商业化替代方案；判据2：至2025年底，动力电池钠离子等替代技术全球量产市场份额未超过10%，且其成本未降至磷酸铁锂电池成本的80%以下；判据3：国际能源署（IEA）或美国地质调查局（USGS）年度报告未将关键矿物供应链中断风险评级调至“高”或以上。",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM102_B_s1",
@@ -192096,14 +192726,11 @@
       {
         "name": "碳酸锂现货价",
         "source": "SMM",
-        "current_value": null,
-        "target_value": null,
-        "threshold_support": "锂矿价格波动加剧",
-        "threshold_refute": "判据1：2024年全年碳酸锂现货价（SMM）高点与低点振幅未超过10万元人民币/吨（或相对年初波幅未超过150%）；判据2：全球前五大锂矿企业（如SQM、Albemarle等）在2024年财报中未出现因价格剧烈波动而导致的大规模产能推迟、取消或破产重组；判据3：伦敦金属交易所（LME）或上海期货交易所（SHFE）碳酸锂期货合约未出现连续30个交易日日均波动率超过历史同期（过去三年）平均水平200%",
-        "verify_status": "no_source"
+        "threshold_support": "到2027年，碳酸锂现货价的日均绝对价格变化百分比（基于2027年1月至9月数据）较2026年1月至9月的水平增长20%以上",
+        "threshold_refute": "到2027年，碳酸锂现货价的日均绝对价格变化百分比较2026年1月至9月的水平增长不足20%或下降"
       }
     ],
-    "falsification_criteria": "判据1：2024年全年碳酸锂现货价（SMM）高点与低点振幅未超过10万元人民币/吨（或相对年初波幅未超过150%）；判据2：全球前五大锂矿企业（如SQM、Albemarle等）在2024年财报中未出现因价格剧烈波动而导致的大规模产能推迟、取消或破产重组；判据3：伦敦金属交易所（LME）或上海期货交易所（SHFE）碳酸锂期货合约未出现连续30个交易日日均波动率超过历史同期（过去三年）平均水平200%的情况。",
+    "falsification_criteria": "到2027年，碳酸锂现货价的日均绝对价格变化百分比较2026年1月至9月的水平增长不足20%或下降",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -192601,7 +193228,23 @@
       "signal_state": "s0_r0",
       "confidence_applied": false,
       "intel_adjusted_at": "2026-09-21"
-    }
+    },
+    "_prev_thresholds": {
+      "falsification_criteria": "判据1：2024年全年碳酸锂现货价（SMM）高点与低点振幅未超过10万元人民币/吨（或相对年初波幅未超过150%）；判据2：全球前五大锂矿企业（如SQM、Albemarle等）在2024年财报中未出现因价格剧烈波动而导致的大规模产能推迟、取消或破产重组；判据3：伦敦金属交易所（LME）或上海期货交易所（SHFE）碳酸锂期货合约未出现连续30个交易日日均波动率超过历史同期（过去三年）平均水平200%的情况。",
+      "indicators": [
+        {
+          "name": "碳酸锂现货价",
+          "source": "SMM",
+          "current_value": null,
+          "target_value": null,
+          "threshold_support": "锂矿价格波动加剧",
+          "threshold_refute": "判据1：2024年全年碳酸锂现货价（SMM）高点与低点振幅未超过10万元人民币/吨（或相对年初波幅未超过150%）；判据2：全球前五大锂矿企业（如SQM、Albemarle等）在2024年财报中未出现因价格剧烈波动而导致的大规模产能推迟、取消或破产重组；判据3：伦敦金属交易所（LME）或上海期货交易所（SHFE）碳酸锂期货合约未出现连续30个交易日日均波动率超过历史同期（过去三年）平均水平200%",
+          "verify_status": "no_source"
+        }
+      ],
+      "rewritten_at": "2026-09-21T14:37:19"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM001",
@@ -192617,8 +193260,33 @@
       "HM001_A",
       "HM001_B"
     ],
-    "indicators": [],
-    "falsification_criteria": "判据1：2025年12月31日前，美国国会未通过任何新的、单方面重大对台军售法案或行政令，且现有军售计划执行进度未加速；判据2：中国大陆官方（如国台办、国防部）年度工作报告中未将“台海形势严峻性”或“反分裂斗争紧迫性”表述升级；判据3：根据公开航行数据（如AIS），未来两年内台海中线及周边区域的军机、军舰相互识别与抵近侦察次数，年均增长率未超过2020-2023年区间平均增长率的150%。",
+    "indicators": [
+      {
+        "name": "美军在台海周边军事活动频率",
+        "source": "斯德哥尔摩国际和平研究所（SIPRI）数据库 / 美国国防部公开声明",
+        "threshold_support": "到2027年，美军在台海周边军事活动频率较2026年增长50%以上",
+        "threshold_refute": "到2027年，美军在台海周边军事活动频率较2026年无显著增长或下降"
+      },
+      {
+        "name": "美国对台军售年度金额",
+        "source": "美国国防部国防安全合作局（DSCA）公开通知 / 斯德哥尔摩国际和平研究所（SIPRI）武器贸易数据库",
+        "threshold_support": "到2027年，美国对台军售年度金额较2026年增长30%以上",
+        "threshold_refute": "到2027年，美国对台军售年度金额较2026年下降或无显著增长"
+      },
+      {
+        "name": "中国军机在东海防空识别区活动频率",
+        "source": "日本防卫省统合幕僚监部公开数据 / 中国国防部公开声明",
+        "threshold_support": "到2027年，中国军机在东海防空识别区活动频率较2026年增长40%以上",
+        "threshold_refute": "到2027年，中国军机在东海防空识别区活动频率较2026年无显著增长或下降"
+      },
+      {
+        "name": "中美在台海问题上的外交摩擦事件数量",
+        "source": "美国国务院公开声明 / 中国外交部公开声明",
+        "threshold_support": "到2027年，中美在台海问题上的外交摩擦事件数量较2026年增长100%以上",
+        "threshold_refute": "到2027年，中美在台海问题上的外交摩擦事件数量较2026年无显著增长或下降"
+      }
+    ],
+    "falsification_criteria": "到2027年，美军在台海周边军事活动频率较2026年无显著增长或下降；到2027年，美国对台军售年度金额较2026年下降或无显著增长；到2027年，中国军机在东海防空识别区活动频率较2026年无显著增长或下降；到2027年，中美在台海问题上的外交摩擦事件数量较2026年无显著增长或下降",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -206964,7 +207632,13 @@
       }
     ],
     "version": 3,
-    "deadline_source": "ai_proposed"
+    "deadline_source": "ai_proposed",
+    "_prev_thresholds": {
+      "falsification_criteria": "判据1：2025年12月31日前，美国国会未通过任何新的、单方面重大对台军售法案或行政令，且现有军售计划执行进度未加速；判据2：中国大陆官方（如国台办、国防部）年度工作报告中未将“台海形势严峻性”或“反分裂斗争紧迫性”表述升级；判据3：根据公开航行数据（如AIS），未来两年内台海中线及周边区域的军机、军舰相互识别与抵近侦察次数，年均增长率未超过2020-2023年区间平均增长率的150%。",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM001_A",
@@ -206982,8 +207656,27 @@
       "HM001_A_s2"
     ],
     "weight": 0.5,
-    "indicators": [],
-    "falsification_criteria": "2024年台海周边军事事件（演习、拦截等）月均次数较2023年增长低于30%（基于国防部月度报告）；美国军舰穿越台海次数在2024年少于8次（基于美国海军公开记录）；中台军事对峙公开报道在2024年连续3个月下降超过20%（国际媒体统计）。",
+    "indicators": [
+      {
+        "name": "三国军费开支同比增长率",
+        "source": "斯德哥尔摩国际和平研究所（SIPRI）",
+        "threshold_support": "到 2027 年，中国、日本、韩国三国军费开支较 2026 年水平均增长 15% 以上",
+        "threshold_refute": "到 2027 年，三国中任一国家军费开支较 2026 年水平增长不足 5%"
+      },
+      {
+        "name": "美韩联合军演年度总天数",
+        "source": "韩国国防部",
+        "threshold_support": "到 2027 年，美韩联合军演年度总天数较 2026 年增加 20% 以上",
+        "threshold_refute": "到 2027 年，美韩联合军演年度总天数较 2026 年减少或持平"
+      },
+      {
+        "name": "中国军机进入日本防空识别区次数",
+        "source": "日本防卫省",
+        "threshold_support": "到 2027 年，中国军机进入日本防空识别区的次数较 2026 年增加 50% 以上",
+        "threshold_refute": "到 2027 年，中国军机进入日本防空识别区的次数较 2026 年减少 20% 以上"
+      }
+    ],
+    "falsification_criteria": "到 2027 年，三国中任一国家军费开支较 2026 年水平增长不足 5%；到 2027 年，美韩联合军演年度总天数较 2026 年减少或持平；到 2027 年，中国军机进入日本防空识别区的次数较 2026 年减少 20% 以上",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -207288,7 +207981,13 @@
       }
     ],
     "version": 1,
-    "deadline_source": "ai_proposed"
+    "deadline_source": "ai_proposed",
+    "_prev_thresholds": {
+      "falsification_criteria": "2024年台海周边军事事件（演习、拦截等）月均次数较2023年增长低于30%（基于国防部月度报告）；美国军舰穿越台海次数在2024年少于8次（基于美国海军公开记录）；中台军事对峙公开报道在2024年连续3个月下降超过20%（国际媒体统计）。",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM001_A_s1",
@@ -207307,14 +208006,11 @@
       {
         "name": "台海军演次数",
         "source": "国防部",
-        "current_value": null,
-        "target_value": null,
-        "threshold_support": "台海周边军事演习频次翻倍",
-        "threshold_refute": "2024年台海周边军事演习总次数少于2023年的两倍（国防部年度数据）；如果2024年季度演习次数同比增长均低于100%，则证伪翻倍假设；连续6个月台海军演次数同比下降超过15%（国防部月度公报）。",
-        "verify_status": "no_source"
+        "threshold_support": "到2027年，台海军演次数较2026年同期水平增长100%以上",
+        "threshold_refute": "到2027年，台海军演次数较2026年同期水平增长低于100%"
       }
     ],
-    "falsification_criteria": "2024年台海周边军事演习总次数少于2023年的两倍（国防部年度数据）；如果2024年季度演习次数同比增长均低于100%，则证伪翻倍假设；连续6个月台海军演次数同比下降超过15%（国防部月度公报）。",
+    "falsification_criteria": "到2027年，台海军演次数较2026年同期水平增长低于100%",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -207408,7 +208104,23 @@
       "signal_state": "s0_r0",
       "confidence_applied": false,
       "intel_adjusted_at": "2026-09-21"
-    }
+    },
+    "_prev_thresholds": {
+      "falsification_criteria": "2024年台海周边军事演习总次数少于2023年的两倍（国防部年度数据）；如果2024年季度演习次数同比增长均低于100%，则证伪翻倍假设；连续6个月台海军演次数同比下降超过15%（国防部月度公报）。",
+      "indicators": [
+        {
+          "name": "台海军演次数",
+          "source": "国防部",
+          "current_value": null,
+          "target_value": null,
+          "threshold_support": "台海周边军事演习频次翻倍",
+          "threshold_refute": "2024年台海周边军事演习总次数少于2023年的两倍（国防部年度数据）；如果2024年季度演习次数同比增长均低于100%，则证伪翻倍假设；连续6个月台海军演次数同比下降超过15%（国防部月度公报）。",
+          "verify_status": "no_source"
+        }
+      ],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM001_A_s2",
@@ -207427,14 +208139,11 @@
       {
         "name": "美国对台军售额",
         "source": "美国国防部",
-        "current_value": null,
-        "target_value": null,
-        "threshold_support": "美国对台军售金额创新高",
-        "threshold_refute": "2024年美国对台军售金额未超过2023年最高值（美国国防部军售报告）；如果2024年军售总额低于过去5年平均水平（约100亿美元），则证伪创新高；连续两年军售金额下降超过10%（斯德哥尔摩国际和平研究所数据）。",
-        "verify_status": "no_source"
+        "threshold_support": "到2027年，美国对台军售额较2026年水平增长超过20%",
+        "threshold_refute": "到2027年，美国对台军售额较2026年水平增长不超过20%"
       }
     ],
-    "falsification_criteria": "2024年美国对台军售金额未超过2023年最高值（美国国防部军售报告）；如果2024年军售总额低于过去5年平均水平（约100亿美元），则证伪创新高；连续两年军售金额下降超过10%（斯德哥尔摩国际和平研究所数据）。",
+    "falsification_criteria": "到2027年，美国对台军售额较2026年水平增长不超过20%",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -207613,7 +208322,23 @@
       "signal_state": "s0_r0",
       "confidence_applied": false,
       "intel_adjusted_at": "2026-09-21"
-    }
+    },
+    "_prev_thresholds": {
+      "falsification_criteria": "2024年美国对台军售金额未超过2023年最高值（美国国防部军售报告）；如果2024年军售总额低于过去5年平均水平（约100亿美元），则证伪创新高；连续两年军售金额下降超过10%（斯德哥尔摩国际和平研究所数据）。",
+      "indicators": [
+        {
+          "name": "美国对台军售额",
+          "source": "美国国防部",
+          "current_value": null,
+          "target_value": null,
+          "threshold_support": "美国对台军售金额创新高",
+          "threshold_refute": "2024年美国对台军售金额未超过2023年最高值（美国国防部军售报告）；如果2024年军售总额低于过去5年平均水平（约100亿美元），则证伪创新高；连续两年军售金额下降超过10%（斯德哥尔摩国际和平研究所数据）。",
+          "verify_status": "no_source"
+        }
+      ],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM001_B",
@@ -207631,8 +208356,27 @@
       "HM001_B_s2"
     ],
     "weight": 0.5,
-    "indicators": [],
-    "falsification_criteria": "2024年中国新增经济制裁案件数量较2023年减少（基于美国财政部OFAC数据库）；针对中国企业的制裁措施在2024年占比低于8%（国际制裁监测机构数据）；中国出口受制裁影响金额增长率在2024年低于10%（海关总署报告）。",
+    "indicators": [
+      {
+        "name": "全球贸易政策不确定性指数",
+        "source": "世界银行/IMF",
+        "threshold_support": "到 2027 年 8 月，全球贸易政策不确定性指数较 2026 年 8 月水平上升 20% 以上",
+        "threshold_refute": "到 2027 年 8 月，全球贸易政策不确定性指数较 2026 年 8 月水平下降或持平"
+      },
+      {
+        "name": "中日韩三国外汇市场波动率",
+        "source": "IMF 国际金融统计",
+        "threshold_support": "到 2027 年 8 月，人民币、日元、韩元兑美元汇率的年化波动率较 2026 年 8 月水平上升 50% 以上",
+        "threshold_refute": "到 2027 年 8 月，汇率波动率较 2026 年 8 月水平下降或持平"
+      },
+      {
+        "name": "中日韩三国间贸易额",
+        "source": "中国海关总署、日本财务省、韩国关税厅",
+        "threshold_support": "到 2027 年 8 月，中日韩三国间贸易总额较 2026 年 8 月水平下降 15% 以上",
+        "threshold_refute": "到 2027 年 8 月，三国间贸易总额较 2026 年 8 月水平增长或持平"
+      }
+    ],
+    "falsification_criteria": "到 2027 年 8 月，全球贸易政策不确定性指数较 2026 年 8 月水平下降或持平；到 2027 年 8 月，汇率波动率较 2026 年 8 月水平下降或持平；到 2027 年 8 月，三国间贸易总额较 2026 年 8 月水平增长或持平",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -208085,7 +208829,13 @@
       }
     ],
     "version": 1,
-    "deadline_source": "ai_proposed"
+    "deadline_source": "ai_proposed",
+    "_prev_thresholds": {
+      "falsification_criteria": "2024年中国新增经济制裁案件数量较2023年减少（基于美国财政部OFAC数据库）；针对中国企业的制裁措施在2024年占比低于8%（国际制裁监测机构数据）；中国出口受制裁影响金额增长率在2024年低于10%（海关总署报告）。",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM001_B_s1",
@@ -215804,8 +216554,27 @@
       "HM002_A",
       "HM002_B"
     ],
-    "indicators": [],
-    "falsification_criteria": "到2025年全球氢能投资增长未超过10%且主要大国（如美国、中国）未在氢能领域采取竞争性政策；2024年伊拉克石油产量未增加100万桶/日且未引发中东地缘政治紧张；2025年底前东南亚电网投资需求激增但未导致大国投资竞争加剧",
+    "indicators": [
+      {
+        "name": "伊拉克石油日产量变化",
+        "source": "美国能源信息署 (EIA)",
+        "threshold_support": "到2027年，伊拉克石油日产量较2026年水平增长超过10%，表明供应扩张加剧全球竞争",
+        "threshold_refute": "到2027年，伊拉克石油日产量较2026年水平增长低于5%或出现下降，表明供应格局未显著重塑"
+      },
+      {
+        "name": "全球氢能项目投资总额",
+        "source": "国际能源署 (IEA)",
+        "threshold_support": "到2027年，全球氢能项目投资总额较2026年水平增长50%以上，反映氢能竞赛加速大国布局",
+        "threshold_refute": "到2027年，全球氢能项目投资总额较2026年水平增长低于20%，表明氢能领域竞争未明显加剧"
+      },
+      {
+        "name": "东南亚电网投资金额",
+        "source": "国际能源署 (IEA)",
+        "threshold_support": "到2027年，东南亚地区电网投资总额较2026年水平增长30%以上，预示地缘政治竞争激化",
+        "threshold_refute": "到2027年，东南亚地区电网投资总额较2026年水平增长低于10%，表明投资需求未驱动竞争格局"
+      }
+    ],
+    "falsification_criteria": "到2027年，伊拉克石油日产量较2026年水平增长低于5%或出现下降，表明供应格局未显著重塑；到2027年，全球氢能项目投资总额较2026年水平增长低于20%，表明氢能领域竞争未明显加剧；到2027年，东南亚地区电网投资总额较2026年水平增长低于10%，表明投资需求未驱动竞争格局",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -220684,7 +221453,13 @@
       }
     ],
     "version": 3,
-    "deadline_source": "level_default"
+    "deadline_source": "level_default",
+    "_prev_thresholds": {
+      "falsification_criteria": "到2025年全球氢能投资增长未超过10%且主要大国（如美国、中国）未在氢能领域采取竞争性政策；2024年伊拉克石油产量未增加100万桶/日且未引发中东地缘政治紧张；2025年底前东南亚电网投资需求激增但未导致大国投资竞争加剧",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM002_A",
@@ -220702,8 +221477,21 @@
       "HM002_A_s2"
     ],
     "weight": 0.5,
-    "indicators": [],
-    "falsification_criteria": "2024年霍尔木兹海峡通航中断天数少于5天且未导致全球石油价格波动超过20%；到2025年国际社会未采取有效措施但实际中断事件未增加；2025年底前没有国家或组织宣布对霍尔木兹海峡的常态化封锁",
+    "indicators": [
+      {
+        "name": "霍尔木兹海峡石油运输量",
+        "source": "国际能源署（IEA）",
+        "threshold_support": "到2027年，月均石油运输量较2026年水平下降20%以上",
+        "threshold_refute": "到2027年，月均石油运输量较2026年水平下降不足10%"
+      },
+      {
+        "name": "霍尔木兹海峡航行安全事件数量",
+        "source": "国际海事组织（IMO）",
+        "threshold_support": "到2027年，年航行安全事件数量较2026年增加50%以上",
+        "threshold_refute": "到2027年，年航行安全事件数量较2026年增加不足20%"
+      }
+    ],
+    "falsification_criteria": "到2027年，月均石油运输量较2026年水平下降不足10%；到2027年，年航行安全事件数量较2026年增加不足20%",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -222262,7 +223050,13 @@
       }
     ],
     "version": 1,
-    "deadline_source": "level_default"
+    "deadline_source": "level_default",
+    "_prev_thresholds": {
+      "falsification_criteria": "2024年霍尔木兹海峡通航中断天数少于5天且未导致全球石油价格波动超过20%；到2025年国际社会未采取有效措施但实际中断事件未增加；2025年底前没有国家或组织宣布对霍尔木兹海峡的常态化封锁",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM002_A_s1",
@@ -225213,8 +226007,33 @@
       "HM003_A",
       "HM003_B"
     ],
-    "indicators": [],
-    "falsification_criteria": "2024年英伟达GPU平均售价涨幅低于5%，未触发算力成本飙升；2024年中国CPI同比涨幅未超过4%，且与AI成本无显著关联；2024-2025年未发生AI相关金融风险事件（如大型IPO失败或债务违约）",
+    "indicators": [
+      {
+        "name": "AI相关私人资本支出增速",
+        "source": "美国经济分析局（BEA）",
+        "threshold_support": "到2027年，美国私人部门AI相关设备与软件投资增速较2026年水平下降20%以上，且同期GDP增速同步下滑超过1个百分点",
+        "threshold_refute": "到2027年，AI相关投资增速较2026年水平持平或上升，且GDP增速未出现显著恶化"
+      },
+      {
+        "name": "算力基础设施电力成本指数",
+        "source": "美国劳工统计局（BLS）或美国能源信息署（EIA）",
+        "threshold_support": "到2027年，主要数据中心集群区域的工业电价较2026年水平上涨30%以上，且伴随企业IT支出占比显著上升",
+        "threshold_refute": "到2027年，电价较2026年水平下降或涨幅低于10%，且企业IT支出压力未明显加剧"
+      },
+      {
+        "name": "核心PCE通胀率",
+        "source": "美国劳工统计局（BLS）",
+        "threshold_support": "到2027年，美国核心PCE通胀率较2026年水平上升0.5个百分点以上，且AI相关行业（如电子、信息服务）对通胀拉动贡献超过三分之一",
+        "threshold_refute": "到2027年，核心PCE通胀率较2026年水平下降或升幅低于0.2个百分点，且AI相关行业价格贡献不显著"
+      },
+      {
+        "name": "金融压力指数",
+        "source": "芝加哥联储金融压力指数（National Financial Conditions Index）",
+        "threshold_support": "到2027年，该指数较2026年水平上升超过0.5个标准差，且科技板块信用利差同步走阔",
+        "threshold_refute": "到2027年，该指数较2026年水平下降或维持在历史均值以下，且科技企业融资条件未出现系统性收紧"
+      }
+    ],
+    "falsification_criteria": "到2027年，AI相关投资增速较2026年水平持平或上升，且GDP增速未出现显著恶化；到2027年，电价较2026年水平下降或涨幅低于10%，且企业IT支出压力未明显加剧；到2027年，核心PCE通胀率较2026年水平下降或升幅低于0.2个百分点，且AI相关行业价格贡献不显著；到2027年，该指数较2026年水平下降或维持在历史均值以下，且科技企业融资条件未出现系统性收紧",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -230585,7 +231404,13 @@
       }
     ],
     "version": 3,
-    "deadline_source": "level_default"
+    "deadline_source": "level_default",
+    "_prev_thresholds": {
+      "falsification_criteria": "2024年英伟达GPU平均售价涨幅低于5%，未触发算力成本飙升；2024年中国CPI同比涨幅未超过4%，且与AI成本无显著关联；2024-2025年未发生AI相关金融风险事件（如大型IPO失败或债务违约）",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM003_A",
@@ -230603,8 +231428,33 @@
       "HM003_A_s2"
     ],
     "weight": 0.5,
-    "indicators": [],
-    "falsification_criteria": "2024年全球AI资本支出增长率低于20%，未出现泡沫化趋势；科技巨头AI投资平均回报率高于15%，保持盈利水平；2025年AI投资市场未出现资本大规模撤离或显著回调",
+    "indicators": [
+      {
+        "name": "AI资本开支增速与GDP增速偏离度",
+        "source": "美国商务部经济分析局（BEA）、中国国家统计局、日本内阁府、韩国统计厅",
+        "threshold_support": "在2027年第二季度（截至2027-09-16可获得的最新季度数据），上述国家中至少两国的AI相关行业固定资本支出年化增速超过同期GDP年化增速15个百分点以上",
+        "threshold_refute": "在2027年第二季度，上述国家的AI相关行业固定资本支出年化增速与同期GDP年化增速的差距均在5个百分点以内"
+      },
+      {
+        "name": "AI企业估值与盈利背离度",
+        "source": "彭博终端、路孚特",
+        "threshold_support": "在2027年第二季度末（截至2027-09-16可获得的最新季度数据），全球主要AI上市公司的市盈率中位数较2026年同期水平上升50%以上，同时营业收入增速中位数较2026年同期水平下降超过10个百分点",
+        "threshold_refute": "在2027年第二季度末，全球主要AI上市公司的市盈率中位数较2026年同期水平下降或持平，且营业收入增速中位数保持稳定"
+      },
+      {
+        "name": "AI基础设施产能利用率",
+        "source": "IDC、Gartner、上市公司年报/季报公开数据",
+        "threshold_support": "在2027年上半年（截至2027-09-16可获得的最新行业报告），全球新建数据中心的平均利用率较2026年全年水平下降20个百分点以上，且低于60%",
+        "threshold_refute": "在2027年上半年，全球新建数据中心的平均利用率保持在70%以上，与2026年全年水平基本持平"
+      },
+      {
+        "name": "AI融资规模与二级市场回报背离",
+        "source": "CB Insights、PitchBook、各国证券交易所公开数据",
+        "threshold_support": "在2027年上半年（截至2027-09-16可获得的最新数据），全球AI领域一级市场融资总额较2026年同期增长30%以上，同时全球主要AI上市公司指数（如标普500信息技术指数、恒生科技指数中AI成分股）较2026年同期下跌超过15%",
+        "threshold_refute": "在2027年上半年，全球AI领域一级市场融资总额与二级市场表现基本同步，未出现融资激增而股价下跌的显著背离"
+      }
+    ],
+    "falsification_criteria": "在2027年第二季度，上述国家的AI相关行业固定资本支出年化增速与同期GDP年化增速的差距均在5个百分点以内；在2027年第二季度末，全球主要AI上市公司的市盈率中位数较2026年同期水平下降或持平，且营业收入增速中位数保持稳定；在2027年上半年，全球新建数据中心的平均利用率保持在70%以上，与2026年全年水平基本持平；在2027年上半年，全球AI领域一级市场融资总额与二级市场表现基本同步，未出现融资激增而股价下跌的显著背离",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -231018,7 +231868,13 @@
       }
     ],
     "version": 1,
-    "deadline_source": "level_default"
+    "deadline_source": "level_default",
+    "_prev_thresholds": {
+      "falsification_criteria": "2024年全球AI资本支出增长率低于20%，未出现泡沫化趋势；科技巨头AI投资平均回报率高于15%，保持盈利水平；2025年AI投资市场未出现资本大规模撤离或显著回调",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM003_A_s1",
@@ -232033,8 +232889,27 @@
       "HM003_B_s2"
     ],
     "weight": 0.5,
-    "indicators": [],
-    "falsification_criteria": "国家统计局数据显示AI替代导致的失业率在2024年上升超过1个百分点；财政部报告显示社会救助支出因AI替代在2024年同比增长超过10%；2024年内发生至少2起与AI替代直接相关的社会稳定事件（如抗议），并被官方媒体确认",
+    "indicators": [
+      {
+        "name": "失业率",
+        "source": "ILOSTAT",
+        "threshold_support": "到2027年，中国、日本、韩国三国失业率的算术平均值较2026年水平上升超过10%",
+        "threshold_refute": "到2027年，三国平均失业率较2026年水平上升低于10%或下降"
+      },
+      {
+        "name": "青年失业率",
+        "source": "ILOSTAT",
+        "threshold_support": "到2027年，中国、日本、韩国三国青年失业率的算术平均值较2026年水平上升超过15%",
+        "threshold_refute": "到2027年，三国平均青年失业率较2026年水平上升低于15%或下降"
+      },
+      {
+        "name": "社会保障支出占GDP比重",
+        "source": "中国国家统计局",
+        "threshold_support": "到2027年，中国社会保障支出占GDP比重较2026年水平上升超过5%",
+        "threshold_refute": "到2027年，中国社会保障支出占GDP比重较2026年水平上升低于5%或下降"
+      }
+    ],
+    "falsification_criteria": "到2027年，三国平均失业率较2026年水平上升低于10%或下降；到2027年，三国平均青年失业率较2026年水平上升低于15%或下降；到2027年，中国社会保障支出占GDP比重较2026年水平上升低于5%或下降",
     "created": "2026-08-20",
     "evidence_log": [
       {
@@ -236903,7 +237778,13 @@
       }
     ],
     "version": 1,
-    "deadline_source": "level_default"
+    "deadline_source": "level_default",
+    "_prev_thresholds": {
+      "falsification_criteria": "国家统计局数据显示AI替代导致的失业率在2024年上升超过1个百分点；财政部报告显示社会救助支出因AI替代在2024年同比增长超过10%；2024年内发生至少2起与AI替代直接相关的社会稳定事件（如抗议），并被官方媒体确认",
+      "indicators": [],
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "stale_thresholds": []
   },
   {
     "id": "HM003_B_s1",
@@ -237921,7 +238802,39 @@
     "last_verified": "",
     "verification_result": "",
     "reconciliation_notes": "",
-    "falsification_criteria": "Delay in release beyond 2025 or catalog excluding core new quality productive force industries.；No increase in bond allocation or a flat trend throughout the plan period, contradicting the tightening-loosening pattern.；Proportion remains static below 15% or declines over the plan period, indicating "
+    "falsification_criteria": "到2030年，国家级专精特新‘小巨人’企业数量较2026年增长不足50%；到2030年，高技术制造业固定资产投资累计增速低于同期制造业整体投资累计增速10个百分点或出现负增长；到2030年，财政科学技术支出占财政总支出比重较2026年未提升或提升不足10%；2028-2030年产业政策相关财政支出年均增速不低于2026-2027年年均增速",
+    "_prev_thresholds": {
+      "falsification_criteria": "Delay in release beyond 2025 or catalog excluding core new quality productive force industries.；No increase in bond allocation or a flat trend throughout the plan period, contradicting the tightening-loosening pattern.；Proportion remains static below 15% or declines over the plan period, indicating ",
+      "indicators": null,
+      "rewritten_at": "2026-09-21T13:53:06"
+    },
+    "indicators": [
+      {
+        "name": "国家级专精特新‘小巨人’企业数量",
+        "source": "工业和信息化部",
+        "threshold_support": "到2030年，国家级专精特新‘小巨人’企业数量较2026年增长100%以上",
+        "threshold_refute": "到2030年，国家级专精特新‘小巨人’企业数量较2026年增长不足50%"
+      },
+      {
+        "name": "高技术制造业固定资产投资",
+        "source": "中国国家统计局",
+        "threshold_support": "到2030年，高技术制造业固定资产投资累计增速高于同期制造业整体投资累计增速20个百分点以上",
+        "threshold_refute": "到2030年，高技术制造业固定资产投资累计增速低于同期制造业整体投资累计增速10个百分点或出现负增长"
+      },
+      {
+        "name": "财政科学技术支出占比",
+        "source": "财政部",
+        "threshold_support": "到2030年，财政科学技术支出占财政总支出比重较2026年提升20%以上",
+        "threshold_refute": "到2030年，财政科学技术支出占财政总支出比重较2026年未提升或提升不足10%"
+      },
+      {
+        "name": "产业政策相关财政支出增速节奏",
+        "source": "财政部",
+        "threshold_support": "2026-2027年产业政策相关财政支出年均增速高于2028-2030年年均增速10个百分点以上",
+        "threshold_refute": "2028-2030年产业政策相关财政支出年均增速不低于2026-2027年年均增速"
+      }
+    ],
+    "stale_thresholds": []
   },
   {
     "id": "hyp_dba82cf2",
