@@ -230,6 +230,10 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
 .ach-rank .rank-title{font-size:11px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
 .ach-rank .rank-meta{font-size:9px;color:var(--text-muted);margin-top:2px;font-family:"JetBrains Mono",monospace}
 .ach-rank .rank-score{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:700;min-width:44px;text-align:right}
+.ach-rank.ach-none{opacity:.72;border-style:dashed}
+.rel-badge{display:inline-block;margin-left:6px;padding:1px 5px;border-radius:4px;font-size:9px;font-weight:600;vertical-align:middle}
+.rel-badge.rel-warn{background:#fef3c7;color:#b45309;border:1px solid #fcd34d}
+.rel-badge.rel-dim{background:#f1f5f9;color:#64748b;border:1px solid #cbd5e1}
 .ach-rank .rank-score.high{color:var(--success)}
 .ach-rank .rank-score.mid{color:var(--warning)}
 .ach-rank .rank-score.low{color:var(--danger)}
@@ -576,19 +580,34 @@ var ACH_DATA=""" + ach_json + """;
   }
   var rank=Object.keys(sc).map(function(id){
     var s=sc[id],h=hyps.find(function(x){return x.id===id})||{};
-    return {id:id,title:h.title||id,posterior:s.posterior,support:s.support,refute:s.refute,prior:h.prior||0.5}
+    var n=(s.evidence_total!==undefined)?s.evidence_total:((s.support||0)+(s.refute||0));
+    return {id:id,title:h.title||id,posterior:s.posterior,support:s.support,refute:s.refute,
+            prior:h.prior||0.5,n:n,rel:s.reliability||''}
   }).sort(function(a,b){return b.posterior-a.posterior});
   if(!rank.length)return;
   document.getElementById('achPanel').style.display='';
+  // 可信度徽章：区分"有证据的判断"与"没被判断过的先验"
+  function relBadge(r){
+    if(r.rel==='none'||r.n===0){
+      return '<span class="rel-badge rel-warn" title="零 C/I 证据：显示的是先验值，不是判断结果">⚠️ 无证据</span>';
+    }
+    if(r.rel==='extreme'){
+      return '<span class="rel-badge rel-warn" title="证据量大但后验贴边界，LR 复利放大，结论需谨慎">⚠️ 极端值</span>';
+    }
+    if(r.rel==='weak'){
+      return '<span class="rel-badge rel-dim" title="1-2 条证据，易被单条左右">样本少</span>';
+    }
+    return '';
+  }
   var html=rank.map(function(r,i){
     var cls=i<3?'top':'';
     var scoreCls=r.posterior>=0.6?'high':r.posterior>=0.35?'mid':'low';
     var barCol=r.posterior>=0.6?'#16a34a':r.posterior>=0.35?'#d97706':'#dc2626';
-    return '<div class="ach-rank" onclick="openMajor(\\''+r.id+'\\')">'
+    return '<div class="ach-rank'+(r.rel==='none'?' ach-none':'')+'" onclick="openMajor(\\''+r.id+'\\')">'
       +'<span class="rank-num '+(i<3?cls:'')+'">'+(i+1)+'</span>'
       +'<div class="rank-body">'
-      +'<div class="rank-title">'+esc(r.title)+'</div>'
-      +'<div class="rank-meta">支持 '+r.support+' · 反驳 '+r.refute+' · 先验 '+Math.round(r.prior*100)+'%</div>'
+      +'<div class="rank-title">'+esc(r.title)+relBadge(r)+'</div>'
+      +'<div class="rank-meta">支持 '+r.support+' · 反驳 '+r.refute+' · 共 '+r.n+' 条 · 先验 '+Math.round(r.prior*100)+'%</div>'
       +'<div class="ach-bar"><span style="width:'+Math.round(r.posterior*100)+'%;background:'+barCol+'"></span></div>'
       +'</div>'
       +'<div class="rank-score '+scoreCls+'">'+Math.round(r.posterior*100)+'%</div>'

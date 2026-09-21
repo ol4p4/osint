@@ -101,20 +101,54 @@ class HypothesisEngine:
         return existing
 
     def _decompose_view(self, view):
-        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        due = (datetime.now(timezone.utc) + timedelta(days=view.get("time_horizon_months", 12) * 30)).strftime("%Y-%m-%d")
+        """view → 2-4 个可验证子命题。
+
+        ⚠️ 2026-09-21 修复**时间基准缺陷**：原 prompt 未告知模型"今天是几号"，
+        AI 只能凭训练数据的时间感写年份，实测产出的证伪判据全部指向 2023-2025
+        （75 个节点里 51 个即 68% 已过期），与代码计算的 due_date（2027-2028）
+        完全脱节——验证时按判据走永远已过期，按 due_date 走判据内容对不上时间。
+        修复：把当前日期与目标验证窗口显式写进 prompt。
+        """
+        now = datetime.now(timezone.utc)
+        today = now.strftime("%Y-%m-%d")
+        horizon_months = view.get("time_horizon_months", 12)
+        due = (now + timedelta(days=horizon_months * 30)).strftime("%Y-%m-%d")
+        due_year = (now + timedelta(days=horizon_months * 30)).year
         prompt = f"""Decompose this view into 2-4 verifiable sub-propositions.
+
+**Current date: {today}** (year {now.year})
+**Verification deadline: {due}** — all thresholds must refer to this window.
+
 View: {view["title"]}
 Core claim: {view["core_claim"]}
 Dimensions: {", ".join(view.get("key_dimensions", []))}
-Output JSON array, each: {{"claim":"...","indicator":"measurable metric","data_source":"where to check","threshold_support":"what supports it","threshold_refute":"what refutes it"}}"""
-        system = "You are a political economy analyst. Output JSON only."
+
+Output JSON array, each: {{"claim":"...","indicator":"measurable metric","data_source":"where to check","threshold_support":"what supports it","threshold_refute":"what refutes it"}}
+
+CRITICAL requirements for thresholds:
+- Every threshold MUST be checkable between {today} and {due}. Never use dates before {now.year}.
+- State the year explicitly in each threshold, e.g. "by {due_year}, X exceeds Y".
+- Use concrete numbers with units and a named data source.
+- Do NOT invent statistics; if a baseline value is unknown, phrase the threshold relatively
+  (e.g. "grows more than 20% from {now.year} level") instead of citing a fabricated figure."""
+        system = ("You are a political economy analyst. Output JSON only. "
+                  "You are working in the year " + str(now.year) +
+                  "; never propose thresholds dated before that.")
         try:
             response = self.analyzer._call_api(system, prompt)
             sps = self._parse_json_array(response)
         except Exception as e:
             print(f"[ENGINE] Decompose failed: {e}")
             sps = []
+
+        # 时间闸门（2026-09-21）：证伪判据里的年份若早于今年，说明模型又凭训练数据
+        # 猜了过期日期——这类判据在验证时永远"已过期"，等于没有证伪能力。
+        # 不静默接受：记录告警，并保留供人工复核（宁可标注也不要假的可证伪性）。
+        stale = _stale_years(sps, now.year)
+        if stale:
+            print(f"[ENGINE] ⚠️ 时间闸门：{view['title'][:24]} 的判据含过期年份 {stale}"
+                  f"（今年 {now.year}）——已记录 stale_thresholds 待复核")
+
         hyp = {
             "id": "hyp_" + uuid.uuid4().hex[:8],
             "view_id": view["id"],
@@ -137,6 +171,8 @@ Output JSON array, each: {{"claim":"...","indicator":"measurable metric","data_s
                 sp.get("threshold_refute", "") for sp in sps
                 if isinstance(sp, dict) and sp.get("threshold_refute"))[:300],
         }
+        if stale:
+            hyp["stale_thresholds"] = stale
         self._save_hypothesis_markdown(hyp)
         return [hyp]
 
@@ -153,6 +189,26 @@ Output JSON array, each: {{"claim":"...","indicator":"measurable metric","data_s
                     if depth == 0: end = i; break
             return json.loads(text[start:end+1])
         return json.loads(text)
+
+    @staticmethod
+    def _stale_years(sps, current_year):
+        """扫描子命题里的年份，返回早于今年的年份列表（去重升序）。
+
+        用途：生成时的时间闸门。AI 未被告知当前日期时会凭训练数据写 2023-2025，
+        这类判据在验证时永远"已过期"，等于没有证伪能力（实测存量 68% 中招）。
+        返回非空即告警——宁可显式标注，也不要假的可证伪性。
+        """
+        found = set()
+        for sp in sps:
+            if not isinstance(sp, dict):
+                continue
+            for v in sp.values():
+                # 不用 \b：中文语境下「到2024年底」的年份两侧是汉字，
+                # \b 依赖的 word boundary 不成立，会整条漏掉（实测踩坑）
+                for y in re.findall(r"(20[1-9]\d)", str(v)):
+                    if int(y) < current_year:
+                        found.add(int(y))
+        return sorted(found)
 
     def _save_hypothesis_markdown(self, hyp):
         md_dir = self.output_dir / "wiki" / "hypotheses"

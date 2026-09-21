@@ -92,6 +92,34 @@ def evidence_key(ev):
     return "ev_" + hashlib.sha256(raw.encode("utf-8")).hexdigest()[:10]
 
 
+# 后验可信度分级（2026-09-21）：让"有证据的判断"与"没被判断过的先验"在界面上可区分
+RELIABILITY_NONE = "none"            # 零 C/I 证据：后验 = 先验，不是判断结果
+RELIABILITY_WEAK = "weak"            # 1-2 条：样本太少，易被单条证据左右
+RELIABILITY_OK = "ok"                # 3-9 条
+RELIABILITY_STRONG = "strong"        # >=10 条
+RELIABILITY_EXTREME = "extreme"      # 证据多但后验贴地板/天花板——复利放大，需警惕
+EXTREME_THRESHOLD = 0.12             # 后验 <=0.12 或 >=0.88 且证据 >=8 条 → 标记极端
+
+
+def _reliability(n_evidence, posterior, prior):
+    """后验可信度分级。
+
+    动机：`中国社保走韩国老路` 后验 0.650 但零 C/I 证据——显示的是先验值，
+    而仪表盘无法区分它与"有 20 条证据支撑的 0.65"。`全球能源转型` 后验 0.090
+    但 C 12 / I 11 条——证据量最大却结论最极端，是 LR 复利放大的信号。
+    这两类都必须在界面上标出来，否则读者会把"没判断过"当成"判断为真"。
+    """
+    if n_evidence == 0:
+        return RELIABILITY_NONE
+    if n_evidence >= 8 and (posterior <= EXTREME_THRESHOLD or posterior >= 1 - EXTREME_THRESHOLD):
+        return RELIABILITY_EXTREME
+    if n_evidence <= 2:
+        return RELIABILITY_WEAK
+    if n_evidence < 10:
+        return RELIABILITY_OK
+    return RELIABILITY_STRONG
+
+
 class ACHMatrix:
     def __init__(self, matrix_file, majors):
         self.file = Path(matrix_file)
@@ -315,7 +343,13 @@ class ACHMatrix:
     def bayesian_update(self, hyps):
         """按矩阵重算每个 major 假设的后验置信度并写回 confidence。
         先验恒取 base_confidence（用户/AI 设定的原始锚点）——不用 confidence 兜底，
-        否则上一轮被压低的后验会变成下一轮的先验，LR 复利恶性循环（9-16 诊断）。"""
+        否则上一轮被压低的后验会变成下一轮的先验，LR 复利恶性循环（9-16 诊断）。
+
+        2026-09-21 加**可信度标注**：scores 里额外输出 evidence_total / reliability /
+        prior_baseline，用于区分"有证据支撑的判断"与"从未被判断过的先验值"。
+        动因：`中国社保走韩国老路` 后验 0.650 但 C/I 证据为 0——它显示的是先验，
+        不是判断结果，而仪表盘无法区分二者（会误导读者）。
+        """
         hyp_by_id = {h["id"]: h for h in hyps}
         scores = {}
         for h in self.majors:
@@ -333,8 +367,13 @@ class ACHMatrix:
                     refute += 1
             posterior = odds / (1 + odds)
             posterior = max(min(posterior, POSTERIOR_CAP), POSTERIOR_FLOOR)
-            scores[h["id"]] = {"posterior": round(posterior, 3), "support": support,
-                               "refute": refute}
+            n_ev = support + refute
+            scores[h["id"]] = {
+                "posterior": round(posterior, 3), "support": support, "refute": refute,
+                "evidence_total": n_ev,
+                "prior_baseline": round(prior, 3),
+                "reliability": _reliability(n_ev, posterior, prior),
+            }
             target = hyp_by_id.get(h["id"])
             if target:
                 target["confidence"] = round(posterior, 3)
@@ -393,12 +432,23 @@ class ACHMatrix:
         recent = self.data["evidence"][-25:]
         scoring = self.data.get("scoring", {})
         lines = ["# ACH 竞争性假设矩阵（" + time.strftime("%Y-%m-%d") + "）", "",
-                 "> 判定：C=一致 / I=不一致(证伪信号) / N=中性；置信度=贝叶斯后验（上限0.95）", ""]
+                 "> 判定：C=一致 / I=不一致(证伪信号) / N=中性；置信度=贝叶斯后验（上限0.95）",
+                 "> 可信度标注：⚠️无证据=仅先验未判断 / ⚠️极端=证据多但结论贴边界(复利放大) / 样本少=易被单条左右", ""]
         ranked = sorted(scoring.items(), key=lambda kv: -kv[1]["posterior"])
         lines.append("## 排名（后验置信度）")
         for i, (hid, s) in enumerate(ranked, 1):
             title = next((h.get("title", hid) for h in self.majors if h["id"] == hid), hid)
-            lines.append(f"{i}. **{title}** — {s['posterior']:.2f}（支持{s['support']}/反驳{s['refute']}）")
+            n = s.get("evidence_total", s.get("support", 0) + s.get("refute", 0))
+            rel = s.get("reliability") or _reliability(n, s["posterior"], s.get("prior_baseline", 0.5))
+            mark = ""
+            if rel == RELIABILITY_NONE:
+                mark = "  ⚠️**无证据**（后验=先验，尚未被判断）"
+            elif rel == RELIABILITY_EXTREME:
+                mark = "  ⚠️**极端值**（" + str(n) + " 条证据，复利放大）"
+            elif rel == RELIABILITY_WEAK:
+                mark = "  （样本少）"
+            lines.append(f"{i}. **{title}** — {s['posterior']:.2f}"
+                         f"（支持{s['support']}/反驳{s['refute']}，共{n}条）{mark}")
         lines += ["", "## 诊断矩阵（最近 %d 条证据）" % len(recent), "",
                   "| 证据 | " + " | ".join(h.get("title", "")[:8] for h in self.majors) + " |",
                   "|---|" + "---|" * len(self.majors)]
