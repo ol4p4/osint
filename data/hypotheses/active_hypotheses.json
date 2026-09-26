@@ -24680,6 +24680,102 @@
         "ach_eligible": true,
         "source": "联合早报-中国",
         "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "d99a3f523ade9b05"
+        ],
+        "story_ids": [],
+        "summary": "【9月26日隔夜要闻一览】 1、一位美国官员透露，继伊朗方面提出开放霍尔木兹海峡并在提议获接纳后重启谈判的计划以来，美国",
+        "domains": [
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "2962ffcea290893c"
+        ],
+        "story_ids": [
+          "st_dcaef2812d"
+        ],
+        "summary": "【纽约联储博客：美联储采用“证券主导”的储备管理方式】美国纽约联储博客栏目“Teller Window”发表文章称，在全",
+        "domains": [
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "4083774945e13153"
+        ],
+        "story_ids": [
+          "st_5869696ab8"
+        ],
+        "summary": "美国专家：五年后人们或不再讨论美中对抗 智能体可能取而代之",
+        "domains": [
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "ea11c316863437f2"
+        ],
+        "story_ids": [],
+        "summary": "美元连涨五个交易日后保持平稳",
+        "domains": [
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": "美元走强可能导致人民币贬值，增加进口成本，对中国宏观经济造成压力。资本外流风险上升，可能影响国内流动性。出口企业可能受益于美元升值，但进口成本上升会挤压利润。就业市场可能面临挑战，尤其是外向型行业。青年失业毕业生将面临更激烈的就业竞争，就业压力加大。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "07bb39eb735bac3e"
+        ],
+        "story_ids": [],
+        "summary": "伊朗最新提议表明美伊外交“实际上没有任何改变”",
+        "domains": [
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "美伊关系的紧张及中东地缘政治局势的波动，对全球能源市场和地缘政治格局具有重要影响。对中国而言，中东局势波动可能影响我国的能源进口安全及价格稳定，进而对宏观经济运行产生一定间接影响。然而，由于我国能源进口渠道多元化且外交上保持独立自主，该事件对国内就业市场和青年失业毕业生的直接影响较为有限。但国际局势的不确定性可能加剧部分青年对宏观经济前景的担忧，间接影响其就业选择和心理预期。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "85e2a77865a0a32c"
+        ],
+        "story_ids": [
+          "st_8ac6d0f282"
+        ],
+        "summary": "报道：特朗普拒绝伊朗7天停火提议，预计中期选举后恢复轰炸",
+        "domains": [
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -24690,7 +24786,7 @@
     "title": "全球性经济危机",
     "level": "mega",
     "direction": "global_economy",
-    "confidence": 0.82,
+    "confidence": 0.86,
     "base_confidence": 0.08,
     "status": "active",
     "rationale": "未来10年内全球GDP连续2年负增长+主要股指累计跌幅>40%。可能由三战/债务危机/供应链断裂任一触发。",
@@ -28768,6 +28864,103 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": "亚太增长利好中国经济，普通公民资产或受益，但需警惕外部风险。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "28d2d3387f0df10e"
+        ],
+        "story_ids": [],
+        "summary": "Spain Q2 final annualised GDP 2.6% YoY, vs 2.7% expected and",
+        "domains": [],
+        "relevance": 0.143,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "2dc1cd1365471016"
+        ],
+        "story_ids": [],
+        "summary": "中秋假期首日跨区域出行人数突破2.43亿人次",
+        "domains": [
+          "经济",
+          "供应链"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "节假日出行高峰直接拉动了交通、住宿、餐饮及文旅等服务消费，对中国经济内需复苏和宏观经济增长起到积极的促进作用。出行与消费热潮带动了相关产业链的短期用工需求，为市场创造了大量季节性和临时性就业岗位，有助于缓解整体就业压力。对于青年失业毕业生而言，文旅和服务业的繁荣提供了大量基层、临时及灵活就业岗位，为面临就业难题的青年群体提供了过渡性就业机会和实践平台。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "23b21d7697a54519"
+        ],
+        "story_ids": [],
+        "summary": "秘鲁交通部长：中国金兆明年将在秘鲁南部动工建设港口",
+        "domains": [
+          "经济",
+          "供应链"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": "海外投资影响地缘安全，间接波及国内资产与政策稳定性。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "c3ebf12cacca22db"
+        ],
+        "story_ids": [
+          "st_dd4b6eaeb0"
+        ],
+        "summary": "9月全国日均揽收快递5.85亿件 单日峰值超6.1亿件",
+        "domains": [
+          "经济",
+          "供应链"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": "快递业务量的持续高速增长是中国内需潜力释放和消费复苏的重要宏观信号，有力支撑了中国宏观经济的韧性与循环。在就业市场层面，快递及电商物流行业作为劳动密集型产业的代表，吸纳了大量青年劳动力和高校毕业生，是缓解青年失业率、促进灵活就业的关键蓄水池。日均超5.8亿件的业务体量预示着末端配送、仓储管理、技术支持等岗位需求的持续扩张，为青年毕业生提供了丰富的基层与数字化就业岗位。然而，行业高峰期间的高强度用工"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "afd54a5389d6e549"
+        ],
+        "story_ids": [],
+        "summary": "中银国际：中国运动服饰行业第三季度仍面临挑战 看好安踏体育",
+        "domains": [
+          "经济",
+          "供应链"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": "中国运动服饰行业面临的挑战反映了当前消费市场对宏观经济变化的敏感性，消费信心的恢复需要宏观政策的进一步支持。作为劳动密集型与时尚消费结合的产业，纺织服装及体育用品行业的景气度直接关系到大量制造业和零售业岗位的稳定，特别是中西部地区及中小城市的就业。对于青年失业毕业生而言，体育用品行业的数字化转型、品牌出海以及新零售渠道的拓展（如直播电商、社群运营）提供了大量新型就业岗位，如数字化营销、跨境电商运营"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "2575e32f134d25e0"
+        ],
+        "story_ids": [
+          "st_bf22b4de13"
+        ],
+        "summary": "南非拟投资27亿美元升级锰矿出口体系，新建港口并修复铁路",
+        "domains": [
+          "经济",
+          "供应链"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "第一层：类似南非锰矿投资，可能影响国内矿产相关物价，但资产与政策传导弱。"
       }
     ],
     "version": 1,
@@ -31715,6 +31908,105 @@
         "ach_eligible": true,
         "source": "新浪财经-滚动新闻",
         "impact": "日本加息可能影响汇率与出口，普通公民需关注进口物价和海外投资风险。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "00a4721a16e97b88"
+        ],
+        "story_ids": [],
+        "summary": "共同社报道本田考虑投资400亿日元",
+        "domains": [
+          "经济",
+          "青年",
+          "东亚"
+        ],
+        "relevance": 0.6,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "本田投资美国或加剧汽车竞争，影响中国出口资产，物价或受进口车价格波动。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "bc742554460ed407"
+        ],
+        "story_ids": [],
+        "summary": "日本央行核心通胀指标加速上行，支持再度加息政策",
+        "domains": [
+          "经济",
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": "日本通胀加速可能推高中国进口物价，间接影响普通公民生活成本，但政策联动性弱。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "ff44c56c0105bd88"
+        ],
+        "story_ids": [],
+        "summary": "日本经济安保担当大臣城内实表示，日本已告别“安倍经济学式”再通胀政策阶段，进入物价上涨、利率走高新时代。",
+        "domains": [
+          "经济",
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": "日本告别再通胀政策、转向利率走高阶段，对中国经济具有多重示范与溢出效应。首先，日元利率上升可能加剧全球资本市场的波动，部分短期投机资本可能流向其他高收益市场，增加中国跨境资本流动的管理难度。其次，日本货币政策正常化可能加速全球供应链重构，对中国出口结构和产业链地位带来竞争压力。在就业市场和青年失业方面，全球货币政策收紧可能抑制外需，导致中国出口导向型企业订单减少，从而对青年就业产生一定压力。然而，"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "830c3e0bdfc50bb3"
+        ],
+        "story_ids": [],
+        "summary": "【特朗普向日本首相高市早苗表达对日元走弱担忧 日美将保持汇率沟通】金十数据9月25讯，据日本财务大臣片山皋月透露，特朗",
+        "domains": [
+          "经济",
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "日元走弱信号影响中国公民资产端外汇资产，政策上需关注国际协调，物价安全风险较低。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "254114455e1df974"
+        ],
+        "story_ids": [
+          "st_5962e37ac1"
+        ],
+        "summary": "【日本内阁官员称“安倍经济学时代”结束】",
+        "domains": [
+          "经济",
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "重复信息，日本经济转向对普通公民传导间接，无显著影响。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "6f9cbe845f319f2c"
+        ],
+        "story_ids": [],
+        "summary": "日本财务大臣：高市早苗并非\"再通胀主义者，非常尊重央行独立性\"",
+        "domains": [
+          "经济",
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
       }
     ],
     "version": 3,
@@ -31952,7 +32244,7 @@
         "last_updated": "2025",
         "data_source": "WorldBank",
         "threshold_eval": {
-          "checked_at": "2026-09-25",
+          "checked_at": "2026-09-26",
           "value": 14.9114314271952,
           "refute_expr": "到2028年联合国人口司预测中国老年抚养比为19.5%，低于20%阈值；到2030年韩国老年抚养比达21%但中国仍低于20%",
           "support_expr": "老年抚养比到2030年三国均超20%",
@@ -31995,13 +32287,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -32009,7 +32301,7 @@
     "level": "small",
     "title": "延迟退休/养老金改革政策趋同",
     "direction": "toward",
-    "confidence": 0.89,
+    "confidence": 0.9,
     "base_confidence": 0.7,
     "deadline": "2027-09-05",
     "status": "active",
@@ -34670,18 +34962,97 @@
         "ach_eligible": true,
         "source": "新浪财经-滚动新闻",
         "impact": "对宏观经济可能产生轻微负面影响，显示金融监管趋严。就业市场可能因合规要求提高而增加合规岗位，但对青年失业毕业生影响有限，可能需要更专业的合规人才。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "db3d17be292652e8"
+        ],
+        "story_ids": [
+          "st_c097e4e917"
+        ],
+        "summary": "I’m 77, pay rent and live off Social Security, but I help homeless people. Why are so many people go",
+        "domains": [
+          "社保"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "MarketWatch-TopStories",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "e010bd52d28e6e05"
+        ],
+        "story_ids": [],
+        "summary": "总资产破6万亿！85后蔡霆升任平安人寿董事长",
+        "domains": [
+          "社保"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": "平安人寿作为中国寿险行业的领军企业，其总资产突破6万亿且迎来“85后”年轻董事长，对金融行业治理具有标志性意义。对中国宏观经济而言，稳定的金融与保险业发展是防范系统性风险、支持实体经济（如绿色信贷、科技创新、养老保险）的重要支柱。在就业市场方面，平安人寿等大型金融机构的年轻化高管趋势，为青年金融人才树立了职业标杆，有助于激发高校金融、精算、数据科学等专业毕业生的就业热情。同时，这也要求青年从业者必"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "73f5af0279448e7e"
+        ],
+        "story_ids": [
+          "st_43f82eafbf"
+        ],
+        "summary": "【音乐家刘欢病逝】对外经贸大学发讣告：我校退休教师、全国家喻户晓的音乐家刘欢，于2026年9月25日上午9时52分在上海",
+        "domains": [
+          "社保"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "0f68248fc9fe4916"
+        ],
+        "story_ids": [],
+        "summary": "最高立减7000元，特斯拉再次降价促销",
+        "domains": [
+          "社保"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": "特斯拉的持续降价促销将加剧中国新能源汽车市场的价格竞争，倒逼本土车企加快技术创新和成本控制，从而加速行业整体的优胜劣汰和产业升级。从宏观角度看，汽车消费是拉动内需的重要引擎，降价有助于释放消费潜力，稳定居民消费信心，对冲宏观经济下行压力。然而，频繁的价格战也可能压缩整车制造及零部件供应商的利润空间，对相关制造业就业产生一定压力。对于青年毕业生而言，新能源汽车行业的激烈竞争意味着更多元的就业机会，但"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "0ae0c0195962c843"
+        ],
+        "story_ids": [],
+        "summary": "财联社9月25日电，香港交易所信息显示，纽约梅隆银行在中国平安H股的持股比例于09月23日从5.18%降至4.82%。",
+        "domains": [
+          "社保"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": "第一层：外资减持平安H股，可能压低股价，影响普通公民资产价值，需关注资产线波动。"
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     },
     "_prev_thresholds": {
       "falsification_criteria": "根据各国人社部数据，到2025年日本将法定退休年龄从62岁延迟至65岁而中国维持在60岁，差异大于2年；到2026年韩国推出养老金改革但未调整退休年龄，与日本政策方向不同",
@@ -38424,6 +38795,102 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": "特朗普政府极力推动波音等本土制造业出口以重振美国工业，这可能加剧中美在高端制造及出口市场份额的竞争，对中国相关产业链的出口造成潜在压力。同时，其对加拿大移民政策的批评及加沙、古巴等地缘政治表态，反映了美国单边主义和保护主义倾向的抬头，可能增加全球贸易环境的不确定性，间接影响中国外贸企业的订单稳定性，进而对沿海地区青年出口工人的就业市场带来波动风险。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "725c006b8fd1390e"
+        ],
+        "story_ids": [],
+        "summary": "中国和印尼启动渔业捕捞合作",
+        "domains": [
+          "经济",
+          "青年"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": "中印尼渔业捕捞合作的启动，是“海上丝绸之路”与“全球海洋支点”构想对接的生动实践，有助于深化中国与东盟的经贸往来，稳定我国水产品供应链与海外市场渠道，对促进农业对外开放和蓝色经济发展具有积极意义。在就业市场与青年毕业生就业方面，该项目直接吸纳约1100名海上和陆地就业人员，并带动船舶修造、冷库建设、质量检测和技能培训等配套产业发展，创造了大量基层与技术岗位。对于青年失业毕业生而言，涉海、涉渔、冷链"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "100f25b1eb9ed8de"
+        ],
+        "story_ids": [],
+        "summary": "港交所今日上市南方先锋科技ETF和惠理光通讯主动型ETF",
+        "domains": [
+          "经济",
+          "青年"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "港交所上市科技与光通讯ETF，对中国经济和就业市场具有多重积极影响。首先，在宏观经济层面，它引导资本精准流向高科技产业，助力中国加快实现科技自立自强和产业结构升级。其次，在就业市场方面，高科技领域的资本流入将刺激企业扩张，从而创造出更多高附加值的就业岗位。对于面临就业压力的青年大学毕业生而言，这提供了更多进入高增长科技行业的机会，有助于优化人才配置，降低结构性失业风险。然而，科技投资也伴随高风险，"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "ebcdfb0f5dbe1503"
+        ],
+        "story_ids": [],
+        "summary": "港交所文件：小米集团回购190万股B类股份",
+        "domains": [
+          "经济",
+          "青年"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "对中国宏观经济的影响：小米回购行为可能增强中国科技板块的吸引力，支持经济创新驱动和资本市场稳定。就业市场：科技行业是吸纳高校毕业生的关键领域，公司扩张有助于缓解就业压力。青年失业毕业生：直接利好，如果回购带动行业景气，可能激励更多企业招聘，减少青年失业风险。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "8ee93fb745d4ff3d"
+        ],
+        "story_ids": [],
+        "summary": "书籍讨论：《混乱的工作：AI无法触及的劳动》",
+        "domains": [
+          "经济",
+          "青年"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "PIIE-Peterson",
+        "impact": "对中国宏观经济、就业市场和青年失业毕业生的影响分析：随着AI技术的快速发展，中国宏观经济面临产业升级与结构性失业的双重挑战。本书强调的“混乱工作”（需要高度人际互动、复杂判断和协调能力的岗位）提示我们，未来就业市场将更看重无法被简单标准化的“软实力”。对于中国青年失业毕业生而言，单纯依靠学历和标准化技能的就业路径将愈发艰难，必须注重培养跨学科协调、复杂问题解决及人性化判断等AI难以替代的能力，以应"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "e44632d205360d52"
+        ],
+        "story_ids": [],
+        "summary": "2028年联邦公开市场委员会投票委员及堪萨斯城联储主席施密德",
+        "domains": [
+          "经济",
+          "青年"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "政策线：美联储利率预期变动，可能通过全球联动影响中国物价与资产，但传导间接且缓慢。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "ae7a87e5afe6d142"
+        ],
+        "story_ids": [],
+        "summary": "当就业遇上AI，劳动力市场迎来哪些改变？",
+        "domains": [
+          "经济",
+          "青年"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -38440,7 +38907,7 @@
     "level": "small",
     "title": "青年NEET率东亚三国同步上升",
     "direction": "toward",
-    "confidence": 0.84,
+    "confidence": 0.85,
     "base_confidence": 0.68,
     "deadline": "2027-03-05",
     "status": "active",
@@ -44725,18 +45192,112 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": "日本国债收益率上升加剧全球抛售，普通公民资产安全承压，政策可能调整以稳定市场。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "8a45e2c2c1a70cd1"
+        ],
+        "story_ids": [
+          "st_ada3b71f59"
+        ],
+        "summary": "日本官员喊话后贝森特“撑场”：已和日财相讨论强日元“可取性”",
+        "domains": [
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "e532da91aa1ea2fd"
+        ],
+        "story_ids": [],
+        "summary": "高盛180度转向！日元12个月目标从165上调至150",
+        "domains": [
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "dd71fa257bb37ab3"
+        ],
+        "story_ids": [],
+        "summary": "韩正会见保加利亚总统约托娃",
+        "domains": [
+          "青年"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "中保高层会晤及务实合作的推进，是中国积极拓展与中东欧国家外交格局、稳定多边经贸关系的重要举措。对中国宏观经济而言，农业、汽车零部件及ICT领域的合作深化，有助于中国相关企业拓展欧洲市场，促进产业链供应链的多元化布局，增强外贸韧性。在就业市场和青年毕业生层面，中保在经贸与人文交流上的扩大，将创造更多跨境贸易、国际化技术、小语种及涉外服务等就业机会，为青年提供多元化的海外与外企就业路径。但同时，地缘政"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "7483d001f638d031"
+        ],
+        "story_ids": [],
+        "summary": "日元强势反攻！日本财务大臣：特朗普对日元贬值表达了担忧，将与美方密切协调",
+        "domains": [
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "b8e21555758af980"
+        ],
+        "story_ids": [
+          "st_9321504710"
+        ],
+        "summary": "纽约汇市：美元指数回落 日元势创近三周最佳表现",
+        "domains": [
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "0d34079f2d9f30f4"
+        ],
+        "story_ids": [],
+        "summary": "【韩国青少年自杀率创新高，被指“社会灾难”，李在明紧急发声】对“骄傲”的韩国人而言，有一项关于“第一”的记录被视作整个国",
+        "domains": [
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     },
     "_prev_thresholds": {
       "falsification_criteria": "判据1：如果ILO数据到2024年底显示中国青年NEET率年增长5%，而日本下降1%（阈值：年增长率差异超过3%），则不同步；判据2：如果OECD数据表明2023-2024年东亚三国NEET率趋势无同步性（如相关系数低于0.7）；最能证伪阈值：NEET率同步变化率指标低于0.7。",
@@ -47813,18 +48374,114 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": "特朗普政府极力推动波音等本土制造业出口以重振美国工业，这可能加剧中美在高端制造及出口市场份额的竞争，对中国相关产业链的出口造成潜在压力。同时，其对加拿大移民政策的批评及加沙、古巴等地缘政治表态，反映了美国单边主义和保护主义倾向的抬头，可能增加全球贸易环境的不确定性，间接影响中国外贸企业的订单稳定性，进而对沿海地区青年出口工人的就业市场带来波动风险。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "725c006b8fd1390e"
+        ],
+        "story_ids": [],
+        "summary": "中国和印尼启动渔业捕捞合作",
+        "domains": [
+          "经济",
+          "青年"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": "中印尼渔业捕捞合作的启动，是“海上丝绸之路”与“全球海洋支点”构想对接的生动实践，有助于深化中国与东盟的经贸往来，稳定我国水产品供应链与海外市场渠道，对促进农业对外开放和蓝色经济发展具有积极意义。在就业市场与青年毕业生就业方面，该项目直接吸纳约1100名海上和陆地就业人员，并带动船舶修造、冷库建设、质量检测和技能培训等配套产业发展，创造了大量基层与技术岗位。对于青年失业毕业生而言，涉海、涉渔、冷链"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "100f25b1eb9ed8de"
+        ],
+        "story_ids": [],
+        "summary": "港交所今日上市南方先锋科技ETF和惠理光通讯主动型ETF",
+        "domains": [
+          "经济",
+          "青年"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "港交所上市科技与光通讯ETF，对中国经济和就业市场具有多重积极影响。首先，在宏观经济层面，它引导资本精准流向高科技产业，助力中国加快实现科技自立自强和产业结构升级。其次，在就业市场方面，高科技领域的资本流入将刺激企业扩张，从而创造出更多高附加值的就业岗位。对于面临就业压力的青年大学毕业生而言，这提供了更多进入高增长科技行业的机会，有助于优化人才配置，降低结构性失业风险。然而，科技投资也伴随高风险，"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "ebcdfb0f5dbe1503"
+        ],
+        "story_ids": [],
+        "summary": "港交所文件：小米集团回购190万股B类股份",
+        "domains": [
+          "经济",
+          "青年"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "对中国宏观经济的影响：小米回购行为可能增强中国科技板块的吸引力，支持经济创新驱动和资本市场稳定。就业市场：科技行业是吸纳高校毕业生的关键领域，公司扩张有助于缓解就业压力。青年失业毕业生：直接利好，如果回购带动行业景气，可能激励更多企业招聘，减少青年失业风险。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "e44632d205360d52"
+        ],
+        "story_ids": [],
+        "summary": "2028年联邦公开市场委员会投票委员及堪萨斯城联储主席施密德",
+        "domains": [
+          "经济",
+          "青年"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "政策线：美联储利率预期变动，可能通过全球联动影响中国物价与资产，但传导间接且缓慢。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "4f58062d62c01085"
+        ],
+        "story_ids": [],
+        "summary": "美国至9月19日当周初请失业金人数19.7万人",
+        "domains": [
+          "经济",
+          "青年"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "36氪-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "99f212fbad5edbf2"
+        ],
+        "story_ids": [],
+        "summary": "现货金银短线走高",
+        "domains": [
+          "经济",
+          "青年"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "现货金银短线快速走高，短期内会提升市场对通胀和避险资产的关注度。对中国宏观经济而言，这可能加剧部分企业对原材料成本上升的担忧，尤其是对白银依赖度高的电子和新能源行业。在就业市场方面，黄金交易、贵金属零售及金融衍生品领域的繁荣将释放更多金融分析师、交易员和销售岗位，有利于金融专业毕业生的就业。然而，若贵金属价格持续高位运行，可能通过产业链传导推高终端消费品价格，对中低收入群体的购买力产生一定挤压，间"
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     },
     "_prev_thresholds": {
       "falsification_criteria": "判据1：如果2024年各国统计局数据显示本科以上就业占比变化不同步（如中国占比年增长2%，韩国下降1%，差异超过5%），则门槛未同步提高；判据2：如果有调查如OECD技能调查表明2023-2024年就业门槛要求未普遍提升；最能证伪阈值：本科以上就业占比在三国年变化率标准差超过2%。",
@@ -47848,7 +48505,7 @@
     "level": "medium",
     "title": "房地产泡沫与消费萎缩路径相似",
     "direction": "toward",
-    "confidence": 0.68,
+    "confidence": 0.64,
     "base_confidence": 0.68,
     "deadline": "2027-09-05",
     "status": "active",
@@ -50088,6 +50745,93 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "efeed8ed3fe407dc"
+        ],
+        "story_ids": [],
+        "summary": "德国10月GfK消费者信心指数为-30.6",
+        "domains": [],
+        "relevance": 0.164,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "德国消费者信心疲软可能削弱其进口需求，从而影响中国对德出口，导致出口导向型行业订单减少。这可能拖累中国整体经济增长，增加宏观下行压力。出口企业缩减生产可能引发就业收缩，特别是制造业岗位减少，对青年失业毕业生造成更大就业压力。此外，全球经济放缓可能加剧资本流出，影响中国金融市场稳定。政府可能需要加大内需刺激力度以对冲外部需求下滑。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "0f334d27fd6280e5"
+        ],
+        "story_ids": [],
+        "summary": "德国10月GfK消费者信心指数即将于十分钟后公布",
+        "domains": [],
+        "relevance": 0.145,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "德国作为欧洲经济的引擎，其消费者信心指数的变动对全球经济具有显著的溢出效应。对中国宏观经济而言，德国消费信心的疲软可能预示着欧元区需求萎缩，从而对中国出口导向型产业造成下行压力，加剧外部需求的不确定性。在就业市场与青年失业方面，若欧洲市场需求下滑，中国外贸及相关制造业企业的订单将减少，进而抑制新增就业岗位的释放，增加青年毕业生的就业竞争压力。反之，若指数表现强劲，则有助于稳定外部需求，为中国出口企"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "10cac1a586d7d62d"
+        ],
+        "story_ids": [],
+        "summary": "中东紧张局势推高能源价格，德国消费者信心降至数月低位",
+        "domains": [],
+        "relevance": 0.133,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "该消息反映了地缘政治冲突对欧洲能源安全和居民消费信心的打击，间接影响中国宏观经济的外部环境。欧洲作为中国重要贸易伙伴，其消费者信心下滑和能源成本上升会削弱其进口需求，对中国出口及制造业产生连锁负面影响，加剧国内经济下行压力。在就业市场和青年毕业生层面，外需收缩将直接波及外贸、跨境电商、制造业及关联供应链，导致相关企业的招聘需求放缓。青年失业毕业生将面临更严峻的外部就业环境，尤其是对缺乏核心竞争力的"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "d14deb7fdbc009d4"
+        ],
+        "story_ids": [],
+        "summary": "房贷贴息预期降温，港股内房股集体下挫，万科跌超5%",
+        "domains": [
+          "经济",
+          "房地产"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": "房地产行业作为中国宏观经济的支柱产业，其持续下行和政策预期降温将直接加剧宏观经济的下行压力，波及钢铁、水泥、家电、建筑等数十个上下游产业链。在就业市场层面，房地产及相关行业的萎缩将显著减少新增就业岗位，特别是对建筑、销售、金融、中介等传统服务业和制造业领域的劳动者造成较大冲击，导致整体就业景气度下滑。对于青年失业毕业生而言，房地产及相关行业的招聘需求大幅萎缩将显著加剧就业竞争，延长其求职周期并推高"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "1fbfe8fcdc5c9078"
+        ],
+        "story_ids": [],
+        "summary": "港股内房股集体走低，融信中国跌逾14%领跌",
+        "domains": [
+          "经济",
+          "房地产"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": "港股内房股的集体走低揭示了中国房地产行业面临的深层调整，对宏观经济、就业及青年就业带来显著挑战。在宏观经济层面，房地产行业链条长、关联广，其持续下行可能加剧金融系统风险，并对地方财政和上下游产业造成拖累，影响整体经济复苏的成色。就业市场方面，房地产、建筑、家电等相关行业的招聘需求萎缩，可能导致部分从业人员面临失业或薪资下降的压力。对于青年失业毕业生而言，传统房地产及相关行业的岗位收缩意味着就业竞争"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "502ce5475d12e360"
+        ],
+        "story_ids": [],
+        "summary": "新世界百货中国(00825)发盈警：预期年度股东应占亏损不多于约7.8亿港元 同比盈转亏",
+        "domains": [
+          "经济",
+          "房地产"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": "新世界百货中国业绩由盈转亏、录得大额资产减值，反映了当前中国商业地产行业整体承压、消费信心不足以及资产价格下行的宏观经济背景。这种大型港资零售巨头的亏损和资产收缩，可能会间接影响中国内地的商业运营环境和外资信心，对宏观消费增长构成一定压力。在就业市场方面，百货零售及相关商业地产板块的景气度下滑，可能导致零售、管理及物业运营等相关岗位的招聘需求收缩，加剧服务业就业市场的竞争。对于青年毕业生而言，传统"
       }
     ],
     "version": 1,
@@ -50104,7 +50848,7 @@
     "level": "small",
     "title": "房价收入比持续高位",
     "direction": "toward",
-    "confidence": 0.74,
+    "confidence": 0.75,
     "base_confidence": 0.72,
     "deadline": "2027-09-05",
     "status": "active",
@@ -51918,18 +52662,95 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "b2635032d748b7a3"
+        ],
+        "story_ids": [],
+        "summary": "【业内人士：预计接下来更多城市将落地执行细则，缓解因政策不确定带来的市场观望情绪】9月24日，“8·28”地产新政出台近",
+        "domains": [
+          "房地产"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "aa02b29457f9dfd9"
+        ],
+        "story_ids": [],
+        "summary": "5.81万元/㎡！厦门首宗现房销售地块，创楼面价新高",
+        "domains": [
+          "房地产"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": "高地价推高房价，增加居民资产负担，影响生活成本与社会稳定。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "ed4f380a1178ad3f"
+        ],
+        "story_ids": [
+          "st_a8afdd6a9a"
+        ],
+        "summary": "【港龙中国地产：1月至8月合同销售金额约9.045亿元】9月25日午间，港龙中国地产在港交所公告，公司及其附属公司，连同",
+        "domains": [
+          "房地产"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "fdcd6006f7c6e605"
+        ],
+        "story_ids": [],
+        "summary": "The low-key California property portfolio of ‘Wednesday’ star Jenna Ortega",
+        "domains": [
+          "房地产"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "MarketWatch-TopStories",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "13f26579e1b08063"
+        ],
+        "story_ids": [],
+        "summary": "德祥新云算力午前逆市涨超5% 公司正式完成更名",
+        "domains": [
+          "房地产"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": "公司转型算力领域股价上涨，普通公民资产需警惕市场泡沫风险。"
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -51937,7 +52758,7 @@
     "level": "small",
     "title": "居民消费率持续走低",
     "direction": "toward",
-    "confidence": 0.95,
+    "confidence": 0.94,
     "base_confidence": 0.66,
     "deadline": "2027-09-05",
     "status": "active",
@@ -51956,7 +52777,7 @@
         "last_updated": "2024",
         "data_source": "WorldBank",
         "threshold_eval": {
-          "checked_at": "2026-09-25",
+          "checked_at": "2026-09-26",
           "value": 56.6789524134646,
           "refute_expr": "世界银行数据显示最终消费占GDP比重连续三年上升每年超0.5个百分点；居民消费率超60%并保持两年；消费对GDP增长贡献率连续五年超投资",
           "support_expr": "居民消费率持续走低",
@@ -70877,18 +71698,110 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "05403eb245b31d4f"
+        ],
+        "story_ids": [],
+        "summary": "【美联储哈玛克：美债收益率上涨并非源于通胀信心丧失】金十数据9月26日讯，克利夫兰联储主席贝丝·哈玛克表示，近期美债收益",
+        "domains": [
+          "经济"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "9c4b7e2437778288"
+        ],
+        "story_ids": [],
+        "summary": "美联储主席沃什框架初现：抛弃中性利率框架，政策逻辑与格林斯潘类似",
+        "domains": [
+          "经济"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "美联储政策转向可能引发全球资产波动，影响中国货币政策与资产安全。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "8101f24f601eac22"
+        ],
+        "story_ids": [],
+        "summary": "10月加息定价过头了？瑞银：核心PCE下修叠加基数效应，美联储不太可能连续加息",
+        "domains": [
+          "经济"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": "美联储加息预期减弱或缓解全球通胀压力，间接利好中国物价稳定与资产价格，但需警惕外部政策不确定性。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "5cc493d32c640480"
+        ],
+        "story_ids": [],
+        "summary": "泰国财政部长：泰铢走弱或对经济更有利，我们不希望汇率出现波动。2026年和2027年通胀率应维持在3%以内。目标是在三年内实现3%的GDP增速。",
+        "domains": [
+          "经济"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": "泰铢贬值或加剧区域汇率波动，间接推高中国进口商品价格，但国内通胀政策以稳为主，普通公民资产购买力短期可控。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "0f7bc5195d135add"
+        ],
+        "story_ids": [
+          "st_1a934bdbf3"
+        ],
+        "summary": "华尔街面对利率新格局 5%美债收益率或成常态甚至下限",
+        "domains": [
+          "经济"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "75e578dd9aaf9d89"
+        ],
+        "story_ids": [],
+        "summary": "美联储加息预期、美债收益率与中东风险：欧元承压的三重逻辑",
+        "domains": [
+          "经济"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": "欧元走弱和全球金融环境变化对中国经济的影响不容忽视。欧元贬值可能提升中国对欧元区出口的竞争力，但同时也可能加剧人民币汇率的波动，影响跨境贸易和投资。美联储加息预期和美债收益率上升可能引发全球资本回流美元资产，对中国资本市场造成压力，影响外资流入和国内流动性。在就业市场方面，外部需求变化和汇率波动可能影响外贸企业和制造业的用工需求，进而传导至就业市场。对于青年失业毕业生，如果全球经济放缓导致出口减少"
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -71090,7 +72003,7 @@
     "level": "small",
     "title": "半导体/新能源/AI成为国家战略重点",
     "direction": "toward",
-    "confidence": 0.95,
+    "confidence": 0.94,
     "base_confidence": 0.8,
     "deadline": "2026-12-05",
     "status": "active",
@@ -71109,7 +72022,7 @@
         "last_updated": "2023",
         "data_source": "WorldBank",
         "threshold_eval": {
-          "checked_at": "2026-09-25",
+          "checked_at": "2026-09-26",
           "value": 2.57729,
           "refute_expr": "OECD数据显示半导体/新能源/AI研发支出占总研发比例连续两年降超5%；政策文件中这些领域关键词出现频率年度环比降超15%；政府补贴或税收优惠金额减少超20%",
           "support_expr": "半导体/新能源/AI成为国家战略重点",
@@ -75281,18 +76194,116 @@
         "ach_eligible": true,
         "source": "华尔街见闻-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "810c7f7371a3cfea"
+        ],
+        "story_ids": [],
+        "summary": "东风汽车总经理冯长军与华润集团总经理王崔军会谈",
+        "domains": [
+          "能源",
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": "第一层：央企合作推动新能源产业，可能稳定物价并创造绿色资产增值机会，政策导向强化。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "f28b544447f8db0a"
+        ],
+        "story_ids": [],
+        "summary": "港股午评：恒指收跌1.69%，大型科网股普跌",
+        "domains": [
+          "能源",
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "普通公民：港股下跌冲击资产信心，物价可能间接受压；政策面需关注经济稳定措施。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "ee3a99164fa5e95d"
+        ],
+        "story_ids": [],
+        "summary": "霍尔木兹再现重启曙光，道指涨近500点微软领跑，AI交易回归，原油跳水超2%",
+        "domains": [
+          "能源",
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "954533844947c4db"
+        ],
+        "story_ids": [],
+        "summary": "招商证券国际：维持吉利汽车目标价34.2港元及“增持”评级",
+        "domains": [
+          "能源",
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": "第一层：新能源汽车资产受益，政策支持绿色产业，但竞争激烈。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "ddb16adf35dd1edf"
+        ],
+        "story_ids": [],
+        "summary": "甲骨文数据中心风波叠加瑞银下调评级，港股电力设备股走弱",
+        "domains": [
+          "能源",
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": "对宏观经济而言，电力设备及新能源板块是绿色转型和基建投资的核心支柱，股价短期走弱可能反映市场对相关项目落地节奏及资本开支的担忧，影响绿色投资信心。在就业市场与青年毕业生就业方面，该板块长期是吸纳理工科高校毕业生的重要领域，若板块估值持续承压并传导至企业融资与扩张计划，可能导致相关制造业和新能源企业的招聘需求收缩，增加青年技术人才的就业竞争压力。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "e249b6597456ccba"
+        ],
+        "story_ids": [
+          "st_19cf50b950"
+        ],
+        "summary": "Why Record Heat Failed to Lift U.S. Natural Gas Prices",
+        "domains": [
+          "能源",
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "OilPrice-News",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -75751,13 +76762,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -82006,6 +83017,103 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "8a45e2c2c1a70cd1"
+        ],
+        "story_ids": [
+          "st_ada3b71f59"
+        ],
+        "summary": "日本官员喊话后贝森特“撑场”：已和日财相讨论强日元“可取性”",
+        "domains": [
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "e532da91aa1ea2fd"
+        ],
+        "story_ids": [],
+        "summary": "高盛180度转向！日元12个月目标从165上调至150",
+        "domains": [
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "7483d001f638d031"
+        ],
+        "story_ids": [],
+        "summary": "日元强势反攻！日本财务大臣：特朗普对日元贬值表达了担忧，将与美方密切协调",
+        "domains": [
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "b8e21555758af980"
+        ],
+        "story_ids": [
+          "st_9321504710"
+        ],
+        "summary": "纽约汇市：美元指数回落 日元势创近三周最佳表现",
+        "domains": [
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "89164befa01551e4"
+        ],
+        "story_ids": [
+          "st_349dfef212"
+        ],
+        "summary": "【日本监管机构正加强对人工智能数据中心融资的审查力度】随着日本大型银行和人寿保险公司增加对这一快速扩张领域的风险敞口，日",
+        "domains": [
+          "社保",
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "0d34079f2d9f30f4"
+        ],
+        "story_ids": [],
+        "summary": "【韩国青少年自杀率创新高，被指“社会灾难”，李在明紧急发声】对“骄傲”的韩国人而言，有一项关于“第一”的记录被视作整个国",
+        "domains": [
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
       }
     ],
     "version": 3,
@@ -82027,7 +83135,7 @@
     "level": "medium",
     "title": "社保费率先降后升的周期",
     "direction": "toward",
-    "confidence": 0.86,
+    "confidence": 0.87,
     "base_confidence": 0.7,
     "deadline": "2027-03-05",
     "status": "active",
@@ -84320,6 +85428,55 @@
         "ach_eligible": true,
         "source": "新浪财经-滚动新闻",
         "impact": "对宏观经济可能产生轻微负面影响，显示金融监管趋严。就业市场可能因合规要求提高而增加合规岗位，但对青年失业毕业生影响有限，可能需要更专业的合规人才。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "db3d17be292652e8"
+        ],
+        "story_ids": [
+          "st_c097e4e917"
+        ],
+        "summary": "I’m 77, pay rent and live off Social Security, but I help homeless people. Why are so many people go",
+        "domains": [
+          "社保"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "MarketWatch-TopStories",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "e010bd52d28e6e05"
+        ],
+        "story_ids": [],
+        "summary": "总资产破6万亿！85后蔡霆升任平安人寿董事长",
+        "domains": [
+          "社保"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": "平安人寿作为中国寿险行业的领军企业，其总资产突破6万亿且迎来“85后”年轻董事长，对金融行业治理具有标志性意义。对中国宏观经济而言，稳定的金融与保险业发展是防范系统性风险、支持实体经济（如绿色信贷、科技创新、养老保险）的重要支柱。在就业市场方面，平安人寿等大型金融机构的年轻化高管趋势，为青年金融人才树立了职业标杆，有助于激发高校金融、精算、数据科学等专业毕业生的就业热情。同时，这也要求青年从业者必"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "73f5af0279448e7e"
+        ],
+        "story_ids": [
+          "st_43f82eafbf"
+        ],
+        "summary": "【音乐家刘欢病逝】对外经贸大学发讣告：我校退休教师、全国家喻户晓的音乐家刘欢，于2026年9月25日上午9时52分在上海",
+        "domains": [
+          "社保"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -84475,18 +85632,31 @@
         "ach_eligible": true,
         "source": "第一财经-新闻",
         "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "53b4bdae22c1d06d"
+        ],
+        "story_ids": [],
+        "summary": "瑞银：美企Capex意愿触底反弹，进一步加息对经济冲击或有限",
+        "domains": [],
+        "relevance": 0.125,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -84648,13 +85818,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -84860,13 +86030,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -86897,18 +88067,96 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": "美债收益率升至高位，可能推高全球利率，间接影响中国资产价格与输入性通胀风险，普通公民需关注房贷成本与储蓄收益变化。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "6aff758bd589bc41"
+        ],
+        "story_ids": [],
+        "summary": "华尔街直面“新常态”：美债平均收益率跨入“5字头时代”！",
+        "domains": [],
+        "relevance": 0.222,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "6cd1a5806a3eac22"
+        ],
+        "story_ids": [],
+        "summary": "通胀、赤字、AI发债齐施压，超半数市场人士押注30年期美债收益率年底前触及6%",
+        "domains": [],
+        "relevance": 0.145,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": "美债收益率持续飙升并可能触及6%，将通过汇率、资本流动和资产价格等渠道对中国宏观经济产生深远的外部溢出效应。人民币汇率将面临持续贬值压力，资本外流风险上升，加大中国货币政策的自主空间限制，宏观经济面临需求不足和外部金融条件收紧的双重挑战。在就业市场方面，全球金融市场波动加剧会抑制国内券商、基金及外贸企业的投融资活跃度，导致相关金融和财经类岗位招聘需求收缩。对于青年失业毕业生而言，尤其是财经、外语类"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "8cf88a4070bb4bc2"
+        ],
+        "story_ids": [],
+        "summary": "【日本国债收益率随美国国债收益率大幅上涨而上升】金十数据9月25日电讯",
+        "domains": [],
+        "relevance": 0.143,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "日本国债收益率上升及潜在的加息预期可能引发全球资本流动重构，部分资金回流日本，对中国资本市场形成阶段性资金流出压力，并增加人民币汇率波动风险。在宏观经济层面，外部需求走强伴随美元升值可能加剧中国出口的汇率压力，同时全球利率高企不利于中国通过宽松货币政策刺激内需。在就业市场和青年毕业生方面，外部环境不确定性增加和外贸行业承压，可能导致制造业和贸易相关领域的招聘需求收缩，加剧青年失业毕业生的就业竞争。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "4b0c1062dd71bce9"
+        ],
+        "story_ids": [],
+        "summary": "日本10年期国债收益率一度升至3.115%",
+        "domains": [],
+        "relevance": 0.137,
+        "ach_eligible": true,
+        "source": "36氪-快讯",
+        "impact": "日本国债收益率上升可能引发全球债市波动，影响中国债券市场利率预期。若日本利率持续走高，可能导致资本回流日本，对中国资本市场造成压力。这可能影响中国宏观经济的外部融资环境，增加企业融资成本。就业方面，资本流动变化可能影响外向型行业，进而影响青年就业。此外，全球利率上升可能抑制中国经济增长，加剧青年失业问题。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "7f7f4165d06cfca0"
+        ],
+        "story_ids": [],
+        "summary": "日本2年期国债收益率升至1.930%",
+        "domains": [],
+        "relevance": 0.132,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "日本国债收益率的上升预示着全球资本可能面临重新配置，部分资金可能从新兴市场回流至日本，这对中国宏观经济的资本账户和人民币汇率稳定构成一定外部挑战。若中国为应对资本流出压力而收紧货币政策，可能会对国内实体企业融资产生一定压力。在就业和青年就业方面，金融市场的波动会增加金融机构的合规与风控岗位需求，但同时也可能抑制部分高风险行业的扩张，对金融、财经类毕业生的就业质量提出更高要求，促使青年人才更加关注宏"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "73b7df7b5b7d88b5"
+        ],
+        "story_ids": [],
+        "summary": "美债飙升后日本国债收益率上升",
+        "domains": [],
+        "relevance": 0.127,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "美日国债收益率上升及美联储收紧预期，可能加剧全球金融市场的波动性，对中国的宏观经济稳定和外部需求带来一定挑战。美元走强可能增加人民币汇率波动压力，影响出口和资本流动。在就业和青年毕业生领域，外部需求变化和金融市场波动可能波及外贸、跨境金融等行业，要求青年毕业生具备更强的风险应对能力和多元化就业视野。"
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -87026,6 +88274,24 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": "区域安全紧张，可能影响中国海外资产安全。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "89164befa01551e4"
+        ],
+        "story_ids": [
+          "st_349dfef212"
+        ],
+        "summary": "【日本监管机构正加强对人工智能数据中心融资的审查力度】随着日本大型银行和人寿保险公司增加对这一快速扩张领域的风险敞口，日",
+        "domains": [
+          "社保",
+          "东亚"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -87189,13 +88455,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -87383,13 +88649,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -99527,6 +100793,97 @@
         "ach_eligible": true,
         "source": "MarketWatch-TopStories",
         "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "0ae0c0195962c843"
+        ],
+        "story_ids": [],
+        "summary": "财联社9月25日电，香港交易所信息显示，纽约梅隆银行在中国平安H股的持股比例于09月23日从5.18%降至4.82%。",
+        "domains": [
+          "金融",
+          "社保"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": "第一层：外资减持平安H股，可能压低股价，影响普通公民资产价值，需关注资产线波动。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "015dcd7974acd346"
+        ],
+        "story_ids": [],
+        "summary": "美联储加息预期继续升温，金价如何才能开启反攻？",
+        "domains": [
+          "金融"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "美联储持续加息预期强化了美元资产的吸引力，可能导致资本外流压力加大，对中国的宏观经济稳定和人民币汇率形成一定挑战。中国央行需要灵活运用货币政策工具以应对外部金融环境的收紧。在就业市场和青年毕业生层面，全球金融市场波动加剧和国内防范外部风险的需求，会促使金融机构和企业更加注重风险控制，招聘需求可能向高附加值和避险行业集中。青年毕业生在进入金融、外贸等高度依赖国际金融环境的行业时，将面临更严格的准入标"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "bb2b75d6e515e9b3"
+        ],
+        "story_ids": [],
+        "summary": "DeepTalk：美联储已经犯了一个“致命错误”！黄金才是未来五年主旋律？",
+        "domains": [
+          "金融"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "c33b96efd56c22da"
+        ],
+        "story_ids": [],
+        "summary": "黄力晨:美元美债双升 黄金价格承压",
+        "domains": [
+          "金融"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "c9a99774751fb7b2"
+        ],
+        "story_ids": [],
+        "summary": "20+年期美债ETF收跌约1.3%，领跌美股大类资产类ETF，布油基金涨超2.4%",
+        "domains": [
+          "金融"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "1427792ed828a57a"
+        ],
+        "story_ids": [],
+        "summary": "中国今年首八个月进口逾千吨黄金 金额创纪录",
+        "domains": [
+          "金融"
+        ],
+        "relevance": 0.5,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -99625,13 +100982,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -99725,18 +101082,31 @@
         "ach_eligible": true,
         "source": "新浪财经-滚动新闻",
         "impact": "改革社保体系并精准向有需要的人群发放资金，对中国经济具有多重深远影响。在宏观经济层面，这有助于直接提升低收入群体的边际消费倾向，快速激活内需，缓解通缩压力，为构建新发展格局提供动力。在就业市场方面，基本社会保障的强化和直接的资金支持能够降低居民的预防性储蓄，稳定消费预期，间接创造更多服务业和消费领域的就业岗位。对于青年失业毕业生而言，完善的社会保障体系能提供更坚实的基本生活兜底，缓解他们的生存焦虑"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "343b4b99c5ddbbc4"
+        ],
+        "story_ids": [],
+        "summary": "穆迪：对南部非洲关税同盟转移支付的依赖使得财政状况进一步受外部形势冲击，而这些形势基本不在博茨瓦纳政府的掌控范围内。",
+        "domains": [],
+        "relevance": 0.125,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -99744,7 +101114,7 @@
     "level": "major",
     "title": "全球能源转型加速导致传统能源需求骤降",
     "direction": "toward",
-    "confidence": 0.085,
+    "confidence": 0.05,
     "base_confidence": 0.78,
     "deadline": "2027-09-05",
     "status": "active",
@@ -113356,6 +114726,94 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": "新能源投资促进绿色出行，降低公民出行成本并提升能源安全，资产端利好相关股票。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "1db8e68cbef1fe34"
+        ],
+        "story_ids": [],
+        "summary": "报告：中东冲突推高全球煤炭需求",
+        "domains": [],
+        "relevance": 0.271,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": "中东冲突引发的能源价格波动对中国经济具有双重影响：宏观上，进口能源成本上升可能带来输入性通胀压力，但同时也会加速中国能源结构自主可控的进程。就业市场上，煤炭等传统能源行业的短期需求上升有助于稳定基础就业岗位，但全球绿色转型受阻可能抑制新能源领域的长期就业增量。对于青年失业毕业生而言，传统能源行业回暖提供的岗位多为技能要求较低的基础岗位，而高科技和绿色能源领域的结构性就业机会可能因国际局势动荡而减少"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "0a0eba14bb1f698a"
+        ],
+        "story_ids": [],
+        "summary": "机构：全球能源需求到2060年或增逾60%，油气仍将长期占据一席之地",
+        "domains": [],
+        "relevance": 0.159,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "a57d3a5c8f52ef9e"
+        ],
+        "story_ids": [
+          "st_28ead8b046"
+        ],
+        "summary": "【我国首个千万千瓦级“沙戈荒”基地配套煤电项目取得关键进展】今天（26日），记者从三峡集团获悉，我国首批首个千万千瓦级“",
+        "domains": [
+          "能源"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "2d70bcd7f1e34624"
+        ],
+        "story_ids": [],
+        "summary": "即便油价下跌，30年期美债收益率依旧突破了5.5%",
+        "domains": [
+          "能源"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "6e49e052dbcf1667"
+        ],
+        "story_ids": [],
+        "summary": "【英国博主：中国清洁能源惠及世界】近日，英国数字媒体博主杰克·凯利在播客节目中关注中国能源转型取得的新进展。报道说，中国",
+        "domains": [
+          "能源"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "2be20e9c7edd395a"
+        ],
+        "story_ids": [],
+        "summary": "马克龙：法国将军援沙特，保护红海延布港石油设施",
+        "domains": [
+          "能源"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
       }
     ],
     "version": 3,
@@ -123286,6 +124744,100 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "a57d3a5c8f52ef9e"
+        ],
+        "story_ids": [
+          "st_28ead8b046"
+        ],
+        "summary": "【我国首个千万千瓦级“沙戈荒”基地配套煤电项目取得关键进展】今天（26日），记者从三峡集团获悉，我国首批首个千万千瓦级“",
+        "domains": [
+          "能源"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "2d70bcd7f1e34624"
+        ],
+        "story_ids": [],
+        "summary": "即便油价下跌，30年期美债收益率依旧突破了5.5%",
+        "domains": [
+          "能源"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "6e49e052dbcf1667"
+        ],
+        "story_ids": [],
+        "summary": "【英国博主：中国清洁能源惠及世界】近日，英国数字媒体博主杰克·凯利在播客节目中关注中国能源转型取得的新进展。报道说，中国",
+        "domains": [
+          "能源"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "2be20e9c7edd395a"
+        ],
+        "story_ids": [],
+        "summary": "马克龙：法国将军援沙特，保护红海延布港石油设施",
+        "domains": [
+          "能源"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "f3632bc9a675d2c1"
+        ],
+        "story_ids": [
+          "st_136777cde6"
+        ],
+        "summary": "浙江舟山：“自愈式”智慧微电网保障海岛供电稳定",
+        "domains": [
+          "能源"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": "智慧电网提升能源安全，稳定电价，政策支持能源转型利好普通公民。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "dfa0c19693c205d7"
+        ],
+        "story_ids": [],
+        "summary": "欧洲央行副行长Vujcic：能源价格将长期维持高位",
+        "domains": [
+          "能源"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -123643,13 +125195,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     },
     "_prev_thresholds": {
       "falsification_criteria": "IEA 2024年度报告显示2023年全球太阳能和风电新增装机总和低于500GW；BloombergNEF 2025年Q1预测2024年全球太阳能和风电年装机量为490GW，未达500GW阈值；中国国家能源局2024年数据显示中国太阳能和风电装机占比下降，全球总和低于500GW。",
@@ -124106,13 +125658,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     },
     "_prev_thresholds": {
       "falsification_criteria": "BloombergNEF 2024年报告指出2023年全球储能装机容量年增长率仅为45%，低于60%阈值；国际能源署2024年中期预测显示2024年底储能装机年增长率将放缓至50%；中国储能行业协会2024年Q3数据若显示中国储能装机增长低于55%，则整体增长可能达不到60%。",
@@ -124287,6 +125839,34 @@
         "summary": "煤炭板块集体走强，云煤能源反包涨停，辽宁能源涨超7%，安泰集团、大有能源、陕西黑猫、郑州煤电等纷纷走高。",
         "domains": [],
         "relevance": 0.161,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "043ca21eff32d6ae"
+        ],
+        "story_ids": [],
+        "summary": "标普500指数的11个板块中，公用事业、原材料板块至多收跌1.02%，信息技术/科技板块跌0.32%，能源板块涨0.43%，电信板块涨1.92%——成分股Meta收涨4.5%领跑、谷歌...",
+        "domains": [],
+        "relevance": 0.128,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "1dd73c251cd1303f"
+        ],
+        "story_ids": [
+          "st_27dface86a"
+        ],
+        "summary": "标普500指数的11个板块多数收涨，信息技术/科技板块涨0.99%，工业板块涨0.94%，金融板块涨0.53%，房地产、电信、能源板块则至多收跌0.87%。",
+        "domains": [],
+        "relevance": 0.121,
         "ach_eligible": true,
         "source": "华尔街见闻-快讯",
         "impact": ""
@@ -124957,13 +126537,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     },
     "_prev_thresholds": {
       "falsification_criteria": "Bloomberg数据显示2024年全球石油公司平均EV/EBITDA比率高于过去20年历史均值；IEA报告预测石油需求下降但石油公司估值在2025年Q2回升至均值以上；埃克森美孚或壳牌等主要石油公司2024年财报显示EV/EBITDA高于历史均值。",
@@ -124987,7 +126567,7 @@
     "level": "small",
     "title": "煤炭企业融资成本上升",
     "direction": "toward",
-    "confidence": 0.79,
+    "confidence": 0.8,
     "base_confidence": 0.72,
     "deadline": "2027-03-05",
     "status": "active",
@@ -125416,18 +126996,31 @@
         "ach_eligible": true,
         "source": "华尔街见闻-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "1db8e68cbef1fe34"
+        ],
+        "story_ids": [],
+        "summary": "报告：中东冲突推高全球煤炭需求",
+        "domains": [],
+        "relevance": 0.276,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": "中东冲突引发的能源价格波动对中国经济具有双重影响：宏观上，进口能源成本上升可能带来输入性通胀压力，但同时也会加速中国能源结构自主可控的进程。就业市场上，煤炭等传统能源行业的短期需求上升有助于稳定基础就业岗位，但全球绿色转型受阻可能抑制新能源领域的长期就业增量。对于青年失业毕业生而言，传统能源行业回暖提供的岗位多为技能要求较低的基础岗位，而高科技和绿色能源领域的结构性就业机会可能因国际局势动荡而减少"
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     },
     "_prev_thresholds": {
       "falsification_criteria": "煤炭企业债券利差（Wind数据）在2024年Q2前持续低于100基点；煤炭企业平均银行贷款利率在2024年内下降超过1.5个百分点；煤炭企业信用评级升级事件在2024年发生至少一起",
@@ -125451,7 +127044,7 @@
     "level": "major",
     "title": "美加贸易摩擦升级引发全球供应链重构",
     "direction": "toward",
-    "confidence": 0.814,
+    "confidence": 0.686,
     "base_confidence": 0.72,
     "deadline": "2027-03-05",
     "status": "active",
@@ -128147,6 +129740,103 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": "亚太增长利好中国经济，普通公民资产或受益，但需警惕外部风险。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "19f2d8914cc1691b"
+        ],
+        "story_ids": [],
+        "summary": "美国贸易代表格里尔称美加举行建设性会谈，目前无紧迫性",
+        "domains": [],
+        "relevance": 0.139,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "美加对话积极但无紧迫性，对普通公民政策影响小。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "2dc1cd1365471016"
+        ],
+        "story_ids": [],
+        "summary": "中秋假期首日跨区域出行人数突破2.43亿人次",
+        "domains": [
+          "经济",
+          "供应链"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "节假日出行高峰直接拉动了交通、住宿、餐饮及文旅等服务消费，对中国经济内需复苏和宏观经济增长起到积极的促进作用。出行与消费热潮带动了相关产业链的短期用工需求，为市场创造了大量季节性和临时性就业岗位，有助于缓解整体就业压力。对于青年失业毕业生而言，文旅和服务业的繁荣提供了大量基层、临时及灵活就业岗位，为面临就业难题的青年群体提供了过渡性就业机会和实践平台。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "23b21d7697a54519"
+        ],
+        "story_ids": [],
+        "summary": "秘鲁交通部长：中国金兆明年将在秘鲁南部动工建设港口",
+        "domains": [
+          "经济",
+          "供应链"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": "海外投资影响地缘安全，间接波及国内资产与政策稳定性。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "c3ebf12cacca22db"
+        ],
+        "story_ids": [
+          "st_dd4b6eaeb0"
+        ],
+        "summary": "9月全国日均揽收快递5.85亿件 单日峰值超6.1亿件",
+        "domains": [
+          "经济",
+          "供应链"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": "快递业务量的持续高速增长是中国内需潜力释放和消费复苏的重要宏观信号，有力支撑了中国宏观经济的韧性与循环。在就业市场层面，快递及电商物流行业作为劳动密集型产业的代表，吸纳了大量青年劳动力和高校毕业生，是缓解青年失业率、促进灵活就业的关键蓄水池。日均超5.8亿件的业务体量预示着末端配送、仓储管理、技术支持等岗位需求的持续扩张，为青年毕业生提供了丰富的基层与数字化就业岗位。然而，行业高峰期间的高强度用工"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "afd54a5389d6e549"
+        ],
+        "story_ids": [],
+        "summary": "中银国际：中国运动服饰行业第三季度仍面临挑战 看好安踏体育",
+        "domains": [
+          "经济",
+          "供应链"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": "中国运动服饰行业面临的挑战反映了当前消费市场对宏观经济变化的敏感性，消费信心的恢复需要宏观政策的进一步支持。作为劳动密集型与时尚消费结合的产业，纺织服装及体育用品行业的景气度直接关系到大量制造业和零售业岗位的稳定，特别是中西部地区及中小城市的就业。对于青年失业毕业生而言，体育用品行业的数字化转型、品牌出海以及新零售渠道的拓展（如直播电商、社群运营）提供了大量新型就业岗位，如数字化营销、跨境电商运营"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "2575e32f134d25e0"
+        ],
+        "story_ids": [
+          "st_bf22b4de13"
+        ],
+        "summary": "南非拟投资27亿美元升级锰矿出口体系，新建港口并修复铁路",
+        "domains": [
+          "经济",
+          "供应链"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "第一层：类似南非锰矿投资，可能影响国内矿产相关物价，但资产与政策传导弱。"
       }
     ],
     "version": 3,
@@ -128503,7 +130193,7 @@
     "level": "small",
     "title": "美国对加拿大汽车关税超25%",
     "direction": "toward",
-    "confidence": 0.95,
+    "confidence": 0.94,
     "base_confidence": 0.6,
     "deadline": "2027-03-05",
     "status": "active",
@@ -136971,18 +138661,110 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "af95e84dc1354299"
+        ],
+        "story_ids": [],
+        "summary": "英媒：欧盟敦促英国提高中国汽车关税",
+        "domains": [],
+        "relevance": 0.18,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": "欧盟及英国若逐步提高对中国汽车及零部件的关税，将直接打击中国新能源汽车出口欧洲的增长势头，对我国整体外贸出口结构转型带来一定压力。宏观层面，这可能加剧外部需求疲软，部分出口导向型制造企业面临订单减少，进而影响产业链上下游的稳定。在就业市场方面，汽车及相关零部件制造行业的岗位需求可能收缩，增加制造业工人的就业压力。对于青年失业毕业生而言，高端制造业、国际贸易及跨境物流等领域的就业竞争将更加激烈，但同"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "1e357ac198c75830"
+        ],
+        "story_ids": [],
+        "summary": "加拿大负责与美国贸易事务的部长Dominic Leblanc：虽然美国关税给加拿大经济的某些部分造成艰难处境，但加方并不急于达成一份糟糕的协议。 这也是我一直都向美国...",
+        "domains": [],
+        "relevance": 0.13,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "bc44fc1294caf370"
+        ],
+        "story_ids": [],
+        "summary": "大摩：预计英国央行11月和明年2月各加息25个基点",
+        "domains": [
+          "经济",
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "英国央行加息预期对中国物价和资产影响微弱，主要通过全球市场情绪间接传导，风险可控。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "e8d9c4ba871614de"
+        ],
+        "story_ids": [],
+        "summary": "美国30年期固定抵押贷款利率周四大幅跳升至7.45%",
+        "domains": [
+          "经济",
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "ec13143db4571146"
+        ],
+        "story_ids": [
+          "st_c842926179"
+        ],
+        "summary": "美国克利夫兰联储主席Hammack：政策利率具有限制性很重要。 美联储需确保政策处于限制性立场，以压低通胀。 最大的风险是，通胀心态正在形成。 如果我们在降低通...",
+        "domains": [
+          "经济",
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "06ce42b9ab3ef327"
+        ],
+        "story_ids": [],
+        "summary": "美国纽约联储主席威廉姆斯：不能忽视持续的供给冲击。 美国劳动力市场并非通胀压力的来源。 关税通常不会导致持续性通货膨胀。 美联储应确保冲击不会变得根深蒂...",
+        "domains": [
+          "经济",
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     },
     "_prev_thresholds": {
       "falsification_criteria": "美国贸易代表办公室确认美加汽车关税税率不超过25%，在2024年全年；海关数据显示，2024年上半年从加拿大进口汽车的平均关税税率为24.9%或更低；无新的关税政策宣布，现有税率维持现状",
@@ -137006,7 +138788,7 @@
     "level": "small",
     "title": "加拿大对美报复性关税涉及农产品",
     "direction": "toward",
-    "confidence": 0.95,
+    "confidence": 0.94,
     "base_confidence": 0.55,
     "deadline": "2027-03-05",
     "status": "active",
@@ -153609,18 +155391,98 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": "第一层：地缘政治冲突对公民安全感知有间接影响，资产波动需警惕。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "1e357ac198c75830"
+        ],
+        "story_ids": [],
+        "summary": "加拿大负责与美国贸易事务的部长Dominic Leblanc：虽然美国关税给加拿大经济的某些部分造成艰难处境，但加方并不急于达成一份糟糕的协议。 这也是我一直都向美国...",
+        "domains": [],
+        "relevance": 0.192,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "301608a98fd321ca"
+        ],
+        "story_ids": [],
+        "summary": "明晟公司（MSCI）：将加拿大证券交易所纳入 MSCI 全球可投资市场指数编制方法中加拿大的合格证券交易所名单。",
+        "domains": [],
+        "relevance": 0.165,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "431fbc8a49a248e0"
+        ],
+        "story_ids": [],
+        "summary": "习近平：中美经贸新安排 盼双方拉长合作清单",
+        "domains": [],
+        "relevance": 0.16,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "67200f3cae3742d9"
+        ],
+        "story_ids": [
+          "st_37818eceb9"
+        ],
+        "summary": "【庞巴迪CEO：正就加拿大本土生产萨博监视飞机进入深度谈判】庞巴迪公司正与瑞典萨博公司深入洽谈，计划在加拿大生产后者的“",
+        "domains": [],
+        "relevance": 0.131,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "158fc2ab3fb9727e"
+        ],
+        "story_ids": [],
+        "summary": "美国贸易代表格里尔表示，特朗普总统对美国在加拿大的立场感到满意",
+        "domains": [],
+        "relevance": 0.122,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "美加贸易稳定减少政策不确定性，利好资产安全，但对物价直接影响小。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "c566ff48c6ffb120"
+        ],
+        "story_ids": [],
+        "summary": "美国贸易代表格里尔表示，美国继续从加拿大进口所需石油、天然气和钾肥",
+        "domains": [],
+        "relevance": 0.12,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "美加之间在能源和钾肥领域的持续合作，有助于稳定全球大宗商品供应链，对中国经济的稳定运行具有积极意义。中国作为全球最大的制造业大国和农业大国，对国际能源和化肥价格波动较为敏感。稳定的北美供应链有助于降低中国进口原材料的成本波动风险，从而缓解输入性通胀压力。在就业市场方面，稳定的外部需求和原材料供应有助于维持中国出口企业的生产稳定性，间接支撑相关制造业和物流业的就业岗位。对于青年毕业生而言，宏观经济环"
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     },
     "_prev_thresholds": {
       "falsification_criteria": "加拿大财政部在2024年12月31日前公布的报复性关税清单中，农产品类目数量为0；2024年加拿大对美农产品出口额同比增长超过10%；美国商务部报告确认加拿大关税措施不涉及农产品",
@@ -153644,7 +155506,7 @@
     "level": "medium",
     "title": "供应链向东南亚/印度转移加速",
     "direction": "toward",
-    "confidence": 0.94,
+    "confidence": 0.95,
     "base_confidence": 0.72,
     "deadline": "2027-09-05",
     "status": "active",
@@ -156432,6 +158294,100 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": "普通公民：企业海外扩张短期难贡献业绩，资产端波动有限，政策鼓励长期布局但无直接物价或安全影响。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "891230c3e960c631"
+        ],
+        "story_ids": [
+          "st_1d1661bff5"
+        ],
+        "summary": "Anthropic诉特朗普政府受挫：美上诉法院维持“供应链风险”认定",
+        "domains": [
+          "供应链"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "9da728f5c4467324"
+        ],
+        "story_ids": [],
+        "summary": "报道称特斯拉Optimus人形机器人产量近期已提升约十倍",
+        "domains": [
+          "供应链"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "第一层：对普通公民，特斯拉机器人产量提升对物价、安全、资产直接影响微弱，仅间接反映高科技产业政策倾斜，无直接传导。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "8e21a3574229ff8c"
+        ],
+        "story_ids": [],
+        "summary": "报道称特斯拉Optimus人形机器人在扩大生产时遭遇手部设计与供应商难题",
+        "domains": [
+          "供应链"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "第一层：对普通公民，特斯拉机器人扩产难题对物价、安全、资产无直接影响，仅间接提示高科技风险，传导弱。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "c324208c6dbdff70"
+        ],
+        "story_ids": [],
+        "summary": "特斯拉Optimus机器人量产遇阻：手部结构、供应链问题凸显，扩产进程启动",
+        "domains": [
+          "供应链"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": "Costco扩张加剧零售竞争，可能压低物价，但对本地商户有冲击。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "dee2ea41a3695caf"
+        ],
+        "story_ids": [],
+        "summary": "特斯拉Optimus 机器人扩产遇阻：手部结构与供应链接连出问题",
+        "domains": [
+          "供应链"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "5e5fcb84f6190e8c"
+        ],
+        "story_ids": [
+          "st_8ad8f9c74a"
+        ],
+        "summary": "莱茵河水位跌至历史新低，德国航运持续受影响",
+        "domains": [
+          "供应链"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -156448,7 +158404,7 @@
     "level": "small",
     "title": "越南/印度制造业FDI年增30%以上",
     "direction": "toward",
-    "confidence": 0.86,
+    "confidence": 0.88,
     "base_confidence": 0.7,
     "deadline": "2027-09-05",
     "status": "active",
@@ -157240,18 +159196,57 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": "堪萨斯联储制造业生产指数的回升，反映出美国局部地区制造业具有较强的韧性，这有助于缓解市场对美国经济衰退的担忧，从而可能减弱美联储过度激进降息的预期。对于中国宏观经济而言，美国制造业的局部回暖有利于维持全球产业链和供应链的稳定，促进中国对美中间品及制成品的出口。然而，美国制造业的结构性回流政策也可能加剧全球高端制造的竞争。在就业市场和青年失业方面，中国需持续关注外需变化对国内制造业用工需求的影响，特"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "e8c3ce4148381a45"
+        ],
+        "story_ids": [],
+        "summary": "印度政府将在2026-27财年第二季度通过发行债券筹集7.86万亿卢比",
+        "domains": [],
+        "relevance": 0.156,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": "印度债务扩张对普通公民直接影响弱，或间接推高全球利率，但中国物价安全稳定，资产波动小。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "ecf3390fead54658"
+        ],
+        "story_ids": [],
+        "summary": "澳新银行：随着市场继续反映美联储进一步收紧货币政策的预期，亚洲债券收益率可能会继续上升，并要到2027年第一季度至第二季度才会见顶",
+        "domains": [],
+        "relevance": 0.149,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": "对中国宏观经济而言，亚洲债券收益率持续上升并长期维持高位，将增加中国企业和地方政府的跨境融资成本，加剧资本外流压力。在就业市场和青年失业方面，高融资成本可能抑制私人投资和中小企业扩张，从而削弱就业岗位创造能力，特别是对刚毕业的青年群体而言，就业环境将趋于严峻，竞争更加激烈。政府需加大宏观调控力度，优化营商环境，支持科技创新以对冲外部流动性收紧的负面冲击。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "bd831c23ce292df2"
+        ],
+        "story_ids": [],
+        "summary": "三季度大宗商品优于权益债券，美制造业PMI超预期强化加息压力，中国贸易顺差支撑人民币但结汇偏弱---0924宏观脱水",
+        "domains": [],
+        "relevance": 0.127,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     },
     "_prev_thresholds": {
       "falsification_criteria": "UNCTAD 2024年报告显示越南制造业FDI年增长率为25%（低于30%）；印度制造业FDI年增长率在2024年为28%（低于30%）；越南和印度制造业FDI总额年增长率合计为29%（低于30%）",
@@ -157556,13 +159551,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     },
     "_prev_thresholds": {
       "falsification_criteria": "中国海关总署2024年年度数据显示中国对美出口占比为15.2%；2024年第二季度中国对美出口占比为15.1%（未降至15%以下）；连续三年数据中国对美出口占比保持在15%以上",
@@ -157586,7 +159581,7 @@
     "level": "major",
     "title": "AI算力与关键材料短缺限制技术商业化速度",
     "direction": "toward",
-    "confidence": 0.328,
+    "confidence": 0.319,
     "base_confidence": 0.65,
     "deadline": "2027-09-05",
     "status": "active",
@@ -179283,6 +181278,96 @@
         "ach_eligible": true,
         "source": "第一财经-新闻",
         "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "f572aa2c5d4c4cbd"
+        ],
+        "story_ids": [],
+        "summary": "前八个月福建省电子元件出口额同比增长超两成",
+        "domains": [],
+        "relevance": 0.195,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": "福建电子元件出口增长直接惠及本地经济，可能推高相关行业工资水平，但全国物价影响有限。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "6f03b9c4901b28bb"
+        ],
+        "story_ids": [],
+        "summary": "Codex和Claude Code都跑偏了，前OpenAI研究员称Jev出现前AI世界是个悲剧",
+        "domains": [
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": "AI工具从‘辅助人’向‘自动化流程’的演进，将深刻影响中国宏观经济的数字化转型效率，推动企业降本增效。在就业市场和青年失业问题上，自动化AI的普及可能对初级软件工程师、重复性白领岗位产生替代效应，加剧青年毕业生的结构性失业焦虑。同时，这也倒逼青年劳动者必须向AI工具开发、流程编排及高阶协同能力转型，以应对AI时代对劳动力技能的新要求。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "e61764c2e7b2892f"
+        ],
+        "story_ids": [],
+        "summary": "刘元春：为什么说AI治理的关口必须前移",
+        "domains": [
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "c7660493720221ff"
+        ],
+        "story_ids": [],
+        "summary": "谷歌“算力卫星”下周发射！搭乘SpaceX火箭 、每运行15分钟就要停机散热",
+        "domains": [
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "5bda0a664bec08be"
+        ],
+        "story_ids": [
+          "st_d27156eeaf"
+        ],
+        "summary": "梅卡曼德发布2026年中期业绩：物理AI进入收获期，“机器人大脑”打开千亿空间",
+        "domains": [
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "d0c3edea29864425"
+        ],
+        "story_ids": [],
+        "summary": "戴尔高管：“代理AI”这次不一样，关键组件（主要是内存和HDD）短缺可能持续5年以上",
+        "domains": [
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": "从宏观经济角度看，全球AI基础设施的长期结构性扩张和硬件短缺，为中国半导体、存储及服务器制造等产业链带来了双重挑战与机遇，可能加剧国际竞争，但也为国内技术替代和产业升级提供了长期的市场空间。在就业市场层面，AI硬件和数据中心的持续建设将强力拉动对高端研发、芯片设计、数据中心运维等高技能人才的需求。对于面临结构性就业压力的青年失业毕业生而言，这要求他们积极向AI、云计算及硬件工程等交叉学科领域转型，"
       }
     ],
     "version": 3,
@@ -179299,7 +181384,7 @@
     "level": "medium",
     "title": "AI芯片供给瓶颈持续",
     "direction": "toward",
-    "confidence": 0.95,
+    "confidence": 0.94,
     "base_confidence": 0.72,
     "deadline": "2027-03-05",
     "status": "active",
@@ -200799,6 +202884,92 @@
         "ach_eligible": true,
         "source": "华尔街见闻-全球",
         "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "4be3028854b0f37c"
+        ],
+        "story_ids": [],
+        "summary": "马斯克放话：Colossus 2部署的英伟达芯片年底或增加一倍",
+        "domains": [],
+        "relevance": 0.124,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": "美国AI算力的快速扩张将加剧全球AI技术竞争，可能对中国AI产业形成压力，促使中国加大自主研发力度。在宏观经济层面，全球AI基础设施建设的加速可能带动相关产业链需求，对中国半导体、云计算等出口行业构成利好。就业市场方面，AI算力扩张可能创造更多高技能岗位，如AI工程师、数据科学家，但同时也可能替代部分传统岗位。对于青年失业毕业生，具备AI相关技能的毕业生就业前景将更加广阔，而缺乏相关技能的毕业生可"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "048a9c53615b2864"
+        ],
+        "story_ids": [],
+        "summary": "苹果与高通续签专利协议：芯片可以不用，专利仍绕不开",
+        "domains": [],
+        "relevance": 0.12,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": "苹果与高通的专利续签及芯片自研动态，对中国宏观经济中的科技自主创新与知识产权保护具有深远示范效应。在宏观经济层面，它警示中国企业在追求芯片自主替代的同时，必须高度重视国际通信标准必要专利（SEP）的合规与布局，避免陷入国际专利纠纷，这关系到中国高科技出口的可持续性。在就业市场与青年毕业生方面，芯片自研和专利许可的博弈将加速国内半导体产业链的升级，催生更多芯片架构设计、专利法律及国际标准合规等高薪、"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "6f03b9c4901b28bb"
+        ],
+        "story_ids": [],
+        "summary": "Codex和Claude Code都跑偏了，前OpenAI研究员称Jev出现前AI世界是个悲剧",
+        "domains": [
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": "AI工具从‘辅助人’向‘自动化流程’的演进，将深刻影响中国宏观经济的数字化转型效率，推动企业降本增效。在就业市场和青年失业问题上，自动化AI的普及可能对初级软件工程师、重复性白领岗位产生替代效应，加剧青年毕业生的结构性失业焦虑。同时，这也倒逼青年劳动者必须向AI工具开发、流程编排及高阶协同能力转型，以应对AI时代对劳动力技能的新要求。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "0e0182242e7f6d7c"
+        ],
+        "story_ids": [],
+        "summary": "AI是现在、量子是未来！陆家嘴金融沙龙第32期热议资管下一代基础设施建设路径",
+        "domains": [
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "e61764c2e7b2892f"
+        ],
+        "story_ids": [],
+        "summary": "刘元春：为什么说AI治理的关口必须前移",
+        "domains": [
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "c7660493720221ff"
+        ],
+        "story_ids": [],
+        "summary": "谷歌“算力卫星”下周发射！搭乘SpaceX火箭 、每运行15分钟就要停机散热",
+        "domains": [
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -201460,18 +203631,33 @@
         "ach_eligible": true,
         "source": "新浪财经-滚动新闻",
         "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "fbf3b3e435256caa"
+        ],
+        "story_ids": [
+          "st_dd25a4b97a"
+        ],
+        "summary": "面板厂商10月产能利用率将降至80%，四季度欲遏制跌价、甚至涨价",
+        "domains": [],
+        "relevance": 0.171,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -201479,7 +203665,7 @@
     "level": "small",
     "title": "HBM内存价格年涨50%以上",
     "direction": "toward",
-    "confidence": 0.74,
+    "confidence": 0.76,
     "base_confidence": 0.7,
     "deadline": "2026-12-05",
     "status": "active",
@@ -202003,18 +204189,59 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": "联芸科技推出的AI SSD方案大幅降低了大模型在本地端侧部署的硬件门槛，对宏观经济中的AI终端产业普及具有催化作用。宏观上，该技术突破将加速AI PC和智能终端的消费升级，推动中国电子信息产业向高附加值的AI应用层升级，增强全球竞争力。在就业市场层面，端侧AI技术的繁荣将直接拉动芯片设计、存储技术、AI算法及终端制造等产业链的用工需求，创造大量高新技术职位。对于青年毕业生，尤其是计算机、电子科学、"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "86cad0dd3573f8ef"
+        ],
+        "story_ids": [],
+        "summary": "英伟达加速布局下一代玻璃基板技术以集成更多HBM",
+        "domains": [],
+        "relevance": 0.151,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": "第一层：技术升级或推动国产芯片降价，惠及普通消费者物价线。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "d484f89f5969ff23"
+        ],
+        "story_ids": [
+          "st_da0b78135f"
+        ],
+        "summary": "为了把更多HBM塞进芯片，英伟达加速推进玻璃基板技术",
+        "domains": [],
+        "relevance": 0.122,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "c526c9ee9fbc216a"
+        ],
+        "story_ids": [],
+        "summary": "美股小幅高开，内存板块领涨，特斯拉计划年底日产千台机器人",
+        "domains": [],
+        "relevance": 0.122,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "美股内存板块领涨及特斯拉机器人量产计划，反映了全球AI硬件投资的热潮，对中国宏观经济的高质量发展既是机遇也是挑战。中国宏观经济深度融入全球科技产业链，全球AI存储和机器人产业的扩张为中国企业提供了广阔的海外市场与技术合作空间，有助于稳定外贸基本盘。然而，核心技术和高端制造的竞争也日趋激烈，倒逼中国在存储芯片和精密传感器等“卡脖子”环节加快自主研发。在就业市场，内存芯片和人形机器人产业的高端化，将吸"
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -202289,6 +204516,21 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": "宏观经济上，美国对阿根廷矿产的大规模投资可能重塑全球锂、铜等关键矿产的贸易流向与定价机制，增加中国相关产业链原材料进口的外部地缘政治风险，对中国的新能源产业安全和宏观经济稳定构成潜在挑战。在就业与青年层面，关键矿产供应链的国际化竞争将直接影响中国锂电、光伏及电动汽车等支柱产业的全球市场份额，进而决定相关制造业岗位的稳定性。面对潜在的供应链波动，中国青年在跨境矿产投资、国际法、海外项目管理等领域的就"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "b6bd4c201369f0f5"
+        ],
+        "story_ids": [
+          "st_c303ea8d9c"
+        ],
+        "summary": "伦敦金属交易所(LME)：铜库存增加325吨，铝库存持平，镍库存增加6048吨，锌库存减少1600吨，锡库存持平，铅库存",
+        "domains": [],
+        "relevance": 0.144,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -202305,7 +204547,7 @@
     "level": "small",
     "title": "中国稀土出口管制收紧",
     "direction": "toward",
-    "confidence": 0.77,
+    "confidence": 0.78,
     "base_confidence": 0.72,
     "deadline": "2026-12-05",
     "status": "active",
@@ -202694,18 +204936,33 @@
         "ach_eligible": true,
         "source": "联合早报-中国",
         "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "71098ba2bf6103fa"
+        ],
+        "story_ids": [
+          "st_f69f22e9c7"
+        ],
+        "summary": "美国要求巴拉圭增加牛肉出口 以缓解国内牛肉高价",
+        "domains": [],
+        "relevance": 0.123,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "美国牛肉进口增加可能平抑国内价格，普通公民物价受益但安全无直接影响。"
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -203431,13 +205688,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     },
     "_prev_thresholds": {
       "falsification_criteria": "判据1：2024年全年碳酸锂现货价（SMM）高点与低点振幅未超过10万元人民币/吨（或相对年初波幅未超过150%）；判据2：全球前五大锂矿企业（如SQM、Albemarle等）在2024年财报中未出现因价格剧烈波动而导致的大规模产能推迟、取消或破产重组；判据3：伦敦金属交易所（LME）或上海期货交易所（SHFE）碳酸锂期货合约未出现连续30个交易日日均波动率超过历史同期（过去三年）平均水平200%的情况。",
@@ -218195,6 +220452,102 @@
         "ach_eligible": true,
         "source": "华尔街见闻-全球",
         "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "d99a3f523ade9b05"
+        ],
+        "story_ids": [],
+        "summary": "【9月26日隔夜要闻一览】 1、一位美国官员透露，继伊朗方面提出开放霍尔木兹海峡并在提议获接纳后重启谈判的计划以来，美国",
+        "domains": [
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "2962ffcea290893c"
+        ],
+        "story_ids": [
+          "st_dcaef2812d"
+        ],
+        "summary": "【纽约联储博客：美联储采用“证券主导”的储备管理方式】美国纽约联储博客栏目“Teller Window”发表文章称，在全",
+        "domains": [
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "4083774945e13153"
+        ],
+        "story_ids": [
+          "st_5869696ab8"
+        ],
+        "summary": "美国专家：五年后人们或不再讨论美中对抗 智能体可能取而代之",
+        "domains": [
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "ea11c316863437f2"
+        ],
+        "story_ids": [],
+        "summary": "美元连涨五个交易日后保持平稳",
+        "domains": [
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": "美元走强可能导致人民币贬值，增加进口成本，对中国宏观经济造成压力。资本外流风险上升，可能影响国内流动性。出口企业可能受益于美元升值，但进口成本上升会挤压利润。就业市场可能面临挑战，尤其是外向型行业。青年失业毕业生将面临更激烈的就业竞争，就业压力加大。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "07bb39eb735bac3e"
+        ],
+        "story_ids": [],
+        "summary": "伊朗最新提议表明美伊外交“实际上没有任何改变”",
+        "domains": [
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "美伊关系的紧张及中东地缘政治局势的波动，对全球能源市场和地缘政治格局具有重要影响。对中国而言，中东局势波动可能影响我国的能源进口安全及价格稳定，进而对宏观经济运行产生一定间接影响。然而，由于我国能源进口渠道多元化且外交上保持独立自主，该事件对国内就业市场和青年失业毕业生的直接影响较为有限。但国际局势的不确定性可能加剧部分青年对宏观经济前景的担忧，间接影响其就业选择和心理预期。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "85e2a77865a0a32c"
+        ],
+        "story_ids": [
+          "st_8ac6d0f282"
+        ],
+        "summary": "报道：特朗普拒绝伊朗7天停火提议，预计中期选举后恢复轰炸",
+        "domains": [
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
       }
     ],
     "version": 3,
@@ -218685,18 +221038,31 @@
         "ach_eligible": true,
         "source": "联合早报-中国",
         "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "75200b4d2a63f3e6"
+        ],
+        "story_ids": [],
+        "summary": "中国海军编队赴缅甸进行友好访问",
+        "domains": [],
+        "relevance": 0.179,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": ""
       }
     ],
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     },
     "_prev_thresholds": {
       "falsification_criteria": "2024年台海周边军事演习总次数少于2023年的两倍（国防部年度数据）；如果2024年季度演习次数同比增长均低于100%，则证伪翻倍假设；连续6个月台海军演次数同比下降超过15%（国防部月度公报）。",
@@ -219045,13 +221411,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     },
     "_prev_thresholds": {
       "falsification_criteria": "2024年美国对台军售金额未超过2023年最高值（美国国防部军售报告）；如果2024年军售总额低于过去5年平均水平（约100亿美元），则证伪创新高；连续两年军售金额下降超过10%（斯德哥尔摩国际和平研究所数据）。",
@@ -219587,7 +221953,7 @@
     "level": "small",
     "title": "西方对中国金融制裁方案储备",
     "direction": "toward",
-    "confidence": 0.44,
+    "confidence": 0.45,
     "base_confidence": 0.45,
     "deadline": "2026-12-05",
     "status": "active",
@@ -220303,18 +222669,33 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": "第一层：伊朗制裁缓解可能降低全球油价，惠及普通公民能源支出和资产安全。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "3585d2834e8a0cbc"
+        ],
+        "story_ids": [
+          "st_c5225f6d69"
+        ],
+        "summary": "俄罗斯注册船队规模快速扩张，受制裁船只改挂俄国旗以维持能源出口",
+        "domains": [],
+        "relevance": 0.193,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "俄罗斯船队扩张及西方对无国籍船只打击的加剧，可能进一步影响全球能源供应链和航运市场格局。对中国宏观经济而言，国际能源和航运通道的波动可能带来输入性通胀或原材料成本变化，但同时中国作为全球重要的能源进口国和制造业大国，也需要关注国际航运合规风险及地缘政治对贸易往来的影响。在就业市场和青年毕业生方面，全球航运和能源市场的波动会间接影响中国外贸、港口物流及相关制造业的用工需求，可能带来部分行业就业的结构"
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -220322,7 +222703,7 @@
     "level": "small",
     "title": "台海冲突导致全球芯片供应链中断",
     "direction": "toward",
-    "confidence": 0.95,
+    "confidence": 0.94,
     "base_confidence": 0.4,
     "deadline": "2026-12-05",
     "status": "active",
@@ -227788,18 +230169,118 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": "胡塞武装对沙特军事目标的袭击加剧了中东地区的地缘政治紧张局势，对中国宏观经济的直接影响主要体现在能源安全和进口成本上。中东地区是中国最主要的石油进口来源，局势动荡可能导致国际油价和航运成本波动，增加中国的输入性通胀压力，并影响国内能源供应的稳定性。在就业市场和青年毕业生方面，地缘政治冲突引发的全球供应链不确定性可能波及中国的外贸、航运及能源行业，导致相关领域的招聘需求波动。同时，冲突也可能促使国家"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "3cb6aeaf8ea3ac7d"
+        ],
+        "story_ids": [],
+        "summary": "台湾双十晚会首度移师新北 焰火睽违九年重返台东",
+        "domains": [],
+        "relevance": 0.131,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": "台湾政治活动对大陆普通公民直接影响小，但可能间接影响两岸安全预期。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "73f733f1e63b113b"
+        ],
+        "story_ids": [
+          "st_85ce5209e7"
+        ],
+        "summary": "俄罗斯国防部：俄罗斯继续对防务工业设施和物流中心进行打击，并袭击了乌克兰武装部队使用的舰艇。",
+        "domains": [
+          "供应链",
+          "科技",
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "俄乌冲突及俄军的持续打击行动对全球地缘政治和经济格局产生深远影响，间接波及中国宏观经济与就业市场。宏观经济层面，冲突持续可能导致全球能源、粮食及关键原材料价格持续波动，增加中国的进口成本，并对外部需求环境造成不确定性。就业市场方面，全球供应链的不稳定可能波及中国部分外贸导向型和制造业企业，对相关行业的青年毕业生招聘需求产生一定挤压。面对复杂的国际环境，中国需继续依托国内超大规模市场，加快构建新发展"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "443f1801f3cba3cb"
+        ],
+        "story_ids": [],
+        "summary": "俄罗斯国防部称打击了码头基础设施",
+        "domains": [
+          "供应链",
+          "科技",
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "地缘冲突加剧，粮食安全风险上升。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "2bbac950cc67b68b"
+        ],
+        "story_ids": [],
+        "summary": "乌克兰明年年初270亿美元需求将主要用于无人机与导弹防御",
+        "domains": [
+          "供应链",
+          "科技",
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "普通公民：军工需求推高全球原材料物价，安全环境间接恶化，资产需对冲通胀。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "dfd5efe5459cc420"
+        ],
+        "story_ids": [],
+        "summary": "伊拉克纳杰夫国际机场暂停所有往返伊朗航班",
+        "domains": [
+          "供应链",
+          "科技",
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "航班暂停直接威胁中国公民在伊安全，并可能扰供应链，间接推高物价波动。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "bb70f67dc22bf203"
+        ],
+        "story_ids": [],
+        "summary": "国家飓风中心：飓风“波罗”已重新达到5级强度",
+        "domains": [
+          "供应链",
+          "科技",
+          "地缘政治"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "极端天气事件频发，间接影响国内气候政策与农业资产。"
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -233065,6 +235546,103 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": "普通公民：通胀预期锚定或缓解生活成本压力，但能源关税可能局部推高物价。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "1a077c9c466ed07b"
+        ],
+        "story_ids": [],
+        "summary": "伊拉克削减巴士拉中重质原油价格以吸引买家",
+        "domains": [],
+        "relevance": 0.138,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "伊拉克等产油国降价促销原油，有利于降低中国等主要原油进口国的能源进口成本，缓解输入性通胀压力，对中国宏观经济运行形成积极支撑。低油价降低了交通运输和制造业的运营成本，有助于稳定实体企业的利润和用工需求。在就业市场层面，能源成本的下降和石化产业链的稳定运行，能间接创造更多化工、新材料等领域的技术与管理岗位，为青年毕业生提供更多元、高质的就业机会，促进实体领域青年就业的稳定。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "c770c510b74c6d73"
+        ],
+        "story_ids": [],
+        "summary": "【阿波罗：柴油价格创纪录上涨 美联储面临更大通胀挑战】金十数据9月25日讯，阿波罗全球管理公司首席经济学家Torsten",
+        "domains": [
+          "经济",
+          "能源"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "73b96f3ac306518f"
+        ],
+        "story_ids": [
+          "st_153fbdefe2"
+        ],
+        "summary": "阿波罗首席经济学家：美联储可能忽视了柴油价格飙升带来的通胀威胁",
+        "domains": [
+          "经济",
+          "能源"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "f254926123b4a86d"
+        ],
+        "story_ids": [
+          "st_d1e49b2b80"
+        ],
+        "summary": "【印度石油公司购入100万桶伊拉克原油 锁定10月装船供应】",
+        "domains": [
+          "经济",
+          "能源"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "印度以折扣价大量购入伊拉克原油，凸显了国际原油市场基准价格体系（如迪拜基准）在实际贸易谈判中的重要作用。对中国宏观经济而言，中国作为全球最大的能源消费国之一，借鉴多元化的采购策略和基准价格机制，对于保障国家能源安全、降低输入性通胀风险具有重要意义。稳定的低成本能源供应有助于中国宏观经济平稳运行，支撑制造业和服务业景气度。在就业与青年毕业生层面，能源价格的稳定对基础工业、物流及制造业的用工需求有托底"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "259ff86d1ef1191e"
+        ],
+        "story_ids": [],
+        "summary": "中环新能源午前涨近9% 本周股价累计涨幅已超30%",
+        "domains": [
+          "经济",
+          "能源"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": "新能源股价上涨反映政策利好，普通公民资产可能间接受益，但物价/安全影响有限。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "b3154e33a4c032fd"
+        ],
+        "story_ids": [],
+        "summary": "富瑞：中国高端新能源车品牌超越同业 维持蔚来-SW“持有”评级",
+        "domains": [
+          "经济",
+          "能源"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": "中国高端新能源车品牌的崛起对宏观经济结构升级具有重要推动作用，有助于提升中国制造的附加值和全球产业链地位。然而，国内乘用车销量连续大幅下跌，反映出内需疲软，这对汽车制造及零部件供应链的就业市场带来下行压力，可能导致相关行业招聘收缩。对于青年失业毕业生而言，新能源汽车出口和高端化趋势创造了大量研发、营销及国际化运营的高技能岗位，有利于吸纳高素质人才；但整体内需不足仍会加剧就业市场竞争，青年毕业生仍面"
       }
     ],
     "version": 3,
@@ -234982,6 +237560,84 @@
         "ach_eligible": true,
         "source": "财联社-电报",
         "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "6438e5ed934e3e3b"
+        ],
+        "story_ids": [],
+        "summary": "传美伊商讨霍尔木兹海峡分阶段通航协议 油价回落",
+        "domains": [],
+        "relevance": 0.256,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": "国际油价回落有利于缓解中国面临的输入性通胀压力，降低进口原油成本，对中国宏观经济的平稳运行和能源安全具有积极意义。作为全球最大的能源消费国之一，油价下行将改善国内中下游企业的盈利预期，特别是化工、物流和交通运输等行业。在就业市场方面，能源价格的稳定有助于维持制造业和相关产业链的用工需求，对青年失业毕业生而言，传统能源及新能源产业链上的就业岗位预期将更加稳定，同时降低了因能源危机引发的结构性失业风险"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "c6b894f6c61de138"
+        ],
+        "story_ids": [],
+        "summary": "伊朗外长：2月28日之前，霍尔木兹海峡一直保持通航。 霍尔木兹海峡当前的不安全局势以及航运中断，是美国和以色列政权侵略行径直接造成的结果。 你不能轰炸一个...",
+        "domains": [],
+        "relevance": 0.228,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "8a17d45d102db0fd"
+        ],
+        "story_ids": [],
+        "summary": "美军：过去两天在霍尔木兹海峡迫使7艘商船改航",
+        "domains": [],
+        "relevance": 0.215,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "d04a8554288beebb"
+        ],
+        "story_ids": [],
+        "summary": "初步数据显示通过霍尔木兹海峡的商业船只通行量降至个位数",
+        "domains": [],
+        "relevance": 0.195,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "霍尔木兹海峡航运受阻对中国宏观经济而言是一大外部风险，作为全球主要的能源进口国，中国需高度警惕能源通道受阻带来的输入性通胀和供应链安全威胁。这可能迫使中国加速能源进口多元化和储备建设，影响宏观政策的稳定性。在就业市场和青年就业方面，国际航运和能源价格的剧烈波动会传导至国内物流、外贸及制造业，导致相关行业用人需求收缩。青年毕业生在国际贸易、供应链管理和制造业领域的就业机会可能面临不确定性，要求政府和"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "b8216ea158ff33da"
+        ],
+        "story_ids": [],
+        "summary": "报道称美伊探讨分阶段重启霍尔木兹海峡，原油涨幅火速“腰斩”",
+        "domains": [],
+        "relevance": 0.193,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "4458e9d78af3804a"
+        ],
+        "story_ids": [],
+        "summary": "美国股市：主要股指普涨 霍尔木兹海峡重开希望推动油价回落",
+        "domains": [],
+        "relevance": 0.19,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -236567,18 +239223,98 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "e295976f004ff383"
+        ],
+        "story_ids": [
+          "st_708db63f4b"
+        ],
+        "summary": "沙特原油改道霍尔木兹海峡推高VLCC需求，阿曼湾船对船转运接近运力极限",
+        "domains": [],
+        "relevance": 0.162,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "对中国宏观经济而言，沙特原油改道及阿曼湾运力饱和将增加中国进口原油的运输成本与保险费用，加剧输入性通胀压力，并可能影响中国能源进口的供应链安全与物流稳定性。在就业市场方面，航运成本上升和供应链不确定性将增加外贸及物流行业的运营成本，部分中小企业可能面临利润压缩，从而抑制招聘需求。对于青年失业毕业生而言，传统航运、物流及石化行业的扩张放缓可能减少相关岗位的供给，加剧就业市场竞争，促使青年人才需要向数"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "6438e5ed934e3e3b"
+        ],
+        "story_ids": [],
+        "summary": "传美伊商讨霍尔木兹海峡分阶段通航协议 油价回落",
+        "domains": [],
+        "relevance": 0.153,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": "国际油价回落有利于缓解中国面临的输入性通胀压力，降低进口原油成本，对中国宏观经济的平稳运行和能源安全具有积极意义。作为全球最大的能源消费国之一，油价下行将改善国内中下游企业的盈利预期，特别是化工、物流和交通运输等行业。在就业市场方面，能源价格的稳定有助于维持制造业和相关产业链的用工需求，对青年失业毕业生而言，传统能源及新能源产业链上的就业岗位预期将更加稳定，同时降低了因能源危机引发的结构性失业风险"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "8a17d45d102db0fd"
+        ],
+        "story_ids": [],
+        "summary": "美军：过去两天在霍尔木兹海峡迫使7艘商船改航",
+        "domains": [],
+        "relevance": 0.149,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "c6b894f6c61de138"
+        ],
+        "story_ids": [],
+        "summary": "伊朗外长：2月28日之前，霍尔木兹海峡一直保持通航。 霍尔木兹海峡当前的不安全局势以及航运中断，是美国和以色列政权侵略行径直接造成的结果。 你不能轰炸一个...",
+        "domains": [],
+        "relevance": 0.139,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "b8216ea158ff33da"
+        ],
+        "story_ids": [],
+        "summary": "报道称美伊探讨分阶段重启霍尔木兹海峡，原油涨幅火速“腰斩”",
+        "domains": [],
+        "relevance": 0.137,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "cc994bb17ef21113"
+        ],
+        "story_ids": [],
+        "summary": "市场消息：沙特转移原油出口致阿曼湾海域船对船转运活动接近承载极限",
+        "domains": [],
+        "relevance": 0.132,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": "阿曼湾海域船对船转运活动接近承载极限，直接关系到中国等主要原油进口国的能源安全与宏观经济稳定。作为全球最大的原油进口国之一，航道潜在的拥堵和运输瓶颈可能导致中国进口原油的成本上升、运力紧张，进而输入性推高国内通胀，对宏观经济平稳运行造成负面冲击。在就业市场层面，能源供应链的波动可能加剧石化、航运、物流等相关行业的用工不稳定性和招聘波动，对部分青年和低技能劳动力就业构成挑战。面对航道承载极限和地缘政"
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -237280,18 +240016,31 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": "油价上涨将增加中国能源进口成本，推高国内通胀水平，可能削弱居民消费能力。能源成本上升会压缩制造业利润，导致部分企业减产或裁员，进而影响就业市场。对于青年失业毕业生而言，能源相关行业可能提供一定就业机会，但整体就业压力仍可能加大。此外，高油价可能促使政府加快能源结构调整，推动新能源产业发展。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "f5e19b020483d17a"
+        ],
+        "story_ids": [],
+        "summary": "交易商：印度炼厂采购10月船期伊拉克原油",
+        "domains": [],
+        "relevance": 0.131,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": "印度炼厂采购伊拉克原油属于正常的国际能源贸易合作，对中国宏观经济直接影响较小。但国际油价波动及主要产油国政策变化可能通过进口成本传导至中国石化产业链，间接影响相关制造业的生产成本与物价水平。在就业市场方面，中国与伊拉克等中东产油国的能源合作若持续深化，可能带动国内油气工程、物流仓储及设备出口等领域的就业岗位需求，对相关专业毕业生就业形成利好。然而，全球原油价格高位震荡可能推高国内交通运输和化工行业"
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -237496,6 +240245,32 @@
         "ach_eligible": true,
         "source": "华尔街见闻-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "dabb2279729e6254"
+        ],
+        "story_ids": [],
+        "summary": "包信和院士：未来能源图景是“电子与分子”共舞",
+        "domains": [],
+        "relevance": 0.127,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": "对中国宏观经济而言，能源转型将推动绿色产业发展，减少化石燃料依赖，增强能源安全，但短期可能增加技术投资成本。就业市场将受益于新能源领域如太阳能、风能和催化技术的岗位增长，同时传统能源行业可能收缩。青年失业毕业生面临新机遇，但需提升相关技能，否则可能加剧结构性失业。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "0fcd74a3931e31fa"
+        ],
+        "story_ids": [],
+        "summary": "法国拟召集七国集团商讨释放战略石油储备",
+        "domains": [],
+        "relevance": 0.124,
+        "ach_eligible": true,
+        "source": "36氪-快讯",
+        "impact": "对中国宏观经济而言，七国集团协调释放战略石油储备有助于缓解全球能源紧张，降低国际原油及成品油价格。作为全球最大的石油进口国，油价下行有利于降低中国进口成本，缓解PPI和CPI通胀压力，为宏观经济稳增长提供更有利的外部环境。在就业与青年毕业生层面，能源价格趋稳有助于降低制造业和物流业的运营成本，稳定企业用工需求。同时，绿色能源转型与传统能源价格波动的博弈，将促使青年毕业生更多流向新能源、节能减排及能"
       }
     ],
     "version": 1,
@@ -238079,13 +240854,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -238093,7 +240868,7 @@
     "level": "small",
     "title": "国内油气产量目标上调",
     "direction": "toward",
-    "confidence": 0.74,
+    "confidence": 0.75,
     "base_confidence": 0.68,
     "deadline": "2026-12-05",
     "status": "active",
@@ -238896,18 +241671,70 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": "钢铁产量同比减少3.7%表明中国房地产及基建等传统钢铁消耗行业需求持续承压，对宏观经济增长形成拖累。在就业市场方面，钢铁及相关重工业板块的产出收缩可能导致部分蓝领工人面临就业不稳定或裁员风险。对于青年失业毕业生而言，传统制造业和建筑业的岗位收缩会加剧就业竞争，迫使更多毕业生转向服务业或新兴产业，从而推高结构性失业率，增加社会就业压力。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "3d0fff65be636f38"
+        ],
+        "story_ids": [],
+        "summary": "秘鲁矿业部长：预计今年秘鲁铜产量为250万-270万吨。 预计秘鲁将在5-6年内新增100万吨年铜产量。",
+        "domains": [],
+        "relevance": 0.191,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "582907f897d50653"
+        ],
+        "story_ids": [],
+        "summary": "财联社9月25日电，俄罗斯天然气工业股份公司上半年天然气产量增加3.4%，达到2165.5亿立方米。",
+        "domains": [],
+        "relevance": 0.167,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": "俄罗斯天然气产量的增加将提升对华出口潜力，降低中国进口能源成本，有利于缓解通胀压力并支持制造业复苏；然而，低价天然气可能冲击国内页岩气和煤炭行业，导致相关领域就业收缩；对于青年毕业生而言，能源价格下降可能扩大化工、冶金等行业的招聘需求，但也可能减少传统能源专业的就业机会；总体上，能源成本下降有助于提升企业利润，促进整体就业市场稳定，但结构性调整仍会带来短期失业风险。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "9d106a49c2a4a3de"
+        ],
+        "story_ids": [],
+        "summary": "财联社9月25日电，汇丰将雪佛龙目标价从218美元上调至250美元，将壳牌目标价从3650便士上调至4240便士。",
+        "domains": [],
+        "relevance": 0.14,
+        "ach_eligible": true,
+        "source": "财联社-电报",
+        "impact": "汇丰上调能源股目标价，可能提振市场信心，影响中国普通公民的资产配置，但需警惕能源转型中的泡沫风险。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "3e88f3f53d828d23"
+        ],
+        "story_ids": [],
+        "summary": "俄罗斯天然气工业股份公司上半年天然气产量增长3.4%",
+        "domains": [],
+        "relevance": 0.128,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "俄罗斯天然气增产保障中国能源供应安全，稳定物价预期。"
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -238915,7 +241742,7 @@
     "level": "major",
     "title": "AI技术成本上升触发宏观经济波动与金融风险",
     "direction": "toward",
-    "confidence": 0.755,
+    "confidence": 0.692,
     "base_confidence": 0.55,
     "deadline": "2027-09-05",
     "status": "active",
@@ -244707,6 +247534,106 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "783e792338e2b4e3"
+        ],
+        "story_ids": [],
+        "summary": "推进新一代通信网建设，多家通信运营商发声",
+        "domains": [
+          "经济",
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": "新一代通信网（如6G、算力网、卫星互联网）的建设将直接拉动中国宏观经济的数字化与智能化转型，通过大规模基建投资创造显著的经济增量。在就业市场层面，通信网络建设将催生大量高技能岗位，如算力工程师、6G研发专家、卫星互联网运维人员及AI算法科学家，拉动高端就业。然而，这也对劳动者的数字素养提出了更高要求。对于青年和高校毕业生而言，这既是巨大的就业机遇，也是严峻的技能挑战。如果高等教育和职业培训未能及时"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "ceaf26492b368e77"
+        ],
+        "story_ids": [],
+        "summary": "AI模型放缓未必利空：传统数据中心的三条结构性顺风压过利率上行",
+        "domains": [
+          "经济",
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "6c8d37d9e2875c4d"
+        ],
+        "story_ids": [],
+        "summary": "特朗普：将与习近平讨论安全、贸易、科技、AI等紧迫议题",
+        "domains": [
+          "经济",
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "906656c84af64f8a"
+        ],
+        "story_ids": [
+          "st_0647e1e703"
+        ],
+        "summary": "IMF：2026年全球AI投资规模或突破2万亿美元，成为增长重要驱动力",
+        "domains": [
+          "经济",
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "36氪-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "0067df545a89109c"
+        ],
+        "story_ids": [],
+        "summary": "受AI相关产品等拉动，泰国出口创四年最大增幅",
+        "domains": [
+          "经济",
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": "泰国出口强劲增长，特别是中国对泰国榴莲、山竹等农产品需求的激增，将直接促进中国与东盟之间的跨境贸易与产业链协同，利好中国农产品出口及消费板块。中国作为泰国电子产品出口的重要供应链环节，AI热潮带动的电子产品需求扩张，有助于维持中国相关制造业（如电子组装、零部件制造）的外部需求韧性，对冲国内需求不足的风险。在就业市场方面，外向型制造业和跨境物流、贸易领域的就业需求将得到支撑，有利于缓解部分制造业用工"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "27f5e9689ceb7da1"
+        ],
+        "story_ids": [
+          "st_b5d98bf648"
+        ],
+        "summary": "China's Xi urges U.S. to cooperate on AI",
+        "domains": [
+          "经济",
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "CNBC-World",
+        "impact": ""
       }
     ],
     "version": 3,
@@ -244723,7 +247650,7 @@
     "level": "medium",
     "title": "AI资本开支泡沫化",
     "direction": "toward",
-    "confidence": 0.62,
+    "confidence": 0.61,
     "base_confidence": 0.55,
     "deadline": "2027-03-05",
     "status": "active",
@@ -245238,6 +248165,19 @@
         "ach_eligible": true,
         "source": "36氪-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "33defb3e25b7f89f"
+        ],
+        "story_ids": [],
+        "summary": "高盛：美国AI巨头未来需实现3000亿美元年AI收入才能覆盖巨额投资",
+        "domains": [],
+        "relevance": 0.134,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": "美国AI巨头巨额资本开支与变现压力并存，可能延缓全球AI技术的商业化进程，进而影响中国相关产业链的出口与技术引进。若美国科技巨头缩减开支，全球AI产业链需求可能收缩，对中国高科技制造业和出口造成一定压力。在就业市场方面，虽然AI领域投资巨大，但若企业因无法盈利而收缩，全球科技行业招聘热潮可能降温，对中国海归科技人才及青年毕业生的高端就业带来竞争压力。然而，这也可能促使中国加速自主AI基础设施建设，"
       }
     ],
     "version": 1,
@@ -245254,7 +248194,7 @@
     "level": "small",
     "title": "科技巨头AI资本开支占营收比超30%",
     "direction": "toward",
-    "confidence": 0.51,
+    "confidence": 0.5,
     "base_confidence": 0.5,
     "deadline": "2026-12-05",
     "status": "active",
@@ -245562,18 +248502,31 @@
         "ach_eligible": true,
         "source": "华尔街见闻-全球",
         "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "33defb3e25b7f89f"
+        ],
+        "story_ids": [],
+        "summary": "高盛：美国AI巨头未来需实现3000亿美元年AI收入才能覆盖巨额投资",
+        "domains": [],
+        "relevance": 0.125,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": "美国AI巨头巨额资本开支与变现压力并存，可能延缓全球AI技术的商业化进程，进而影响中国相关产业链的出口与技术引进。若美国科技巨头缩减开支，全球AI产业链需求可能收缩，对中国高科技制造业和出口造成一定压力。在就业市场方面，虽然AI领域投资巨大，但若企业因无法盈利而收缩，全球科技行业招聘热潮可能降温，对中国海归科技人才及青年毕业生的高端就业带来竞争压力。然而，这也可能促使中国加速自主AI基础设施建设，"
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -245581,7 +248534,7 @@
     "level": "small",
     "title": "AI初创企业估值回调50%以上",
     "direction": "toward",
-    "confidence": 0.49,
+    "confidence": 0.51,
     "base_confidence": 0.45,
     "deadline": "2026-12-05",
     "status": "active",
@@ -246446,18 +249399,85 @@
         "ach_eligible": true,
         "source": "新浪财经-滚动新闻",
         "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "55edf734da811c9d"
+        ],
+        "story_ids": [
+          "st_87885888d3"
+        ],
+        "summary": "AI芯片初创企业DensityAI估值接近百亿美元，正进入融资谈判后期。",
+        "domains": [],
+        "relevance": 0.192,
+        "ach_eligible": true,
+        "source": "36氪-快讯",
+        "impact": "DensityAI等AI芯片初创企业估值突破百亿美元，表明全球资本对AI芯片等硬科技赛道具有极高期待，有助于吸引国内风险投资和耐心资本向高科技领域汇聚，对我国宏观经济的高质量转型起到示范和拉动作用。在就业市场和青年毕业生层面，AI芯片等高精尖领域的爆发式增长将催生大量高附加值就业岗位，如芯片架构师、算法工程师、硬件验证专家等，有利于吸引顶尖高校毕业生进入集成电路产业，缓解高学历青年的结构性就业矛盾"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "527abab13b64dd9d"
+        ],
+        "story_ids": [],
+        "summary": "特斯拉Dojo前核心成员创办的初创公司估值接近100亿美元",
+        "domains": [],
+        "relevance": 0.174,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": "AI芯片初创公司估值逼近百亿美元，对中国宏观经济、科技就业及青年人才市场具有显著的示范和拉动效应。宏观经济层面，这种高估值反映了全球算力需求的爆发，推动中国半导体和AI产业链的资本投入与技术攻关，有助于加速中国“智算基建”的国产化进程，提升国家整体算力竞争力。在就业市场与青年毕业生层面，AI芯片行业作为资本与技术密集型高地，创造了大量高薪、高门槛的顶尖研发岗位。国内高校微电子、计算机、人工智能等专"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "d93082d625505315"
+        ],
+        "story_ids": [],
+        "summary": "AI创企DensityAI正进入融资谈判后期 投后估值接近100亿美元",
+        "domains": [],
+        "relevance": 0.164,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": "DensityAI作为AI芯片领域的新兴独角兽，其高额融资对中国宏观经济和科技自主具有重要战略意义。在宏观经济层面，AI芯片是数字经济的核心基础设施，中国本土AI芯片企业的成长有助于推动中国高科技产业链的升级，减少对外技术依赖，增强宏观经济的抗风险能力。在就业市场和青年毕业生层面，AI芯片研发属于高技术门槛行业，能创造大量高附加值的就业岗位，吸引顶尖青年科技人才，缓解高端人才就业结构性矛盾。尽管短"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "87adfff4cb914c06"
+        ],
+        "story_ids": [],
+        "summary": "初创公司TypeSafe AI推出低幻觉“Jev”模型",
+        "domains": [],
+        "relevance": 0.147,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "84f09588c0486b98"
+        ],
+        "story_ids": [],
+        "summary": "Jev热度爆棚，公司估值有望大幅飙升",
+        "domains": [],
+        "relevance": 0.123,
+        "ach_eligible": true,
+        "source": "新浪财经-滚动新闻",
+        "impact": "全球AI投资热潮将激励中国本土AI产业发展，吸引资本流入，促进技术创新与产业升级，为宏观经济高质量发展注入动力。AI领域扩张将创造大量高技能岗位，有利于相关专业青年毕业生就业，但同时也加剧人才竞争，并可能替代部分传统岗位，对低技能青年就业构成挑战。中国政府推动新质生产力，AI产业将获更多政策支持，通过技能培训和产业调整可缓解青年失业压力，把握技术变革机遇。"
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -246465,7 +249485,7 @@
     "level": "medium",
     "title": "AI替代就业引发社会成本",
     "direction": "toward",
-    "confidence": 0.94,
+    "confidence": 0.95,
     "base_confidence": 0.6,
     "deadline": "2027-03-05",
     "status": "active",
@@ -251755,6 +254775,105 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": "美国持续失业金人数低于预期，表明美国经济具有较强韧性，有助于稳定全球市场信心并维持中国外需。对中国宏观经济而言，美国经济的稳定有利于中国出口链的持续复苏，降低外部需求萎缩的风险。在就业市场层面，外需的稳定能为中国制造业和外贸企业保留大量就业岗位，缓解整体就业压力。对于青年失业毕业生而言，外贸、跨境电商及国际物流等相关行业将释放更多招聘需求，有助于吸纳高校毕业生就业，但国内结构性就业矛盾仍需通过内需"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "ae7a87e5afe6d142"
+        ],
+        "story_ids": [],
+        "summary": "当就业遇上AI，劳动力市场迎来哪些改变？",
+        "domains": [
+          "经济",
+          "青年",
+          "科技"
+        ],
+        "relevance": 1.0,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "22c27105be942d38"
+        ],
+        "story_ids": [],
+        "summary": "习特二会白宫登场 聚焦安全 贸易 人工智能议题",
+        "domains": [
+          "经济",
+          "科技"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "5d72b0c40b8fb31b"
+        ],
+        "story_ids": [
+          "st_d281377704"
+        ],
+        "summary": "应县木塔与佛光寺模型亮相世赛现场，榫卯间中式匠心PK世界技能",
+        "domains": [
+          "青年",
+          "科技"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": "第一层：对普通公民的传导：世赛展示技能价值，政策鼓励技能培训，安全文化传承增强，资产端技能投资回报提升。"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "783e792338e2b4e3"
+        ],
+        "story_ids": [],
+        "summary": "推进新一代通信网建设，多家通信运营商发声",
+        "domains": [
+          "经济",
+          "科技"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "第一财经-新闻",
+        "impact": "新一代通信网（如6G、算力网、卫星互联网）的建设将直接拉动中国宏观经济的数字化与智能化转型，通过大规模基建投资创造显著的经济增量。在就业市场层面，通信网络建设将催生大量高技能岗位，如算力工程师、6G研发专家、卫星互联网运维人员及AI算法科学家，拉动高端就业。然而，这也对劳动者的数字素养提出了更高要求。对于青年和高校毕业生而言，这既是巨大的就业机遇，也是严峻的技能挑战。如果高等教育和职业培训未能及时"
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "ceaf26492b368e77"
+        ],
+        "story_ids": [],
+        "summary": "AI模型放缓未必利空：传统数据中心的三条结构性顺风压过利率上行",
+        "domains": [
+          "经济",
+          "科技"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "华尔街见闻-全球",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "6c8d37d9e2875c4d"
+        ],
+        "story_ids": [],
+        "summary": "特朗普：将与习近平讨论安全、贸易、科技、AI等紧迫议题",
+        "domains": [
+          "经济",
+          "科技"
+        ],
+        "relevance": 0.667,
+        "ach_eligible": true,
+        "source": "联合早报-中国",
+        "impact": ""
       }
     ],
     "version": 1,
@@ -252054,13 +255173,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -252278,13 +255397,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-25",
+      "checked_at": "2026-09-26",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-25"
+      "intel_adjusted_at": "2026-09-26"
     }
   },
   {
@@ -253303,6 +256422,34 @@
         "relevance": 0.124,
         "ach_eligible": true,
         "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "7811f5adc916885e"
+        ],
+        "story_ids": [
+          "st_13a11990bb"
+        ],
+        "summary": "Putin: Any Ukrainian provocation or escalation will only worsen Kyiv's position",
+        "domains": [],
+        "relevance": 0.13,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-26",
+        "intel_ids": [
+          "bb637ab6b59cad5b"
+        ],
+        "story_ids": [],
+        "summary": "US Core Capital Goods Orders Increase by More Than Forecast",
+        "domains": [],
+        "relevance": 0.126,
+        "ach_eligible": true,
+        "source": "Bloomberg-Economics",
         "impact": ""
       }
     ],
