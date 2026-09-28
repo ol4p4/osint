@@ -512,6 +512,11 @@ def run_hypothesis_chain():
         ("link", [sys.executable, str(PROJECT / "link_intel_hyp.py")], 600, ("Linked", "[TFIDF]")),
         ("verify", [sys.executable, str(PROJECT / "verify_hypotheses.py")], 600, ("指标更新",)),
         ("ach-batch", [sys.executable, str(PROJECT / "tools" / "ach_daily_batch.py")], 1600, ("[ACH-BATCH]",)),
+        # 探针读数（2026-09-28 接入）：mega 节点不进 ACH 矩阵，靠 JEV Noul
+        # 逐条测「情报是否实质推动该情景」→ 信号率落 probe_reading 字段。
+        # 实测 0.88s/条，200 条约 3 分钟、成本 ~$0.005；不写 confidence。
+        ("probe", [sys.executable, str(PROJECT / "tools" / "probe_mega.py"),
+                   "--limit", "200", "--write"], 600, ("[PROBE]",)),
     ]
     ok = 0
     for name, cmd, tmo, keys in steps:
