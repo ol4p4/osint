@@ -57005,6 +57005,1306 @@
    },
    "model": "jev",
    "diagnosed_at": "2026-09-28T15:52:53"
+  },
+  {
+   "key": "ev_e622663806",
+   "date": "2026-09-15",
+   "summary": "燃气轮机短缺持续至2030年，AI数据中心被迫重拾蒸汽锅炉",
+   "diagnosis": {
+    "hyp_e2b46e32": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03
+    },
+    "hyp_d26158d3": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM100": {
+     "code": "I",
+     "lr": 0.505,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.11
+    },
+    "HM102": {
+     "code": "C",
+     "lr": 1.405,
+     "note": "",
+     "conf": 0.81,
+     "gate": 0.51
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.47,
+     "gate": 0.21
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.52,
+     "gate": 0.13
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-09-28T15:56:49"
+  },
+  {
+   "key": "ev_fbb8c5698f",
+   "date": "2026-09-15",
+   "summary": "伊拉克一化肥厂发生氨气泄漏致2死50伤",
+   "diagnosis": {
+    "hyp_e2b46e32": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "hyp_d26158d3": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-09-28T15:56:50"
+  },
+  {
+   "key": "ev_4db21a381f",
+   "date": "2026-09-15",
+   "summary": "高盛、摩根大通现预计美联储本周加息",
+   "diagnosis": {
+    "hyp_e2b46e32": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "hyp_d26158d3": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-09-28T15:56:50"
+  },
+  {
+   "key": "ev_8c69736804",
+   "date": "2026-09-15",
+   "summary": "【长盈精密：2026年上半年营收107.29亿元 净利同比降94.20%】",
+   "diagnosis": {
+    "hyp_e2b46e32": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "hyp_d26158d3": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-09-28T15:56:51"
+  },
+  {
+   "key": "ev_071accbf57",
+   "date": "2026-09-15",
+   "summary": "山子高科一字涨停 关联方拟收购哪吒汽车母公司",
+   "diagnosis": {
+    "hyp_e2b46e32": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "hyp_d26158d3": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-09-28T15:56:52"
+  },
+  {
+   "key": "ev_8482072a59",
+   "date": "2026-09-15",
+   "summary": "【乘联分会崔东树：8月乘用车零售降23%，批发下降5%，零售大幅弱于批发增速】",
+   "diagnosis": {
+    "hyp_e2b46e32": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "hyp_d26158d3": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-09-28T15:56:53"
+  },
+  {
+   "key": "ev_6bb36312b4",
+   "date": "2026-09-15",
+   "summary": "算力成本攀升，Z.ai计划募资50亿美元",
+   "diagnosis": {
+    "hyp_e2b46e32": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "hyp_d26158d3": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07
+    },
+    "HM102": {
+     "code": "C",
+     "lr": 1.435,
+     "note": "",
+     "conf": 0.87,
+     "gate": 0.31
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.5,
+     "gate": 0.22
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-09-28T15:56:55"
+  },
+  {
+   "key": "ev_0a3b982f59",
+   "date": "2026-09-15",
+   "summary": "广州加速发展海洋药物和生物制品产业",
+   "diagnosis": {
+    "hyp_e2b46e32": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04
+    },
+    "hyp_d26158d3": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-09-28T15:56:56"
+  },
+  {
+   "key": "ev_bd58ba28a6",
+   "date": "2026-09-15",
+   "summary": "Inflation is outpacing wage growth again, squeezing Americans’ paychecks",
+   "diagnosis": {
+    "hyp_e2b46e32": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "hyp_d26158d3": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-09-28T15:56:56"
+  },
+  {
+   "key": "ev_15b19233c5",
+   "date": "2026-09-15",
+   "summary": "阿尔特、富士康等成立智能机器人科技公司",
+   "diagnosis": {
+    "hyp_e2b46e32": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07
+    },
+    "hyp_d26158d3": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03
+    },
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-09-28T15:56:57"
+  },
+  {
+   "key": "ev_796b5ba483",
+   "date": "2026-09-15",
+   "summary": "中证指数有限公司：将中证港股通人工智能应用指数的正式发布日期由2026年9月21日调整为2026年9月15日。",
+   "diagnosis": {
+    "hyp_e2b46e32": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "hyp_d26158d3": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-09-28T15:56:58"
+  },
+  {
+   "key": "ev_7d6ee10b0a",
+   "date": "2026-09-14",
+   "summary": "Japan long-term yields rise on stronger BOJ hike expectations",
+   "diagnosis": {
+    "hyp_e2b46e32": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "hyp_d26158d3": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-09-28T15:56:59"
+  },
+  {
+   "key": "ev_3c5c73dd5f",
+   "date": "2026-09-14",
+   "summary": "两只PCB概念股公告澄清涉英伟达传闻",
+   "diagnosis": {
+    "hyp_e2b46e32": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "hyp_d26158d3": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.09
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-09-28T15:57:01"
+  },
+  {
+   "key": "ev_753717fdcb",
+   "date": "2026-09-14",
+   "summary": "晚间公告｜9月13日这些公告有看头",
+   "diagnosis": {
+    "hyp_e2b46e32": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "hyp_d26158d3": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05
+    },
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-09-28T15:57:02"
+  },
+  {
+   "key": "ev_34fb0ee27b",
+   "date": "2026-09-14",
+   "summary": "金安国纪：截至目前公司未与英伟达、华为有过接触",
+   "diagnosis": {
+    "hyp_e2b46e32": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "hyp_d26158d3": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.11
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-09-28T15:57:04"
+  },
+  {
+   "key": "ev_fbe6207782",
+   "date": "2026-09-14",
+   "summary": "“未给英伟达供货！”“5天3板”PCB牛股紧急澄清，还有一只4倍牛股也公告否认",
+   "diagnosis": {
+    "hyp_e2b46e32": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "hyp_d26158d3": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.61,
+     "gate": 0.18
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-09-28T15:57:06"
+  },
+  {
+   "key": "ev_5177cb5308",
+   "date": "2026-09-14",
+   "summary": "习近平：让新兴技术照亮共同繁荣之路",
+   "diagnosis": {
+    "hyp_e2b46e32": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05
+    },
+    "hyp_d26158d3": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-09-28T15:57:07"
+  },
+  {
+   "key": "ev_8ea17f47f4",
+   "date": "2026-09-14",
+   "summary": "【AI高管呼吁放缓前沿模型研发，分析师称芯片股短期承压但长期影响有限】",
+   "diagnosis": {
+    "hyp_e2b46e32": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "hyp_d26158d3": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.71,
+     "gate": 0.13
+    },
+    "HM003": {
+     "code": "I",
+     "lr": 0.645,
+     "note": "",
+     "conf": 0.71,
+     "gate": 0.12
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-09-28T15:57:08"
+  },
+  {
+   "key": "ev_460a8726cb",
+   "date": "2026-09-14",
+   "summary": "金安国纪：股票交易异常波动，网上关于公司产品纳入英伟达、华为供应链体系认证的信息均为不实信息",
+   "diagnosis": {
+    "hyp_e2b46e32": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "hyp_d26158d3": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-09-28T15:57:10"
+  },
+  {
+   "key": "ev_20f23c59d2",
+   "date": "2026-09-14",
+   "summary": "伊拉克国家石油营销组织SOMO：伊拉克将十月份巴士拉中质原油对欧洲的官方售价定为较布伦特原油现货价贴水4.85美元。",
+   "diagnosis": {
+    "hyp_e2b46e32": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "hyp_d26158d3": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.01
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.09
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-09-28T15:57:12"
   }
  ],
  "diagnosis": {},
@@ -57028,8 +58328,8 @@
   "HM100": {
    "posterior": 0.05,
    "support": 19,
-   "refute": 19,
-   "evidence_total": 38,
+   "refute": 20,
+   "evidence_total": 39,
    "prior_baseline": 0.78,
    "reliability": "extreme"
   },
@@ -57042,10 +58342,10 @@
    "reliability": "ok"
   },
   "HM102": {
-   "posterior": 0.335,
-   "support": 16,
+   "posterior": 0.504,
+   "support": 18,
    "refute": 16,
-   "evidence_total": 32,
+   "evidence_total": 34,
    "prior_baseline": 0.65,
    "reliability": "strong"
   },
@@ -57066,15 +58366,15 @@
    "reliability": "extreme"
   },
   "HM003": {
-   "posterior": 0.759,
+   "posterior": 0.67,
    "support": 9,
-   "refute": 4,
-   "evidence_total": 13,
+   "refute": 5,
+   "evidence_total": 14,
    "prior_baseline": 0.55,
    "reliability": "strong"
   }
  },
- "updated": "2026-09-28 07:52",
+ "updated": "2026-09-28 07:57",
  "hypotheses": [
   {
    "id": "hyp_e2b46e32",
@@ -57120,7 +58420,7 @@
  "sensitivity": {
   "top1": "HM002",
   "flips": 0,
-  "n_evidence": 877,
+  "n_evidence": 897,
   "items": [
    {
     "key": "ev_5e7445b8dc",
@@ -57149,7 +58449,7 @@
     "top1_flip": false,
     "new_top1": "HM002",
     "top1_delta": 0.0,
-    "max_abs_delta": 0.139,
+    "max_abs_delta": 0.141,
     "moved_hyp": "HM102"
    },
    {
@@ -57173,6 +58473,36 @@
     "moved_hyp": "HM001"
    },
    {
+    "key": "ev_d0bded6291",
+    "summary": "长鑫第五代技术平台正式量产，24GB LPDDR5X量产产品展出",
+    "date": "2026-09-21",
+    "top1_flip": false,
+    "new_top1": "HM002",
+    "top1_delta": 0.0,
+    "max_abs_delta": 0.129,
+    "moved_hyp": "HM102"
+   },
+   {
+    "key": "ev_adf04f4490",
+    "summary": "AI模型放缓未必利空：传统数据中心的三条结构性顺风压过利率上行",
+    "date": "2026-09-26",
+    "top1_flip": false,
+    "new_top1": "HM002",
+    "top1_delta": 0.0,
+    "max_abs_delta": 0.129,
+    "moved_hyp": "HM003"
+   },
+   {
+    "key": "ev_1bc2dcc6dc",
+    "summary": "高盛上修光模块出货预期，光博会热度攀升，创业板人工智能ETF华宝（159363）获资金逢低布局",
+    "date": "2026-09-16",
+    "top1_flip": false,
+    "new_top1": "HM002",
+    "top1_delta": 0.0,
+    "max_abs_delta": 0.129,
+    "moved_hyp": "HM102"
+   },
+   {
     "key": "ev_da666300b0",
     "summary": "美国贸易代表格里尔称美加举行建设性会谈，目前无紧迫性",
     "date": "2026-09-26",
@@ -57183,26 +58513,6 @@
     "moved_hyp": "HM101"
    },
    {
-    "key": "ev_d0bded6291",
-    "summary": "长鑫第五代技术平台正式量产，24GB LPDDR5X量产产品展出",
-    "date": "2026-09-21",
-    "top1_flip": false,
-    "new_top1": "HM002",
-    "top1_delta": 0.0,
-    "max_abs_delta": 0.126,
-    "moved_hyp": "HM102"
-   },
-   {
-    "key": "ev_1bc2dcc6dc",
-    "summary": "高盛上修光模块出货预期，光博会热度攀升，创业板人工智能ETF华宝（159363）获资金逢低布局",
-    "date": "2026-09-16",
-    "top1_flip": false,
-    "new_top1": "HM002",
-    "top1_delta": 0.0,
-    "max_abs_delta": 0.126,
-    "moved_hyp": "HM102"
-   },
-   {
     "key": "ev_c3aa239e27",
     "summary": "中美峰会后，特朗普称习近平“理解”其在台湾问题上的立场",
     "date": "2026-09-28",
@@ -57211,19 +58521,9 @@
     "top1_delta": 0.0,
     "max_abs_delta": 0.123,
     "moved_hyp": "HM001"
-   },
-   {
-    "key": "ev_5ff8b1c617",
-    "summary": "港媒：美国拟推迟对台军售至APEC与G20峰会后",
-    "date": "2026-09-20",
-    "top1_flip": false,
-    "new_top1": "HM002",
-    "top1_delta": 0.0,
-    "max_abs_delta": 0.113,
-    "moved_hyp": "HM001"
    }
   ],
-  "updated_at": "2026-09-28T15:52:54"
+  "updated_at": "2026-09-28T15:57:13"
  },
- "updated_at": "2026-09-28T07:52:54.845324+00:00"
+ "updated_at": "2026-09-28T07:57:14.422600+00:00"
 }
