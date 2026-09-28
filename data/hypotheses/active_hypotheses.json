@@ -25059,7 +25059,29 @@
       }
     ],
     "version": 1,
-    "deadline_source": "ai_proposed"
+    "deadline_source": "ai_proposed",
+    "probe_reading": {
+      "samples": 300,
+      "mention_count": 97,
+      "mention_ratio": 0.3233,
+      "signal_count": 20,
+      "signal_ratio": 0.0667,
+      "max_gate": 0.32,
+      "mean_gate": 0.077,
+      "strong_signals": [
+        0.32,
+        0.26,
+        0.25,
+        0.24,
+        0.24,
+        0.24,
+        0.23,
+        0.22,
+        0.22,
+        0.22
+      ],
+      "measured_at": "2026-09-28T18:23:20"
+    }
   },
   {
     "id": "mega_global_economic_crisis",
@@ -29528,7 +29550,29 @@
       }
     ],
     "version": 1,
-    "deadline_source": "ai_proposed"
+    "deadline_source": "ai_proposed",
+    "probe_reading": {
+      "samples": 300,
+      "mention_count": 171,
+      "mention_ratio": 0.57,
+      "signal_count": 23,
+      "signal_ratio": 0.0767,
+      "max_gate": 0.27,
+      "mean_gate": 0.0983,
+      "strong_signals": [
+        0.27,
+        0.25,
+        0.24,
+        0.24,
+        0.23,
+        0.22,
+        0.22,
+        0.22,
+        0.22,
+        0.21
+      ],
+      "measured_at": "2026-09-28T18:23:20"
+    }
   },
   {
     "id": "hyp_e2b46e32",
@@ -165220,7 +165264,7 @@
     "level": "major",
     "title": "AI算力与关键材料短缺限制技术商业化速度",
     "direction": "toward",
-    "confidence": 0.504,
+    "confidence": 0.595,
     "base_confidence": 0.65,
     "deadline": "2027-09-05",
     "status": "active",
@@ -249385,7 +249429,7 @@
     "level": "major",
     "title": "AI技术成本上升触发宏观经济波动与金融风险",
     "direction": "toward",
-    "confidence": 0.67,
+    "confidence": 0.646,
     "base_confidence": 0.55,
     "deadline": "2027-09-05",
     "status": "active",
