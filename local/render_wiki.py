@@ -13,6 +13,29 @@ from typing import List, Dict, Any, Set
 from pathlib import Path
 from collections import defaultdict
 
+try:
+    from kb_guard import normalize_keywords, check_links, vault_link_index, guard_page
+except ImportError:                       # 兼容以不同 cwd 运行
+    import sys as _sys
+    _sys.path.insert(0, str(Path(__file__).parent))
+    from kb_guard import normalize_keywords, check_links, vault_link_index, guard_page
+
+
+_LINK_INDEX_CACHE = {"key": None, "idx": None}
+
+
+def _guard(text, page_type, vault_path, refresh=False):
+    """写入前闸门。链接索引按 vault 缓存，避免每页重建（O(n²)）。
+
+    refresh=True 时强制重建索引——用于「本页依赖刚写入的页」的场景
+    （如宏观页引用当日日更页，而日更页是在同一次渲染里刚生成的）。
+    """
+    key = str(vault_path)
+    if refresh or _LINK_INDEX_CACHE.get("key") != key:
+        _LINK_INDEX_CACHE["key"] = key
+        _LINK_INDEX_CACHE["idx"] = vault_link_index(key)
+    return guard_page(text, page_type, index=_LINK_INDEX_CACHE["idx"])
+
 # AI 四维诊断键 → 知识库固定维度页（长句分析汇入页内，不再生成碎片文件）
 _DIM_PAGE = {
     "accumulation_node": "宏观-积累制度与劳动力市场",
@@ -68,6 +91,8 @@ class WikiRenderer:
     
     def _generate_frontmatter(self, title: str, page_type: str, tags: List[str], keywords: List[str], sources: List[str]) -> str:
         now = datetime.now().strftime("%Y-%m-%d")
+        # 关键词过规范化层：长句/重复/超量在这里被挡掉（见 kb_guard.normalize_keywords）
+        keywords = normalize_keywords(keywords)
         fm = {"title": title, "created": now, "updated": now, "type": page_type, "tags": tags, "关键词": keywords, "sources": sources}
         return "---\n" + yaml.dump(fm, allow_unicode=True, sort_keys=False) + "---\n"
     
@@ -87,7 +112,9 @@ class WikiRenderer:
             intel = next((i for i in intel_items if i["id"] == a["intel_id"]), {})
             all_sources.add(intel.get("source_name", ""))
             all_keywords.update(intel.get("keywords_hit", []))
-            all_keywords.update(a.get("macro_diagnosis", {}).values())
+            # 注意：不要把 macro_diagnosis 的值当关键词——那些是 AI 生成的长句
+            # （实测如「毕业生群体面临更激烈竞争，60%企业未完成招聘目标意味着机会分布碎片化」），
+            # 塞进 frontmatter 会让 `关键词` 字段变成句子堆。长句归正文，见下方「核心结构性判断」。
             all_links.update(a.get("knowledge_links", []))
         
         valid_tags = [t for t in all_tags if t in self.valid_tags or len(t) < 20]
@@ -176,6 +203,13 @@ class WikiRenderer:
                 lines.append(f"- {link}")
         
         content = "\n".join(lines)
+        # 写入前过闸门：frontmatter 必填 + 行数 + 链接存在性。
+        # 不合格不抛异常，只告警——单页隔离，不拖垮整轮渲染（AGENTS.md「批处理必须能隔离坏元素」）。
+        _ok, _reasons = _guard(content, "concept", str(self.vault_path))
+        if not _ok:
+            print(f"[WIKI][GUARD] {filepath.name} 未过闸门（仍写入，请复核）：")
+            for _r in _reasons[:5]:
+                print(f"           - {_r}")
         filepath.write_text(content, encoding="utf-8")
         print(f"[WIKI] 概念页生成: {filepath}")
         return str(filepath)
@@ -274,8 +308,19 @@ class WikiRenderer:
             lines.append("")
         
         lines.append("## 相关情报引用")
-        for a in relevant[:10]:
-            lines.append(f"- [[OSINT每日情报-{a.get('intel_id', '')[:8]}]] ({a.get('confidence', 0)}/10)")
+        # 这里原先写死 [[OSINT每日情报-{intel_id[:8]}]]，但日更页实际命名是 osint-YYYYMMDD，
+        # 格式对不上 → 该段永远渲染成悬空链接（知识库体检实测报断链）。
+        # 改为「目标页存在才写 wikilink，否则写纯文本」——宁可缺不可错（AGENTS.md）。
+        # 用新鲜索引：日更页是在同一次渲染里刚写入的，缓存的旧索引里还没有它。
+        _link_idx = vault_link_index(str(self.vault_path))
+        _today_page = f"osint-{datetime.now():%Y%m%d}"
+        _today_ok, _ = check_links(f"[[{_today_page}]]", index=_link_idx)
+        if _today_ok:
+            lines.append(f"- [[{_today_page}]] —— 本页素材来源（{len(relevant)} 条相关情报）")
+        else:
+            # 日更页尚未生成时，逐条列出来源编号，不留悬空链接
+            for a in relevant[:10]:
+                lines.append(f"- OSINT 每日情报 {str(a.get('intel_id', ''))[:8]} ({a.get('confidence', 0)}/10)")
         lines.append("")
         
         lines.append("## 开放问题")
@@ -289,43 +334,56 @@ class WikiRenderer:
         lines.append("")
         
         new_content = "\n".join(lines)
+        _ok, _reasons = _guard(new_content, "concept", str(self.vault_path))
+        if not _ok:
+            print(f"[WIKI][GUARD] {filepath.name} 未过闸门（仍写入，请复核）：")
+            for _r in _reasons[:5]:
+                print(f"           - {_r}")
         filepath.write_text(new_content, encoding="utf-8")
         print(f"[WIKI] 概念页更新: {filepath}")
         return str(filepath)
     
     def update_index(self, new_links: List[str]):
+        """把新概念页登记进 index.md 的 AUTO 区。
+
+        两处修正（2026-09-21）：
+        1. **写入前重读**：原先依赖 __init__ 时缓存的 self.existing_links，但渲染期间
+           kb_linker 可能已改过 index.md（第三方/插件也可能改），用旧缓存回写会丢链接。
+        2. **写 AUTO 区**：index.md 改为「手工区 + AUTO 标记区」结构后，概念页登记应
+           落在 <!-- BEGIN AUTO: concepts --> 与 <!-- END AUTO: concepts --> 之间，
+           不再往「## 概念」标题下硬插（那会破坏自动区边界）。
+        """
         if not self.index_file.exists():
             return
-        
+
         content = self.index_file.read_text(encoding="utf-8")
-        lines = content.split("\n")
-        
-        concept_section = -1
-        for i, line in enumerate(lines):
-            if "## 概念" in line:
-                concept_section = i
-                break
-        
-        if concept_section >= 0:
-            insert_at = concept_section + 1
-            while insert_at < len(lines) and lines[insert_at].strip() and not lines[insert_at].startswith("##"):
-                insert_at += 1
-            
-            for link in new_links:
-                if link not in self.existing_links:
-                    link_line = f"- [[{link}]]"
-                    if link_line not in content:
-                        lines.insert(insert_at, link_line)
-                        insert_at += 1
-                        self.existing_links.add(link)
-            
-            self.index_file.write_text("\n".join(lines), encoding="utf-8")
-            print(f"[WIKI] index.md 更新: 新增 {len(new_links)} 个链接")
-    
+        begin = "<!-- BEGIN AUTO: concepts -->"
+        end = "<!-- END AUTO: concepts -->"
+        if begin not in content or end not in content:
+            # index.md 还没迁移到 AUTO 结构：退化为「追加到文件末尾」，不硬插标题下
+            add = [f"- [[{l}]]" for l in new_links if f"[[{l}]]" not in content]
+            if add:
+                content = content.rstrip() + "\n\n" + "\n".join(add) + "\n"
+                self.index_file.write_text(content, encoding="utf-8")
+                print(f"[WIKI] index.md 追加 {len(add)} 个链接（未启用 AUTO 区）")
+            return
+
+        head, rest = content.split(begin, 1)
+        mid, tail = rest.split(end, 1)
+        existing = set(re.findall(r"\[\[([^\]\|]+)", mid))
+        add = [l for l in new_links if l not in existing]
+        if add:
+            mid = mid.rstrip("\n") + "\n" + "\n".join(f"- [[{l}]]" for l in add) + "\n"
+            self.index_file.write_text(head + begin + mid + end + tail, encoding="utf-8")
+            print(f"[WIKI] index.md 更新: 新增 {len(add)} 个链接")
+        else:
+            print("[WIKI] index.md 无需更新（链接已存在）")
+
     def append_log(self, action: str, details: str):
         now = datetime.now().strftime("%Y-%m-%d %H:%M")
         log_entry = f"\n- {now} | {action} | {details}"
-        with open(self.log_file, "a", encoding="utf-8") as f:
+        # 方法式 API（AGENTS.md：不要用 open(变量)，Mimosa 会按路径穿越拦截）
+        with self.log_file.open("a", encoding="utf-8") as f:
             f.write(log_entry)
         print(f"[WIKI] log.md 记录: {action}")
 
