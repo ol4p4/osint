@@ -165,26 +165,15 @@ def update_hyp_evidence(hyp, intel, match_info):
         "impact": intel.get("impact", "")[:200]
     }
     hyp["evidence_log"].append(entry)
-    
-    # Adjust confidence
-    impact_text = (intel.get("impact", "") + " " + intel.get("cn_summary", "")).lower()
-    direction = hyp.get("direction", "toward")
-    
-    support_w = ["增长", "上升", "加速", "扩大", "增加", "提升", "加强", "突破", "创新高"]
-    contradict_w = ["下降", "减少", "放缓", "收缩", "降低", "减弱", "恶化", "下跌", "暴跌"]
-    
-    supports = sum(1 for w in support_w if w in impact_text)
-    contradicts = sum(1 for w in contradict_w if w in impact_text)
-    
-    old_conf = hyp.get("confidence", 0.5)
-    if supports > contradicts:
-        new_conf = min(0.95, old_conf + 0.01)
-    elif contradicts > supports:
-        new_conf = max(0.05, old_conf - 0.01)
-    else:
-        new_conf = old_conf
-    
-    hyp["confidence"] = round(new_conf, 3)
+
+    # 2026-09-28 移除"涨跌词计数 ±0.01"置信度调整。
+    # 原实现按情报正文里的涨跌词（增长/上升/下跌/暴跌…）增减 confidence，
+    # 对全部 75 个节点生效——包括从未进过 ACH 矩阵的 mega 探针。
+    # 实测后果：`三战在5年内爆发` 先验 0.05 被推到 0.94，而贡献它的证据是
+    # 「大熊猫抵达美国」「国债收益率走高」这类与议题无关的条目——涨跌词
+    # 衡量的是行情语气，不是"这条情报是否支持该假设"，两者无因果。
+    # 置信度现只由两个正经来源写：ACH 贝叶斯后验（ach_matrix.bayesian_update）
+    # 与周循环 AI 裁判（hypothesis_engine.verify_hypothesis）。此处只挂证据。
     return 1
 
 def main():
