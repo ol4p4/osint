@@ -170,6 +170,10 @@ def update_hyp_evidence(hyp, intel, match_info):
         "source": intel.get("source_name", ""),
         "impact": intel.get("impact", "")[:200]
     }
+    # 上卷来源标记（2026-09-29）：该证据是通过子节点匹配镜像到本节点的。
+    # 保留来源信息供下游区分「直接匹配」与「子节点上卷」。
+    if match_info.get("from_child"):
+        entry["from_child"] = match_info["from_child"]
     hyp["evidence_log"].append(entry)
 
     # 2026-09-28 移除"涨跌词计数 ±0.01"置信度调整。
@@ -288,7 +292,45 @@ def main():
         total_updates += updated
         if updated:
             hyp_recorded[hyp_id] = hyp_recorded.get(hyp_id, 0) + 1
-    
+
+    # Pass 3: 证据上卷（2026-09-29）——子节点的证据同时挂到可诊断祖先。
+    #
+    # **动因**：全树 18,178 条证据里 71%（13,004 条）挂在 major 之外的节点上，
+    # 而 ACH 只诊断 major（`ach_daily_batch` 按 level=='major' 筛选）——
+    # 这些挂载消耗了 TF-IDF 算力，却没有任何下游消费。
+    # 典型：`HM102_A`（AI芯片供给瓶颈）挂 1514 条，其父 `HM102` 只诊断自己的 1526 条。
+    #
+    # **为什么上卷而非把子节点升为 major**：子命题是父节点的**验证分解**
+    # （indicators 是可查证的量化检查点），不是独立竞争假设。父子同时在 ACH 里
+    # 会"自己和自己竞争"，违背 ACH 的互斥要求（Heuer）。
+    #
+    # **为什么不在 Pass 1 直接双挂**：cap 是按假设计的，Pass 1 双挂会挤占
+    # 父节点自己的名额。这里在 cap 之后做**镜像**（不计入 cap），
+    # 且带 `from_child` 标记——父节点择优时优先自己的直接证据。
+    ROLLUP_MAX_LEVEL = {"major"}   # 上卷终点：可诊断层级
+    rolled = 0
+    for hyp_id, intel, match in sorted(candidates, key=_sel_key):
+        child = hyp_by_id.get(hyp_id)
+        if not child:
+            continue
+        # 沿 parent 链上溯，找到第一个可诊断祖先
+        seen_anc = set()
+        anc_id = child.get("parent")
+        while anc_id and anc_id not in seen_anc:
+            seen_anc.add(anc_id)
+            anc = hyp_by_id.get(anc_id)
+            if not anc:
+                break
+            if anc.get("level") in ROLLUP_MAX_LEVEL:
+                # 镜像一条证据到祖先（标记来源，供下游区分）
+                mirror = dict(match)
+                mirror["from_child"] = hyp_id
+                mirror["relevance_score"] = min(
+                    float(match.get("relevance_score") or 0) * 0.9, 1.0)
+                rolled += update_hyp_evidence(anc, intel, mirror)
+                break
+            anc_id = anc.get("parent")
+
     HYP_FILE.write_text(json.dumps(hyps, ensure_ascii=False, indent=2), encoding="utf-8")
 
     OUTPUT_FILE.write_text(json.dumps({
@@ -296,6 +338,7 @@ def main():
         "total_intel": len(all_intel),
         "linked_intel": total_links,
         "evidence_updates": total_updates,
+        "rolled_up": rolled,
         "links": link_report[:50]
     }, ensure_ascii=False, indent=2), encoding="utf-8")
     
@@ -303,6 +346,7 @@ def main():
     print(f"Evidence updates: {total_updates}")
     print(f"Match method: tfidf {tfidf_links} / domain 兜底 {domain_links}")
     print(f"[LINK] 证据准入: 候选 {len(candidates)} → 记录 {total_updates} (cap={EVIDENCE_DAILY_CAP}/假设/日)")
+    print(f"[LINK] 证据上卷: {rolled} 条子节点证据镜像到可诊断祖先")
 
 if __name__ == "__main__":
     main()
