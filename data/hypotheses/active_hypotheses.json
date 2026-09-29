@@ -26884,25 +26884,23 @@
     "deadline_source": "ai_proposed",
     "probe_reading": {
       "samples": 200,
-      "mention_count": 60,
-      "mention_ratio": 0.3,
-      "signal_count": 11,
-      "signal_ratio": 0.055,
-      "max_gate": 0.33,
-      "mean_gate": 0.0722,
+      "mention_count": 69,
+      "mention_ratio": 0.345,
+      "signal_count": 8,
+      "signal_ratio": 0.04,
+      "max_gate": 0.25,
+      "mean_gate": 0.0728,
       "strong_signals": [
-        0.33,
         0.25,
         0.25,
         0.23,
-        0.23,
-        0.22,
         0.22,
         0.21,
-        0.21,
+        0.2,
+        0.2,
         0.2
       ],
-      "measured_at": "2026-09-29T15:18:53"
+      "measured_at": "2026-09-29T22:06:10"
     }
   },
   {
@@ -31769,29 +31767,30 @@
     "deadline_source": "ai_proposed",
     "probe_reading": {
       "samples": 200,
-      "mention_count": 96,
-      "mention_ratio": 0.48,
-      "signal_count": 9,
-      "signal_ratio": 0.045,
-      "max_gate": 0.26,
-      "mean_gate": 0.0874,
+      "mention_count": 109,
+      "mention_ratio": 0.545,
+      "signal_count": 16,
+      "signal_ratio": 0.08,
+      "max_gate": 0.35,
+      "mean_gate": 0.097,
       "strong_signals": [
-        0.26,
+        0.35,
+        0.31,
+        0.25,
+        0.24,
         0.24,
         0.23,
-        0.23,
         0.22,
-        0.21,
-        0.21,
-        0.2,
-        0.2
+        0.22,
+        0.22,
+        0.21
       ],
-      "measured_at": "2026-09-29T15:18:53"
+      "measured_at": "2026-09-29T22:06:10"
     }
   },
   {
     "id": "hyp_e2b46e32",
-    "level": "major",
+    "level": "mega",
     "title": "东亚三国现代化进程趋同",
     "direction": "toward",
     "confidence": 0.7,
@@ -35415,7 +35414,22 @@
       "indicators": [],
       "rewritten_at": "2026-09-21T12:57:46"
     },
-    "stale_thresholds": []
+    "stale_thresholds": [],
+    "reclass_note": "2026-09-29 元命题重分类：覆盖多年/多领域的总判断，实测 ACH 诊断 0 条 C/I（JEV 无从判断「这条情报是否改变该元命题的可能性」）。改为与探针同级，走 probe_mega 测情报信号占比，不再进 ACH 矩阵。",
+    "probe_reading": {
+      "samples": 200,
+      "mention_count": 45,
+      "mention_ratio": 0.225,
+      "signal_count": 2,
+      "signal_ratio": 0.01,
+      "max_gate": 0.23,
+      "mean_gate": 0.0646,
+      "strong_signals": [
+        0.23,
+        0.2
+      ],
+      "measured_at": "2026-09-29T22:06:10"
+    }
   },
   {
     "id": "hyp_e2b46e32_sub1",
@@ -86043,7 +86057,7 @@
   },
   {
     "id": "hyp_d26158d3",
-    "level": "major",
+    "level": "mega",
     "title": "中国社保走韩国老路",
     "direction": "toward",
     "confidence": 0.65,
@@ -93217,7 +93231,19 @@
     ],
     "quality_issues": [
       "过期判定年份 2010"
-    ]
+    ],
+    "reclass_note": "2026-09-29 元命题重分类：覆盖多年/多领域的总判断，实测 ACH 诊断 0 条 C/I（JEV 无从判断「这条情报是否改变该元命题的可能性」）。改为与探针同级，走 probe_mega 测情报信号占比，不再进 ACH 矩阵。",
+    "probe_reading": {
+      "samples": 200,
+      "mention_count": 14,
+      "mention_ratio": 0.07,
+      "signal_count": 0,
+      "signal_ratio": 0.0,
+      "max_gate": 0.13,
+      "mean_gate": 0.0451,
+      "strong_signals": [],
+      "measured_at": "2026-09-29T22:06:10"
+    }
   },
   {
     "id": "hyp_d26158d3_sub1",

@@ -308721,22 +308721,6 @@
  ],
  "diagnosis": {},
  "scoring": {
-  "hyp_e2b46e32": {
-   "posterior": 0.7,
-   "support": 0,
-   "refute": 0,
-   "evidence_total": 0,
-   "prior_baseline": 0.7,
-   "reliability": "none"
-  },
-  "hyp_d26158d3": {
-   "posterior": 0.65,
-   "support": 0,
-   "refute": 0,
-   "evidence_total": 0,
-   "prior_baseline": 0.65,
-   "reliability": "none"
-  },
   "HM100": {
    "posterior": 0.05,
    "support": 3,
@@ -308788,16 +308772,6 @@
  },
  "updated": "2026-09-29 08:43",
  "hypotheses": [
-  {
-   "id": "hyp_e2b46e32",
-   "title": "东亚三国现代化进程趋同",
-   "prior": 0.7
-  },
-  {
-   "id": "hyp_d26158d3",
-   "title": "中国社保走韩国老路",
-   "prior": 0.65
-  },
   {
    "id": "HM100",
    "title": "全球能源转型加速导致传统能源需求骤降",
