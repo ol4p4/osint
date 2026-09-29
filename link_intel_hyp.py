@@ -156,6 +156,12 @@ def update_hyp_evidence(hyp, intel, match_info):
         "intel_ids": [intel_id],
         "story_ids": [story_id] if story_id else [],
         "summary": (intel.get("cn_title", "") or intel.get("title", ""))[:100],
+        # 2026-09-28 加 body：此前只存标题[:100]，JEV 判定时看不到正文，
+        # 只能靠字面词做判断——实测「A股军工板块拉升」（gate=0.13, conf=0.93）
+        # 被判成"台海冲突升级"的支持证据，因为它字面含"军工"。
+        # 存 content_preview 让判定层能看到上下文（行情播报/他国事件等）。
+        "body": (intel.get("cn_summary") or intel.get("content_preview")
+                 or intel.get("content") or "")[:400],
         "domains": match_info.get("domains", []),
         "relevance": match_info.get("relevance_score", 0),
         # ACH 诊断准入标记：TF-IDF 命中一律 eligible；DOMAIN 兜底按分数线

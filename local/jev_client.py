@@ -39,6 +39,15 @@ RETRY_BACKOFF = 2.0
 # JEV choice → ACH 判定码
 CODE_MAP = {"consistent": "C", "inconsistent": "I", "neutral": "N"}
 
+# 门控双阈值（2026-09-28 实测校准，学 Selective Prediction 的 reliability+relevance 双层）
+#   GATE_ABS_THRESHOLD：绝对门槛——该证据对这个假设确有推动
+#     实测新措辞下真信号 gate 在 0.26~0.56，噪声上界约 0.19，取 0.15 偏保守
+#   SEL_MIN：相对优势——gate_max / gate_median，衡量证据能否**区分**竞争假设
+#     实测：台海军演 10.2 / 伊拉克石油 8.0（信号） vs 水星半径 1.0（噪声）
+#     取 2.5 作为下界（分布 p50=2.3，p90=7.2，信号集中在 >6）
+GATE_ABS_THRESHOLD = 0.15
+SEL_MIN = 2.5
+
 
 class JevError(Exception):
     pass
@@ -160,65 +169,135 @@ class JevClient:
         return qs
 
     @staticmethod
+    def _hyp_def(h):
+        """把节点自己的**情景定义**拼成问题片段（2026-09-28）。
+
+        **只取 rationale，不取 falsification_criteria**——后者含具体数字指标
+        （"到2027年…频率较2026年无显著增长"），对方向判断是噪声，实测会让
+        一致率减半（官方 jaggedness 第 5 条「无关细节拉低精度」，见文件头）。
+
+        但 rationale 必须给：`probe_mega.py` 首版只写议题名，JEV 把霍尔木兹
+        油价、美债收益率全算成危机信号（120 条里 60 条命中）；把情景定义写进
+        问题后 signal 档从 50% 收紧到 7.67%。光给名字必然过宽。
+        """
+        rationale = str(h.get("rationale") or "").strip()
+        return ("该情景的定义是：" + rationale[:180]) if rationale else ""
+
+    @staticmethod
     def build_gate_questions(majors):
         """第一段：议题相关性门控（Noul，每假设一问）。
 
-        问「是否直接涉及该假设的议题」而非「预期是否一致」——实测前者能干净地
-        把无关内容（铁路/原油/股市）判到 0.01~0.04，后者会误判为"相斥"。
+        2026-09-28 重写。**旧版失效原因**：问「是否直接涉及该假设的议题」，
+        JEV 把"议题"理解为**主题域**（台海/军事/地缘），于是「A股军工板块拉升」
+        「美原油价格飙升」「日本防务开支翻倍」全部过线（gate 0.08~0.15），
+        再被判成支持证据——实测 HM001 的 51 条 C/I 里 gate>=0.5 的仅 6 条。
+
+        新版问「是否**改变**该情景发生的可能性」——衡量的是**因果贡献**，
+        而非主题相关。市场行情是他国行为反映的是既有局势，不改变概率。
         """
         return {"g_" + h["id"]: {
             "type": "noul",
-            "instructions": "这条证据的内容是否直接涉及「" + h.get("title", "") + "」这一议题？",
+            "instructions": (
+                "这条情报是否直接改变了「" + h.get("title", "") + "」这一情景"
+                "发生的可能性？" + JevClient._hyp_def(h) + " "
+                "若情报只是反映相关主题（如股市行情、商品价格波动、第三方国家"
+                "的行为、其他地区的事件），并未改变上述定义所描述的状态，"
+                "应给低概率。"
+            ),
         } for h in majors}
 
     @staticmethod
     def build_direction_questions(majors_subset):
-        """第二段：仅对通过门控的假设判方向（Choice）"""
+        """第二段：仅对通过门控的假设判方向（Choice）。
+
+        2026-09-28 重写。**旧版失效原因**：问「与假设的预期是否一致」，
+        把"是否支持该假设成立"字面化——`A股军工板块拉升` 因"军工活跃"
+        与"冲突升级"字面同向而被判 consistent（conf 0.93），
+        但市场反应并不推动冲突升级。
+
+        新版问「是否**实质推动**该情景向发生靠近」，并带上节点自己的定义，
+        标准是**因果方向**而非语义同向。
+        """
         qs = {}
         for h in majors_subset:
             qs["d_" + h["id"]] = {
                 "type": "choice",
-                "instructions": "这条证据与假设「" + h.get("title", "") + "」的预期是否一致？",
+                "instructions": (
+                    "这条情报是否实质推动了「" + h.get("title", "") + "」"
+                    "这一情景向发生靠近？" + JevClient._hyp_def(h) + " "
+                    "判断标准：只有直接改变上述定义所描述状态的情报才算支持或"
+                    "反对；仅与议题主题相关（如市场行情、他国行为、其他地区冲突）"
+                    "但未推动该定义的，应判 neutral。"
+                ),
                 "criteria": {
-                    "consistent": "证据支持该假设的预期",
-                    "inconsistent": "证据与该假设的预期相斥",
-                    "neutral": "证据与该假设无关",
+                    "consistent": "该情报实质推动了这一情景向发生靠近",
+                    "inconsistent": "该情报实质降低了这一情景发生的可能性",
+                    "neutral": "该情报未实质改变这一情景的可能性",
                 },
             }
         return qs
 
-    def gate_and_diagnose(self, evidence_text, majors, gate_threshold=0.08, timeout=120):
+    def gate_and_diagnose(self, evidence_text, majors, gate_threshold=None,
+                          selectivity_threshold=None, timeout=120):
         """两段式诊断（推荐入口）：先门控议题相关性，再对相关假设判方向。
 
-        第一段：Noul 问「是否直接涉及该假设的议题」→ 概率 < gate_threshold 直接判 N
+        第一段：Noul 问「是否改变该情景发生的可能性」→ 判 N 或进入第二段
         第二段：仅对通过门控的假设问 Choice 方向
 
-        收益（实测）：噪声被干净滤除，避免"无关内容被误判为相斥"导致的
-        后验塌缩；且第二段问题数大减（通常 8 → 1~3），成本与延迟同步下降。
+        **门控判据的演进**（2026-09-28 重写）：
 
-        **阈值 0.08 的实测依据**（台海假设，2026-09-21）：
-            噪声样本 gate：铁路 0.01 / 原油 0.02 / A股 0.02 / 日经 0.03
-            真信号 gate：核潜艇 0.14 / 防务开支翻倍 0.14 / 台海巡艇 0.18 / 实弹演习 0.86
-        噪声上界 0.04 与真信号下界 0.14 之间有 3.5 倍间隔，取中点偏下 0.08 稳妥。
-        调参入口即本参数；已落盘的 gate 值可用于重算（无需重跑 AI）。
+        旧版（单阈值 gate >= 0.08）实测失效：HM001「台海冲突升级」的 51 条
+        C/I 里 gate>=0.5 仅 6 条，其余是「A股军工板块拉升」（gate 0.13,
+        conf 0.93）这类字面含"军工/地缘"但语义无关的条目。根因是旧措辞问
+        「是否涉及该议题」——JEV 把"议题"理解为**主题域**而非**概率变化**。
 
-        返回 {hyp_id: {"code","conf","probs","gate"}}；gate 为第一段相关性概率。
+        新版双判据（学 Selective Prediction 的 reliability + relevance 双层，
+        见 Srinivasan et al. 2024 的 ReCoVERR：相关性定义为「证据存在与否对
+        假设概率的影响差」，即因果贡献而非语义相似）：
+
+          1. **绝对门槛** gate >= GATE_ABS_THRESHOLD（0.15）
+             —— 该证据对这个假设确有推动
+          2. **相对优势** selectivity = gate_max / gate_median >= SEL_MIN（2.5）
+             —— 该证据能**区分**竞争假设（Heuer 的 diagnosticity）
+
+        为什么加相对判据：实测 selectivity 能把信号与噪声干净分开——
+        台海军演 10.2 / 伊拉克石油 8.0 / 台海军售 7.8（真信号）；
+        水星半径 1.0 / 富士山滑坡 1.0 / 金鱼饼干 1.0（噪声）。
+        ACH 第一性原理要求证据能区分竞争假设，只看绝对值的证据会同时"支持"多个假设。
+
+        参数可调，已落盘 gate 值可重算（无需重跑 AI）。
+        返回 {hyp_id: {"code","conf","probs","gate","selectivity"}}。
         """
+        import statistics as _st
+
+        abs_thr = GATE_ABS_THRESHOLD if gate_threshold is None else gate_threshold
+        sel_thr = SEL_MIN if selectivity_threshold is None else selectivity_threshold
+
         d1 = self.systemone(evidence_text, self.build_gate_questions(majors), timeout=timeout)
         a1 = d1.get("answers") or {}
-        gates, passed = {}, []
+        gates = {}
         for h in majors:
             g = a1.get("g_" + h["id"]) or {}
-            p = float(g.get("noul", 0.0))
-            gates[h["id"]] = round(p, 3)
-            if p >= gate_threshold:
-                passed.append(h)
+            gates[h["id"]] = round(float(g.get("noul", 0.0)), 3)
+
+        vals = list(gates.values())
+        gmax = max(vals) if vals else 0.0
+        gmed = _st.median(vals) if vals else 0.0
+        selectivity = round(gmax / max(gmed, 0.01), 2)
+        # 相对优势不足 → 该证据无区分力，全部判 N（不进入第二段）。
+        # 例外：只有 1 个假设时 gate_max/gate_median 恒为 1，相对判据无意义
+        # （实测踩坑：单假设测试时台海军演被误杀），此时退化为只看绝对门槛。
+        discriminative = (len(majors) <= 1) or (selectivity >= sel_thr)
+
+        passed = [h for h in majors
+                  if discriminative and gates[h["id"]] >= abs_thr]
 
         out = {}
         for h in majors:
-            if h["id"] not in [x["id"] for x in passed]:
+            if h not in passed:
                 out[h["id"]] = {"code": "N", "conf": round(1.0 - gates[h["id"]], 3),
-                                "probs": {}, "gate": gates[h["id"]]}
+                                "probs": {}, "gate": gates[h["id"]],
+                                "selectivity": selectivity}
 
         if passed:
             d2 = self.systemone(evidence_text, self.build_direction_questions(passed), timeout=timeout)
@@ -231,6 +310,7 @@ class JevClient:
                     "code": CODE_MAP.get(choice, "N"),
                     "conf": round(float(probs.get(choice, 0.0)), 3),
                     "probs": probs, "gate": gates[h["id"]],
+                    "selectivity": selectivity,
                 }
         return out
 

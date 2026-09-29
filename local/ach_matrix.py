@@ -40,10 +40,43 @@ LR_C_STRENGTH = 1.5   # C 的最大似然比：conf=1 → lr=1.5
 LR_I_STRENGTH = 0.5   # I 的最小似然比：conf=1 → lr=0.5
 LR_CONF_FLOOR = 0.0   # conf 下限（模型可表达"几乎不相关"）
 LR_CONF_CAP = 1.0     # conf 上限（不放大到 2.0——过度自信是历史教训，见 POSTERIOR_CAP）
+GATE_WEAK_THRESHOLD = 0.20   # gate 低于此值视为弱相关，LR 强度按比例衰减（见 gate_weight）
 
 
-def derive_lr(code, conf, strength_c=LR_C_STRENGTH, strength_i=LR_I_STRENGTH):
-    """由判定码 + 把握度推导似然比（确定性函数，可复算可调参）。
+def gate_weight(gate, floor=GATE_WEAK_THRESHOLD):
+    """议题相关性（gate）→ LR 强度权重 ∈ [0,1]。
+
+    2026-09-28 新增。**动因**：全量回填 3284 条存量证据后，矩阵 C/I 判定
+    从 193 条涨到 778 条，但 gate 分布暴露问题——
+      gate 0.08-0.2（弱相关）：450 条，占 57.8%
+      gate 0.2-0.4          ：266 条，占 34.2%
+      gate 0.4+             ： 62 条，占  8.0%
+    而 `derive_lr()` 此前**完全不看 gate**——一条 gate=0.09 的弱相关判定
+    与 gate=0.86 的实弹演习信号同等撬动后验。实测后果：HM102（AI算力短缺）
+    被 68 条 I 判定打到地板 0.050，抽检发现其中多条是「需求旺盛」类情报
+    （gate 0.08~0.16），语义上既不支持也不反对该假设，却被判成 I。
+
+    权重曲线（线性衰减）：
+      gate >= 0.20 → 1.0（全强度）
+      gate = 0.14  → 0.7
+      gate <= 0.08 → 0.4（门控阈值处仍有残余权重，不完全归零）
+
+    为什么用线性而非阶跃：保留弱相关证据的**方向信息**（轻微支持/轻微反对），
+    只是不让它撬动太大——符合"单条证据不应过度撬动后验"的既有哲学。
+    为什么 floor 取 0.20：jev_client 实测噪声上界 0.04 / 真信号下界 0.14，
+    0.08 是门控阈值；0.20 是"实质信号"档（probe_mega 用同值）。
+    """
+    try:
+        g = float(gate)
+    except (TypeError, ValueError):
+        return 1.0   # 无 gate（旧口径判定）按全强度，保持历史可比
+    if g >= floor:
+        return 1.0
+    return round(max(0.4, g / floor), 3) if floor > 0 else 1.0
+
+
+def derive_lr(code, conf, gate=None, strength_c=LR_C_STRENGTH, strength_i=LR_I_STRENGTH):
+    """由判定码 + 把握度 + 议题相关性推导似然比（确定性函数，可复算可调参）。
 
     code=C → LR ∈ [1.0, strength_c]，conf 越大越接近上限
     code=I → LR ∈ [strength_i, 1.0]，conf 越大越接近下限
@@ -52,6 +85,9 @@ def derive_lr(code, conf, strength_c=LR_C_STRENGTH, strength_i=LR_I_STRENGTH):
     把握度低时自动向 1.0（中性）收缩，避免"低把握 + 极端 LR"污染后验。
     conf 无法解析时按 0.5 处理（调用方 record() 对"字段缺失"另有更保守的
     回退：走旧格式读 lr，都没有则 1.0，即不更新后验）。
+
+    2026-09-28 加 gate 维度：LR 强度再乘 gate_weight(gate)。
+    gate=None（旧口径）不衰减，保持历史可比；存量 gate 已落盘，可重算无需重跑 AI。
     """
     if code == "N":
         return 1.0
@@ -60,10 +96,11 @@ def derive_lr(code, conf, strength_c=LR_C_STRENGTH, strength_i=LR_I_STRENGTH):
     except (TypeError, ValueError):
         c = 0.5   # 缺省：中等把握
     c = max(LR_CONF_FLOOR, min(LR_CONF_CAP, c))
+    w = gate_weight(gate)
     if code == "C":
-        return round(1.0 + c * (strength_c - 1.0), 3)
+        return round(1.0 + c * (strength_c - 1.0) * w, 3)
     if code == "I":
-        return round(1.0 - c * (1.0 - strength_i), 3)
+        return round(1.0 - c * (1.0 - strength_i) * w, 3)
     return 1.0
 
 
@@ -202,14 +239,23 @@ class ACHMatrix:
         「铁路客运创新高」「原油跳水」「A股高开」这类与议题无关的内容判成
         inconsistent（字面理解为"不支持该假设"），噪声被大量吸入导致后验塌缩。
         改为两段式后，门控先滤掉无关内容（实测噪声相关性 0.01~0.04）。
+
+        2026-09-28 加正文：此前 state 只有 summary（标题[:100]，平均 47 字符），
+        JEV 无从区分「A股军工板块拉升」与「解放军台海演习」——两条都含"军工/
+        台海"字面，前者是市场反应后者是军事行动。现拼上 body（content_preview
+        等正文片段，最长 400 字符），让判定层能看到上下文。
         """
         ev = evidence_entry["ev"]
-        state = "证据（" + str(ev.get("date", "")) + "）：" + str(ev.get("summary", ""))[:400]
+        summary = str(ev.get("summary", ""))
+        body = str(ev.get("body", "") or "")
+        text = summary + ("\n" + body if body and body not in summary else "")
+        state = "证据（" + str(ev.get("date", "")) + "）：" + text[:700]
         got = jev.gate_and_diagnose(state, self.majors)
         if not got:
             raise ValueError("JEV 未返回任何判定")
         return [{"hyp_id": hid, "code": v["code"], "conf": v["conf"], "note": "",
-                 "gate": v.get("gate")} for hid, v in got.items()]
+                 "gate": v.get("gate"), "selectivity": v.get("selectivity")}
+                for hid, v in got.items()]
 
     def _diagnose_llm(self, evidence_entry, analyzer):
         """通用大模型路径（mimo）：索取 code + conf + note，JSON 解析容错"""
@@ -280,7 +326,8 @@ class ACHMatrix:
                         conf = max(LR_CONF_FLOOR, min(LR_CONF_CAP, float(conf)))
                     except (TypeError, ValueError):
                         conf = 0.5
-                    lr = derive_lr(code, conf)
+                    # 2026-09-28：带 gate 推导——弱相关判定按比例降权（见 gate_weight）
+                    lr = derive_lr(code, conf, gate=d.get("gate"))
                 else:
                     # 旧格式回退：模型自报 lr
                     conf = None
@@ -295,6 +342,13 @@ class ACHMatrix:
                 if d.get("gate") is not None:
                     try:
                         entry["gate"] = round(float(d["gate"]), 3)
+                    except (TypeError, ValueError):
+                        pass
+                # 证据区分度 gate_max/gate_median（2026-09-28）——衡量该证据
+                # 能否区分竞争假设；留痕供调 SEL_MIN（无需重跑 AI）
+                if d.get("selectivity") is not None:
+                    try:
+                        entry["selectivity"] = round(float(d["selectivity"]), 2)
                     except (TypeError, ValueError):
                         pass
                 row["diagnosis"][d["hyp_id"]] = entry
