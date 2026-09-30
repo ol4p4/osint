@@ -1,5 +1,18 @@
 # -*- coding: utf-8 -*-
-r"""simulate_matcher_union.py - 匹配策略对比：fallback vs union（2026-09-30，只读）
+r"""simulate_matcher_union.py - [已废弃] 首版 union 模拟（2026-09-30，结论有缺陷）
+
+⚠️ **本脚本的结论是错的，勿引用**。它把同一 (情报,假设) 对当成**两条独立候选**
+（tfidf 一条、domain 一条）参与排序，于是"union"看起来比 fallback 多出大量候选
+——但真实实现应按 hyp_id **合并成一条**。
+
+**请用 `tools/simulate_union_merge.py`**（忠实 merge 语义，同时命中保留 tfidf
+方法以保住 ach_eligible 资格）。用忠实语义重测的结论：union 仅 **+0.5pp** 召回
+（+1 真信号 / +6 噪声），**不值得改**。
+
+保留本文件仅作为"模拟语义必须与生产一致"这一教训的实物证据（见 AGENTS.md）。
+
+---
+（以下为原文，结论已作废）
 
 **问题**：`link_intel_hyp` 当前是 **fallback** 结构——TF-IDF 有命中（>=0.12）就
 **完全不看** DOMAIN。但实测（tools/calibrate_tfidf_threshold.py）：
@@ -9,8 +22,7 @@ r"""simulate_matcher_union.py - 匹配策略对比：fallback vs union（2026-09
 
     且 DOMAIN 对 18.2% 的真信号完全无分（这些只能靠 TF-IDF 捞）
 
-即两者**互补**：DOMAIN 强但覆盖不全，TF-IDF 弱但覆盖面广。fallback 结构让
-TF-IDF 的弱命中**屏蔽**掉 DOMAIN 的强命中，是结构性浪费。
+即两者**互补**：DOMAIN 强但覆盖不全，TF-IDF 弱但覆盖面广。
 
 **本工具**对比四种策略在同一标注集（JEV gate 作真值）上的召回/精确：
   A. 现状：TF-IDF@0.12 否则 DOMAIN@0.34

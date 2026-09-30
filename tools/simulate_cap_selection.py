@@ -149,18 +149,22 @@ def main():
 
     # ---- 构造候选（按配置）----
     def build_candidates(tfidf_thr, union):
-        """返回 [(hyp_id, i, method, score)]"""
+        """返回 [(hyp_id, i, method, score)]
+
+        ⚠️ union 分支必须**按 hyp_id 合并**（同时命中保留 tfidf 方法）——
+        否则同一 (情报,假设) 对会产生两条候选，排序时互相竞争，
+        测的是不存在的系统（首版踩坑，见 AGENTS.md「模拟必须与生产语义一致」）。
+        """
         out = []
         for i in used_ids:
             tf = {h["id"]: cosine(ivs[i], hvs[h["id"]]) for h in majors}
             tf_hits = {hid for hid, s in tf.items() if s >= tfidf_thr}
-            dom_hits = {hid for hid, s in dom_of.items() if hid and False}  # placeholder
             dom_hits = {h["id"] for h in majors
                         if dom_of.get((i, h["id"]), 0.0) >= DOMAIN_MIN}
             if union:
                 for hid in tf_hits:
                     out.append((hid, i, "tfidf", tf[hid]))
-                for hid in dom_hits:
+                for hid in dom_hits - tf_hits:   # 已命中 tfidf 的不重复挂
                     out.append((hid, i, "domain", dom_of.get((i, hid), 0.0)))
             else:
                 if tf_hits:
