@@ -82,43 +82,67 @@ def match_intel_tfidf(intel_vec, hyp_vecs, hyps, top_k=TFIDF_TOP_K, min_sim=TFID
             for sim, hyp in sims[:top_k]]
 
 
-def match_intel_to_hyp(intel, hyps, min_score=0.0):
+def _domain_hit_weight(text, keywords, kw_idf):
+    """域内命中强度：按关键词 IDF 加权（2026-09-29 新增）。
+
+    **问题**：旧版域匹配是"命中任一关键词即整域计入"，分数 = |交集|/|并集|。
+    实测 `HM101_A_s2`（加拿大报复性关税涉及农产品）1197 条证据里 806 条
+    relevance=1.0——因为"农产品"这个词把所有农产品期货日报、无关公告都拉进来。
+    更泛的是 `AI`（命中 13.7% 语料）、`投资`（8.9%）、`美国`（8.0%）。
+
+    **修法**：命中多个词比命中一个词强；命中专指词比命中泛词强。
+    权重用 IDF：`w = log(N / (1 + df))`，df 是该词在全语料的文档频率。
+    返回 [0,1] 归一化强度（域内最高权重词为 1.0）。
+    """
+    hits = [kw_idf.get(kw.lower(), 1.0) for kw in keywords if kw.lower() in text]
+    if not hits:
+        return 0.0, 0
+    mx = max(kw_idf.values()) if kw_idf else 1.0
+    # 多词命中累加（对数压缩，防"堆词"刷分），再按全局最高权重归一
+    import math as _m
+    strength = _m.log(1 + sum(hits)) / _m.log(1 + mx * 3)
+    return min(strength, 1.0), len(hits)
+
+
+def match_intel_to_hyp(intel, hyps, min_score=0.0, kw_idf=None):
     """Match intel to hypotheses using domain-level fuzzy matching
-    min_score: 域重叠 Jaccard 下限（0=旧行为；收紧准入时传 DOMAIN_MIN_SCORE）"""
+    min_score: 域重叠 Jaccard 下限（0=旧行为；收紧准入时传 DOMAIN_MIN_SCORE）
+    kw_idf: 关键词 IDF 权重表（None 时退化为旧行为，保持兼容）"""
     intel_text = (intel.get("cn_title", "") + " " + intel.get("cn_summary", "") + " " + intel.get("title", "")).lower()
-    
-    # Find which domains the intel belongs to
-    intel_domains = set()
+    _idf = kw_idf or {}
+
+    # Find which domains the intel belongs to（带命中强度）
+    intel_domains = {}
     for domain, keywords in DOMAIN_MAP.items():
-        for kw in keywords:
-            if kw.lower() in intel_text:
-                intel_domains.add(domain)
-                break
-    
+        w, n = _domain_hit_weight(intel_text, keywords, _idf)
+        if n:
+            intel_domains[domain] = w
+
     if not intel_domains:
         return []
-    
+
     matches = []
     for hyp in hyps:
-        hyp_text = (hyp.get("title", "") + " " + hyp.get("rationale", "")).lower()
-        
+        hyp_text = (hyp.get("title", "") + " " + (hyp.get("rationale") or "")).lower()
+
         # Find which domains the hypothesis belongs to
-        hyp_domains = set()
+        hyp_domains = {}
         for domain, keywords in DOMAIN_MAP.items():
-            for kw in keywords:
-                if kw.lower() in hyp_text:
-                    hyp_domains.add(domain)
-                    break
-        
-        # Score based on domain overlap
-        domain_overlap = intel_domains & hyp_domains
-        if domain_overlap:
-            score = len(domain_overlap) / max(len(intel_domains | hyp_domains), 1)
+            w, n = _domain_hit_weight(hyp_text, keywords, _idf)
+            if n:
+                hyp_domains[domain] = w
+
+        # Score: 交集域的平均强度 × 覆盖率（2026-09-29 由纯 Jaccard 改为强度加权）
+        overlap = set(intel_domains) & set(hyp_domains)
+        if overlap:
+            strength = sum(min(intel_domains[d], hyp_domains[d]) for d in overlap) / len(overlap)
+            coverage = len(overlap) / max(len(set(intel_domains) | set(hyp_domains)), 1)
+            score = strength * (0.5 + 0.5 * coverage)
             if score >= min_score:
                 matches.append({
                     "hyp_id": hyp["id"],
                     "hyp_title": hyp["title"],
-                    "domains": list(domain_overlap),
+                    "domains": list(overlap),
                     "relevance_score": round(score, 3)
                 })
     
@@ -233,6 +257,35 @@ def main():
         except Exception as e:
             print(f"[TFIDF] 向量构建失败, 全部走 DOMAIN_MAP 兜底: {e}")
 
+    # 关键词 IDF 表（2026-09-29）：DOMAIN 兜底从"命中即满分"改为 IDF 加权。
+    # 用全语料算文档频率——`AI`（命中 13.7%）`投资`（8.9%）`美国`（8.0%）
+    # 这类泛词权重低，`台积电``霍尔木兹` 这类专指词权重高。
+    #
+    # ⚠️ 实测踩坑（2026-09-30）：公式 log(N/(1+df)) 在 df=0 时给出 log(N)≈9，
+    # 但 df=0 意味着该词在本批语料里**从未出现**（如"台积电"当天无相关新闻）——
+    # 给最高权重是错的，会让一个没出现的词主导匹配强度。
+    # 修法：df=0 的词取 df=1 的值（视为极稀有但可命中），避免极端值。
+    kw_idf = {}
+    if cs:
+        try:
+            import math as _m
+            n_docs = len(all_intel) or 1
+            all_kws = {kw.lower() for kws in DOMAIN_MAP.values() for kw in kws}
+            df = {kw: 0 for kw in all_kws}
+            for it in all_intel:
+                txt = cs._item_text(it).lower()
+                for kw in all_kws:
+                    if kw in txt:
+                        df[kw] += 1
+            kw_idf = {kw: _m.log(n_docs / (1.0 + max(c, 1))) for kw, c in df.items()}
+            _zero = sum(1 for c in df.values() if c == 0)
+            print(f"[DOMAIN] 关键词 IDF 表就绪: {len(kw_idf)} 词"
+                  f"（泛词 AI={kw_idf.get('ai', 0):.2f} 投资={kw_idf.get('投资', 0):.2f}"
+                  f" / 专指 芯片={kw_idf.get('芯片', 0):.2f}；df=0 的 {_zero} 词按 df=1 处理）")
+        except Exception as e:
+            print(f"[DOMAIN] IDF 表构建失败, 退化为旧行为: {e}")
+            kw_idf = {}
+
     total_links = 0
     total_updates = 0
     tfidf_links = domain_links = 0
@@ -245,7 +298,8 @@ def main():
         if tfidf_ready:
             matches = match_intel_tfidf(intel_vecs[idx], hyp_vecs, hyps)
         if not matches:
-            matches = match_intel_to_hyp(intel, hyps, min_score=DOMAIN_MIN_SCORE)
+            matches = match_intel_to_hyp(intel, hyps, min_score=DOMAIN_MIN_SCORE,
+                                         kw_idf=kw_idf)
         if not matches:
             continue
         total_links += 1
