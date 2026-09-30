@@ -40,7 +40,15 @@ LR_C_STRENGTH = 1.5   # C 的最大似然比：conf=1 → lr=1.5
 LR_I_STRENGTH = 0.5   # I 的最小似然比：conf=1 → lr=0.5
 LR_CONF_FLOOR = 0.0   # conf 下限（模型可表达"几乎不相关"）
 LR_CONF_CAP = 1.0     # conf 上限（不放大到 2.0——过度自信是历史教训，见 POSTERIOR_CAP）
-GATE_WEAK_THRESHOLD = 0.20   # gate 低于此值视为弱相关，LR 强度按比例衰减（见 gate_weight）
+# 弱相关证据的降权起点（2026-09-30 由 0.20 提到 0.35）。
+# **依据**：全量重判后 186 条 C/I 判定里 60%（111 条）来自 gate < 0.3 的弱相关证据，
+# 而 gate_weight(floor=0.20) 只把它们降到 0.4~1.0 倍——降权不够狠，弱证据累积
+# 主导了后验（HM003 被压到 0.516，其中多数是 gate 0.15~0.3 的判定）。
+# 提到 0.35 后：HM003 0.516→0.825、HM001 0.108→0.206、HM101 0.773→0.852；
+# HM100/HM102 仍贴地板 0.05——但那是**真实的强证据结果**（IEA 数据显示煤炭需求
+# 创纪录、微软在扩产），12/57 与 5/49 条强 I 判定足以支撑，不是噪声累积。
+# 模拟工具：tools/simulate_gate_weight.py（可对比多个阈值，只读不写盘）。
+GATE_WEAK_THRESHOLD = 0.35
 
 
 def gate_weight(gate, floor=GATE_WEAK_THRESHOLD):
