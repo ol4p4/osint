@@ -324,8 +324,18 @@ def main():
     # Pass 2: 每假设每日 cap 择优记录（2026-09-12 证据准入收紧）。
     # 排序：TF-IDF 命中优先（语义匹配）→ DOMAIN 分数降序 → 情报关键词密度(base_score)降序。
     # update_hyp_evidence 内部按 intel_id/story_id 幂等去重，重复条目不计入 cap。
+    #
+    # **cap 必须按"已存在的今日条目"计数，不能只数本轮新增（2026-09-30 修）**：
+    # 原实现 `hyp_recorded` 是**本轮局部**计数器，每小时 refresh 各跑一轮 →
+    # 每轮都能各加 6 条 → 实测 HM100 单日直接证据 9 条、HM101 10 条，全超 cap。
+    # 这与 Pass 3 上卷失控是同一根因的两面：**"每日上限"必须跨轮次累计**。
     hyp_by_id = {h["id"]: h for h in hyps}
-    hyp_recorded = {}
+    _today = datetime.now().strftime("%Y-%m-%d")
+    hyp_recorded = {
+        h["id"]: sum(1 for e in (h.get("evidence_log") or [])
+                     if str(e.get("date")) == _today and not e.get("from_child"))
+        for h in hyps
+    }
 
     def _sel_key(c):
         hyp_id, intel, match = c
@@ -359,9 +369,29 @@ def main():
     # 会"自己和自己竞争"，违背 ACH 的互斥要求（Heuer）。
     #
     # **为什么不在 Pass 1 直接双挂**：cap 是按假设计的，Pass 1 双挂会挤占
-    # 父节点自己的名额。这里在 cap 之后做**镜像**（不计入 cap），
-    # 且带 `from_child` 标记——父节点择优时优先自己的直接证据。
+    # 父节点自己的名额。这里在 cap 之后做**镜像**，且带 `from_child` 标记——
+    # 父节点择优时优先自己的直接证据。
+    #
+    # **上卷必须有每日上限（2026-09-30 补）**：上卷本身有效（实测上卷证据的
+    # 信号率 11.8%，与直接证据 13.1% 几乎持平），但不限量时量会失控——Pass 3
+    # 遍历的是**全量 candidates**，每个子节点的每条匹配都镜像到祖先。实测
+    # 9-29 单日给 HM101 灌 481 条（350 条来自 HM101_A_s2 一个子节点），
+    # JEV 日消耗从 5 万 token 涨到 798 万（100 倍）——按 $0.042/Mtok 算，
+    # 用户的 $5 额度只够 13 天。**"能挂上"不等于"该挂上"**。
+    #
+    # cap 取 4 的依据：6 major ×（直接 6 + 上卷 4）= 60/天 = `ach_daily_batch`
+    # 的 BATCH 容量（证据量必须与诊断吞吐匹配，多出的只会积压成矩阵膨胀）。
+    # 上卷低于直接是刻意的——直接证据匹配的是 major 自己，上卷隔了一层子节点，
+    # 优先级应当更低（与 Pass 2 排序"直接优先"的取向一致）。
     ROLLUP_MAX_LEVEL = {"major"}   # 上卷终点：可诊断层级
+    ROLLUP_DAILY_CAP = 4           # 每祖先每日上卷上限（跨多次运行幂等：按已存在的今日上卷条目计数）
+    today_str = datetime.now().strftime("%Y-%m-%d")
+    rolled_today = {}
+    for _h in hyps:
+        if _h.get("level") in ROLLUP_MAX_LEVEL:
+            rolled_today[_h["id"]] = sum(
+                1 for e in (_h.get("evidence_log") or [])
+                if e.get("from_child") and str(e.get("date")) == today_str)
     rolled = 0
     for hyp_id, intel, match in sorted(candidates, key=_sel_key):
         child = hyp_by_id.get(hyp_id)
@@ -376,12 +406,17 @@ def main():
             if not anc:
                 break
             if anc.get("level") in ROLLUP_MAX_LEVEL:
+                if rolled_today.get(anc["id"], 0) >= ROLLUP_DAILY_CAP:
+                    break
                 # 镜像一条证据到祖先（标记来源，供下游区分）
                 mirror = dict(match)
                 mirror["from_child"] = hyp_id
                 mirror["relevance_score"] = min(
                     float(match.get("relevance_score") or 0) * 0.9, 1.0)
-                rolled += update_hyp_evidence(anc, intel, mirror)
+                _n = update_hyp_evidence(anc, intel, mirror)
+                rolled += _n
+                if _n:
+                    rolled_today[anc["id"]] = rolled_today.get(anc["id"], 0) + 1
                 break
             anc_id = anc.get("parent")
 
@@ -400,7 +435,7 @@ def main():
     print(f"Evidence updates: {total_updates}")
     print(f"Match method: tfidf {tfidf_links} / domain 兜底 {domain_links}")
     print(f"[LINK] 证据准入: 候选 {len(candidates)} → 记录 {total_updates} (cap={EVIDENCE_DAILY_CAP}/假设/日)")
-    print(f"[LINK] 证据上卷: {rolled} 条子节点证据镜像到可诊断祖先")
+    print(f"[LINK] 证据上卷: {rolled} 条子节点证据镜像到可诊断祖先 (cap={ROLLUP_DAILY_CAP}/假设/日)")
 
 if __name__ == "__main__":
     main()

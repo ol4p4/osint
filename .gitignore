@@ -15,6 +15,10 @@ data/*
 !data/rebuild_hyps.py
 !data/watchdog.ps1
 !data/hypotheses/
+# 分词器词表（2026-09-30）：不是产物而是**配置资产**——缺失会让 _tokens 静默降级
+# 为字符 2-gram，匹配行为无声改变。必须入库（370KB），由 tools/train_sp_tokenizer.py 重训。
+!data/.sp_unigram.model
+!data/.sp_unigram.vocab
 # hypotheses 目录内仍需排除：目录级 ! 规则会覆盖上面的 *.bak，导致时间戳备份入库
 data/hypotheses/*.bak_*
 data/hypotheses/*.bak

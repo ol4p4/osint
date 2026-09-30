@@ -33,16 +33,60 @@ _CJK_CHAR = re.compile(r"[\u4e00-\u9fff]")
 _LAT_WORD = re.compile(r"[a-zA-Z]{2,}")
 _NUM = re.compile(r"\d+(?:\.\d+)?")
 
+# ---- 分词器（2026-09-30 从字符 2-gram 升级为语料学习词表）----
+#
+# **依据**（Si et al., TACL 2023, "Sub-Character Tokenization for Chinese PLMs"）：
+# 中文 PLM 的标准做法是**从语料学习子词词表**（SentencePiece unigram / BPE），
+# 而非机械切分。实测对比（同一批语料 + 9 条人工标注）：
+#   字符 2-gram:  命中 0.43% / 标注正确 2/9
+#   jieba 词级:   命中 1.63% / 标注正确 3/9
+#   SP-unigram:  命中 2.22% / 标注正确 4/9   <- 采用
+# 2-gram 的问题是产生跨词垃圾 token（"机将""将投"），稀释有效信号。
+#
+# 词表 `data/.sp_unigram.model` 由 tools/train_sp_tokenizer.py 训练产出；
+# 缺失时**自动降级为 2-gram**（不阻塞主流程）。
+_SP_PROCESSOR = None
+_SP_TRIED = False
+SP_MODEL_PATH = BASE / ".sp_unigram.model"
+
+
+def _get_sp():
+    """惰性加载 SentencePiece 词表；失败返回 None（降级 2-gram）"""
+    global _SP_PROCESSOR, _SP_TRIED
+    if _SP_TRIED:
+        return _SP_PROCESSOR
+    _SP_TRIED = True
+    try:
+        import sentencepiece as spm
+        if SP_MODEL_PATH.exists():
+            sp = spm.SentencePieceProcessor()
+            sp.load(str(SP_MODEL_PATH))
+            _SP_PROCESSOR = sp
+    except Exception:
+        _SP_PROCESSOR = None
+    return _SP_PROCESSOR
+
 
 def _tokens(text):
-    """中文按字符 2-gram + 英文按小写词 + 数字串"""
+    """分词：优先语料学习词表（SP-unigram），缺失时降级字符 2-gram。
+
+    SP 侧只取**含中文的 piece**（剥掉 ▁ 边界符使同一词在句首/句中同形）；
+    英文与数字一律由正则统一归一化（否则 SP 会把 "17.1%" 切成 "17." + "1%,"，
+    与正则的 "17.1" 不同形，同一数字产生两个互不匹配的 token）。
+    """
     if not text:
         return []
     text = str(text)
-    toks = []
-    chars = _CJK_CHAR.findall(text)
-    for i in range(len(chars) - 1):
-        toks.append(chars[i] + chars[i + 1])
+    sp = _get_sp()
+    if sp is not None:
+        toks = []
+        for p in sp.encode(text, out_type=str):
+            p = p.replace("▁", "").strip()
+            if p and _CJK_CHAR.search(p):
+                toks.append(p)
+    else:
+        chars = _CJK_CHAR.findall(text)
+        toks = [chars[i] + chars[i + 1] for i in range(len(chars) - 1)]
     toks.extend(w.lower() for w in _LAT_WORD.findall(text))
     toks.extend(_NUM.findall(text))
     return toks

@@ -73,7 +73,8 @@ AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key �
 | `local/run_weekly_cycle.py` | **周循环入口**（2026-09-21 新增）：加载当日情报 → `engine.run_weekly_cycle(intel_items=...)`。替代原先 daily_run.ps1 里的 `python -c` 单行——那个写法没传 intel_items，导致 AI 周报连续两周写「情报总条数 0」 |
 | `verify_hypotheses.py` | 假设自动验证（FRED/Frankfurter/GoldAPI/WorldBank，域名白名单在 `ALLOWED_HOSTS`；2026-09-05 P0-2 重写：`parse_threshold()` 真比较数值、指标值优先读本地 macro_indicators.json、无源标 `no_source`/叙述阈值标 `needs_ai` 留给周循环 AI 裁判） |
 | `tools/fill_deadline.py` | P0-2 一次性脚本（跑一次即弃）：AI 提议 1~24 个月验证期限回填 deadline，失败按 level 兜底（small 3/medium 6/major 12/mega 24 月）；2026-09-05 已跑 71/71 全回填 |
-| `tools/cluster_stories.py` | P0-3 事件聚类：纯标准库 TF-IDF（中文2-gram）+ 余弦 + 并查集，**不引入 sklearn**；`assign_story_ids(items)` 供 refresh/link_intel_hyp 调用；三重闸门参数（SIM_THRESHOLD=0.65/时间48h/同源12h/摘要0.30）在文件头 |
+| `tools/cluster_stories.py` | P0-3 事件聚类：纯标准库 TF-IDF（**SP-unigram 分词，2026-09-30 从字符 2-gram 升级**）+ 余弦 + 并查集，**不引入 sklearn**；`assign_story_ids(items)` 供 refresh/link_intel_hyp 调用；三重闸门参数（SIM_THRESHOLD=0.65/时间48h/同源12h/摘要0.30）在文件头；词表缺失自动降级 2-gram |
+| `tools/train_sp_tokenizer.py` | SP 词表训练（8000 词 unigram，从近 7 天语料学习）→ `data/.sp_unigram.model`（**已入库**，缺失会静默降级）；语料显著变化时重训 |
 | `local/calibration.py` | P0-1 校准评分：读 resolutions.jsonl 算 Brier + Murphy 三分解 + 十桶校准曲线 → `data/calibration.json`；refresh.py 自动调 |
 | `local/jev_client.py` | **JEV 决策模型客户端**（2026-09-21）：System One API 调用 + SSRF 白名单 + 用量记账 + 重试；`diagnose_evidence()` 供 ACH 用 |
 | `tools/jev_probe.py` | JEV Phase 0 探针：A/B 对比历史判定 + 人工金标准测试 |
@@ -166,6 +167,10 @@ python -c "..." # 见 daily_run.ps1 Step3，或等 OsintWeekly 周一 09:30 自�
 - **major 层必须有竞争面，"事实描述"不合格**（2026-09-29）：上述两个元命题的子命题多是"老年抚养比超20%""台积电产能利用率超95%"这类可查证统计——它们没有竞争解释，不需要情报诊断。**small 层的职责恰是"可查证的量化检查点"，不需要竞争面；但 major 层必须有**（Heuer：ACH 要求假设互斥竞争同一批证据）。
 - **证据挂载范围必须与诊断范围对齐**（2026-09-29）：`link_intel_hyp` 对全部 75 节点做匹配挂载，而 `ach_daily_batch` 只诊断 major——实测 18,178 条证据里 **71%（13,004 条）挂在 ACH 看不见的地方**，消耗 TF-IDF 算力却无下游消费。修法：`link_intel_hyp` Pass 3 沿 parent 链**上卷**子节点证据到第一个 major 祖先（带 `from_child` 标记，relevance × 0.9）。**为什么不把子节点升 major**：父子同时在 ACH 会"自己和自己竞争"，违背互斥要求；子命题是**验证分解**（indicators 是可查证检查点），不是独立竞争假设。
 - **上卷会继承子节点的挂载噪声**（2026-09-29）：上卷暴露了 DOMAIN_MAP 关键词过宽的老问题——`HM101_A_s2`（加拿大报复性关税涉及农产品）1191 条证据里混入农产品期货日报、"国产伟哥案"等无关条目（"农产品"字面匹配）。实测门控能拦住（噪声 gate 0.04~0.13 / selectivity 1.3~1.5 vs 真信号 0.60 / 5.71），**代价是浪费 JEV 调用，不污染后验**。
+- **"每日上限"必须跨轮次累计，局部计数器等于没有上限**（2026-09-30）：`EVIDENCE_DAILY_CAP=6` 原本用**本轮局部**计数器（`hyp_recorded={}` 每轮归零），而 refresh 每小时跑一轮 → 每轮各加 6 条，实测 HM100 单日直接证据 9 条、HM101 10 条，**cap 形同虚设**。Pass 3 上卷更严重：它根本不查任何上限，遍历的是**全量 candidates**，9-29 单日给 HM101 灌 481 条（350 条来自 `HM101_A_s2` 一个子节点），**JEV 日消耗从 5 万 token 暴涨到 798 万（100 倍）**——按 $0.042/Mtok 算，用户 $5 额度只够 13 天。**判据：凡是"每 X 上限"的闸门，计数必须来自持久状态（按日期过滤已有条目），不能来自本次运行的局部变量。**
+- **上卷本身有效，失控的是量不是质**（2026-09-30）：修 cap 前先量了质量——上卷证据的信号率 **11.8%**，与直接证据 **13.1%** 几乎持平（`tools/simulate_rollup_cap.py`）。所以修法是**限量**（`ROLLUP_DAILY_CAP=4`），不是关掉上卷。cap 取 4 的依据：6 major ×（直接 6 + 上卷 4）= 60/天 = `ach_daily_batch` 的 BATCH 容量——**证据量必须与诊断吞吐匹配**，多出的只会积压成矩阵膨胀。上卷低于直接是刻意的：它隔了一层子节点，优先级应当更低。
+- **分词器换用论文做法，但收益有真实边界**（2026-09-30）：`cluster_stories._tokens` 从字符 2-gram 换成 **SentencePiece unigram**（Si et al., TACL 2023 "Sub-Character Tokenization for Chinese PLMs" 的做法：从语料学习子词词表）。孤立层收益显著（语料命中 0.14%→2.01%，14 倍），**但生产管线级收益为 0.0pp**（`tools/verify_tokenizer_upgrade.py` 实测）——因为 96.5% 的条目走 DOMAIN 兜底，TF-IDF 分支只覆盖 3.5%。**教训：分层系统的单层指标提升不等于端到端提升，必须在生产结构下 A/B。** 聚类侧是真实赢（最大簇 15→9，误聚减少；新增合并抽查全是真实同事件）。词表 `data/.sp_unigram.model` 必须入库（缺失会静默降级，匹配行为无声改变）。
+- **TF-IDF 词面匹配的天花板已被测出**（2026-09-30）：用矩阵里 9420 个已被 JEV 判定的（证据,假设）对做地面真值，实测 **AUC=0.709**，阈值 0.12 下只捕获 **6.7%** 的真信号——**93% 的真信号靠 DOMAIN 兜底捞回**。同时 DOMAIN 的 AUC=0.822 更高，但对 18.2% 的真信号完全无分（只能靠 TF-IDF）。**两者互补而非替代**，且现状 `if not matches:` 的 fallback 结构让 TF-IDF 的弱命中**屏蔽**掉 DOMAIN 的强命中（`tools/simulate_matcher_union.py` 实测 union 结构可 +9.1pp 召回）。词面匹配的上限在此，**再往上要走 embedding**（接口已预留 `build_tfidf_vectors`，调用方不动）。
 - **"命中即满分"的计分必然饱和**（2026-09-30）：DOMAIN 兜底原用纯 Jaccard（`|交集|/|并集|`），实测 **73% 是 1.0**——因为情报与假设常恰好同命中一个域，分数高不代表内容相关。修法：域内命中强度按**关键词 IDF 加权**（命中多词 > 单词，专指词 > 泛词）。实测泛词 `AI` 命中 13.7% 语料 / `投资` 8.9% / `美国` 8.0%，IDF 权重 2.17/2.57 vs `芯片` 4.26。修复后满分从 7.9% → **0%**，<0.5 从 22.3% → 56.8%，分数恢复梯度。**踩坑：`log(N/(1+df))` 在 df=0 时给最高权重，但 df=0 意味着该词本批语料从未出现——应按 df=1 处理。**
 
 ## 探针假设机制（2026-09-28 建立）
@@ -633,6 +638,10 @@ C conf=0.89 日经225指数低开1.5%                ← 行情？
 - [x] **历史矩阵重跑**（2026-09-21 完成）：437 行全部用 JEV 两段式重判，C/I 从 242 → 73（清除噪声），后验重算；回滚点 `data/hypotheses/*.bak_20260921_184457`
 - [ ] **门控阈值观察**：当前 0.08（噪声上界 0.04 / 真信号下界 0.14）。若发现真信号被误滤（如「A股高开」gate=0.08 压线），调 `gate_and_diagnose(gate_threshold=)`；存量 gate 值可重算无需重跑
 - [ ] **JEV 吞吐红利释放**：接入后单条 45s→1.0s（两段式两次调用），`ach_daily_batch` 的 1500s 预算从 ~33 条/天可大幅提高，`MAX_DIAGNOSE_PER_RUN` 与 `BATCH` 上限可放宽（先观察一周稳定性再调）
+- [x] **证据 cap 跨轮次修复**（2026-09-30）：Pass 2 直接证据 cap 与 Pass 3 上卷 cap 都改为按"当日已有条目"累计（原先每轮归零）。实测 JEV 日消耗从 798 万 token（9-29）回到设计值 ~10 万；已清理 bug 期间未诊断的超标条目 128 条（`tools/prune_overcap_evidence.py`，已诊断的保留避免浪费）
+- [ ] **匹配结构 union 化**（2026-09-30 实测待落地）：现状 `if not matches:` 让 TF-IDF 弱命中屏蔽 DOMAIN 强命中，`tools/simulate_matcher_union.py` 实测改 union 可 **+9.1pp 召回**（精确仅 -1.5pp）；`tools/simulate_cap_selection.py` 显示 D 配置（union@0.12 + domain 优先）是纯改进（真信号 +2 / 噪声 +1）。落地前需处理 `ach_eligible` 的规则耦合（TF-IDF 一律 eligible / DOMAIN 需 ≥0.4）
+- [ ] **上卷 cap 观察**（2026-09-30 起）：`ROLLUP_DAILY_CAP=4` 依据是"与 ACH 日吞吐匹配"。观察 1-2 周：若上卷证据的信号率显著高于直接证据（当前 11.8% vs 13.1%，基本持平），可考虑上调；若矩阵仍膨胀则下调
+- [ ] **SP 词表重训时机**（2026-09-30 起）：当前词表从近 7 天语料训练（8000 词）。若源结构大改或新增领域（如新增非中文源），跑 `tools/train_sp_tokenizer.py --days 14` 重训
 - [ ] **重跑后后验复核**：`AI算力` 0.05→0.767、`中国社保` 0.358→0.650 涨幅较大，需人工抽检这几条新 C/I 证据是否成立（台海 0.934→0.706 已抽检通过）
 - [x] **Step2 端到端跑通**（2026-09-21 晚验证）：自 8-30 以来首次产出 `analysis_20260921.jsonl`（40 条 / 90% 有效）；周报「总条数」由 0 → 2343。`batch_size` 定为 5（dots 服务端输出封顶 ~9K，10 条会触顶截断）
 - [ ] **Step2 分析量观察**（2026-09-21 起）：`ai_analysis.max_items` 暂定 60（batch_size=5 → 12 批，实测单批 60-140s，约 15-25 分钟）。若 dots 吞吐改善或改走 JEV，可上调；同时观察 `analysis_*.jsonl` 是否持续日产
@@ -668,4 +677,4 @@ C conf=0.89 日经225指数低开1.5%                ← 行情？
 **关键约束**：链接索引由 `vault_link_index()` 构建，**按进程缓存**（215 页 × 全库扫描 = O(n²)）；宏观页因引用"同一次渲染里刚写入的日更页"，需用新鲜索引。
 
 ---
-*最后更新：2026-09-30 - 弱证据降权阈值调优（0.20→0.35，模拟验证）+ DOMAIN IDF 加权 + 证据上卷 + 元命题重分类 + 判定层三层修复*
+*最后更新：2026-09-30 - 证据 cap 跨轮次修复（Pass2/Pass3 每日上限，JEV 日耗降 100 倍）+ SP-unigram 分词器落地（论文做法，含生产级 A/B 的收益边界）+ TF-IDF 天花板测定（AUC 0.709，93% 真信号靠 DOMAIN 兜底）*
