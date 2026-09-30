@@ -27296,23 +27296,19 @@
     "deadline_source": "ai_proposed",
     "probe_reading": {
       "samples": 200,
-      "mention_count": 69,
-      "mention_ratio": 0.345,
-      "signal_count": 8,
-      "signal_ratio": 0.04,
-      "max_gate": 0.25,
-      "mean_gate": 0.0728,
+      "mention_count": 53,
+      "mention_ratio": 0.265,
+      "signal_count": 4,
+      "signal_ratio": 0.02,
+      "max_gate": 0.26,
+      "mean_gate": 0.0649,
       "strong_signals": [
+        0.26,
         0.25,
-        0.25,
-        0.23,
-        0.22,
-        0.21,
-        0.2,
-        0.2,
+        0.24,
         0.2
       ],
-      "measured_at": "2026-09-29T22:06:10"
+      "measured_at": "2026-09-30T11:34:47"
     }
   },
   {
@@ -32601,25 +32597,25 @@
     "deadline_source": "ai_proposed",
     "probe_reading": {
       "samples": 200,
-      "mention_count": 109,
-      "mention_ratio": 0.545,
-      "signal_count": 16,
-      "signal_ratio": 0.08,
-      "max_gate": 0.35,
-      "mean_gate": 0.097,
+      "mention_count": 114,
+      "mention_ratio": 0.57,
+      "signal_count": 10,
+      "signal_ratio": 0.05,
+      "max_gate": 0.29,
+      "mean_gate": 0.0961,
       "strong_signals": [
-        0.35,
-        0.31,
-        0.25,
-        0.24,
-        0.24,
+        0.29,
+        0.28,
         0.23,
         0.22,
         0.22,
         0.22,
-        0.21
+        0.21,
+        0.2,
+        0.2,
+        0.2
       ],
-      "measured_at": "2026-09-29T22:06:10"
+      "measured_at": "2026-09-30T11:34:47"
     }
   },
   {
@@ -36684,17 +36680,20 @@
     "reclass_note": "2026-09-29 元命题重分类：覆盖多年/多领域的总判断，实测 ACH 诊断 0 条 C/I（JEV 无从判断「这条情报是否改变该元命题的可能性」）。改为与探针同级，走 probe_mega 测情报信号占比，不再进 ACH 矩阵。",
     "probe_reading": {
       "samples": 200,
-      "mention_count": 45,
-      "mention_ratio": 0.225,
-      "signal_count": 2,
-      "signal_ratio": 0.01,
+      "mention_count": 46,
+      "mention_ratio": 0.23,
+      "signal_count": 5,
+      "signal_ratio": 0.025,
       "max_gate": 0.23,
-      "mean_gate": 0.0646,
+      "mean_gate": 0.0674,
       "strong_signals": [
         0.23,
+        0.23,
+        0.21,
+        0.21,
         0.2
       ],
-      "measured_at": "2026-09-29T22:06:10"
+      "measured_at": "2026-09-30T11:34:47"
     }
   },
   {
@@ -37059,6 +37058,22 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": "此项贴息政策通过精准滴灌首套房购买者，有助于缓解居民资产负债表压力，稳定房地产市场预期，对防范系统性金融风险、促进宏观经济平稳运行发挥积极作用。就业市场将间接受益于房地产及相关产业链的景气度回升，从而带动新增就业，缓解整体就业压力。针对青年失业毕业生，该政策虽能间接带动建筑、金融、销售等行业岗位需求，但其主要受益对象是已有稳定收入、具备购房能力的家庭。青年失业毕业生由于缺乏首付来源和稳定还款能力，"
+      },
+      {
+        "date": "2026-09-30",
+        "intel_ids": [
+          "563ebeb7d0f7772b"
+        ],
+        "story_ids": [
+          "st_955f6b1e68"
+        ],
+        "summary": "国家统计局：9月服务业商务活动指数为50.2%，比上月上升0.9个百分点，升至临界点以上；建筑业商务活动指数为50.3%",
+        "body": "国家统计局最新数据显示，9月份服务业商务活动指数达到50.2%，比上月上升0.9个百分点，成功升至临界点以上，表明服务业扩张步伐有所加快。与此同时，建筑业商务活动指数为50.3%，比上月大幅上升3.4个百分点，重返扩张区间。这反映出我国非制造业整体保持恢复态势，建筑业和服务业双双呈现扩张迹象。两大指数的回升为宏观经济平稳运行提供了有力支撑，有助于稳定市场信心，预示着第四季度经济开局良好。",
+        "domains": [],
+        "relevance": 0.121,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": "服务业和建筑业指数的双回升表明中国经济正逐步企稳，宏观经济基本面持续改善。服务业的扩张将直接带动相关行业的就业需求，特别是批发零售、餐饮旅游及信息技术服务等领域，有利于缓解当前的就业压力。然而，建筑业重返扩张区间虽能拉动上下游产业链就业，但房地产市场的结构性调整仍可能对部分建筑及相关行业青年毕业生的就业造成一定冲击。整体来看，经济温和复苏将为青年失业毕业生提供更多元化的就业岗位，但竞争依然激烈，仍"
       }
     ],
     "version": 1,
@@ -37094,7 +37109,7 @@
         "last_updated": "2025",
         "data_source": "WorldBank",
         "threshold_eval": {
-          "checked_at": "2026-09-29",
+          "checked_at": "2026-09-30",
           "value": 14.9114314271952,
           "refute_expr": "到2028年联合国人口司预测中国老年抚养比为19.5%，低于20%阈值；到2030年韩国老年抚养比达21%但中国仍低于20%",
           "support_expr": "老年抚养比到2030年三国均超20%",
@@ -37181,13 +37196,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -40886,13 +40901,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     },
     "_prev_thresholds": {
       "falsification_criteria": "根据各国人社部数据，到2025年日本将法定退休年龄从62岁延迟至65岁而中国维持在60岁，差异大于2年；到2026年韩国推出养老金改革但未调整退休年龄，与日本政策方向不同",
@@ -53448,13 +53463,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     },
     "_prev_thresholds": {
       "falsification_criteria": "判据1：如果ILO数据到2024年底显示中国青年NEET率年增长5%，而日本下降1%（阈值：年增长率差异超过3%），则不同步；判据2：如果OECD数据表明2023-2024年东亚三国NEET率趋势无同步性（如相关系数低于0.7）；最能证伪阈值：NEET率同步变化率指标低于0.7。",
@@ -57648,13 +57663,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     },
     "_prev_thresholds": {
       "falsification_criteria": "判据1：如果2024年各国统计局数据显示本科以上就业占比变化不同步（如中国占比年增长2%，韩国下降1%，差异超过5%），则门槛未同步提高；判据2：如果有调查如OECD技能调查表明2023-2024年就业门槛要求未普遍提升；最能证伪阈值：本科以上就业占比在三国年变化率标准差超过2%。",
@@ -63545,13 +63560,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -63578,7 +63593,7 @@
         "last_updated": "2024",
         "data_source": "WorldBank",
         "threshold_eval": {
-          "checked_at": "2026-09-29",
+          "checked_at": "2026-09-30",
           "value": 56.6789524134646,
           "refute_expr": "世界银行数据显示最终消费占GDP比重连续三年上升每年超0.5个百分点；居民消费率超60%并保持两年；消费对GDP增长贡献率连续五年超投资",
           "support_expr": "居民消费率持续走低",
@@ -84713,13 +84728,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -84995,7 +85010,7 @@
         "last_updated": "2023",
         "data_source": "WorldBank",
         "threshold_eval": {
-          "checked_at": "2026-09-29",
+          "checked_at": "2026-09-30",
           "value": 2.57729,
           "refute_expr": "OECD数据显示半导体/新能源/AI研发支出占总研发比例连续两年降超5%；政策文件中这些领域关键词出现频率年度环比降超15%；政府补贴或税收优惠金额减少超20%",
           "support_expr": "半导体/新能源/AI成为国家战略重点",
@@ -90397,13 +90412,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -91132,13 +91147,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -98731,14 +98746,14 @@
     "reclass_note": "2026-09-29 元命题重分类：覆盖多年/多领域的总判断，实测 ACH 诊断 0 条 C/I（JEV 无从判断「这条情报是否改变该元命题的可能性」）。改为与探针同级，走 probe_mega 测情报信号占比，不再进 ACH 矩阵。",
     "probe_reading": {
       "samples": 200,
-      "mention_count": 14,
-      "mention_ratio": 0.07,
+      "mention_count": 9,
+      "mention_ratio": 0.045,
       "signal_count": 0,
       "signal_ratio": 0.0,
-      "max_gate": 0.13,
-      "mean_gate": 0.0451,
+      "max_gate": 0.14,
+      "mean_gate": 0.0454,
       "strong_signals": [],
-      "measured_at": "2026-09-29T22:06:10"
+      "measured_at": "2026-09-30T11:34:47"
     }
   },
   {
@@ -102205,18 +102220,50 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": ""
+      },
+      {
+        "date": "2026-09-30",
+        "intel_ids": [
+          "2f98b63dbaf0d147"
+        ],
+        "story_ids": [
+          "st_edffdedf0e"
+        ],
+        "summary": "OpenAI Codex产品负责人：明天将重新向新用户开放月费200美元的Pro订阅。 但同时也将调整该订阅的用量计算方式。 与原来的月费200美元Pro方案相比，新方案对应的...",
+        "body": "OpenAI Codex产品负责人：明天将重新向新用户开放月费200美元的Pro订阅。 但同时也将调整该订阅的用量计算方式。 与原来的月费200美元Pro方案相比，新方案对应的API支出金额将只有原来的一半。 明天还会为订阅增加更多不会计入用量的功能。暂时不会透露具体是什么。",
+        "domains": [],
+        "relevance": 0.121,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": ""
+      },
+      {
+        "date": "2026-09-30",
+        "intel_ids": [
+          "33fddd7f8c4b8894"
+        ],
+        "story_ids": [
+          "st_37a806e4e5"
+        ],
+        "summary": "万科AH股触底反弹，A股成功翻红，H股跌幅大幅收窄",
+        "body": "万科AH股今日出现触底反弹走势，万科A股逆市翻红。早盘虽一度封死跌停，但随后有大量资金介入，成交额超32亿元。万科H股同样表现强劲，深度跌幅收窄至仅1.4%。整体来看，龙头房企的股价波动吸引市场关注，阶段性底部特征初显，恐慌情绪得到显著缓解。",
+        "domains": [],
+        "relevance": 0.133,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "万科A股翻红及H股跌幅收窄，折射出资本市场对龙头房企政策支持与基本面修复的博弈结果，对宏观经济与就业具有重要启示。宏观层面，地产行业占中国经济比重较大，龙头企业的股价稳定对于稳定宏观杠杆率、保障金融体系安全、促进房地产与实体经济良性循环至关重要。就业市场方面，房地产建设、运营及相关服务链条长，是吸纳社会劳动力特别是青年建筑工程师、金融分析师、市场营销人员等就业的主战场。万科股价的企稳与成交活跃，表"
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -102492,13 +102539,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -102848,13 +102895,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -105829,13 +105876,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -106247,13 +106294,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -106583,13 +106630,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -120781,13 +120828,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -121025,13 +121072,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -140336,6 +140383,22 @@
         "ach_eligible": true,
         "source": "新浪财经-滚动新闻",
         "impact": ""
+      },
+      {
+        "date": "2026-09-30",
+        "intel_ids": [
+          "ec6e157eef93befb"
+        ],
+        "story_ids": [
+          "st_92313fec97"
+        ],
+        "summary": "Omdia：二季度全球公共显示屏及标牌电视出货量超过173万台",
+        "body": "Omdia最新发布的《公共显示市场追踪》报告显示，2026年第二季度全球公共显示屏及标牌电视出货量表现强劲，总量成功突破173万台，高于前一季度的161万台。在各类产品中，IFP（智能交互平板）及触控显示屏成为引领市场增长的核心驱动力，展现出强劲的市场需求。数据显示，该品类出货量实现了环比13.7%、同比增长0.7%的稳健增长，反映出数字化交互设备的普及趋势。这一全球性的出货量增长为中国显示产业链提供了广阔的海外市场空间，有利于带动国内面板及整机制造企业的出口业务。随着全球智慧化应用场景的不断拓展，公共显示行业有望继续保持稳步增长态势。",
+        "domains": [],
+        "relevance": 0.157,
+        "ach_eligible": true,
+        "source": "华尔街见闻-快讯",
+        "impact": "公共显示设备需求增长，可能降低数字化采购成本，惠及公共服务，间接稳定相关物价。"
       }
     ],
     "version": 3,
@@ -152598,13 +152661,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     },
     "_prev_thresholds": {
       "falsification_criteria": "IEA 2024年度报告显示2023年全球太阳能和风电新增装机总和低于500GW；BloombergNEF 2025年Q1预测2024年全球太阳能和风电年装机量为490GW，未达500GW阈值；中国国家能源局2024年数据显示中国太阳能和风电装机占比下降，全球总和低于500GW。",
@@ -153360,13 +153423,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     },
     "_prev_thresholds": {
       "falsification_criteria": "BloombergNEF 2024年报告指出2023年全球储能装机容量年增长率仅为45%，低于60%阈值；国际能源署2024年中期预测显示2024年底储能装机年增长率将放缓至50%；中国储能行业协会2024年Q3数据若显示中国储能装机增长低于55%，则整体增长可能达不到60%。",
@@ -153857,6 +153920,20 @@
         "ach_eligible": true,
         "source": "新浪财经-滚动新闻",
         "impact": ""
+      },
+      {
+        "date": "2026-09-30",
+        "intel_ids": [
+          "efb59983ba28b91c"
+        ],
+        "story_ids": [],
+        "summary": "我国能源企业已发布20余个专业大模型，AI场景牵引驱动行业转型",
+        "body": "9月29日，电力规划设计总院在北京发布了《人工智能与能源双向赋能趋势展望》等六本智库成果。报告显示，我国能源企业加快布局专业大模型，截至2026年6月已发布20余个。能源行业正通过梳理高价值场景、开放试点示范等方式，把真实需求转化为技术研发和产品迭代方向。这标志着人工智能应用正由“模型驱动”转向“场景牵引”，使有限的技术、数据和算力资源集中到高频、高价值的业务环节。",
+        "domains": [],
+        "relevance": 0.12,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "能源行业大模型的快速落地和数字化转型，对我国宏观经济高质量发展具有重要推动作用，能显著提升能源利用效率和产业链韧性。在就业市场和青年毕业生层面，这一趋势是一把双刃剑：一方面，它催生了大量对跨学科、高技能人才（如AI算法工程师、能源大数据分析师、智能运维专家）的需求，为具备数字化背景的青年毕业生提供了高附加值的就业机会；另一方面，大模型和AI应用的“场景牵引”也会加速传统能源岗位的自动化替代，对缺乏"
       }
     ],
     "version": 1,
@@ -154671,13 +154748,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     },
     "_prev_thresholds": {
       "falsification_criteria": "Bloomberg数据显示2024年全球石油公司平均EV/EBITDA比率高于过去20年历史均值；IEA报告预测石油需求下降但石油公司估值在2025年Q2回升至均值以上；埃克森美孚或壳牌等主要石油公司2024年财报显示EV/EBITDA高于历史均值。",
@@ -155440,13 +155517,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     },
     "_prev_thresholds": {
       "falsification_criteria": "煤炭企业债券利差（Wind数据）在2024年Q2前持续低于100基点；煤炭企业平均银行贷款利率在2024年内下降超过1.5个百分点；煤炭企业信用评级升级事件在2024年发生至少一起",
@@ -178121,13 +178198,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     },
     "_prev_thresholds": {
       "falsification_criteria": "美国贸易代表办公室确认美加汽车关税税率不超过25%，在2024年全年；海关数据显示，2024年上半年从加拿大进口汽车的平均关税税率为24.9%或更低；无新的关税政策宣布，现有税率维持现状",
@@ -196796,13 +196873,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     },
     "_prev_thresholds": {
       "falsification_criteria": "加拿大财政部在2024年12月31日前公布的报复性关税清单中，农产品类目数量为0；2024年加拿大对美农产品出口额同比增长超过10%；美国商务部报告确认加拿大关税措施不涉及农产品",
@@ -201858,13 +201935,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     },
     "_prev_thresholds": {
       "falsification_criteria": "UNCTAD 2024年报告显示越南制造业FDI年增长率为25%（低于30%）；印度制造业FDI年增长率在2024年为28%（低于30%）；越南和印度制造业FDI总额年增长率合计为29%（低于30%）",
@@ -202426,13 +202503,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     },
     "_prev_thresholds": {
       "falsification_criteria": "中国海关总署2024年年度数据显示中国对美出口占比为15.2%；2024年第二季度中国对美出口占比为15.1%（未降至15%以下）；连续三年数据中国对美出口占比保持在15%以上",
@@ -259768,13 +259845,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -260569,13 +260646,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -261673,18 +261750,34 @@
         "ach_eligible": true,
         "source": "金十数据-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-30",
+        "intel_ids": [
+          "05714ca4cc250292"
+        ],
+        "story_ids": [
+          "st_4372a7dab1"
+        ],
+        "summary": "商务部：准备2027年度汽车和摩托车出口许可申报工作",
+        "body": "商务部办公厅发布了关于2027年度汽车和摩托车出口许可申报工作的通知，要求各地商务主管部门做好相关组织工作。本年度申报全面转为线上办理，生产企业需登录商务部业务统一管理平台企业端，完整填写申请表并上传相关证明材料。企业提交后，需等待所在地商务主管部门进行在线审核，以确保出口许可申报的合规性。这一数字化举措旨在简化申报流程，提高政府部门的办事效率，降低企业制度性交易成本。",
+        "domains": [],
+        "relevance": 0.121,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "汽车和摩托车出口是中国外贸增长的重要引擎之一，尤其在新能源汽车和高端摩托车出口带动下，相关产业链不断延伸。简化和线上化出口许可申报流程，有助于降低企业合规成本，进一步激发外贸企业活力，对中国宏观经济稳外贸、稳增长目标形成有力支撑。在就业市场方面，汽车及零部件制造、跨境物流、国际贸易等相关行业将释放更多用工需求，有助于吸纳制造业领域的产业工人及具备外语、外贸、电子商务等技能的青年毕业生，对缓解部分高"
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -262605,13 +262698,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     },
     "_prev_thresholds": {
       "falsification_criteria": "判据1：2024年全年碳酸锂现货价（SMM）高点与低点振幅未超过10万元人民币/吨（或相对年初波幅未超过150%）；判据2：全球前五大锂矿企业（如SQM、Albemarle等）在2024年财报中未出现因价格剧烈波动而导致的大规模产能推迟、取消或破产重组；判据3：伦敦金属交易所（LME）或上海期货交易所（SHFE）碳酸锂期货合约未出现连续30个交易日日均波动率超过历史同期（过去三年）平均水平200%的情况。",
@@ -282462,13 +282555,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     },
     "_prev_thresholds": {
       "falsification_criteria": "2024年台海周边军事演习总次数少于2023年的两倍（国防部年度数据）；如果2024年季度演习次数同比增长均低于100%，则证伪翻倍假设；连续6个月台海军演次数同比下降超过15%（国防部月度公报）。",
@@ -283203,13 +283296,13 @@
     "version": 1,
     "deadline_source": "ai_proposed",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     },
     "_prev_thresholds": {
       "falsification_criteria": "2024年美国对台军售金额未超过2023年最高值（美国国防部军售报告）；如果2024年军售总额低于过去5年平均水平（约100亿美元），则证伪创新高；连续两年军售金额下降超过10%（斯德哥尔摩国际和平研究所数据）。",
@@ -285021,13 +285114,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -293906,13 +293999,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -305921,13 +306014,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -306999,18 +307092,34 @@
         "ach_eligible": true,
         "source": "新浪财经-滚动新闻",
         "impact": ""
+      },
+      {
+        "date": "2026-09-30",
+        "intel_ids": [
+          "b5c4bea11a5fbbdd"
+        ],
+        "story_ids": [
+          "st_64ba14bacc"
+        ],
+        "summary": "日本10月将有3153种食品涨价，中东局势与日元贬值推高成本",
+        "body": "根据帝国数据银行的调查，日本将于10月份对3153种食品和饮料进行涨价，而9月份已有4965种商品提价。调查指出，中东局势紧张推高了原油和石脑油价格，加之日元贬值增加了进口成本。包装和原材料等投入成本上升，迫使企业将压力转嫁给消费者。这反映出日本国内正面临持续的通胀压力，居民生活成本进一步上升。",
+        "domains": [],
+        "relevance": 0.131,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "日本食品涨价对中国普通公民物价影响间接，主要通过进口食品传导，但国内供应链稳定，直接冲击小。"
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -308262,18 +308371,50 @@
         "ach_eligible": true,
         "source": "新浪财经-7x24直播",
         "impact": ""
+      },
+      {
+        "date": "2026-09-30",
+        "intel_ids": [
+          "2242df3f785f9825"
+        ],
+        "story_ids": [
+          "st_9f53f563db"
+        ],
+        "summary": "亿纬锂能首个200MW/400MWh独立共享储能电站正式并网",
+        "body": "9月29日，惠州日盛200MW/400MWh独立共享储能电站举行并网仪式，标志着亿纬锂能首个电网侧独立共享储能电站正式投入运行。该项目占地超过2.5万平方米，装机容量达200MW/400MWh，通过220千伏电压等级接入电网。电站搭载了亿纬锂能自研的储能电芯逾45万颗，预计年均充放电量将超过1亿度。该项目的成功并网不仅提升了区域电网的调节能力，也为公司储能业务的规模化发展奠定了坚实基础。",
+        "domains": [],
+        "relevance": 0.136,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "大规模储能基础设施的建设对推动中国能源结构转型、实现绿色低碳发展具有重要战略意义。从宏观经济层面看，储能项目的投资建设能有效拉动电芯制造、电网工程、系统集成等上下游产业链的协同发展，贡献稳定的投资增长点。在就业市场方面，新能源及储能行业的快速扩张创造了大量包括技术研发、工程建设、运维管理在内的高素质就业岗位。对于青年失业毕业生而言，储能领域的广阔前景提供了大量理工科及交叉学科的就业机会，有助于吸纳"
+      },
+      {
+        "date": "2026-09-30",
+        "intel_ids": [
+          "206fe621a8f1c2d0"
+        ],
+        "story_ids": [
+          "st_92313fec97"
+        ],
+        "summary": "【Omdia：二季度全球公共显示屏及标牌电视出货量超过173万台】Omdia最新《公共显示市场追踪》研究显示，2026年",
+        "body": "Omdia最新《公共显示市场追踪》研究显示，2026年第二季度全球公共显示屏及标牌电视出货量超过173万台，创下近期新高。相比于上一季度的161万台，本季度出货量实现了稳步环比回升，显示出市场需求的持续复苏。其中，IFP与触控显示屏是推动市场增长的绝对主力，出货量环比增长达13.7%，同比亦有0.7%的增幅。这一趋势表明，全球教育、商业及公共数字化领域的交互升级正在加速推进，释放了大量设备更新需求。中国作为全球核心的显示产品制造基地，相关企业将充分受益于这一全球出货潮，推动产业链上下游协同发展。",
+        "domains": [],
+        "relevance": 0.121,
+        "ach_eligible": true,
+        "source": "新浪财经-7x24直播",
+        "impact": "公共显示设备出货增长，促进数字化升级，可能降低公共设施成本，惠及民生安全。"
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -309475,13 +309616,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -319712,13 +319853,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -321069,13 +321210,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -328126,13 +328267,13 @@
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
@@ -328433,18 +328574,34 @@
         "ach_eligible": true,
         "source": "华尔街见闻-快讯",
         "impact": ""
+      },
+      {
+        "date": "2026-09-30",
+        "intel_ids": [
+          "b5c4bea11a5fbbdd"
+        ],
+        "story_ids": [
+          "st_64ba14bacc"
+        ],
+        "summary": "日本10月将有3153种食品涨价，中东局势与日元贬值推高成本",
+        "body": "根据帝国数据银行的调查，日本将于10月份对3153种食品和饮料进行涨价，而9月份已有4965种商品提价。调查指出，中东局势紧张推高了原油和石脑油价格，加之日元贬值增加了进口成本。包装和原材料等投入成本上升，迫使企业将压力转嫁给消费者。这反映出日本国内正面临持续的通胀压力，居民生活成本进一步上升。",
+        "domains": [],
+        "relevance": 0.123,
+        "ach_eligible": true,
+        "source": "金十数据-快讯",
+        "impact": "日本食品涨价对中国普通公民物价影响间接，主要通过进口食品传导，但国内供应链稳定，直接冲击小。"
       }
     ],
     "version": 1,
     "deadline_source": "level_default",
     "verify_stats": {
-      "checked_at": "2026-09-29",
+      "checked_at": "2026-09-30",
       "indicators_checked": 0,
       "support_hits": 0,
       "refute_hits": 0,
       "signal_state": "s0_r0",
       "confidence_applied": false,
-      "intel_adjusted_at": "2026-09-29"
+      "intel_adjusted_at": "2026-09-30"
     }
   },
   {
