@@ -30,8 +30,16 @@ BASE = PROJECT / "data"
 HYP_FILE = BASE / "hypotheses" / "active_hypotheses.json"
 MATRIX_FILE = BASE / "hypotheses" / "ach_matrix.json"
 
-DIRECT_CAP = 6    # 生产值 EVIDENCE_DAILY_CAP
-ROLLUP_CAP = 4    # 生产值 ROLLUP_DAILY_CAP
+# cap 值**从生产代码导入**，不硬编码——首版硬编码 6/4，在 cap 提到 20 后
+# 把合法灌入的 20 条误判为超标删除（2026-09-30 踩坑）。生产值是唯一事实源。
+sys.path.insert(0, str(PROJECT))
+try:
+    from link_intel_hyp import EVIDENCE_DAILY_CAP as DIRECT_CAP
+    _ROLLUP_CAP = 4   # link_intel_hyp 里是函数内局部常量，此处保持同步
+except Exception:
+    DIRECT_CAP = 20
+    _ROLLUP_CAP = 4
+ROLLUP_CAP = _ROLLUP_CAP
 
 
 def evidence_key(ev):

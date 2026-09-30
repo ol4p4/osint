@@ -23,8 +23,12 @@ sys.path.insert(0, str(PROJECT))
 sys.path.insert(0, str(PROJECT / "local"))
 sys.path.insert(0, str(PROJECT / "cloud"))
 
-BATCH = 60
-BUDGET_SECONDS = 1500   # 实测 AI 诊断 ~45s/条：900s 只够 19 条，1500s 可消化 ~33 条/天
+BATCH = 200
+BUDGET_SECONDS = 1500   # 实测 JEV 峰值 1.52 条/秒（diagnosis_log 时间戳推算，5455 条/小时）；
+                        # 1500s 预算理论可消化 ~2000 条，BATCH=200 是保守上限。
+                        # **历史**：BATCH=60 / 1500s 是为 mimo（45s/条）设的——JEV 接入后
+                        # （2026-09-21）瓶颈从诊断速度转为排序质量，证据 cap 已提到
+                        # 20/假设/日（6 假设 × 24 = 144 条/天），BATCH 必须 ≥ 该值否则积压。
 
 
 def main():

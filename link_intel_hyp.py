@@ -18,7 +18,18 @@ TFIDF_TOP_K = 3
 #   真正的主闸门 = EVIDENCE_DAILY_CAP（每假设每日限量，分数降序择优）；
 #   DOMAIN_MIN_SCORE 只是卫生底线；存量弱证据由 ach_matrix 按 ach_eligible 过滤。
 DOMAIN_MIN_SCORE = 0.34      # DOMAIN 兜底相关性下限（域重叠/联合 < 1/3 不记）
-EVIDENCE_DAILY_CAP = 6       # 每假设每日新增证据上限：8 major × 6 = ≤48/天，匹配 ACH 诊断速度(~40/天)
+# 每假设每日新增证据上限（2026-09-30 由 6 提到 20）。
+#
+# **为什么提**：cap=6 是为 mimo 决策层设的（实测 45s/条，6 major × 6 = 36/天
+# 才能跟上诊断速度）。JEV 接入后单条降到 ~1.0s（两段式两次调用），瓶颈从
+# "诊断速度"变成"排序质量"——`tools/backtest_ranking.py` 实测（完整池回测）：
+#     cap=6   捕获池中真信号 8%
+#     cap=20  捕获 23%（2.9 倍）
+# 成本侧完全可承受：6 假设 × (20 直接 + 4 上卷) = 144 条/天，
+# 按 JEV 实测 ~1500 token/条、$0.042/Mtok 算 = **$0.0091/天**（$4.35 够用 479 天）。
+# 上限仍受 `ach_daily_batch` 的 BATCH=60 约束——超额部分会积压，
+# 但 JEV 吞吐已远超该值，故同步观察队列长度（`ach_daily_batch.py --dry`）。
+EVIDENCE_DAILY_CAP = 20
 ACH_ELIGIBLE_MIN = 0.4       # DOMAIN 兜底证据进入 ACH 诊断队列的分数线（TF-IDF 命中一律 eligible）
 
 # Domain keyword mapping for fuzzy matching
@@ -322,13 +333,22 @@ def main():
         link_report.append(report_entry)
 
     # Pass 2: 每假设每日 cap 择优记录（2026-09-12 证据准入收紧）。
-    # 排序：TF-IDF 命中优先（语义匹配）→ DOMAIN 分数降序 → 情报关键词密度(base_score)降序。
     # update_hyp_evidence 内部按 intel_id/story_id 幂等去重，重复条目不计入 cap。
     #
     # **cap 必须按"已存在的今日条目"计数，不能只数本轮新增（2026-09-30 修）**：
     # 原实现 `hyp_recorded` 是**本轮局部**计数器，每小时 refresh 各跑一轮 →
     # 每轮都能各加 6 条 → 实测 HM100 单日直接证据 9 条、HM101 10 条，全超 cap。
     # 这与 Pass 3 上卷失控是同一根因的两面：**"每日上限"必须跨轮次累计**。
+    #
+    # **排序键必须用实测有区分力的信号（2026-09-30 修）**：
+    # 原键 = (tfidf 优先, -relevance, -base_score)。但实测（tools/find_ranking_signal.py，
+    # 5175 条已诊断证据 join 回原始情报，用 JEV gate 作真值）：
+    #     relevance   AUC=0.4762  ← **低于随机**，且 51.4% 并列在 1.0（分数饱和）
+    #     kw_hits*10 + body_len/100  AUC=0.6458  并列仅 4.2%
+    # `tools/test_sort_value.py` 更直接：现状 top-6 只抓到理想值的 **8%**，
+    # 比随机选（12%）还差——因为 86% 的证据并列满分，排序退化成随机抽签。
+    # 新键用 `keywords_hit`（情报命中的关键词数，直接反映该条与本项目议题的
+    # 相关强度）+ `body_len`（正文长度，破并列且与信息量正相关）。
     hyp_by_id = {h["id"]: h for h in hyps}
     _today = datetime.now().strftime("%Y-%m-%d")
     hyp_recorded = {
@@ -339,12 +359,19 @@ def main():
 
     def _sel_key(c):
         hyp_id, intel, match = c
+        # 主键：情报关键词命中数（实测 AUC 0.62，唯一的强信号）
         try:
-            base = float(intel.get("base_score") or 0)
+            kw = len(intel.get("keywords_hit") or [])
         except (TypeError, ValueError):
-            base = 0.0
+            kw = 0
+        # 次键：正文长度（破 kw 并列；实测 AUC 0.59）
+        try:
+            blen = len(str(intel.get("cn_summary") or intel.get("content_preview")
+                            or intel.get("content") or ""))
+        except (TypeError, ValueError):
+            blen = 0
         return (0 if match.get("method") == "tfidf" else 1,
-                -float(match.get("relevance_score") or 0), -base)
+                -(kw * 10 + blen / 100.0))
 
     for hyp_id, intel, match in sorted(candidates, key=_sel_key):
         if hyp_recorded.get(hyp_id, 0) >= EVIDENCE_DAILY_CAP:
