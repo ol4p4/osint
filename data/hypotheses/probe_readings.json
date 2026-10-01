@@ -222,5 +222,135 @@
     ]
    }
   }
+ },
+ {
+  "at": "2026-09-30T11:34:47",
+  "window": "2026-09-27 ~ 2026-09-30",
+  "samples": 200,
+  "gate_threshold": 0.08,
+  "strong_threshold": 0.2,
+  "stats": {
+   "hyp_e2b46e32": {
+    "samples": 200,
+    "mention_count": 46,
+    "mention_ratio": 0.23,
+    "signal_count": 5,
+    "signal_ratio": 0.025,
+    "max_gate": 0.23,
+    "mean_gate": 0.0674,
+    "strong_signals": [
+     0.23,
+     0.23,
+     0.21,
+     0.21,
+     0.2
+    ]
+   },
+   "mega_war3": {
+    "samples": 200,
+    "mention_count": 53,
+    "mention_ratio": 0.265,
+    "signal_count": 4,
+    "signal_ratio": 0.02,
+    "max_gate": 0.26,
+    "mean_gate": 0.0649,
+    "strong_signals": [
+     0.26,
+     0.25,
+     0.24,
+     0.2
+    ]
+   },
+   "hyp_d26158d3": {
+    "samples": 200,
+    "mention_count": 9,
+    "mention_ratio": 0.045,
+    "signal_count": 0,
+    "signal_ratio": 0.0,
+    "max_gate": 0.14,
+    "mean_gate": 0.0454,
+    "strong_signals": []
+   },
+   "mega_global_economic_crisis": {
+    "samples": 200,
+    "mention_count": 114,
+    "mention_ratio": 0.57,
+    "signal_count": 10,
+    "signal_ratio": 0.05,
+    "max_gate": 0.29,
+    "mean_gate": 0.0961,
+    "strong_signals": [
+     0.29,
+     0.28,
+     0.23,
+     0.22,
+     0.22,
+     0.22,
+     0.21,
+     0.2,
+     0.2,
+     0.2
+    ]
+   }
+  }
+ },
+ {
+  "at": "2026-10-01T09:41:58",
+  "window": "2026-09-28 ~ 2026-10-01",
+  "samples": 200,
+  "gate_threshold": 0.08,
+  "strong_threshold": 0.2,
+  "stats": {
+   "mega_global_economic_crisis": {
+    "samples": 200,
+    "mention_count": 106,
+    "mention_ratio": 0.53,
+    "signal_count": 5,
+    "signal_ratio": 0.025,
+    "max_gate": 0.3,
+    "mean_gate": 0.0901,
+    "strong_signals": [
+     0.3,
+     0.23,
+     0.21,
+     0.21,
+     0.2
+    ]
+   },
+   "mega_war3": {
+    "samples": 200,
+    "mention_count": 41,
+    "mention_ratio": 0.205,
+    "signal_count": 0,
+    "signal_ratio": 0.0,
+    "max_gate": 0.19,
+    "mean_gate": 0.058,
+    "strong_signals": []
+   },
+   "hyp_e2b46e32": {
+    "samples": 200,
+    "mention_count": 39,
+    "mention_ratio": 0.195,
+    "signal_count": 3,
+    "signal_ratio": 0.015,
+    "max_gate": 0.22,
+    "mean_gate": 0.0649,
+    "strong_signals": [
+     0.22,
+     0.21,
+     0.21
+    ]
+   },
+   "hyp_d26158d3": {
+    "samples": 200,
+    "mention_count": 12,
+    "mention_ratio": 0.06,
+    "signal_count": 0,
+    "signal_ratio": 0.0,
+    "max_gate": 0.14,
+    "mean_gate": 0.0453,
+    "strong_signals": []
+   }
+  }
  }
 ]

@@ -17,8 +17,10 @@ def load_today_intel():
     today = datetime.now().strftime("%Y%m%d")
     intel_file = INTEL_DIR / f"intel_{today}.jsonl"
     if not intel_file.exists():
-        # Try latest file
-        files = sorted(INTEL_DIR.glob("intel_*.jsonl"), reverse=True)
+        # Try latest file（排除 raw/final——字符串排序会把 intel_final_* 排到最前，
+        # 那个残留文件不是当日数据；见 link_intel_hyp.py 同类修复 2026-09-30）
+        files = [f for f in sorted(INTEL_DIR.glob("intel_2*.jsonl"), reverse=True)
+                 if "raw" not in f.name and "final" not in f.name]
         if files:
             intel_file = files[0]
         else:

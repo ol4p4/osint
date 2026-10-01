@@ -341,7 +341,10 @@ def evaluate_hypothesis(hyp, evidence_from_intel=None):
 
 def load_intel_for_matching():
     """Load recent intelligence for hypothesis matching"""
-    files = sorted(INTEL_DIR.glob("intel_*.jsonl"), reverse=True)[:3]  # Last 3 days
+    # 排除 raw/final 且按日期排序（2026-09-30 修）：字符串排序会把
+    # intel_final_* 排到 intel_2* 之前，挤占 3 天窗口的名额。
+    files = [f for f in sorted(INTEL_DIR.glob("intel_2*.jsonl"), reverse=True)
+             if "raw" not in f.name and "final" not in f.name][:3]  # Last 3 days
 
     intel_items = []
     for f in files:

@@ -224,8 +224,17 @@ def update_hyp_evidence(hyp, intel, match_info):
 def main():
     with open(HYP_FILE, "r", encoding="utf-8") as f:
         hyps = json.load(f)
-    
-    intel_files = sorted(INTEL_DIR.glob("intel_*.jsonl"), reverse=True)[:3]
+
+    # 取最近 3 天的正式情报文件。
+    #
+    # **必须按日期排序且排除 raw/final（2026-09-30 修）**：原实现是
+    # `sorted(glob("intel_*.jsonl"), reverse=True)[:3]`，字符串排序会把
+    # `intel_final_20260829.jsonl`（`f` > `2`）排在 `intel_2026*` 之前，
+    # 于是那个一个月前的 5 条残留文件占掉 3 个名额之一 —— 实测生产只读到
+    # 2 天数据（9-29 的 2796 条被挤掉）。`tools/fetch_now.py` 的注释写明
+    # `intel_raw_*`/`intel_final_*` 不参与下游，这里此前没落实。
+    intel_files = [f for f in sorted(INTEL_DIR.glob("intel_2*.jsonl"), reverse=True)
+                   if "raw" not in f.name and "final" not in f.name][:3]
     all_intel = []
     for f in intel_files:
         with open(f, "r", encoding="utf-8") as fh:
@@ -236,6 +245,8 @@ def main():
                         all_intel.append(json.loads(line))
                     except:
                         pass
+    print(f"[LINK] 读取 {len(intel_files)} 个情报文件: "
+          + ", ".join(f.name for f in intel_files))
 
     # P0-3 事件聚类 + P1-1 TF-IDF 向量：共用 cluster_stories 分词器（失败不阻塞，退化原行为）
     cs = _load_cluster_module()
