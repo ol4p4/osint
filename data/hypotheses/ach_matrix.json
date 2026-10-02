@@ -425582,6 +425582,633 @@
    },
    "model": "jev",
    "diagnosed_at": "2026-10-01T12:50:09"
+  },
+  {
+   "key": "ev_90a1a1e1ce",
+   "date": "2026-10-01",
+   "summary": "三峡枢纽2026年前三季度通过量达1.2亿吨",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.33
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.33
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.33
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.33
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.33
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.33
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-02T11:50:38"
+  },
+  {
+   "key": "ev_4a08afa231",
+   "date": "2026-10-01",
+   "summary": "【希腊呼吁欧盟提供财政灵活性，应对能源成本上涨】金十数据9月30日讯，希腊总理米佐塔基斯呼吁欧盟允许更大的财政灵活空间，",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.78
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.78
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.78
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.78
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.78
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.78
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-02T11:50:39"
+  },
+  {
+   "key": "ev_a2f7418321",
+   "date": "2026-10-01",
+   "summary": "【欧盟就沙特空域发布安全建议 】欧盟航空安全局9月30日表示，今年9月也门胡塞武装加大了对沙特海上、能源和基础设施目标的",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 2.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 2.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.0
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-02T11:50:39"
+  },
+  {
+   "key": "ev_bcba646b9e",
+   "date": "2026-10-01",
+   "summary": "中国成第二大投资来源地，新加坡如何接住中企出海新命题",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.56
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.56
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.56
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.56
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.56
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.56
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-02T11:50:40"
+  },
+  {
+   "key": "ev_6803bfd919",
+   "date": "2026-10-01",
+   "summary": "国家外汇管理局：我国经常账户收支总额为4.6万亿美元 同比增长16%",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.47
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.47
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.47
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.47
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.47
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.47
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-02T11:50:40"
+  },
+  {
+   "key": "ev_3222e6bad9",
+   "date": "2026-10-01",
+   "summary": "如何应对中国产能过剩？",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.87
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.86,
+     "gate": 0.14,
+     "selectivity": 1.87
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.87
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.87
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.87
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.87
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-02T11:50:40"
+  },
+  {
+   "key": "ev_1bf04c0f44",
+   "date": "2026-10-01",
+   "summary": "印度贸易部长与美国贸易代表讨论临时协议以推动双边贸易协定",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.83
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.83
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.83
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.83
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.83
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.83
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-02T11:50:41"
+  },
+  {
+   "key": "ev_d696827253",
+   "date": "2026-10-01",
+   "summary": "加元跌至三个月低点；美元/加元报1.4245",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.45
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.45
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.45
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.45
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.45
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.45
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-02T11:50:41"
+  },
+  {
+   "key": "ev_2112e30afe",
+   "date": "2026-10-01",
+   "summary": "美光科技CEO：已锁定约1500亿美元长期订单，2027和2028年存储市场供需将更紧缺",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 3.83
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 3.83
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 3.83
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 3.83
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.76,
+     "gate": 0.23,
+     "selectivity": 3.83
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.86,
+     "gate": 0.15,
+     "selectivity": 3.83
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-02T11:50:42"
+  },
+  {
+   "key": "ev_861d96b038",
+   "date": "2026-10-01",
+   "summary": "这一方向，资金逆势加仓",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.25
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.25
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.25
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-02T11:50:42"
+  },
+  {
+   "key": "ev_a8de81dd74",
+   "date": "2026-10-01",
+   "summary": "中国铁路今日预计发送旅客2480万人次，迎国庆假期客流高峰",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 2.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.0
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-02T11:50:43"
   }
  ],
  "diagnosis": {},
@@ -425635,7 +426262,7 @@
    "reliability": "strong"
   }
  },
- "updated": "2026-10-01 04:51",
+ "updated": "2026-10-02 03:52",
  "hypotheses": [
   {
    "id": "HM100",
@@ -425671,7 +426298,7 @@
  "sensitivity": {
   "top1": "HM002",
   "flips": 0,
-  "n_evidence": 6276,
+  "n_evidence": 6287,
   "items": [
    {
     "key": "ev_4680270a87",
@@ -425774,7 +426401,7 @@
     "moved_hyp": "HM100"
    }
   ],
-  "updated_at": "2026-10-01T12:51:52"
+  "updated_at": "2026-10-02T11:52:14"
  },
- "updated_at": "2026-10-01T04:51:52.092144+00:00"
+ "updated_at": "2026-10-02T03:52:14.238748+00:00"
 }
