@@ -119,8 +119,31 @@ def _safe_ai_post(url, payload, headers, timeout=180):
     if t.is_alive():
         raise TimeoutError("AI endpoint unresponsive (slow-drip bypassed socket timeout)")
     if "err" in box:
-        raise box["err"]
+        raise _enrich_http_error(box["err"])
     return box["raw"]
+
+
+def _enrich_http_error(e):
+    """给 HTTPError 补读响应体（2026-10-04）。
+
+    背景：urllib 的 HTTPError.__str__() 只有 "HTTP Error 403: Forbidden"，而真正
+    的原因只在响应体里——同样是 403，可能是「鉴权失败」（端点已死，该熔断）、
+    「配额耗尽」（该退避）、或「内容安全审查」（端点健康，换 prompt 立刻可用）。
+    三者处理方式完全相反，只看状态码必然误判（AGENTS.md 记录过 dots 内容拦截被
+    当成端点死亡拉黑 30 分钟的踩坑）。
+
+    analyze.py 的 _call_api 早已在捕获处补读 body，但 translate_local.py 与
+    citizen_impact.py 直接调 _safe_ai_post 且**没有**这一步——日志里只留
+    "HTTP Error 403: Forbidden" 看不到真实原因。把补读下沉到共用的 _safe_ai_post，
+    三个模块一次受益。"""
+    if isinstance(e, urllib.error.HTTPError):
+        try:
+            detail = e.read().decode("utf-8", "replace")[:400]
+        except Exception:
+            detail = ""
+        if detail:
+            return RuntimeError("HTTP " + str(e.code) + " " + str(e.reason) + " | " + detail)
+    return e
 
 @dataclass
 class AnalysisResult:
