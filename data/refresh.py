@@ -548,10 +548,24 @@ def commit_hypotheses():
     但此前改动从不提交 → 71 节点唯一资产无版本历史, 且工作区脏文件 + 远端变更
     会让裸 git pull（local_sync.git_pull 无 stash 容错）永久失败。
     本地是假设树的唯一写入方（CI 的 link/verify 步骤已删除）；rebase/push 失败
-    静默跳过留下轮重试，不阻塞 refresh 主流程。"""
-    files = ["data/hypotheses/active_hypotheses.json", "data/hypotheses/ach_matrix.json"]
+    静默跳过留下轮重试，不阻塞 refresh 主流程。
+
+    2026-10-04 修：原先硬编码只提交 active_hypotheses.json + ach_matrix.json，
+    而探针步骤写的 probe_readings.json 同样被 git 追踪却从不提交 → 工作区永久
+    残留脏文件 → commit_hypotheses 自己的 `git pull --rebase` 与下一轮
+    local_sync.git_pull 全部因 "cannot pull with rebase: You have unstaged changes"
+    失败 → 本地假设树 commit 长期推不上远端（实测积压 6 个 commit）。
+    改为动态取 data/hypotheses/ 下**已被追踪**的文件：既覆盖 probe_readings，
+    也自动纳入日后新增的追踪文件，同时不会误把未追踪的 proposed_*.json 拉进库。"""
     try:
-        subprocess.run(["git", "add", *files], cwd=str(PROJECT), capture_output=True,
+        ls = subprocess.run(["git", "ls-files", "data/hypotheses/"], cwd=str(PROJECT),
+                            capture_output=True, text=True, timeout=60,
+                            creationflags=_NO_WINDOW)
+        files = [ln.strip() for ln in (ls.stdout or "").splitlines() if ln.strip()]
+        if not files:
+            print("hyp-commit: data/hypotheses/ 无追踪文件, 跳过")
+            return
+        subprocess.run(["git", "add", "--", *files], cwd=str(PROJECT), capture_output=True,
                        text=True, timeout=60, creationflags=_NO_WINDOW)
         # --quiet: 有 staged 变更返回 1, 无变更返回 0
         diff = subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=str(PROJECT),
@@ -565,7 +579,7 @@ def commit_hypotheses():
         if c.returncode != 0:
             print(f"hyp-commit: commit 失败: {(c.stderr or '')[:150]}")
             return
-        rb = subprocess.run(["git", "pull", "--rebase", "origin", "master"], cwd=str(PROJECT),
+        rb = subprocess.run(["git", "pull", "--rebase", "--autostash", "origin", "master"], cwd=str(PROJECT),
                             capture_output=True, text=True, timeout=180, creationflags=_NO_WINDOW)
         if rb.returncode != 0:
             # 冲突时回退 rebase 中间态, 保住本地 commit 留待下轮, 避免污染后续 git_pull

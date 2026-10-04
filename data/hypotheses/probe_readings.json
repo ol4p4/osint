@@ -352,5 +352,202 @@
     "strong_signals": []
    }
   }
+ },
+ {
+  "at": "2026-10-02T11:53:36",
+  "window": "2026-09-29 ~ 2026-10-02",
+  "samples": 200,
+  "gate_threshold": 0.08,
+  "strong_threshold": 0.2,
+  "stats": {
+   "mega_global_economic_crisis": {
+    "samples": 200,
+    "mention_count": 114,
+    "mention_ratio": 0.57,
+    "signal_count": 6,
+    "signal_ratio": 0.03,
+    "max_gate": 0.25,
+    "mean_gate": 0.0954,
+    "strong_signals": [
+     0.25,
+     0.24,
+     0.21,
+     0.21,
+     0.2,
+     0.2
+    ]
+   },
+   "mega_war3": {
+    "samples": 200,
+    "mention_count": 30,
+    "mention_ratio": 0.15,
+    "signal_count": 1,
+    "signal_ratio": 0.005,
+    "max_gate": 0.29,
+    "mean_gate": 0.0569,
+    "strong_signals": [
+     0.29
+    ]
+   },
+   "hyp_d26158d3": {
+    "samples": 200,
+    "mention_count": 7,
+    "mention_ratio": 0.035,
+    "signal_count": 0,
+    "signal_ratio": 0.0,
+    "max_gate": 0.13,
+    "mean_gate": 0.0471,
+    "strong_signals": []
+   },
+   "hyp_e2b46e32": {
+    "samples": 200,
+    "mention_count": 49,
+    "mention_ratio": 0.245,
+    "signal_count": 3,
+    "signal_ratio": 0.015,
+    "max_gate": 0.23,
+    "mean_gate": 0.0674,
+    "strong_signals": [
+     0.23,
+     0.22,
+     0.2
+    ]
+   }
+  }
+ },
+ {
+  "at": "2026-10-03T09:44:54",
+  "window": "2026-09-30 ~ 2026-10-03",
+  "samples": 200,
+  "gate_threshold": 0.08,
+  "strong_threshold": 0.2,
+  "stats": {
+   "mega_war3": {
+    "samples": 200,
+    "mention_count": 37,
+    "mention_ratio": 0.185,
+    "signal_count": 4,
+    "signal_ratio": 0.02,
+    "max_gate": 0.27,
+    "mean_gate": 0.06,
+    "strong_signals": [
+     0.27,
+     0.22,
+     0.21,
+     0.2
+    ]
+   },
+   "hyp_e2b46e32": {
+    "samples": 200,
+    "mention_count": 52,
+    "mention_ratio": 0.26,
+    "signal_count": 1,
+    "signal_ratio": 0.005,
+    "max_gate": 0.22,
+    "mean_gate": 0.0661,
+    "strong_signals": [
+     0.22
+    ]
+   },
+   "mega_global_economic_crisis": {
+    "samples": 200,
+    "mention_count": 124,
+    "mention_ratio": 0.62,
+    "signal_count": 9,
+    "signal_ratio": 0.045,
+    "max_gate": 0.25,
+    "mean_gate": 0.0968,
+    "strong_signals": [
+     0.25,
+     0.23,
+     0.22,
+     0.21,
+     0.21,
+     0.21,
+     0.21,
+     0.2,
+     0.2
+    ]
+   },
+   "hyp_d26158d3": {
+    "samples": 200,
+    "mention_count": 10,
+    "mention_ratio": 0.05,
+    "signal_count": 0,
+    "signal_ratio": 0.0,
+    "max_gate": 0.13,
+    "mean_gate": 0.0484,
+    "strong_signals": []
+   }
+  }
+ },
+ {
+  "at": "2026-10-04T10:43:32",
+  "window": "2026-10-01 ~ 2026-10-04",
+  "samples": 200,
+  "gate_threshold": 0.08,
+  "strong_threshold": 0.2,
+  "stats": {
+   "mega_war3": {
+    "samples": 200,
+    "mention_count": 37,
+    "mention_ratio": 0.185,
+    "signal_count": 6,
+    "signal_ratio": 0.03,
+    "max_gate": 0.3,
+    "mean_gate": 0.0625,
+    "strong_signals": [
+     0.3,
+     0.28,
+     0.25,
+     0.22,
+     0.21,
+     0.21
+    ]
+   },
+   "mega_global_economic_crisis": {
+    "samples": 200,
+    "mention_count": 116,
+    "mention_ratio": 0.58,
+    "signal_count": 12,
+    "signal_ratio": 0.06,
+    "max_gate": 0.37,
+    "mean_gate": 0.1016,
+    "strong_signals": [
+     0.37,
+     0.32,
+     0.29,
+     0.26,
+     0.25,
+     0.24,
+     0.24,
+     0.23,
+     0.22,
+     0.21
+    ]
+   },
+   "hyp_e2b46e32": {
+    "samples": 200,
+    "mention_count": 59,
+    "mention_ratio": 0.295,
+    "signal_count": 1,
+    "signal_ratio": 0.005,
+    "max_gate": 0.22,
+    "mean_gate": 0.0675,
+    "strong_signals": [
+     0.22
+    ]
+   },
+   "hyp_d26158d3": {
+    "samples": 200,
+    "mention_count": 13,
+    "mention_ratio": 0.065,
+    "signal_count": 0,
+    "signal_ratio": 0.0,
+    "max_gate": 0.13,
+    "mean_gate": 0.0483,
+    "strong_signals": []
+   }
+  }
  }
 ]
