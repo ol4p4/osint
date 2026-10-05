@@ -26,24 +26,10 @@ from urllib.parse import urlparse
 
 AI_ALLOWED_HOST = "opencode.ai"
 DOTS_BASE = "https://note3-prev-api.askdiandian.com/v1"  # 备援通道（2026-09-19 接入，analyze.py 同款）
-# Google Gemini（2026-10-05 接入）：OpenCode 免费层已锁死
-# （"free tier can only be used from within OpenCode"）、dots key 只在本地 config.local.yaml，
-# CI 拿不到 → impact 步骤长期 analyzed 0/50 空转。Gemini key 存 GitHub Secrets，
-# CI（美国服务器）可直连 generativelanguage.googleapis.com（本机境内不可达，只作 CI 通道）。
-# 注意：新签发的 key 是 `AQ.` 开头（Auth key），**只在原生 :generateContent 端点可用**，
-# OpenAI 兼容端点（/v1beta/openai/...）会返回 404 —— 故这里走原生端点 + x-goog-api-key 头。
-GEMINI_BASE = "https://generativelanguage.googleapis.com/v1beta"
-# 候选模型链（2026-10-05 CI 实测探测确定）：
-#   gemini-3.5-flash-lite / 3.1-flash-lite / 3.5-flash → HTTP 200
-#   gemini-2.5-flash-lite / 2.5-flash / 2.5-pro        → HTTP 404（对新用户下架）
-# 按「快/便宜优先」排序，逐个尝试，404/400 换下一个（404 不耗 token，代价可忽略）。
-# 保留一个 2.5 代在末尾：若账号白名单日后放开可自动回退到更便宜的档。
-GEMINI_MODELS = [
-    "gemini-3.5-flash-lite",
-    "gemini-3.1-flash-lite",
-    "gemini-3.5-flash",
-    "gemini-2.5-flash-lite",
-]
+# Google Gemini（2026-10-05 接入）：通道链首。OpenCode 免费层已锁死
+# （"free tier can only be used from within OpenCode"）、dots key 只在本地
+# config.local.yaml（CI 拿不到）→ impact 曾长期 analyzed 0/50。
+# 实现见 local/gemini_client.py（原生 :generateContent + 可达性预检 + 模型链）。
 MAX_PER_RUN = 50
 BATCH_SIZE = 5
 
@@ -64,7 +50,7 @@ GRADUATE_CONTEXT = (
 def _safe_ai_post(url, payload, headers, timeout=120):
     """SSRF 防护：仅 https + 白名单域名 + 解析结果不得指向私有/环回/保留地址"""
     parsed = urlparse(url)
-    allowed = (AI_ALLOWED_HOST, urlparse(DOTS_BASE).hostname, urlparse(GEMINI_BASE).hostname)
+    allowed = (AI_ALLOWED_HOST, urlparse(DOTS_BASE).hostname)
     if parsed.scheme != "https" or (parsed.hostname or "") not in allowed:
         raise ValueError("blocked non-whitelisted AI endpoint: " + url)
     for info in socket.getaddrinfo(parsed.hostname, 443):
@@ -97,14 +83,20 @@ def call_ai(config, prompt):
     except Exception:
         key = api_cfg.get("api_key", "")
     attempts = []
+    # 通道顺序（2026-10-05 用户指定）：Gemini 优先 → dots 备援 → OpenCode（已锁死，垫底）。
+    # Gemini 带可达性预检（本地境内不可达时跳过，避免每批白等 48s）。
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+        from secrets_loader import get_gemini_key
+        from local.gemini_client import generate as _gemini_generate, reachable as _gemini_reachable
+        gkey = get_gemini_key()
+        if gkey and _gemini_reachable():
+            attempts.append({"provider": "gemini", "model": "gemini", "api_key": gkey})
+    except Exception as e:
+        print("[IMPACT] gemini 通道初始化跳过: " + str(e)[:120])
     dkey = _dots_key()
     if dkey:
         attempts.append({"base_url": DOTS_BASE, "model": "dots3-note-prev", "api_key": dkey})
-    # Gemini 通道（2026-10-05）：CI 上 dots key 缺失、opencode 已锁死 → 实际由它顶上；
-    # 本地 dots 可用（~1s）故排其后。key 来自 GitHub Secrets，本地通常没有（境外不可达）。
-    gkey = os.environ.get("GEMINI_API_KEY", "").strip()
-    if gkey:
-        attempts.append({"provider": "gemini", "model": GEMINI_MODELS[0], "api_key": gkey})
     attempts.append({"base_url": api_cfg.get("base_url"), "model": api_cfg.get("model"),
                      "api_key": key})
     for fb in (api_cfg.get("fallback_models") or []):
@@ -115,7 +107,7 @@ def call_ai(config, prompt):
     for m in attempts:
         try:
             if m.get("provider") == "gemini":
-                content = _gemini_generate(m["api_key"], prompt)
+                content = _gemini_generate(m["api_key"], prompt, system_prompt=SYSTEM_PROMPT)
                 if content and content.strip():
                     return content.strip()
                 raise ValueError("empty response")
@@ -125,7 +117,10 @@ def call_ai(config, prompt):
                 "messages": [{"role": "system", "content": SYSTEM_PROMPT},
                              {"role": "user", "content": prompt}],
                 "temperature": 0.3,
-                "max_tokens": 3000,
+                # 2026-10-05 修：dots3 是推理模型，reasoning 计入 max_tokens。原先 3000
+                # 对 5 条批次不够（实测中文 reasoning 吃光配额，正文被挤成半截 → 解析 0 条，
+                # 整批退化）。translate_local 早已为同样问题提到 12288，此处漏改。
+                "max_tokens": 12288,
             }).encode("utf-8")
             headers = {
                 "Content-Type": "application/json",
@@ -149,56 +144,18 @@ def call_ai(config, prompt):
                         content = v
                         break
             if content and content.strip():
+                # dots3 推理模型偶发把思维链当正文返回（实测中文："首先，用户要求…"），
+                # 正文被挤掉 → 判为失败走下一通道。判据用"无 JSON 数组起始符"：
+                # 精确且不会误杀"reasoning + JSON"混合响应（那种 parse 能救回）。
+                if "[" not in content:
+                    raise ValueError("model returned reasoning trace instead of JSON: "
+                                     + content.lstrip()[:120])
                 return content.strip()
             raise ValueError("empty response")
         except Exception as e:
             last_err = e
             print("[IMPACT] model " + str(m.get("model")) + " failed: " + str(e))
     raise last_err if last_err else RuntimeError("no models available")
-
-
-def _gemini_generate(api_key, prompt):
-    """Gemini 原生 generateContent 调用（2026-10-05）。
-
-    为何不用 OpenAI 兼容端点：新签发的 key 是 `AQ.` 开头的 Auth key，
-    实测在 /v1beta/openai/chat/completions 返回 404（该兼容层只认旧的 AIza 格式），
-    但原生 :generateContent 正常。故走原生端点 + x-goog-api-key 头。
-
-    模型链：Google 对新用户下架了 2.5 代（404），故按 GEMINI_MODELS 逐个尝试，
-    404/400 换下一个，命中即返回。"""
-    last = None
-    for model in GEMINI_MODELS:
-        url = GEMINI_BASE + "/models/" + model + ":generateContent"
-        body = {
-            "system_instruction": {"parts": [{"text": SYSTEM_PROMPT}]},
-            "contents": [{"role": "user", "parts": [{"text": prompt}]}],
-            "generationConfig": {"temperature": 0.3, "maxOutputTokens": 8192},
-        }
-        headers = {
-            "Content-Type": "application/json",
-            "x-goog-api-key": api_key,
-            "User-Agent": "osint-ci/1.0",
-        }
-        try:
-            raw = _safe_ai_post(url, json.dumps(body).encode("utf-8"), headers, 150)
-            result = json.loads(raw)
-        except urllib.error.HTTPError as e:
-            last = e
-            print("[IMPACT] gemini " + model + " HTTP " + str(e.code) + ", 尝试下一个")
-            continue
-        cands = result.get("candidates") or []
-        if not cands:
-            fb = result.get("promptFeedback") or {}
-            last = ValueError("gemini no candidates: " + json.dumps(fb, ensure_ascii=False)[:200])
-            continue
-        parts = (cands[0].get("content") or {}).get("parts") or []
-        text = "".join(p.get("text", "") for p in parts if isinstance(p, dict))
-        if not text.strip():
-            last = ValueError("gemini empty text (finishReason=" + str(cands[0].get("finishReason")) + ")")
-            continue
-        print("[IMPACT] gemini 命中模型: " + model)
-        return text
-    raise last if last else RuntimeError("gemini: no model available")
 
 
 def parse_json_array(text):
@@ -221,8 +178,47 @@ def parse_json_array(text):
                 try:
                     return json.loads(text[start:i + 1])
                 except Exception:
-                    return []
-    return []
+                    break   # 整体解析失败 → 走下面的逐条抢救
+    # 2026-10-05 新增：逐条抢救截断的 JSON 数组（对齐 analyze._salvage_items）。
+    # 推理模型输出常在中途被 max_tokens 截断，旧实现直接返回 [] → 整批退化；
+    # 这里按 "{" 起、配对 "}" 止提取，已完整输出的对象全部保住。
+    return _salvage_objects(text[start:])
+
+
+def _salvage_objects(text):
+    """从（可能被截断的）JSON 数组文本里逐条提取完整对象。"""
+    items = []
+    depth = 0
+    obj_start = -1
+    in_string = False
+    escaped = False
+    for idx, ch in enumerate(text):
+        if in_string:
+            if escaped:
+                escaped = False
+            elif ch == "\\":
+                escaped = True
+            elif ch == '"':
+                in_string = False
+            continue
+        if ch == '"':
+            in_string = True
+        elif ch == "{":
+            if depth == 0:
+                obj_start = idx
+            depth += 1
+        elif ch == "}":
+            if depth > 0:
+                depth -= 1
+                if depth == 0 and obj_start >= 0:
+                    try:
+                        obj = json.loads(text[obj_start:idx + 1])
+                        if isinstance(obj, dict) and obj.get("id"):
+                            items.append(obj)
+                    except Exception:
+                        pass
+                    obj_start = -1
+    return items
 
 
 def _worldview_block():

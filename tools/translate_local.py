@@ -58,6 +58,40 @@ def _parse_response(content):
     return json.loads(content)
 
 
+def _apply_translations(batch, translations, batch_idx):
+    """把模型返回的译文写回 batch 条目，返回成功条数。
+
+    2026-09-04 修复: 原按位置 batch[j] 匹配, 模型返回乱序时译文张冠李戴。
+    改按 id 匹配; 模型未返回 id 时退回按位置(兼容), 并打日志提示。"""
+    n = 0
+    trans_have_id = any(isinstance(t, dict) and t.get("id") for t in translations)
+    if trans_have_id:
+        by_id = {t.get("id"): t for t in translations if isinstance(t, dict) and t.get("id")}
+        for it in batch:
+            trans = by_id.get(it.get("id", ""))
+            if not trans:
+                continue
+            it.update({
+                "cn_title": trans.get("cn_title", ""),
+                "cn_summary": trans.get("cn_summary", ""),
+                "impact": trans.get("impact", ""),
+                "language": "cn",
+            })
+            n += 1
+    else:
+        print(f"[translate_local] batch {batch_idx}: model returned no ids, falling back to positional match")
+        for j, trans in enumerate(translations):
+            if j < len(batch) and isinstance(trans, dict):
+                batch[j].update({
+                    "cn_title": trans.get("cn_title", ""),
+                    "cn_summary": trans.get("cn_summary", ""),
+                    "impact": trans.get("impact", ""),
+                    "language": "cn",
+                })
+                n += 1
+    return n
+
+
 def translate_batch(items, api_key, deadline=None):
     """items: list[dict] (单条情报); 返回 (translated, failed) 计数"""
     if not api_key:
@@ -78,8 +112,17 @@ def translate_batch(items, api_key, deadline=None):
 
         prompt = _build_prompt()
         batch_done = False
-        # 通道链: dots 备援在链首(有 key 时), 后接 OpenCode 模型链——限流时不再逐模型白等
+        # 通道链（2026-10-05 用户指定顺序）: Gemini 优先 → dots 备援 → OpenCode 模型链。
+        # Gemini 带可达性预检：本地境内不可达时跳过（否则每批白等 ~48s 黑洞超时）。
         channels = []
+        try:
+            from secrets_loader import get_gemini_key
+            from local.gemini_client import generate as _gemini_generate, reachable as _gemini_reachable
+            gkey = get_gemini_key()
+            if gkey and _gemini_reachable():
+                channels.append({"provider": "gemini", "model": "gemini", "api_key": gkey})
+        except Exception as e:
+            print(f"[translate_local] gemini 通道初始化跳过: {str(e)[:120]}")
         dkey = get_dots_key()
         if dkey:
             channels.append({"base_url": DOTS_BASE, "model": DOTS_MODEL, "api_key": dkey})
@@ -88,6 +131,22 @@ def translate_batch(items, api_key, deadline=None):
             if batch_done:
                 break
             model = ch["model"]
+            if ch.get("provider") == "gemini":
+                for attempt in range(2):
+                    try:
+                        content = _gemini_generate(ch["api_key"], prompt + "\n\n" + "\n".join(texts))
+                        translations = _parse_response(content)
+                        if not isinstance(translations, list):
+                            raise ValueError("not a JSON array")
+                        translated += _apply_translations(batch, translations, i//BATCH_SIZE)
+                        batch_done = True
+                        break
+                    except Exception as e:
+                        if attempt == 0:
+                            print(f"[translate_local] batch {i//BATCH_SIZE} [gemini] attempt 1 failed: {e}, retrying")
+                        else:
+                            print(f"[translate_local] batch {i//BATCH_SIZE} [gemini] failed: {e}, trying next model")
+                continue
             payload = json.dumps({
                 "model": ch["model"],
                 "messages": [{"role": "user", "content": prompt + "\n\n" + "\n".join(texts)}],
@@ -126,33 +185,7 @@ def translate_batch(items, api_key, deadline=None):
                     translations = _parse_response(content)
                     if not isinstance(translations, list):
                         raise ValueError("not a JSON array")
-                    # 2026-09-04 修复: 原按位置 batch[j] 匹配, 模型返回乱序时译文张冠李戴。
-                    # 改按 id 匹配; 模型未返回 id 时退回按位置(兼容), 并打日志提示
-                    trans_have_id = any(isinstance(t, dict) and t.get("id") for t in translations)
-                    if trans_have_id:
-                        by_id = {t.get("id"): t for t in translations if isinstance(t, dict) and t.get("id")}
-                        for it in batch:
-                            trans = by_id.get(it.get("id", ""))
-                            if not trans:
-                                continue
-                            it.update({
-                                "cn_title": trans.get("cn_title", ""),
-                                "cn_summary": trans.get("cn_summary", ""),
-                                "impact": trans.get("impact", ""),
-                                "language": "cn",
-                            })
-                            translated += 1
-                    else:
-                        print(f"[translate_local] batch {i//BATCH_SIZE}: model returned no ids, falling back to positional match")
-                        for j, trans in enumerate(translations):
-                            if j < len(batch) and isinstance(trans, dict):
-                                batch[j].update({
-                                    "cn_title": trans.get("cn_title", ""),
-                                    "cn_summary": trans.get("cn_summary", ""),
-                                    "impact": trans.get("impact", ""),
-                                    "language": "cn",
-                                })
-                                translated += 1
+                    translated += _apply_translations(batch, translations, i//BATCH_SIZE)
                     batch_done = True
                     break
                 except Exception as e:

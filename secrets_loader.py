@@ -103,3 +103,24 @@ def get_jev_key() -> str:
         except Exception:
             pass
     return ""
+
+
+def get_gemini_key() -> str:
+    """Google Gemini key（2026-10-05 接入，AI 通道链首）。
+
+    端点 generativelanguage.googleapis.com（原生 :generateContent）。
+    key 来源：环境变量 GEMINI_API_KEY（CI 用 GitHub Secrets 注入；本地通常没有，
+    因境内到 Google 不可达），或本地配置文件 gemini.api_key。
+    """
+    key = os.environ.get("GEMINI_API_KEY", "")
+    if key:
+        return key
+    local = _ROOT / "config.local.yaml"
+    if local.exists():
+        try:
+            import yaml
+            cfg = yaml.safe_load(local.read_text(encoding="utf-8")) or {}
+            return (cfg.get("gemini") or {}).get("api_key", "") or ""
+        except Exception:
+            pass
+    return ""
