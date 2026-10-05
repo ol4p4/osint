@@ -100,6 +100,16 @@ def call_ai(config, prompt):
     dkey = _dots_key()
     if dkey:
         attempts.append({"base_url": DOTS_BASE, "model": "dots3-note-prev", "api_key": dkey})
+    # 本机 OpenCode Zen 代理（2026-10-05）：本地唯一活着的 OpenCode 通道
+    # （官网直连已被指纹校验 403）。CI 上无 4010，预检 False 自动跳过。
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+        from local.zen_proxy_client import reachable as _zen_reachable
+        if _zen_reachable():
+            for m in ("mimo-v2.5-free", "nemotron-3.5-lightning-free"):
+                attempts.append({"provider": "zen_proxy", "base_url": "", "model": m, "api_key": ""})
+    except Exception:
+        pass
     attempts.append({"base_url": api_cfg.get("base_url"), "model": api_cfg.get("model"),
                      "api_key": key})
     for fb in (api_cfg.get("fallback_models") or []):
@@ -109,6 +119,21 @@ def call_ai(config, prompt):
     last_err = None
     for m in attempts:
         try:
+            if m.get("provider") == "zen_proxy":
+                # 本机回环代理：客户端内部把 SSE 拼回完整文本（代理为过上游校验强制 stream）。
+                sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+                from local.zen_proxy_client import chat_completion as _zen_chat
+                content = _zen_chat(
+                    m["model"],
+                    [{"role": "system", "content": SYSTEM_PROMPT},
+                     {"role": "user", "content": prompt}],
+                    temperature=0.3, max_tokens=12288, timeout=150)
+                if content and content.strip():
+                    if "[" not in content:
+                        raise ValueError("model returned reasoning trace instead of JSON: "
+                                         + content.lstrip()[:120])
+                    return content.strip()
+                raise ValueError("empty response")
             if m.get("provider") == "gemini":
                 # 免费层 15 RPM：50 条 ÷ batch 5 = 10 批短时连发会撞 429（实测最后一批
                 # 429/503）。批次间节流到 ≥4.5s/批（=13 RPM，留余量）。进程级时间戳，

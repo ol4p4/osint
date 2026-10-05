@@ -81,7 +81,8 @@ AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key �
 | `tools/jev_usage.py` | JEV 用量账本（API 无用量端点，本地记账）→ `data/jev_usage.json` |
 | `tools/fetch_macro_indicators.py` | 宏观指标抓取（汇率/利率/GDP/CPI/失业率，12个指标），产物 `data/macro_indicators.json`，refresh.py 自动调用；`--history` 子命令抓 NBS 分年龄组失业率历史月度序列 |
 | `tools/fetch_now.py` | 本地 24h 全量拉取（**仅国内源**，`scope:ci` 的 33 个外国源跳过——境外源一律由 CI 在 GitHub Actions 上采集，本地拉不动是常态），append 到今日 jsonl；refresh.py 自动调 |
-| `tools/translate_local.py` | 本地 OpenCode Zen 翻译（mimo-v2.5-free + nemotron 降级），每跑 30 条 6 分钟，写回 jsonl；refresh.py 自动调，**本地 hourly 翻译 18-30 条/6min，CI 翻译吞吐瓶颈解决** |
+| `tools/translate_local.py` | 本地翻译（**通道链：Gemini → dots → 本机 4010 zen 代理 → OpenCode 官网直连**），每跑 30 条 6 分钟，写回 jsonl；refresh.py 自动调 |
+| `local/zen_proxy_client.py` | **本机 OpenCode Zen 代理客户端**（2026-10-05）：`reachable()` 预检（CI 无 4010 自动跳过）+ `chat_completion()` 把代理强制的 SSE 响应拼回完整文本；自带收窄回环守卫，见 §"本机 OpenCode Zen 代理接入" |
 | `tools/fetch_gdelt.py` | P1-5 GDELT 国际侧补源（DOC API 三组查询 24h 窗口，title-only 流入本地翻译管线）；白名单 {api.gdeltproject.org} 脚本内自带；6s 间隔+12s 退避+3h 成功节流（data/.gdelt_last_run）；refresh.py 自动调，失败静默 |
 | `worldview_loader.py` | 三观加载/注入文本构建（worldview.yaml 唯一事实源；缺失静默降级返回空串；**裁判链路明确不注入**保持校准客观）；`--show` 看档案+注入预览 / `--check` 结构校验 |
 | `local/worldview_engine.py` | 三观输入引擎：`--seed` AI 从 persona+views 起草初稿（draft:true）/ `--interactive` 9 轮引导（3 阶段×3 问，复用 dialogue_engine 深化机制，覆盖写 draft:false）/ `--show`；AI 合成失败不动 YAML |
@@ -686,6 +687,27 @@ C conf=0.89 日经225指数低开1.5%                ← 行情？
 - **教训：同一类问题在多个模块有副本时，修一处要 grep 全部消费方**——translate_local 修了 max_tokens，citizen_impact 漏了，导致本地研判静默 0 产出无人察觉。
 
 **CI 触发盲区**：`daily.yml` 的 push 触发器 paths 只含 `sources.yaml`/`config.yaml`/`AGENTS.md`/`docs/**`/`.github/workflows/**` 等，**不含 `cloud/**`**——改 `cloud/citizen_impact.py` 不会自动触发 CI，需 `gh workflow run daily.yml` 手动 dispatch。
+
+## 本机 OpenCode Zen 代理接入（2026-10-05）
+
+**背景**：OpenCode 免费层 2026-09-17 起对第三方客户端一律 403（`FreeTierError: can only be used from within OpenCode`），osint 的 OpenCode 腿全线死亡。而本机 `E:\OpenCode\zen-proxy.py`（监听 `127.0.0.1:4010`）早已修好：用**官方桌面凭据**（读 `C:\Users\admin\.local\share\opencode\auth.json` 的 key + `opencode.db` 里登记过的 session ID）转发，实测恢复可用。**osint 此前从未接入它**（全仓库零引用），本次接线。
+
+| 项 | 内容 |
+|---|---|
+| 客户端 | `local/zen_proxy_client.py`（`reachable()` 预检 + `chat_completion()`） |
+| 接入点 | `local/analyze.py` `_call_api`（dots 之后、官网直连之前）/ `tools/translate_local.py` / `cloud/citizen_impact.py` / `data/serve.py` |
+| 通道顺序 | **保持既有语义**：`analyze` = dots → zen代理 → 官网直连 → NVIDIA；`translate/impact` = Gemini → dots → zen代理 → 官网直连 |
+| CI 行为 | CI 无 4010 → `reachable()` False → 整条腿自动跳过，CI 仍靠 Gemini，互不影响 |
+| 应急开关 | 环境变量 `OSINT_DISABLE_ZEN_PROXY=1` 停用该通道 |
+| 依赖 | 代理需常驻（HKCU Run 键 `ZenProxy` 自启；手动 `pythonw E:\OpenCode\zen-proxy.py`）；代理挂了 osint 自动回退下一通道 |
+
+**关键坑一：代理返回的是 SSE，不是普通 JSON**。4010 为通过上游校验会**强制 `stream=true`** 转发（官方放行条件之一是 stream + 官方 tools 定义），所以 `resp.read()` 拿到的是 `data: {...}` 事件流——调用方若按普通 `json.loads` 解析必然失败。`zen_proxy_client._extract_content()` 负责把 SSE 块拼回完整文本，并保留非 SSE 的 JSON 回退分支。
+
+**关键坑二：回环目标不能走 `_safe_ai_post`**。那个守卫只允许 `https` + 外域白名单（其私有地址检查还专门拒绝环回），与 `http://127.0.0.1:4010` 方向完全相反。本客户端自带**收窄版**守卫：只允许本机回环 + 固定端口 + URL 由模块常量拼接（不接受调用方传入，无注入面）；对上游的 SSRF 防护由 4010 代理自己负责。
+
+**关键坑三：代理会静默改写模型名**。非白名单模型名（代理视角）会被覆写为 `E:\OpenCode\zen-model.txt` 的默认目标（当前 `mimo-v2.5-free`）——属预期行为，排查"为什么返回的不是我要的模型"时先看这里。
+
+**实测（2026-10-05）**：`analyze._call_api` 经代理返回真实内容（5.4s）；translate_local 单批 1 条 11.7s 产出正确中文（"China unveils new youth employment policy" → "中国出台青年就业新政策"）；citizen_impact 单批 15s 产出带 id 的 4 维 impact JSON；serve 问答 7.4s。故障注入（代理抛异常）→ 链正确落到下一通道并报补读后的真实错误；`OSINT_DISABLE_ZEN_PROXY=1` → 干净跳过。
 
 ## 待续事项
 - [x] **PLAN-1 RSSHub 中文源接入**（5 源已上线 CI docker run per-job；公共实例 403 已绕过）

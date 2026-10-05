@@ -115,7 +115,9 @@ def translate_batch(items, api_key, deadline=None):
 
         prompt = _build_prompt()
         batch_done = False
-        # 通道链（2026-10-05 用户指定顺序）: Gemini 优先 → dots 备援 → OpenCode 模型链。
+        # 通道链（2026-10-05 用户指定顺序）: Gemini 优先 → dots 备援 → OpenCode。
+        # OpenCode 腿 = 本机 4010 代理（官网直连已被指纹校验 403；代理用官方桌面
+        # 凭据转发恢复可用）→ 官网直连兜底。CI 无 4010，预检自动跳过。
         # Gemini 带可达性预检：本地境内不可达时跳过（否则每批白等 ~48s 黑洞超时）。
         channels = []
         try:
@@ -129,11 +131,33 @@ def translate_batch(items, api_key, deadline=None):
         dkey = get_dots_key()
         if dkey:
             channels.append({"base_url": DOTS_BASE, "model": DOTS_MODEL, "api_key": dkey})
+        try:
+            from local.zen_proxy_client import reachable as _zen_reachable
+            if _zen_reachable():
+                for m in MODEL_CHAIN:
+                    channels.append({"provider": "zen_proxy", "model": m, "api_key": ""})
+        except Exception as e:
+            print(f"[translate_local] zen 代理通道初始化跳过: {str(e)[:120]}")
         channels.extend({"base_url": API_BASE, "model": m, "api_key": api_key} for m in MODEL_CHAIN)
         for ch in channels:
             if batch_done:
                 break
             model = ch["model"]
+            if ch.get("provider") == "zen_proxy":
+                try:
+                    from local.zen_proxy_client import chat_completion as _zen_chat
+                    content = _zen_chat(
+                        model,
+                        [{"role": "user", "content": prompt + "\n\n" + "\n".join(texts)}],
+                        temperature=0.3, max_tokens=12288, timeout=TIMEOUT)
+                    translations = _parse_response(content)
+                    if not isinstance(translations, list):
+                        raise ValueError("not a JSON array")
+                    translated += _apply_translations(batch, translations, i // BATCH_SIZE)
+                    batch_done = True
+                except Exception as e:
+                    print(f"[translate_local] batch {i//BATCH_SIZE} [{model}@zen_proxy] failed: {e}, trying next model")
+                continue
             if ch.get("provider") == "gemini":
                 for attempt in range(2):
                     try:

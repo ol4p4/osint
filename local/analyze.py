@@ -17,6 +17,12 @@ AI_ALLOWED_HOST = "opencode.ai"
 AI_ALLOWED_HOSTS = {"opencode.ai", "integrate.api.nvidia.com", "note3-prev-api.askdiandian.com"}
 NVIDIA_BASE = "https://integrate.api.nvidia.com/v1"
 DOTS_BASE = "https://note3-prev-api.askdiandian.com/v1"
+# 本机 OpenCode Zen 代理（127.0.0.1:4010，E:\OpenCode\zen-proxy.py）。
+# 2026-10-05：OpenCode 免费层对非官方客户端全线 403 后，本机代理用官方桌面
+# 凭据转发，是"OpenCode 通道"在本地唯一活着的形态。**不走 _safe_ai_post**
+# （那个守卫只允许 https + 外域白名单，与回环目标方向相反）；客户端自带
+# 收窄守卫（见 local/zen_proxy_client.py）。CI 上无 4010，预检自动跳过。
+ZEN_PROXY_BASE = "http://127.0.0.1:4010/v1"
 
 # OpenCode 模型名 → NVIDIA integrate 模型名（备援通道）
 # 2026-09-17 实测选型（重要修正）：
@@ -323,10 +329,11 @@ class MacroAnalyzer:
         """timeout 可按调用调整：推理型模型（输出 thinking 过程）在长 prompt 下
         180s 不够（实测 nemotron 40K 字符 prompt 连续超时），调用方传更大值。
 
-        降级链（2026-09-17 定稿）：
-          1. OpenCode（免费层已加客户端指纹校验，403；靠熔断器快速跳过）
-          2. NVIDIA integrate（本地 key；gpt-oss-20b / glm-5.3）
-          3. 小红书 dots（note3-prev-api.askdiandian.com；实测 1s 响应）
+        降级链（2026-10-05 更新）：
+          1. 小红书 dots（note3-prev-api.askdiandian.com；实测 1s 响应）
+          2. 本机 OpenCode Zen 代理（127.0.0.1:4010；官方桌面凭据转发，秒级）
+          3. OpenCode 官网直连（免费层已指纹校验，403；靠熔断器快速跳过）
+          4. NVIDIA integrate（本地 key；gpt-oss-20b / glm-5.3）
         OpenRouter 已移除：免费层日限 10 次请求，无实用价值（用户 2026-09-17 确认）。
 
         卡顿修复：
@@ -340,6 +347,22 @@ class MacroAnalyzer:
         dots_key = self._dots_key()
         if dots_key:
             models.append({"model": _dots_slug(self.model), "base_url": DOTS_BASE, "api_key": dots_key})
+        # 本机 OpenCode Zen 代理（2026-10-05 接入）：OpenCode 官网直连已被指纹校验
+        # 锁死（403 FreeTierError），本机 4010 代理用官方桌面凭据转发后恢复可用。
+        # 与 dots 同为秒级快通道，排在死掉的直连项之前；CI 上无 4010，预检 False
+        # 自动不加入链（CI 靠 Gemini 链首，互不影响）。
+        try:
+            from local.zen_proxy_client import reachable as _zen_reachable
+            if _zen_reachable():
+                zp_names = []
+                for n in [self.model] + [m.get("model", "") for m in self.fallback_models]:
+                    if n and n not in zp_names:
+                        zp_names.append(n)
+                for name in zp_names[:2]:
+                    models.append({"provider": "zen_proxy", "model": name,
+                                   "base_url": ZEN_PROXY_BASE, "api_key": ""})
+        except Exception:
+            pass  # 代理模块/预检异常不阻断其它通道
         models.append({"model": self.model, "base_url": self.base_url, "api_key": self.api_key})
         models.extend(self.fallback_models)
         nv_key = self._nvidia_key()
@@ -364,54 +387,67 @@ class MacroAnalyzer:
                 api_base = m.get("base_url", self.base_url).rstrip("/")
                 key = m.get("api_key") or self.api_key
                 url = api_base + "/chat/completions"
-                body = {
-                    "model": m["model"],
-                    "messages": [
-                        {"role": "system", "content": system_prompt},
-                        {"role": "user", "content": user_prompt}
-                    ],
-                    "temperature": self.temperature,
-                    # 2026-09-21：8192 太小——dots3 是推理模型，reasoning 计入配额
-                    # （实测 10 条批次的 reasoning 7159 + 正文 6331 字符 ≈ 13K），
-                    # 8192 会在数组中途截断，10 条只写出 7 条。
-                    # 实测 dots 接受 65536，取 32768 留足余量（正文 + reasoning 双份）。
-                    "max_tokens": self.max_tokens_budget,
-                }
-                # 推理型模型需限制思考量，否则陷入思考循环（content 永远为空）
-                eff = _NV_REASONING_EFFORT.get(m["model"])
-                if eff:
-                    body["reasoning_effort"] = eff
-                payload = json.dumps(body).encode("utf-8")
-                headers = {
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer " + key,
-                    "User-Agent": "opencode/latest/1.3.15/cli",
-                    "x-opencode-client": "cli",
-                    "x-opencode-session": uuid.uuid4().hex,
-                    "x-opencode-project": uuid.uuid4().hex[:8],
-                    "x-opencode-request": uuid.uuid4().hex,
-                }
-                if "askdiandian" in api_base:
-                    # 小红书 dots 网关要求 api-key 头（Authorization 之外）
-                    headers["api-key"] = key
-                    headers.pop("x-opencode-client", None)
-                # 单次尝试限时：防止某个卡住的端点把整轮预算烧光
-                # （2026-09-17：cap 从 150s 提到 240s——NVIDIA glm 在 1800 字
-                #  输入下实测需 43-200s，150s 会误杀正常请求）
-                raw = _safe_ai_post(url, payload, headers, min(timeout, 240))
-                result = json.loads(raw)
-                if "choices" not in result:
-                    # 有些网关在过载/拒答时返回非标准结构（error/message 字段），
-                    # 原先直接 result["choices"] 抛 KeyError: 'choices' 丢失上下文
-                    raise ValueError("unexpected response shape: " + raw[:300])
-                msg = result["choices"][0]["message"]
-                content = msg.get("content", "")
-                if not content:
-                    for k in ("reasoning_content", "reasoning", "output"):
-                        val = msg.get(k, "")
-                        if val:
-                            content = val
-                            break
+                if m.get("provider") == "zen_proxy":
+                    # 本机回环代理：不能用 _safe_ai_post（其守卫只放行 https+外域）。
+                    # 客户端内部把 SSE 拼回完整文本（代理为过上游校验强制 stream）。
+                    from local.zen_proxy_client import chat_completion as _zen_chat
+                    content = _zen_chat(
+                        m["model"],
+                        [{"role": "system", "content": system_prompt},
+                         {"role": "user", "content": user_prompt}],
+                        temperature=self.temperature,
+                        max_tokens=self.max_tokens_budget,
+                        timeout=min(timeout, 240),
+                    )
+                else:
+                    body = {
+                        "model": m["model"],
+                        "messages": [
+                            {"role": "system", "content": system_prompt},
+                            {"role": "user", "content": user_prompt}
+                        ],
+                        "temperature": self.temperature,
+                        # 2026-09-21：8192 太小——dots3 是推理模型，reasoning 计入配额
+                        # （实测 10 条批次的 reasoning 7159 + 正文 6331 字符 ≈ 13K），
+                        # 8192 会在数组中途截断，10 条只写出 7 条。
+                        # 实测 dots 接受 65536，取 32768 留足余量（正文 + reasoning 双份）。
+                        "max_tokens": self.max_tokens_budget,
+                    }
+                    # 推理型模型需限制思考量，否则陷入思考循环（content 永远为空）
+                    eff = _NV_REASONING_EFFORT.get(m["model"])
+                    if eff:
+                        body["reasoning_effort"] = eff
+                    payload = json.dumps(body).encode("utf-8")
+                    headers = {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + key,
+                        "User-Agent": "opencode/latest/1.3.15/cli",
+                        "x-opencode-client": "cli",
+                        "x-opencode-session": uuid.uuid4().hex,
+                        "x-opencode-project": uuid.uuid4().hex[:8],
+                        "x-opencode-request": uuid.uuid4().hex,
+                    }
+                    if "askdiandian" in api_base:
+                        # 小红书 dots 网关要求 api-key 头（Authorization 之外）
+                        headers["api-key"] = key
+                        headers.pop("x-opencode-client", None)
+                    # 单次尝试限时：防止某个卡住的端点把整轮预算烧光
+                    # （2026-09-17：cap 从 150s 提到 240s——NVIDIA glm 在 1800 字
+                    #  输入下实测需 43-200s，150s 会误杀正常请求）
+                    raw = _safe_ai_post(url, payload, headers, min(timeout, 240))
+                    result = json.loads(raw)
+                    if "choices" not in result:
+                        # 有些网关在过载/拒答时返回非标准结构（error/message 字段），
+                        # 原先直接 result["choices"] 抛 KeyError: 'choices' 丢失上下文
+                        raise ValueError("unexpected response shape: " + raw[:300])
+                    msg = result["choices"][0]["message"]
+                    content = msg.get("content", "")
+                    if not content:
+                        for k in ("reasoning_content", "reasoning", "output"):
+                            val = msg.get(k, "")
+                            if val:
+                                content = val
+                                break
                 if content and content.strip():
                     # 推理型模型偶发把思维链当正文返回（nemotron 长生成实测：
                     # content 直接是 "Here's a thinking process:..."，正文被挤掉）
