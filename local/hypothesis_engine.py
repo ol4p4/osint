@@ -528,37 +528,38 @@ CRITICAL requirements for thresholds:
     def _save_ai_weekly_summary(self, hyps, ach_matrix=None, intel_items=None, week_offset=0):
         """AI 浓缩的每周总结。在周一或显式调用时执行。
 
-        week_offset=0: 本周一到今天的窗口（用于周一生成复盘整周）
-        week_offset=1: 上一周（周一到周日）
+        week_offset=0: 上一个**完整**周（上周一 00:00 ~ 上周日 23:59:59）
+        week_offset=N: 再往前推 N 周
 
         周报结构：
         1. 本周大事（情报关键词，按主题分组）
         2. ACH 假设变化（排名 + 验证动态）
         3. 对个人（年轻失业毕业生）的影响
         4. 下周预判（3-5 个具体观察点）
+
+        2026-10-05 修：原 week_offset=0 取"本周一至今"，而周报在**周一生成**，
+        该窗口只有几小时数据（实测 10-05 只统计到 159 条，AI 因此误判"数据严重
+        不足，仅 7 条可用"；而上一完整周实际有 12102 条）。标题/正文本就写
+        "上周情报总览"，窗口必须与语义一致 → 改为上一个完整周。
         """
         from datetime import datetime, timezone, timedelta
         report_dir = self.output_dir / "reports"
         report_dir.mkdir(parents=True, exist_ok=True)
         date_str = datetime.now(timezone.utc).strftime("%Y%m%d")
 
-        # 计算"上周"窗口（周一 00:00 到周日 23:59 UTC）
-        # 用本地时间更符合用户视角（假设用户在 UTC+8）
+        # 上一个完整周窗口：上周一 00:00 ~ 上周日 23:59:59（本地时间，UTC+8 视角）
         today_local = datetime.now()
-        # 本周一 0 点
-        this_monday = today_local - timedelta(days=today_local.weekday())
-        if week_offset == 0:
-            week_start = this_monday.replace(hour=0, minute=0, second=0, microsecond=0)
-            week_end = today_local
-        else:
-            last_monday = this_monday - timedelta(days=7)
-            week_end_local = this_monday - timedelta(seconds=1)
-            week_start = last_monday
-            week_end = week_end_local
+        this_monday = (today_local - timedelta(days=today_local.weekday())
+                       ).replace(hour=0, minute=0, second=0, microsecond=0)
+        week_end = this_monday - timedelta(seconds=1)
+        week_start = this_monday - timedelta(days=7)
+        if week_offset:
+            week_start -= timedelta(days=7 * week_offset)
+            week_end -= timedelta(days=7 * week_offset)
         week_start_str = week_start.strftime("%Y-%m-%d")
         week_end_str = week_end.strftime("%Y-%m-%d")
         # 标题里的"周 N"标记
-        week_label = "本周（%s ~ %s）" % (week_start.strftime("%m-%d"), week_end.strftime("%m-%d"))
+        week_label = "上周（%s ~ %s）" % (week_start.strftime("%m-%d"), week_end.strftime("%m-%d"))
 
         # 过滤上周情报
         week_intel = []
@@ -568,6 +569,18 @@ CRITICAL requirements for thresholds:
                 if week_start_str <= pub <= week_end_str:
                     week_intel.append(it)
         week_intel.sort(key=lambda x: x.get("published_at", ""), reverse=True)
+
+        # 2026-10-05：主题分类的取样排序。原先取 week_intel[:30]（按 published_at
+        # 降序），当窗口是完整一周（上万条）时，前 30 条**全是最后一天**的，
+        # 周报会误以为整周只有那几件事。改为按重要度（final_score 优先，回退
+        # base_score）降序取样，让高价值条目跨全周浮现。
+        def _intel_rank(it):
+            for k in ("final_score", "base_score"):
+                v = it.get(k)
+                if isinstance(v, (int, float)):
+                    return float(v)
+            return 0.0
+        week_intel_sorted = sorted(week_intel, key=_intel_rank, reverse=True)
 
         # 收集假设动态
         active = [h for h in hyps if h.get("status") == "active"]
@@ -586,11 +599,12 @@ CRITICAL requirements for thresholds:
             "社会/民生/教育": [],
             "其他": [],
         }
-        for i in week_intel[:30]:
+        for i in week_intel_sorted[:60]:
             t = i.get("cn_title") or i.get("title") or ""
             cat = (i.get("category_cn") or i.get("category") or "").lower()
             impact = i.get("graduate_impact") or i.get("impact") or ""
-            score = i.get("relevance") or 0
+            # relevance 是死字段（恒 0，见 AGENTS.md 筛选算法修复节），改用真实分数
+            score = _intel_rank(i)
             # 简易分类
             if any(k in cat for k in ["finance", "econ", "market", "就业", "失业"]):
                 themes["经济/金融/就业"].append((score, t[:60], impact[:50]))

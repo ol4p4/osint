@@ -29,37 +29,47 @@ from load_knowledge import load_knowledge
 from hypothesis_engine import HypothesisEngine
 
 
-def load_week_intel(output_dir, max_content_age_days=3, min_fresh_items=5):
-    """加载当日情报供周报统计。
+def load_week_intel(output_dir, max_content_age_days=10, min_fresh_items=5):
+    """加载**上一个完整周**的情报供周报统计。
 
-    与 main_local 同口径：产物目录当日文件优先（CI + 本地采集的合并结果）。
-    新鲜度用「近 N 天条目数」判定，不用「最新一条距今几天」——后者会被
-    源站错误时间戳的未来条目（实测有 2026-11-17）绕过，年龄算出负数。
+    2026-10-05 修：原先只读**当日**文件（intel_今天.jsonl）。但周报在周一生成，
+    统计的是"上周"（上周一~上周日），当日文件里只有零星几条落在该窗口（实测
+    10-05 只匹配到 10-04 的 183 条，而上一完整周实际有 12102 条）→ AI 误判
+    "数据严重不足，仅 7 条可用"。改为按上周窗口的日期，逐日读 intel_YYYYMMDD.jsonl。
+
+    新鲜度仍用「窗口内条目数」判定（不用"最新一条距今几天"——会被源站错误
+    时间戳的未来条目绕过，年龄算出负数）。窗口 = 上周一 00:00 ~ 上周日 23:59:59。
     """
-    today = datetime.now(timezone.utc).strftime("%Y%m%d")
-    target = Path(output_dir) / f"intel_{today}.jsonl"
-    if not target.exists() or target.stat().st_size == 0:
-        print(f"[weekly] 当日情报文件不存在: {target.name}")
-        return []
+    today_local = datetime.now()
+    this_monday = (today_local - timedelta(days=today_local.weekday())
+                   ).replace(hour=0, minute=0, second=0, microsecond=0)
+    week_start = this_monday - timedelta(days=7)
+    week_end = this_monday - timedelta(seconds=1)
 
     items = []
-    for line in target.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if line:
-            try:
-                items.append(json.loads(line))
-            except json.JSONDecodeError:
-                continue
+    seen_days = 0
+    day = week_start
+    while day <= week_end:
+        f = Path(output_dir) / f"intel_{day.strftime('%Y%m%d')}.jsonl"
+        if f.exists() and f.stat().st_size > 0:
+            seen_days += 1
+            for line in f.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if line:
+                    try:
+                        items.append(json.loads(line))
+                    except json.JSONDecodeError:
+                        continue
+        day += timedelta(days=1)
 
-    now = datetime.now(timezone.utc).replace(tzinfo=None)
-    lo = (now - timedelta(days=max_content_age_days)).strftime("%Y-%m-%d")
-    hi = now.strftime("%Y-%m-%d")
+    lo = week_start.strftime("%Y-%m-%d")
+    hi = week_end.strftime("%Y-%m-%d")
     fresh = [i for i in items if lo <= str(i.get("published_at") or "")[:10] <= hi]
     if len(fresh) < min_fresh_items:
-        print(f"[weekly] 近 {max_content_age_days} 天仅 {len(fresh)} 条情报"
+        print(f"[weekly] 上周窗口 {lo}~{hi} 仅 {len(fresh)} 条情报"
               f"（下限 {min_fresh_items} 条），不用于周报统计")
         return []
-    print(f"[weekly] 加载当日情报 {len(items)} 条（近 {max_content_age_days} 天 {len(fresh)} 条）"
+    print(f"[weekly] 加载上周情报 {len(fresh)} 条（窗口 {lo}~{hi}，覆盖 {seen_days} 个日文件）"
           f"供周报使用")
     return items
 

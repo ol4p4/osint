@@ -6,6 +6,54 @@ import subprocess, sys, json, glob, os, re, time, tempfile as _tempfile
 from pathlib import Path
 from datetime import datetime, timedelta, timezone
 
+
+def _lock_holder_alive(lock_path):
+    """判断锁文件是否仍被一个**存活进程**持有（2026-10-04）。
+
+    背景：refresh 的单实例锁与 impact_now 的 ai_heavy 锁原先**只看锁龄**
+    （<2h / <30min 即视为"在跑"）。但锁在 finally 里删——进程被强杀/任务超时
+    终止时 finally 不执行，锁残留，后续每轮都被挡到锁龄过期为止。实测
+    2026-10-04 10:40 的锁残留（PID 14316 早已死），把 11:40~13:40 的 refresh
+    全挡掉（任务 12:53 触发却无任何日志——跳过分支的 print 在 run_logging
+    之前，输出被丢弃，日志里查不到）。改用 PID 存活判断：进程已死 = 锁失效，
+    立即接管，不再空等 2 小时。
+
+    返回 True=仍被活进程持有（该跳过）；False=锁失效/无锁/无法判断（可接管）。
+    兼容非数字内容（旧格式/损坏）→ 视为失效。"""
+    try:
+        if not lock_path.exists():
+            return False
+        raw = lock_path.read_text(encoding="utf-8", errors="replace").strip()
+        pid = int(raw)
+    except (OSError, ValueError):
+        return False
+    if pid <= 0:
+        return False
+    if pid == os.getpid():
+        return False   # 自己的锁（异常重入）
+    try:
+        import ctypes
+        # Windows: 打开句柄只查存在性，再读退出码确认是否真的还在跑。
+        # 只靠 OpenProcess 不够——进程刚终止时 PID 尚未回收，句柄仍可打开
+        # （实测 terminate 后仍返回 True），会误判"还活着"而继续空等。
+        PROCESS_QUERY_LIMITED_INFORMATION = 0x1000
+        STILL_ACTIVE = 259
+        k32 = ctypes.windll.kernel32
+        h = k32.OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, False, pid)
+        if not h:
+            return False   # 进程不存在 → 锁失效
+        try:
+            code = ctypes.c_ulong()
+            if k32.GetExitCodeProcess(h, ctypes.byref(code)):
+                return code.value == STILL_ACTIVE
+            return True
+        finally:
+            k32.CloseHandle(h)
+    except Exception:
+        # 非 Windows 或 ctypes 不可用：退回时间判断（保守视为存活，交给锁龄兜底）
+        return True
+
+
 # 2026-09-04 静默化: 计划任务 OsintRefresh 已改为 pythonw 运行(无控制台),
 # 子进程若不加 CREATE_NO_WINDOW, 每个控制台子程序(如 git.exe)会新建可见窗口闪屏
 _NO_WINDOW = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
@@ -466,9 +514,12 @@ def impact_now():
             age_min = (time.time() - lock.stat().st_mtime) / 60
         except OSError:
             age_min = 0
-        if age_min < 30:   # 30 分钟内视为有 AI 密集任务在跑
+        # 2026-10-04：时间阈值 + PID 存活双判据——进程已死则锁失效，立即接管
+        if age_min < 30 and _lock_holder_alive(lock):
             print(f"impact_now: 跳过（AI 密集任务占用中，锁龄 {age_min:.1f} 分钟）")
             return
+        if age_min < 30:
+            print(f"impact_now: 接管失效锁（持有进程已退出，锁龄 {age_min:.1f} 分钟）")
     try:
         lock.write_text(str(os.getpid()), encoding="utf-8")
     except OSError:
@@ -615,9 +666,15 @@ if __name__ == "__main__":
             _age_h = (time.time() - _lock.stat().st_mtime) / 3600
         except OSError:
             _age_h = 0
-        if _age_h < 2:
+        # 2026-10-04：时间阈值 + PID 存活双判据。原先只看锁龄（<2h 即跳过），
+        # 进程被强杀后锁残留会阻塞后续整整 2 小时的 refresh（实测 10-04 只跑 2 轮）。
+        # 注：跳过分支的 print 在 run_logging 之前，输出被丢弃——所以从日志里
+        # 看不到"被锁挡住"，只能靠轮次数缺失发现。PID 存活检查修掉这个盲区。
+        if _age_h < 2 and _lock_holder_alive(_lock):
             print(f"another refresh is running (lock age {_age_h:.1f}h), exit")
             sys.exit(0)
+        if _age_h < 2:
+            print(f"stale lock detected (holder exited, age {_age_h:.1f}h), taking over")
     _lock.write_text(str(_os.getpid()), encoding="utf-8")
     try:
         with run_logging():
