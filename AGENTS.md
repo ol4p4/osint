@@ -672,6 +672,8 @@ C conf=0.89 日经225指数低开1.5%                ← 行情？
 
 **可达性预检（本地必需）**：本地境内到 `generativelanguage.googleapis.com` 是**黑洞式超时**——`socket.create_connection(timeout=6)` 实测仍耗时 **48s**（Windows 上 socket timeout 对 connect 不生效）。若无预检，本地每批翻译/研判都会先白等 48s 才降级。`gemini_client.reachable()` 用线程 + join 硬超时（4s）+ **进程内缓存**，实测 6s 判定不可达、第二次 0s。**判据：给链首通道加"不可达地区会跳过"的能力时，先测失败耗时——黑洞超时不是几秒，是几十秒。**
 
+**批次节流（免费层 RPM 必需）**：Gemini 免费层 **15 RPM**。50 条 ÷ batch 5 = 10 批若短时连发，必触顶（CI 实测最后一批 429/503）。两处接入点都加进程级时间戳节流到 **≥4.5s/批**（=13 RPM 留余量），桩测 3 次调用间隔 4.5s/4.5s。**判据：接免费层 API 前先算"批次总数 ÷ 分钟数"，超出 RPM 就加节流——否则末尾批次静默失败。**
+
 **关键坑一：`AQ.` 开头的 key 不被 OpenAI 兼容端点接受**。Google 正把 AI Studio key 从 `AIza`（Standard）迁移到 `AQ.Ab...`（Auth）。新 key 在**原生端点**正常，但发到 `/v1beta/openai/chat/completions` 会返回 **404 Not Found**（兼容层只认 AIza）。**修法：走原生端点 + `x-goog-api-key` 头**（不是 `Authorization: Bearer`）。
 
 **关键坑二：2.5 代模型对新用户已下架**。CI 逐模型探测（`curl` 6 个模型看 HTTP 码）实测：`gemini-3.5-flash-lite`/`3.1-flash-lite`/`3.5-flash` → 200；`gemini-2.5-flash-lite`/`2.5-flash`/`2.5-pro` → **404**。文档页面仍列 2.5 代，但**文档有 ≠ 你的 key 能用**——必须用真实请求探测，不能照文档抄模型名。**判据：接入第三方 API 时，"文档列的模型"与"本账号可用的模型"是两回事，先探测再固化。**
