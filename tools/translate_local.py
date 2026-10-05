@@ -36,6 +36,9 @@ TIMEOUT = 90  # 90s/批, 3 条/批 (单条 ~15s, 5 条 + JSON 拼装 ~60-90s)
 BATCH_SIZE = 3
 MAX_PER_RUN = 30  # 单次最多翻译 30 条, 10 批 * 30s ≈ 5 分钟内
 
+# Gemini 免费层 15 RPM，批次间节流用（进程级，跨 batch 生效）
+_LAST_GEMINI_CALL = 0.0
+
 
 def _build_prompt():
     return (
@@ -134,7 +137,15 @@ def translate_batch(items, api_key, deadline=None):
             if ch.get("provider") == "gemini":
                 for attempt in range(2):
                     try:
-                        content = _gemini_generate(ch["api_key"], prompt + "\n\n" + "\n".join(texts))
+                        # 免费层 15 RPM：批次间节流到 ≥4.5s/批，避免短时连发撞 429。
+                        global _LAST_GEMINI_CALL
+                        gap = 4.5 - (time.time() - _LAST_GEMINI_CALL)
+                        if _LAST_GEMINI_CALL and gap > 0:
+                            time.sleep(gap)
+                        try:
+                            content = _gemini_generate(ch["api_key"], prompt + "\n\n" + "\n".join(texts))
+                        finally:
+                            _LAST_GEMINI_CALL = time.time()
                         translations = _parse_response(content)
                         if not isinstance(translations, list):
                             raise ValueError("not a JSON array")

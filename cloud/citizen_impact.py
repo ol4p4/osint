@@ -33,6 +33,9 @@ DOTS_BASE = "https://note3-prev-api.askdiandian.com/v1"  # 备援通道（2026-0
 MAX_PER_RUN = 50
 BATCH_SIZE = 5
 
+# Gemini 免费层 15 RPM，批次间节流用（进程级，跨 batch 生效）
+_LAST_GEMINI_CALL = 0.0
+
 SYSTEM_PROMPT = (
     "你是面向中国普通公民与年轻失业毕业生的政治经济分析参谋。对每条新闻做两层传导判断："
     "第一层对中国普通公民（物价/安全/资产/政策），第二层对年轻失业毕业生（就业市场/技能需求/"
@@ -107,7 +110,17 @@ def call_ai(config, prompt):
     for m in attempts:
         try:
             if m.get("provider") == "gemini":
-                content = _gemini_generate(m["api_key"], prompt, system_prompt=SYSTEM_PROMPT)
+                # 免费层 15 RPM：50 条 ÷ batch 5 = 10 批短时连发会撞 429（实测最后一批
+                # 429/503）。批次间节流到 ≥4.5s/批（=13 RPM，留余量）。进程级时间戳，
+                # 跨 batch 生效；本地走 dots 时不进这里，无影响。
+                global _LAST_GEMINI_CALL
+                gap = 4.5 - (time.time() - _LAST_GEMINI_CALL)
+                if _LAST_GEMINI_CALL and gap > 0:
+                    time.sleep(gap)
+                try:
+                    content = _gemini_generate(m["api_key"], prompt, system_prompt=SYSTEM_PROMPT)
+                finally:
+                    _LAST_GEMINI_CALL = time.time()
                 if content and content.strip():
                     return content.strip()
                 raise ValueError("empty response")
