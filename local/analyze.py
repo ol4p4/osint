@@ -454,12 +454,59 @@ class MacroAnalyzer:
         #  裁判因此拿到空数组当"未发现问题"，属静默失败）
         raise last_err or RuntimeError("all models unavailable (circuit-open or failed)")
 
+    @staticmethod
+    def _repair_unescaped_quotes(s):
+        """转义字符串值里未转义的引号，修复模型输出的非法 JSON（2026-10-05）。
+
+        背景：dots/mimo 输出中文时惯用 ASCII 直引号包裹词句，例如
+        `财富分配从"劳动性收入"向"财产性收入"分化`——JSON 因此非法，
+        整体 json.loads 失败 → 整批退化成占位结果（实测 Step2 退化率 22~29%，
+        9-28 起长期存在，此前被当成"推理模型截断"误判）。
+
+        判据（标准 json_repair 做法）：在**字符串内部**遇到引号时，向前看下一个
+        非空白字符——若是 `,` `}` `]` `:` 或已到末尾，说明它是结构引号（正常闭合）；
+        否则它必然是内容引号，需转义。只加反斜杠、不改任何字符，内容完全保真。
+        对本来就合法的 JSON 是恒等变换（结构引号后面总是紧跟 , } ] : 或空白）。
+        """
+        n = len(s)
+        out = []
+        in_string = False
+        escaped = False
+        for i, ch in enumerate(s):
+            if in_string:
+                if escaped:
+                    escaped = False
+                    out.append(ch)
+                elif ch == "\\":
+                    escaped = True
+                    out.append(ch)
+                elif ch == '"':
+                    # 向前看第一个非空白字符，判断是闭合还是内容引号
+                    j = i + 1
+                    while j < n and s[j] in " \t\r\n":
+                        j += 1
+                    nxt = s[j] if j < n else ""
+                    if nxt in (",", "}", "]", ":", ""):
+                        in_string = False
+                        out.append(ch)
+                    else:
+                        out.append('\\"')   # 内容引号 → 转义
+                else:
+                    out.append(ch)
+            else:
+                if ch == '"':
+                    in_string = True
+                out.append(ch)
+        return "".join(out)
+
+
     def _parse_response(self, response, original_items):
         response = re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]", "", response)
         response = re.sub(r"```json\s*", "", response)
         response = re.sub(r"```\s*$", "", response)
         data = None
         start = response.find("[")
+        json_str = response
         if start >= 0:
             depth = 0; end = start
             for i in range(start, len(response)):
@@ -480,13 +527,20 @@ class MacroAnalyzer:
         if not data:
             try: data = json.loads(response)
             except: pass
+        # 2026-10-05 新增：未转义引号修复。模型输出中文时常用 ASCII 直引号包裹
+        # 词句（`从"劳动性收入"向`），使 JSON 非法、整批退化。这里转义内容引号
+        # 后再解析；与截断抢救可叠加（一批里可能同时有引号问题和截断）。
+        repaired = self._repair_unescaped_quotes(json_str)
+        if not data and repaired != json_str:
+            try: data = json.loads(repaired)
+            except json.JSONDecodeError: pass
         # 2026-09-21 新增：逐条抢救截断的 JSON 数组。
         # 背景：dots3 是推理模型，reasoning 计入 max_tokens（实测 10 条批次的
         # reasoning 达 7159 字符），真实输出常在数组中途被截断——实测 10 条只
         # 写出 7 条就断在半个字符串里，整体 json.loads 必失败，全部退化成占位结果。
         # 这里按 "{" 起、配对 "}" 止逐条提取，能救回已完整输出的那几条。
         if not data:
-            salvaged = self._salvage_items(response)
+            salvaged = self._salvage_items(repaired)
             if salvaged:
                 print(f"[AI] JSON 整体解析失败，逐条抢救出 {len(salvaged)} 条")
                 data = salvaged
