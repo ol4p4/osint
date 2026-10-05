@@ -664,16 +664,24 @@ C conf=0.89 日经225指数低开1.5%                ← 行情？
 | key 存放 | GitHub Secrets `GEMINI_API_KEY`（**不进 git**；用户 2026-10-05 提供） |
 | 端点 | **原生 `:generateContent`**，非 OpenAI 兼容层（见下方坑） |
 | 模型 | `gemini-3.5-flash-lite`（CI 实测 200）；候选链 `GEMINI_MODELS` 逐个尝试 |
-| 通道位置 | `citizen_impact.call_ai` 的 attempts 列表，dots 之后、opencode 之前；`provider: gemini` 分派到 `_gemini_generate()` |
-| 生效范围 | **仅 CI**（本地境内到 Google 不可达，实测 HTTP 000；CI 美国服务器可直连） |
+| 客户端 | `local/gemini_client.py`（**共用**，对齐 `jev_client.py` 独立客户端模式）：`generate()` + `reachable()` |
+| **通道顺序** | **Gemini → dots → OpenCode**（2026-10-05 用户指定：Gemini 优先，dots 备援）。两处接入：`citizen_impact.call_ai`、`translate_local.translate_batch` |
+| 生效范围 | CI 上 Gemini 生效；本地境内不可达 → 预检跳过，自动走 dots |
 | 额度 | 免费层按**项目**计（非 key），RPD 太平洋午夜重置 |
-| **实测效果** | CI `analyzed **0/50 → 45/50**`（2026-10-05 run 37291577943） |
+| **实测效果** | CI `analyzed **0/50 → 45/50**`（run 37291577943）；本地 impact 0/5 → 5/5 |
+
+**可达性预检（本地必需）**：本地境内到 `generativelanguage.googleapis.com` 是**黑洞式超时**——`socket.create_connection(timeout=6)` 实测仍耗时 **48s**（Windows 上 socket timeout 对 connect 不生效）。若无预检，本地每批翻译/研判都会先白等 48s 才降级。`gemini_client.reachable()` 用线程 + join 硬超时（4s）+ **进程内缓存**，实测 6s 判定不可达、第二次 0s。**判据：给链首通道加"不可达地区会跳过"的能力时，先测失败耗时——黑洞超时不是几秒，是几十秒。**
 
 **关键坑一：`AQ.` 开头的 key 不被 OpenAI 兼容端点接受**。Google 正把 AI Studio key 从 `AIza`（Standard）迁移到 `AQ.Ab...`（Auth）。新 key 在**原生端点**正常，但发到 `/v1beta/openai/chat/completions` 会返回 **404 Not Found**（兼容层只认 AIza）。**修法：走原生端点 + `x-goog-api-key` 头**（不是 `Authorization: Bearer`）。
 
 **关键坑二：2.5 代模型对新用户已下架**。CI 逐模型探测（`curl` 6 个模型看 HTTP 码）实测：`gemini-3.5-flash-lite`/`3.1-flash-lite`/`3.5-flash` → 200；`gemini-2.5-flash-lite`/`2.5-flash`/`2.5-pro` → **404**。文档页面仍列 2.5 代，但**文档有 ≠ 你的 key 能用**——必须用真实请求探测，不能照文档抄模型名。**判据：接入第三方 API 时，"文档列的模型"与"本账号可用的模型"是两回事，先探测再固化。**
 
 **关键坑三：免费层数据用于训练**。官方条款明确免费层「human reviewers may read」提交内容。本项目 `worldview.yaml`（用户三观档案）会注入 prompt——若介意，接付费层（Tier 1 绑卡即明确不用于训练）或在该路径关掉三观注入。**接第三方 AI 前先确认免费层的数据使用条款**。
+
+**顺带修复的既有 bug（本地研判长期静默退化）**：
+- `citizen_impact` 的 dots 通道 `max_tokens=3000` 对推理模型不够（reasoning 计入配额，5 条批次的中文 reasoning 吃光配额 → 正文被挤成半截 → `parse_json_array` 返回 0 条 → 整批退化）。translate_local 早已为同样问题提到 12288，**此处漏改**。修：3000 → 12288。
+- `parse_json_array` 遇截断**整体返回 []**（丢弃已完整输出的对象）。修：加 `_salvage_objects()` 逐条抢救（对齐 `analyze._salvage_items`）。
+- **教训：同一类问题在多个模块有副本时，修一处要 grep 全部消费方**——translate_local 修了 max_tokens，citizen_impact 漏了，导致本地研判静默 0 产出无人察觉。
 
 **CI 触发盲区**：`daily.yml` 的 push 触发器 paths 只含 `sources.yaml`/`config.yaml`/`AGENTS.md`/`docs/**`/`.github/workflows/**` 等，**不含 `cloud/**`**——改 `cloud/citizen_impact.py` 不会自动触发 CI，需 `gh workflow run daily.yml` 手动 dispatch。
 
