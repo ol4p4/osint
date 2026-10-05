@@ -26,6 +26,7 @@ import json
 import os
 import socket
 import threading
+import time
 import urllib.error
 import urllib.request
 from urllib.parse import urlparse
@@ -34,7 +35,11 @@ PROXY_HOST = "127.0.0.1"
 PROXY_PORT = 4010
 BASE = "http://" + PROXY_HOST + ":" + str(PROXY_PORT) + "/v1"
 
-_STATE = {"checked": False, "ok": False}
+# 预检结果带 TTL：serve.py 这类长驻进程可能在代理之前/之后启动，
+# 一次缓存到底会让「代理后起」永久不可用、「代理挂掉」永久白撞。
+# 回环 connect 失败/成功都是毫秒级，60s 重探一次成本可忽略。
+_PROBE_TTL = 60
+_STATE = {"checked_at": 0.0, "ok": False}
 
 
 def _disabled():
@@ -42,16 +47,16 @@ def _disabled():
 
 
 def reachable(timeout=1.5):
-    """探测本机 4010 代理是否在监听（进程内缓存，只探一次）。
+    """探测本机 4010 代理是否在监听（结果缓存 60s 后自动重探）。
 
     回环连接被拒不耗时间，但代理进程若半死（accept 后不响应）仍可能挂住
     connect，故用线程 + join 硬超时兜底。返回 True/False。
     """
     if _disabled():
         return False
-    if _STATE["checked"]:
+    now = time.time()
+    if _STATE["checked_at"] and now - _STATE["checked_at"] < _PROBE_TTL:
         return _STATE["ok"]
-    _STATE["checked"] = True
     box = {}
 
     def _probe():
@@ -66,6 +71,7 @@ def reachable(timeout=1.5):
     t.start()
     t.join(timeout + 2)
     _STATE["ok"] = bool(box.get("ok"))
+    _STATE["checked_at"] = now
     return _STATE["ok"]
 
 
