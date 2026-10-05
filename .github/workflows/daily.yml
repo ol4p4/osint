@@ -58,6 +58,9 @@ jobs:
       - name: Citizen impact analysis
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          # 2026-10-05: Gemini 通道。CI 上 OpenCode 免费层已锁死（free tier can only be
+          # used from within OpenCode）、dots key 只在本地 → impact 长期 analyzed 0/50 空转。
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           cd ${{ github.workspace }}
           python cloud/citizen_impact.py || echo "Impact step skipped"

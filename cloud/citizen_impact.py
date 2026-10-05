@@ -25,6 +25,12 @@ from urllib.parse import urlparse
 
 AI_ALLOWED_HOST = "opencode.ai"
 DOTS_BASE = "https://note3-prev-api.askdiandian.com/v1"  # 备援通道（2026-09-19 接入，analyze.py 同款）
+# Google Gemini（2026-10-05 接入）：OpenAI 兼容端点，CI 上 OpenCode 免费层已锁死
+# （"free tier can only be used from within OpenCode"）、dots key 只在本地 config.local.yaml，
+# CI 拿不到 → impact 步骤长期 analyzed 0/50 空转。Gemini key 存 GitHub Secrets，
+# CI（美国服务器）可直连 generativelanguage.googleapis.com（本机境内不可达，只作 CI 通道）。
+GEMINI_BASE = "https://generativelanguage.googleapis.com/v1beta/openai"
+GEMINI_MODEL = "gemini-2.5-flash-lite"   # 免费层 15 RPM / 1000 RPD，本项目日耗 ~80 请求
 MAX_PER_RUN = 50
 BATCH_SIZE = 5
 
@@ -45,7 +51,8 @@ GRADUATE_CONTEXT = (
 def _safe_ai_post(url, payload, headers, timeout=120):
     """SSRF 防护：仅 https + 白名单域名 + 解析结果不得指向私有/环回/保留地址"""
     parsed = urlparse(url)
-    if parsed.scheme != "https" or (parsed.hostname or "") not in (AI_ALLOWED_HOST, urlparse(DOTS_BASE).hostname):
+    allowed = (AI_ALLOWED_HOST, urlparse(DOTS_BASE).hostname, urlparse(GEMINI_BASE).hostname)
+    if parsed.scheme != "https" or (parsed.hostname or "") not in allowed:
         raise ValueError("blocked non-whitelisted AI endpoint: " + url)
     for info in socket.getaddrinfo(parsed.hostname, 443):
         ip = ipaddress.ip_address(info[4][0])
@@ -80,6 +87,11 @@ def call_ai(config, prompt):
     dkey = _dots_key()
     if dkey:
         attempts.append({"base_url": DOTS_BASE, "model": "dots3-note-prev", "api_key": dkey})
+    # Gemini 通道（2026-10-05）：CI 上 dots key 缺失、opencode 已锁死 → 实际由它顶上；
+    # 本地 dots 可用（~1s）故排其后。key 来自 GitHub Secrets，本地通常没有（境外不可达）。
+    gkey = os.environ.get("GEMINI_API_KEY", "").strip()
+    if gkey:
+        attempts.append({"base_url": GEMINI_BASE, "model": GEMINI_MODEL, "api_key": gkey})
     attempts.append({"base_url": api_cfg.get("base_url"), "model": api_cfg.get("model"),
                      "api_key": key})
     for fb in (api_cfg.get("fallback_models") or []):
@@ -107,6 +119,11 @@ def call_ai(config, prompt):
             if "askdiandian" in url:
                 headers["api-key"] = m.get("api_key") or ""
                 headers.pop("x-opencode-client", None)
+            elif "generativelanguage" in url:
+                # Gemini 不认 opencode 专用头，剔除以免干扰（只留标准 Bearer 认证）
+                headers.pop("x-opencode-client", None)
+                headers.pop("x-opencode-session", None)
+                headers["User-Agent"] = "osint-ci/1.0"
             raw = _safe_ai_post(url, payload, headers, 150)
             result = json.loads(raw)
             msg = result["choices"][0]["message"]
