@@ -33,9 +33,11 @@ DOTS_BASE = "https://note3-prev-api.askdiandian.com/v1"  # 备援通道（2026-0
 # 注意：新签发的 key 是 `AQ.` 开头（Auth key），**只在原生 :generateContent 端点可用**，
 # OpenAI 兼容端点（/v1beta/openai/...）会返回 404 —— 故这里走原生端点 + x-goog-api-key 头。
 GEMINI_BASE = "https://generativelanguage.googleapis.com/v1beta"
-# 候选模型链（2026-10-05）：Google 已把 2.5 代对新用户下架（gemini-2.5-flash-lite
-# 实测返回 404 "no longer available to new users"），新 key 需用当前 3.x 代。
-# 按「快/便宜优先」排序，逐个尝试，任一可用即命中（404 不耗 token，代价可忽略）。
+# 候选模型链（2026-10-05 CI 实测探测确定）：
+#   gemini-3.5-flash-lite / 3.1-flash-lite / 3.5-flash → HTTP 200
+#   gemini-2.5-flash-lite / 2.5-flash / 2.5-pro        → HTTP 404（对新用户下架）
+# 按「快/便宜优先」排序，逐个尝试，404/400 换下一个（404 不耗 token，代价可忽略）。
+# 保留一个 2.5 代在末尾：若账号白名单日后放开可自动回退到更便宜的档。
 GEMINI_MODELS = [
     "gemini-3.5-flash-lite",
     "gemini-3.1-flash-lite",

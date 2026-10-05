@@ -60,18 +60,10 @@ jobs:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
           # 2026-10-05: Gemini 通道。CI 上 OpenCode 免费层已锁死（free tier can only be
           # used from within OpenCode）、dots key 只在本地 → impact 长期 analyzed 0/50 空转。
+          # 实测接入后 45/50（gemini-3.5-flash-lite）。
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           cd ${{ github.workspace }}
-          echo "=== Gemini 诊断: 逐个探测候选模型 ==="
-          for m in gemini-3.5-flash-lite gemini-3.1-flash-lite gemini-3.5-flash gemini-2.5-flash-lite gemini-2.5-flash gemini-2.5-pro; do
-            code=$(curl -s -o /tmp/gem.json -w "%{http_code}" \
-              "https://generativelanguage.googleapis.com/v1beta/models/$m:generateContent" \
-              -H "Content-Type: application/json" -H "x-goog-api-key: $GEMINI_API_KEY" \
-              -d '{"contents":[{"role":"user","parts":[{"text":"say OK"}]}]}')
-            echo "  $m -> HTTP $code $(head -c 120 /tmp/gem.json)"
-          done
-          echo "=== 诊断结束 ==="
           python cloud/citizen_impact.py || echo "Impact step skipped"
       # link_intel_hyp / verify_hypotheses 已从 CI 移除 (2026-09-12):
       # 它们改 data/hypotheses/ 但 git add 列表不含该目录, 每轮成果被 checkout 丢弃,
