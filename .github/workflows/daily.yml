@@ -63,6 +63,11 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           cd ${{ github.workspace }}
+          echo "=== Gemini 诊断: ListModels ==="
+          curl -s "https://generativelanguage.googleapis.com/v1beta/models" \
+            -H "x-goog-api-key: $GEMINI_API_KEY" | head -c 3000
+          echo ""
+          echo "=== 诊断结束 ==="
           python cloud/citizen_impact.py || echo "Impact step skipped"
       # link_intel_hyp / verify_hypotheses 已从 CI 移除 (2026-09-12):
       # 它们改 data/hypotheses/ 但 git add 列表不含该目录, 每轮成果被 checkout 丢弃,

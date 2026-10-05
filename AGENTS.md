@@ -655,6 +655,25 @@ C conf=0.89 日经225指数低开1.5%                ← 行情？
 - **产物文件损坏要区分「代码 bug」与「存储损坏」**：全零字节（非空、非截断）是典型的未刷盘特征；先扫其他文件是否同病，再判断根因。本次只有 1 个文件损坏，代码无关。
 - **错误处理补读要下沉到共用底层**：`analyze._call_api` 早有 body 补读，但另外两个模块绕过它直调底层 → 同样的坑踩了两次。修在共用 `_safe_ai_post` 上，一次覆盖全部调用方。
 
+## Google Gemini 接入 CI（2026-10-05）
+
+**动机**：CI 的 `citizen_impact` 步骤长期空转——OpenCode 免费层已锁死（403 `FreeTierError: can only be used from within OpenCode`），dots 备援 key 只在本地 `config.local.yaml`，CI 拿不到。实测最近 run 是 `analyzed 0/50`。
+
+| 项 | 内容 |
+|---|---|
+| key 存放 | GitHub Secrets `GEMINI_API_KEY`（**不进 git**；用户 2026-10-05 提供） |
+| 端点 | **原生 `:generateContent`**，非 OpenAI 兼容层（见下方坑） |
+| 模型 | `gemini-2.5-flash-lite`（免费层 15 RPM / 1000 RPD，本项目日耗 ~80 请求） |
+| 通道位置 | `citizen_impact.call_ai` 的 attempts 列表，dots 之后、opencode 之前；`provider: gemini` 分派到 `_gemini_generate()` |
+| 生效范围 | **仅 CI**（本地境内到 Google 不可达，实测 HTTP 000；CI 美国服务器可直连） |
+| 额度 | 免费层按**项目**计（非 key），RPD 太平洋午夜重置 |
+
+**关键坑一：`AQ.` 开头的 key 不被 OpenAI 兼容端点接受**。Google 正把 AI Studio key 从 `AIza`（Standard）迁移到 `AQ.Ab...`（Auth）。新 key 在**原生端点**正常，但发到 `/v1beta/openai/chat/completions` 会返回 **404 Not Found**（兼容层只认 AIza）。首版接入用了兼容端点，CI 实测 404。**修法：走原生端点 + `x-goog-api-key` 头**（不是 `Authorization: Bearer`）。
+
+**关键坑二：免费层数据用于训练**。官方条款明确免费层「human reviewers may read」提交内容。本项目 `worldview.yaml`（用户三观档案）会注入 prompt——若介意，接付费层（Tier 1 绑卡即明确不用于训练）或在该路径关掉三观注入。**接第三方 AI 前先确认免费层的数据使用条款**。
+
+**CI 触发盲区**：`daily.yml` 的 push 触发器 paths 只含 `sources.yaml`/`config.yaml`/`AGENTS.md`/`docs/**`/`.github/workflows/**` 等，**不含 `cloud/**`**——改 `cloud/citizen_impact.py` 不会自动触发 CI，需 `gh workflow run daily.yml` 手动 dispatch。
+
 ## 待续事项
 - [x] **PLAN-1 RSSHub 中文源接入**（5 源已上线 CI docker run per-job；公共实例 403 已绕过）
 - [x] **PLAN-2 M1 ACH 假设矩阵**（ach_matrix.py + hypothesis_engine 接入 + falsification_criteria 69/69 补完）
