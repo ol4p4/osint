@@ -20,6 +20,7 @@ import sys
 import time
 import uuid
 import urllib.request
+import urllib.error
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -32,7 +33,15 @@ DOTS_BASE = "https://note3-prev-api.askdiandian.com/v1"  # 备援通道（2026-0
 # 注意：新签发的 key 是 `AQ.` 开头（Auth key），**只在原生 :generateContent 端点可用**，
 # OpenAI 兼容端点（/v1beta/openai/...）会返回 404 —— 故这里走原生端点 + x-goog-api-key 头。
 GEMINI_BASE = "https://generativelanguage.googleapis.com/v1beta"
-GEMINI_MODEL = "gemini-2.5-flash-lite"   # 免费层 15 RPM / 1000 RPD，本项目日耗 ~80 请求
+# 候选模型链（2026-10-05）：Google 已把 2.5 代对新用户下架（gemini-2.5-flash-lite
+# 实测返回 404 "no longer available to new users"），新 key 需用当前 3.x 代。
+# 按「快/便宜优先」排序，逐个尝试，任一可用即命中（404 不耗 token，代价可忽略）。
+GEMINI_MODELS = [
+    "gemini-3.5-flash-lite",
+    "gemini-3.1-flash-lite",
+    "gemini-3.5-flash",
+    "gemini-2.5-flash-lite",
+]
 MAX_PER_RUN = 50
 BATCH_SIZE = 5
 
@@ -93,7 +102,7 @@ def call_ai(config, prompt):
     # 本地 dots 可用（~1s）故排其后。key 来自 GitHub Secrets，本地通常没有（境外不可达）。
     gkey = os.environ.get("GEMINI_API_KEY", "").strip()
     if gkey:
-        attempts.append({"provider": "gemini", "model": GEMINI_MODEL, "api_key": gkey})
+        attempts.append({"provider": "gemini", "model": GEMINI_MODELS[0], "api_key": gkey})
     attempts.append({"base_url": api_cfg.get("base_url"), "model": api_cfg.get("model"),
                      "api_key": key})
     for fb in (api_cfg.get("fallback_models") or []):
@@ -151,30 +160,43 @@ def _gemini_generate(api_key, prompt):
 
     为何不用 OpenAI 兼容端点：新签发的 key 是 `AQ.` 开头的 Auth key，
     实测在 /v1beta/openai/chat/completions 返回 404（该兼容层只认旧的 AIza 格式），
-    但原生 :generateContent 正常。故这里走原生端点 + x-goog-api-key 头，
-    并把 system/user 合并为单段 contents（本项目 impact 无多轮对话需求）。"""
-    url = GEMINI_BASE + "/models/" + GEMINI_MODEL + ":generateContent"
-    body = {
-        "system_instruction": {"parts": [{"text": SYSTEM_PROMPT}]},
-        "contents": [{"role": "user", "parts": [{"text": prompt}]}],
-        "generationConfig": {"temperature": 0.3, "maxOutputTokens": 8192},
-    }
-    headers = {
-        "Content-Type": "application/json",
-        "x-goog-api-key": api_key,
-        "User-Agent": "osint-ci/1.0",
-    }
-    raw = _safe_ai_post(url, json.dumps(body).encode("utf-8"), headers, 150)
-    result = json.loads(raw)
-    cands = result.get("candidates") or []
-    if not cands:
-        fb = result.get("promptFeedback") or {}
-        raise ValueError("gemini no candidates: " + json.dumps(fb, ensure_ascii=False)[:200])
-    parts = (cands[0].get("content") or {}).get("parts") or []
-    text = "".join(p.get("text", "") for p in parts if isinstance(p, dict))
-    if not text.strip():
-        raise ValueError("gemini empty text (finishReason=" + str(cands[0].get("finishReason")) + ")")
-    return text
+    但原生 :generateContent 正常。故走原生端点 + x-goog-api-key 头。
+
+    模型链：Google 对新用户下架了 2.5 代（404），故按 GEMINI_MODELS 逐个尝试，
+    404/400 换下一个，命中即返回。"""
+    last = None
+    for model in GEMINI_MODELS:
+        url = GEMINI_BASE + "/models/" + model + ":generateContent"
+        body = {
+            "system_instruction": {"parts": [{"text": SYSTEM_PROMPT}]},
+            "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+            "generationConfig": {"temperature": 0.3, "maxOutputTokens": 8192},
+        }
+        headers = {
+            "Content-Type": "application/json",
+            "x-goog-api-key": api_key,
+            "User-Agent": "osint-ci/1.0",
+        }
+        try:
+            raw = _safe_ai_post(url, json.dumps(body).encode("utf-8"), headers, 150)
+            result = json.loads(raw)
+        except urllib.error.HTTPError as e:
+            last = e
+            print("[IMPACT] gemini " + model + " HTTP " + str(e.code) + ", 尝试下一个")
+            continue
+        cands = result.get("candidates") or []
+        if not cands:
+            fb = result.get("promptFeedback") or {}
+            last = ValueError("gemini no candidates: " + json.dumps(fb, ensure_ascii=False)[:200])
+            continue
+        parts = (cands[0].get("content") or {}).get("parts") or []
+        text = "".join(p.get("text", "") for p in parts if isinstance(p, dict))
+        if not text.strip():
+            last = ValueError("gemini empty text (finishReason=" + str(cands[0].get("finishReason")) + ")")
+            continue
+        print("[IMPACT] gemini 命中模型: " + model)
+        return text
+    raise last if last else RuntimeError("gemini: no model available")
 
 
 def parse_json_array(text):
