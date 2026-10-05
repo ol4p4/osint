@@ -236,8 +236,20 @@ def translate_batch(items, api_key, deadline=None):
 def collect_unjtranslated(jsonl_files, max_n=MAX_PER_RUN):
     """从 jsonl 文件收集未翻译条目 (按 published_at 倒序, 取前 max_n 条)
     避免反复翻老数据, 优先翻最新 24h 新抓的。
+
+    2026-10-05：加筛选闸门——只收 base_score>0 的条目。此前按时间取候选完全不看
+    筛选分，实测 54%~68% 的 AI 预算花在 base_score=0（关键词零命中）的行情播报上。
+    闸门判据/开关见 local/intel_gate.py（base_score 而非 final_score：后者本地条目
+    根本没写、含时间衰减）。
     """
+    try:
+        sys.path.insert(0, str(ROOT))
+        from local.intel_gate import relevance_ok
+    except Exception:
+        relevance_ok = lambda _it: True  # noqa: E731  模块缺失时降级为全放行
+
     items = []
+    skipped_irrelevant = 0
     for fp in jsonl_files:
         try:
             lines = Path(fp).read_text(encoding="utf-8", errors="replace").splitlines()
@@ -254,6 +266,10 @@ def collect_unjtranslated(jsonl_files, max_n=MAX_PER_RUN):
             # 必须有原文
             if not d.get("title"):
                 continue
+            # 筛选闸门：base_score=0 的条目筛选层已判其与 persona 主题无关
+            if not relevance_ok(d):
+                skipped_irrelevant += 1
+                continue
             items.append({
                 "id": d.get("id", ""),
                 "title": d.get("title", ""),
@@ -261,6 +277,8 @@ def collect_unjtranslated(jsonl_files, max_n=MAX_PER_RUN):
                 "published_at": d.get("published_at", ""),
                 "_file": str(fp),
             })
+    if skipped_irrelevant:
+        print(f"[translate_local] 筛选闸门拦下 {skipped_irrelevant} 条 base_score=0 条目")
     items.sort(key=lambda x: x.get("published_at", ""), reverse=True)
     return items[:max_n]
 

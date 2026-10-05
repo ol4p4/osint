@@ -83,6 +83,7 @@ AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key �
 | `tools/fetch_now.py` | 本地 24h 全量拉取（**仅国内源**，`scope:ci` 的 33 个外国源跳过——境外源一律由 CI 在 GitHub Actions 上采集，本地拉不动是常态），append 到今日 jsonl；refresh.py 自动调 |
 | `tools/translate_local.py` | 本地翻译（**通道链：Gemini → dots → 本机 4010 zen 代理 → OpenCode 官网直连**），每跑 30 条 6 分钟，写回 jsonl；refresh.py 自动调 |
 | `local/zen_proxy_client.py` | **本机 OpenCode Zen 代理客户端**（2026-10-05）：`reachable()` 预检（CI 无 4010 自动跳过）+ `chat_completion()` 把代理强制的 SSE 响应拼回完整文本；自带收窄回环守卫，见 §"本机 OpenCode Zen 代理接入" |
+| `local/intel_gate.py` | **AI 准入闸门**（2026-10-05）：按 `base_score>0` 过滤送 AI 的候选，拦住筛选层已判无关的行情播报；`OSINT_AI_SCORE_GATE=0` 可关；被 translate_local / citizen_impact 共用，见 §"AI 准入闸门" |
 | `tools/fetch_gdelt.py` | P1-5 GDELT 国际侧补源（DOC API 三组查询 24h 窗口，title-only 流入本地翻译管线）；白名单 {api.gdeltproject.org} 脚本内自带；6s 间隔+12s 退避+3h 成功节流（data/.gdelt_last_run）；refresh.py 自动调，失败静默 |
 | `worldview_loader.py` | 三观加载/注入文本构建（worldview.yaml 唯一事实源；缺失静默降级返回空串；**裁判链路明确不注入**保持校准客观）；`--show` 看档案+注入预览 / `--check` 结构校验 |
 | `local/worldview_engine.py` | 三观输入引擎：`--seed` AI 从 persona+views 起草初稿（draft:true）/ `--interactive` 9 轮引导（3 阶段×3 问，复用 dialogue_engine 深化机制，覆盖写 draft:false）/ `--show`；AI 合成失败不动 YAML |
@@ -709,7 +710,27 @@ C conf=0.89 日经225指数低开1.5%                ← 行情？
 
 **实测（2026-10-05）**：`analyze._call_api` 经代理返回真实内容（5.4s）；translate_local 单批 1 条 11.7s 产出正确中文（"China unveils new youth employment policy" → "中国出台青年就业新政策"）；citizen_impact 单批 15s 产出带 id 的 4 维 impact JSON；serve 问答 7.4s。故障注入（代理抛异常）→ 链正确落到下一通道并报补读后的真实错误；`OSINT_DISABLE_ZEN_PROXY=1` → 干净跳过。
 
-## 待续事项
+## AI 准入闸门：筛选分接入 AI 层（2026-10-05）
+
+**问题**：筛选层（`fetch_rss` 的 `base_score` / `refresh.rebuild` 的 `final_score`）一直在算分，但 **AI 采集器按 `published_at` 取候选，从不看这个分**——打分与消费之间是断开的。实测**近 5 天 54%~68% 的已翻译/已研判条目是 `base_score=0`**（关键词零命中，如「各大银行/品牌金条价格排行」「EUR/USD fell 0.38%」「WTI crude slipped below $89」这类行情播报）。等于三分之二的 AI 预算（三个通道的全部吞吐）花在筛选层已判定与 persona 无关的条目上。
+
+| 项 | 内容 |
+|---|---|
+| 模块 | `local/intel_gate.py`：`relevance_ok(item)` / `filter_relevant(items)` / `gate_enabled()` |
+| 接入点 | `tools/translate_local.collect_unjtranslated` + `cloud/citizen_impact.main`（候选收集处；`local/main_local` 的 Step2 早已按 `final_score` 取 Top N，无需改） |
+| 判据 | **`base_score > 0`**，不用 `final_score` |
+| 应急开关 | `OSINT_AI_SCORE_GATE=0` 关闭闸门（全量处理） |
+
+**为什么是 `base_score` 而不是 `final_score`**（关键，选错会误杀全部本地条目）：
+- `base_score` = 源权重 × 关键词加权，**写入 jsonl 时持久化**，实测近 3 天**零缺失**；
+- `final_score` 含时间衰减，且本地 `fetch_now`/GDELT 条目**根本没写这个字段**——`refresh.rebuild` 只在内存里补算、不回写 jsonl。日文件里 1057/1462 条 `final_score` 缺失，按它过滤会把这些全判成 0 分误杀。
+
+**阈值依据（实测，非拍定）**：`base_score==0` 与 `keywords_hit` 为空**完全等价**（今日 0 条例外）→ 零误杀；正分条目下界 0.077（GDELT 无关键词评分、保底 0.3），与 0 之间有充足间隔。过滤后**日均保留 422 条**，落在现有配额（译 100/轮、研 50/轮）内。
+
+**宁可缺不可错**：字段缺失/非法值一律**放行**（无法判断→不丢弃），只有明确等于 0 才拦——批量过滤的准则是「没有证据说明它无关」，不是「没有证据说明它有关」。
+
+**验证（2026-10-05）**：闸门单测 9/9（正分放行/零分拦截/None 拦截/缺字段放行/非法值放行/开关两态）；真实数据 zero-leak——translate 扫 3 文件拦 1171 条、保留 578 条且抽验 0 条零分泄漏；citizen_impact 全库拦 40779 条零分；**前后 id 差值比对**确认本轮新增 3 条研判全部 `base_score>0`，零漏网。
+
 - [x] **PLAN-1 RSSHub 中文源接入**（5 源已上线 CI docker run per-job；公共实例 403 已绕过）
 - [x] **PLAN-2 M1 ACH 假设矩阵**（ach_matrix.py + hypothesis_engine 接入 + falsification_criteria 69/69 补完）
 - [x] **PLAN-2 M3 仪表盘 ACH 排名面板**（gen_dashboard.py 已加，等首次周循环产出 ach_matrix.json 后自动显示）

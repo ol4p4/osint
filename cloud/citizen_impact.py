@@ -310,15 +310,30 @@ def main():
         sys.exit(0)
     file_items = {f: load_jsonl(Path(f)) for f in files}
     analyzed_ids = {it.get("id") for f in files for it in file_items[f] if it.get("impact_level")}
+    # 2026-10-05：筛选闸门——只研判 base_score>0 的条目。此前按 published_at 取候选，
+    # 实测 54%~68% 的研判预算花在 base_score=0（关键词零命中）的行情播报上。
+    # 闸门在本地/CI 均可用（base_score 由采集层持久化，CI 同样写入）。
+    # 判据/开关见 local/intel_gate.py；OSINT_AI_SCORE_GATE=0 可关闭。
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+        from local.intel_gate import relevance_ok as _relevance_ok
+    except Exception:
+        _relevance_ok = lambda _it: True  # noqa: E731
     todo = []
     seen = set()
+    skipped_irrelevant = 0
     for f in files:
         for it in file_items[f]:
             iid = it.get("id")
             if iid in seen or iid in analyzed_ids:
                 continue
             seen.add(iid)
+            if not _relevance_ok(it):
+                skipped_irrelevant += 1
+                continue
             todo.append((f, it))
+    if skipped_irrelevant:
+        print(f"[IMPACT] 筛选闸门拦下 {skipped_irrelevant} 条 base_score=0 条目")
     todo.sort(key=lambda p: p[1].get("published_at", ""), reverse=True)
     todo = todo[:args.max]
     if not todo:
