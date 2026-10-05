@@ -25,11 +25,13 @@ from urllib.parse import urlparse
 
 AI_ALLOWED_HOST = "opencode.ai"
 DOTS_BASE = "https://note3-prev-api.askdiandian.com/v1"  # 备援通道（2026-09-19 接入，analyze.py 同款）
-# Google Gemini（2026-10-05 接入）：OpenAI 兼容端点，CI 上 OpenCode 免费层已锁死
+# Google Gemini（2026-10-05 接入）：OpenCode 免费层已锁死
 # （"free tier can only be used from within OpenCode"）、dots key 只在本地 config.local.yaml，
 # CI 拿不到 → impact 步骤长期 analyzed 0/50 空转。Gemini key 存 GitHub Secrets，
 # CI（美国服务器）可直连 generativelanguage.googleapis.com（本机境内不可达，只作 CI 通道）。
-GEMINI_BASE = "https://generativelanguage.googleapis.com/v1beta/openai"
+# 注意：新签发的 key 是 `AQ.` 开头（Auth key），**只在原生 :generateContent 端点可用**，
+# OpenAI 兼容端点（/v1beta/openai/...）会返回 404 —— 故这里走原生端点 + x-goog-api-key 头。
+GEMINI_BASE = "https://generativelanguage.googleapis.com/v1beta"
 GEMINI_MODEL = "gemini-2.5-flash-lite"   # 免费层 15 RPM / 1000 RPD，本项目日耗 ~80 请求
 MAX_PER_RUN = 50
 BATCH_SIZE = 5
@@ -91,7 +93,7 @@ def call_ai(config, prompt):
     # 本地 dots 可用（~1s）故排其后。key 来自 GitHub Secrets，本地通常没有（境外不可达）。
     gkey = os.environ.get("GEMINI_API_KEY", "").strip()
     if gkey:
-        attempts.append({"base_url": GEMINI_BASE, "model": GEMINI_MODEL, "api_key": gkey})
+        attempts.append({"provider": "gemini", "model": GEMINI_MODEL, "api_key": gkey})
     attempts.append({"base_url": api_cfg.get("base_url"), "model": api_cfg.get("model"),
                      "api_key": key})
     for fb in (api_cfg.get("fallback_models") or []):
@@ -101,6 +103,11 @@ def call_ai(config, prompt):
     last_err = None
     for m in attempts:
         try:
+            if m.get("provider") == "gemini":
+                content = _gemini_generate(m["api_key"], prompt)
+                if content and content.strip():
+                    return content.strip()
+                raise ValueError("empty response")
             url = (m.get("base_url") or "").rstrip("/") + "/chat/completions"
             payload = json.dumps({
                 "model": m.get("model"),
@@ -119,11 +126,6 @@ def call_ai(config, prompt):
             if "askdiandian" in url:
                 headers["api-key"] = m.get("api_key") or ""
                 headers.pop("x-opencode-client", None)
-            elif "generativelanguage" in url:
-                # Gemini 不认 opencode 专用头，剔除以免干扰（只留标准 Bearer 认证）
-                headers.pop("x-opencode-client", None)
-                headers.pop("x-opencode-session", None)
-                headers["User-Agent"] = "osint-ci/1.0"
             raw = _safe_ai_post(url, payload, headers, 150)
             result = json.loads(raw)
             msg = result["choices"][0]["message"]
@@ -142,6 +144,37 @@ def call_ai(config, prompt):
             last_err = e
             print("[IMPACT] model " + str(m.get("model")) + " failed: " + str(e))
     raise last_err if last_err else RuntimeError("no models available")
+
+
+def _gemini_generate(api_key, prompt):
+    """Gemini 原生 generateContent 调用（2026-10-05）。
+
+    为何不用 OpenAI 兼容端点：新签发的 key 是 `AQ.` 开头的 Auth key，
+    实测在 /v1beta/openai/chat/completions 返回 404（该兼容层只认旧的 AIza 格式），
+    但原生 :generateContent 正常。故这里走原生端点 + x-goog-api-key 头，
+    并把 system/user 合并为单段 contents（本项目 impact 无多轮对话需求）。"""
+    url = GEMINI_BASE + "/models/" + GEMINI_MODEL + ":generateContent"
+    body = {
+        "system_instruction": {"parts": [{"text": SYSTEM_PROMPT}]},
+        "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+        "generationConfig": {"temperature": 0.3, "maxOutputTokens": 8192},
+    }
+    headers = {
+        "Content-Type": "application/json",
+        "x-goog-api-key": api_key,
+        "User-Agent": "osint-ci/1.0",
+    }
+    raw = _safe_ai_post(url, json.dumps(body).encode("utf-8"), headers, 150)
+    result = json.loads(raw)
+    cands = result.get("candidates") or []
+    if not cands:
+        fb = result.get("promptFeedback") or {}
+        raise ValueError("gemini no candidates: " + json.dumps(fb, ensure_ascii=False)[:200])
+    parts = (cands[0].get("content") or {}).get("parts") or []
+    text = "".join(p.get("text", "") for p in parts if isinstance(p, dict))
+    if not text.strip():
+        raise ValueError("gemini empty text (finishReason=" + str(cands[0].get("finishReason")) + ")")
+    return text
 
 
 def parse_json_array(text):
