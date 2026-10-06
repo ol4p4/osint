@@ -590,7 +590,8 @@ C conf=0.89 日经225指数低开1.5%                ← 行情？
    - 双联防御：CI 已 8x/day（cron `0 */3 * * *`）+ 本地 `OsintWatchdog` 计划任务每 6h 三项检查（v3, 2026-09-12）：① `intel_2*.jsonl` mtime > 8h 静默 → 本地跑 refresh.py 自愈 + `gh workflow run daily.yml`；② 最近 CI 成功 run > 12h → dispatch（此前只看本地 mtime，本地 fetch_now 活着时测不出 CI 死亡）；③ 最新 hypothesis_weekly_*.md > 8 天（错过周一）→ 补跑 daily_run.ps1 -Auto（24h 节流戳 data/.weekly_catchup_last_run）。日志 `data/logs/watchdog_YYYYMMDD.log`
 9. **仪表盘时间错乱**：time_ago 已改为浏览器端动态计算（gen_dashboard.py 内嵌 JS IIFE），不再依赖采集时写死的静态文本
 9b. **本地 git 连不上 GitHub**（`Failed to connect to github.com port 443`）：本机直连 GitHub 常态不通（国内网络），需经本地 Clash 代理。**已根治（2026-10-06）**：`net_proxy.py` 探测本地代理并注入 git 子进程环境变量，`local_sync.git_pull` / `refresh.commit_hypotheses` 全部改用它——**不再需要手工 export 代理**。
-   - 代理候选端口：7897（Clash Verge mixed-port 默认）→ 7890 → 7891 → 7888，探测到端口在监听即采用，缓存 300s
+   - 代理候选端口：7897（Clash Verge mixed-port 默认）→ 7890 → 7891 → 7888，两级判据（端口在监听 **+ 实探 CONNECT 能连上 GitHub**），缓存 300s
+   - **为什么必须实探**（2026-10-06 踩坑）：Clash 节点不稳时端口照样 LISTENING，但代理 TLS 握手失败（`schannel: failed to receive handshake`），而**直连反而通**——只看端口就会把本来能成的 git 操作塞进坏代理搞挂。实测 `_probe()` 在代理死时正确返回 None 退回直连
    - 只注入环境变量（`GIT_CONFIG_COUNT/KEY/VALUE`），命令行保持纯参数列表，无注入面；外部代理 URL 过白名单正则（仅 http:// + 回环 + 端口）
    - CI 无本地代理 → 探测失败 → 返回空 dict → git 直连，互不影响
    - 应急开关：`OSINT_GIT_PROXY=none` 强制禁代理；`OSINT_GIT_PROXY=http://127.0.0.1:7897` 显式指定

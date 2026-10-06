@@ -72,16 +72,43 @@ def _port_open(host, port, timeout=0.4):
         return False
 
 
-def _probe():
-    """返回可用的代理 URL；都不可用返回 None。
+def _proxy_works(url, timeout=3.0):
+    """实测代理能否真的连上 GitHub（CONNECT 探测）。
 
-    只看端口是否在监听（不实际发 HTTPS 请求——那要 1~2s 且失败率高）。
-    端口开着但节点不通时 git 自己会失败，下一轮重试即可。
+    **为什么必须实活检测**（2026-10-06 踩坑）：原先只看「端口在监听」，
+    但 Clash 节点不稳时端口照样 LISTENING——实测代理 TLS 握手失败
+    （`schannel: failed to receive handshake`），而**直连反而通了**。
+    此时仍注入代理 → 把本来能成的 git 操作搞挂。所以端口开着还要实探一次。
+    """
+    import http.client
+    from urllib.parse import urlsplit
+    parts = urlsplit(url)
+    try:
+        conn = http.client.HTTPSConnection(parts.hostname, parts.port or 80, timeout=timeout)
+        # 经代理向 github.com:443 发 CONNECT，隧道建立即说明代理可用
+        conn.set_tunnel(_PROBE_HOST, _PROBE_PORT)
+        conn.request("HEAD", "/")
+        resp = conn.getresponse()
+        resp.read(0)
+        conn.close()
+        return True
+    except Exception:
+        return False
+
+
+def _probe():
+    """返回**实测可用**的代理 URL；都不可用返回 None。
+
+    两级判据：① 端口在监听（快、无网络开销）→ ② 实探能否连上 GitHub
+    （3s CONNECT 探测）。只满足①不满足②的（节点挂了/被墙）直接跳过，
+    退回直连——否则会把本来正常的直连拖死。
     """
     for url in _PROXY_CANDIDATES:
         host_port = url.split("//", 1)[1]
         host, _, port = host_port.partition(":")
-        if _port_open(host, int(port or 80)):
+        if not _port_open(host, int(port or 80)):
+            continue
+        if _proxy_works(url):
             return url
     return None
 
