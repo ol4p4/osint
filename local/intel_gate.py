@@ -93,3 +93,105 @@ def priority_sort(items, reverse=True, now=None):
     now = now or datetime.now()
     return sorted(items, key=lambda it: rank_key(it, now), reverse=reverse)
 
+
+# ── 去重（2026-10-06 新增）─────────────────────────────────────────
+# 动机：同一事件常被多个源采到 → 标题几乎相同（实测 jaccard 1.00 / 0.83），
+# 却因 id=md5(源:链接:标题) 不同而全部保留 → AI 对同一件事分析多遍。
+# 实测近 3 天未翻译池 1461 条里 14~17% 是这类跨源重复。
+#
+# **为什么放在 AI 层而不是采集层**：采集层的 simhash 去重
+# （cloud/clean_dedup_score.dedup_items）只在 CI 跑，本地 fetch_now/fetch_gdelt
+# 采的条目从不过那道；rebuild 又只按 id 去重（跨源同事件 id 不同，拦不住）。
+#
+# **不重写去重算法**：直接复用生产的 SimHashDedup + TitleDedup
+# （cloud/clean_dedup_score），保证与 CI 侧判定一致，避免两套阈值漂移。
+#
+# **先去重还是先排序**：先排序（高分+新鲜在前）再去重 → 留下的代表是
+# 「最优先的那条」，而不是随机留一条。同时只需从高优先区往下走到够 N 条即可停，
+# 不必对 6.5 万条全池做去重（实测 8500 条约 10s，全池会到 ~80s）。
+
+_DEDUP_CACHE = {}
+
+
+def _headline_key(title):
+    """标题归一化键：取【】包围的栏目标题（无【】则整条），再去标点/空格。
+
+    为什么需要这一层：生产 SimHashDedup/TitleDedup 对「【长标题】正文…」vs
+    「长标题」（纯标题版）判不出重复——短标题是长标题的子串，jaccard 被长标题
+    撑到约 0.38（< 0.7 阈值），simhash 因长度差太大也超距。实测这类"栏目标题版
+    + 纯标题版"是同一条新闻的两个来源，占池子约 14%。用 headline 归一化做
+    精确/前缀匹配补齐，抽验 210 组全是同事件（多源重复），无误伤。
+    """
+    import re
+    m = re.match(r"^\s*【([^】]+)】", title or "")
+    core = m.group(1) if m else (title or "")
+    core = re.sub(r"金十数据\d+月\d+日讯[，,]?", "", core)
+    return re.sub(r"[\s\W_]+", "", core)
+
+
+def make_deduper():
+    """构造去重器：生产的 SimHash+Title 原语 + headline 归一化补漏。
+
+    返回 add(item) -> bool（True=保留为新代表）。导入失败返回 None。
+    """
+    try:
+        import sys
+        from pathlib import Path
+        root = str(Path(__file__).resolve().parent.parent)
+        if root not in sys.path:
+            sys.path.insert(0, root)
+        from cloud.clean_dedup_score import SimHashDedup, TitleDedup
+    except Exception:
+        return None
+    sd = SimHashDedup(3)      # 与 CI 侧默认阈值一致（汉明距离 <=3）
+    td = TitleDedup(0.7)      # 与 CI 侧默认一致（标题 jaccard >=0.7）
+    seen_headlines = set()
+
+    def _add(item):
+        iid = str(item.get("id") or "")
+        title = str(item.get("title") or "")
+        text = title + " " + str(item.get("content_preview") or item.get("content") or "")[:200]
+        # 先过 headline 归一化（补 simhash/jaccard 的短板：栏目标题版 vs 纯标题版）
+        hk = _headline_key(title)
+        if hk:
+            if hk in seen_headlines:
+                return False
+            seen_headlines.add(hk)
+        if not sd.add(text, iid):
+            return False
+        if not td.add(title, iid):
+            return False
+        return True
+    return _add
+
+
+def dedup_enabled():
+    """环境开关：OSINT_AI_DEDUP=0/false/no 时关闭 AI 层去重。"""
+    v = os.environ.get("OSINT_AI_DEDUP", "").strip().lower()
+    return v not in ("0", "false", "no", "off")
+
+
+def select_priority_unique(items, max_n, now=None):
+    """按优先级排序 + 去重后取前 max_n 条。
+
+    流程：全量排序（新鲜→分数→时间）→ 从上往下走，去过重的条目入选，
+    够 max_n 条即停。**返回的条目本身仍完整保留在候选池**（调用方拿到的
+    是"本轮该处理谁"，不是"删掉其余"）。
+
+    去重关闭（OSINT_AI_DEDUP=0）或原语导入失败时，退化为纯 select_priority。
+    """
+    now = now or datetime.now()
+    ordered = sorted(items, key=lambda it: rank_key(it, now), reverse=True)
+    if not dedup_enabled():
+        return ordered[:max_n]
+    add = make_deduper()
+    if add is None:
+        return ordered[:max_n]
+    picked = []
+    for it in ordered:
+        if add(it):
+            picked.append(it)
+            if len(picked) >= max_n:
+                break
+    return picked
+

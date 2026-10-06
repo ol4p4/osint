@@ -236,17 +236,17 @@ def translate_batch(items, api_key, deadline=None):
 def collect_unjtranslated(jsonl_files, max_n=MAX_PER_RUN):
     """从 jsonl 文件收集未翻译条目，按优先级排序后取前 max_n 条。
 
-    2026-10-06：排序键改为「新鲜度优先 → base_score 降序 → 时间降序」
-    （见 local/intel_gate.py）。此前纯按 published_at 倒序，完全不看筛选分；
-    中途曾误改为「按 base_score=0 硬过滤」，已撤销——0 分只代表没命中词表，
-    不代表不值得知道（用户口径：要一个上知天文下至地理的参谋）。
-    现在不丢任何条目，只调整顺序。
+    2026-10-06：排序键改为「新鲜度优先 → base_score 降序 → 时间降序」，
+    并加**跨源去重**（select_priority_unique）——同一事件被多源采到时标题近乎相同
+    （实测 jaccard 1.00/0.83）却因 id 不同全保留，导致 AI 对同一件事分析多遍
+    （未翻译池 14~17% 是这类重复）。去重与排序的说明见 local/intel_gate.py。
+    候选本身不丢弃，只是"本轮该处理谁"里同一事件只留最优先的那条代表。
     """
     try:
         sys.path.insert(0, str(ROOT))
-        from local.intel_gate import select_priority
+        from local.intel_gate import select_priority_unique
     except Exception:
-        select_priority = None  # noqa: F811  模块缺失时降级为纯时间序
+        select_priority_unique = None  # noqa: F811  模块缺失时降级为纯时间序
 
     items = []
     for fp in jsonl_files:
@@ -274,9 +274,9 @@ def collect_unjtranslated(jsonl_files, max_n=MAX_PER_RUN):
                 "_file": str(fp),
             })
     items.sort(key=lambda x: x.get("published_at", ""), reverse=True)
-    if select_priority:
-        # select_priority 内部已含「新鲜优先 → 分数 → 时间」三级排序
-        return select_priority(items, max_n)
+    if select_priority_unique:
+        # 内部含「新鲜优先 → 分数 → 时间」排序 + 跨源去重
+        return select_priority_unique(items, max_n)
     return items[:max_n]
 
 

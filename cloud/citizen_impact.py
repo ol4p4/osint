@@ -310,12 +310,13 @@ def main():
         sys.exit(0)
     file_items = {f: load_jsonl(Path(f)) for f in files}
     analyzed_ids = {it.get("id") for f in files for it in file_items[f] if it.get("impact_level")}
-    # 2026-10-06：候选按「新鲜度优先 → base_score 降序 → 时间降序」排序（见 local/intel_gate.py）。
-    # 中途曾误改为「base_score=0 硬过滤」，已撤销——0 分只代表没命中词表，不代表不值得知道。
-    # 现在不丢任何条目，只调整处理顺序（高相关+新鲜的先做，额度有余再做低分）。
+    # 2026-10-06：候选按「新鲜度优先 → base_score 降序 → 时间降序」排序 + 跨源去重
+    # （见 local/intel_gate.py）。中途曾误改为「base_score=0 硬过滤」，已撤销——
+    # 0 分只代表没命中词表，不代表不值得知道。现在不丢任何条目，只调整处理顺序；
+    # 同一事件被多源采到时只留最优先的那条代表（避免 AI 对同一件事分析多遍）。
     try:
         sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-        from local.intel_gate import select_priority as _select_priority
+        from local.intel_gate import select_priority_unique as _select_priority
     except Exception:
         _select_priority = None
     todo = []
@@ -328,7 +329,7 @@ def main():
             seen.add(iid)
             todo.append((f, it))
     if _select_priority:
-        # 先按优先级选出前 N（保留 (file,item) 结构），保证高分新鲜条目优先占用额度
+        # 先按优先级+去重选出前 N（保留 (file,item) 结构），保证高分新鲜条目优先占用额度
         picked = _select_priority([it for _, it in todo], args.max)
         picked_ids = {id(it) for it in picked}
         todo = [(f, it) for f, it in todo if id(it) in picked_ids]
