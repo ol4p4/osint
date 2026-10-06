@@ -83,7 +83,8 @@ AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key �
 | `tools/fetch_now.py` | 本地 24h 全量拉取（**仅国内源**，`scope:ci` 的 33 个外国源跳过——境外源一律由 CI 在 GitHub Actions 上采集，本地拉不动是常态），append 到今日 jsonl；refresh.py 自动调 |
 | `tools/translate_local.py` | 本地翻译（**通道链：Gemini → dots → 本机 4010 zen 代理 → OpenCode 官网直连**），每跑 30 条 6 分钟，写回 jsonl；refresh.py 自动调 |
 | `local/zen_proxy_client.py` | **本机 OpenCode Zen 代理客户端**（2026-10-05）：`reachable()` 预检（CI 无 4010 自动跳过）+ `chat_completion()` 把代理强制的 SSE 响应拼回完整文本；自带收窄回环守卫，见 §"本机 OpenCode Zen 代理接入" |
-| `local/intel_gate.py` | **AI 准入闸门**（2026-10-05）：按 `base_score>0` 过滤送 AI 的候选，拦住筛选层已判无关的行情播报；`OSINT_AI_SCORE_GATE=0` 可关；被 translate_local / citizen_impact 共用，见 §"AI 准入闸门" |
+| `local/intel_gate.py` | **AI 准入排序**（2026-10-05 建 / 2026-10-06 从硬过滤改为排序）：按「新鲜度 → `base_score` → 时间」排优先级，**不丢弃任何条目**；`OSINT_AI_SCORE_GATE=0` 退化纯时间序；被 translate_local / citizen_impact 共用，见 §"AI 准入排序" |
+| `tools/rescore_recent.py` | 词表扩充后的**一次性存量回填**（2026-10-06）：只补 `base_score=0` 的条目（严格增量，不改正分），默认近 7 天，写回前自动备份 `.bak_rescore_*` |
 | `tools/fetch_gdelt.py` | P1-5 GDELT 国际侧补源（DOC API 三组查询 24h 窗口，title-only 流入本地翻译管线）；白名单 {api.gdeltproject.org} 脚本内自带；6s 间隔+12s 退避+3h 成功节流（data/.gdelt_last_run）；refresh.py 自动调，失败静默 |
 | `worldview_loader.py` | 三观加载/注入文本构建（worldview.yaml 唯一事实源；缺失静默降级返回空串；**裁判链路明确不注入**保持校准客观）；`--show` 看档案+注入预览 / `--check` 结构校验 |
 | `local/worldview_engine.py` | 三观输入引擎：`--seed` AI 从 persona+views 起草初稿（draft:true）/ `--interactive` 9 轮引导（3 阶段×3 问，复用 dialogue_engine 深化机制，覆盖写 draft:false）/ `--show`；AI 合成失败不动 YAML |
@@ -710,26 +711,47 @@ C conf=0.89 日经225指数低开1.5%                ← 行情？
 
 **实测（2026-10-05）**：`analyze._call_api` 经代理返回真实内容（5.4s）；translate_local 单批 1 条 11.7s 产出正确中文（"China unveils new youth employment policy" → "中国出台青年就业新政策"）；citizen_impact 单批 15s 产出带 id 的 4 维 impact JSON；serve 问答 7.4s。故障注入（代理抛异常）→ 链正确落到下一通道并报补读后的真实错误；`OSINT_DISABLE_ZEN_PROXY=1` → 干净跳过。
 
-## AI 准入闸门：筛选分接入 AI 层（2026-10-05）
+## AI 准入排序：筛选分接入 AI 层（2026-10-05 建 / 2026-10-06 重设计）
 
-**问题**：筛选层（`fetch_rss` 的 `base_score` / `refresh.rebuild` 的 `final_score`）一直在算分，但 **AI 采集器按 `published_at` 取候选，从不看这个分**——打分与消费之间是断开的。实测**近 5 天 54%~68% 的已翻译/已研判条目是 `base_score=0`**（关键词零命中，如「各大银行/品牌金条价格排行」「EUR/USD fell 0.38%」「WTI crude slipped below $89」这类行情播报）。等于三分之二的 AI 预算（三个通道的全部吞吐）花在筛选层已判定与 persona 无关的条目上。
+**问题**：筛选层（`fetch_rss` 的 `base_score` / `refresh.rebuild` 的 `final_score`）一直在算分，但 **AI 采集器按 `published_at` 取候选，从不看这个分**——打分与消费之间是断开的。
+
+### ⚠️ 第一版做错了：硬过滤（已撤销，重要教训）
+
+首版把 `base_score=0` 当作「内容无关」的证据做**硬过滤**（只放行 `base_score>0`），把 AI 预算从「处理 67% 噪音」改善为「全处理相关条目」。**但前提是错的**：
+
+- `base_score=0` 只等于「**没命中关键词表里的词**」，不等于「不值得知道」；
+- 而用户口径是「**要一个上知天文下至地理的参谋**」——A股/汇率/大宗反映经济基本面，是必须知道的信息；
+- 实测硬过滤丢弃的条目里包含：**金正恩观摩导弹发射、泽连斯基打击俄炼油厂、以军空袭加沙、巴西大选民调、英伟达市值逼 6 万亿、胡塞袭击沙特阿美**——全是真要闻。
+
+**根因是词表窄，不是条目无关**：原词表 153 词虽中英各半，但中文 75 词全偏「就业/能源/宏观」（为 persona 主题设计），缺 `股市/汇率/黄金/大宗商品/并购/地缘/科技` 这类基础世界词汇；而语料 **69% 是中文**（英文 31%）→ 中文世界要闻命中不了任何词 → `base_score=0`。
+
+**教训（判据）**：**把「没命中我的词表」当成「不值得知道」，是把自己的工具局限当成了世界的边界。** 凡是「分数低 → 过滤掉」的设计，先问：**这个分数衡量的是「世界没价值」还是「我的词表没覆盖」？** 若是后者，只能排序，不能丢弃。
+
+**旁证**：实测扩表后仍有 1396/3761 条得 0 分（含 NASA/SpaceX 乘组、特朗普动态）——**没有任何词表能覆盖「上知天文下至地理」的长尾**，硬过滤这个设计本身就不成立。
+
+### 现在的设计：排序，不丢弃
 
 | 项 | 内容 |
 |---|---|
-| 模块 | `local/intel_gate.py`：`relevance_ok(item)` / `filter_relevant(items)` / `gate_enabled()` |
-| 接入点 | `tools/translate_local.collect_unjtranslated` + `cloud/citizen_impact.main`（候选收集处；`local/main_local` 的 Step2 早已按 `final_score` 取 Top N，无需改） |
-| 判据 | **`base_score > 0`**，不用 `final_score` |
-| 应急开关 | `OSINT_AI_SCORE_GATE=0` 关闭闸门（全量处理） |
+| 模块 | `local/intel_gate.py`：`select_priority(items, max_n)` / `rank_key()` / `priority_sort()` |
+| 排序键 | **（新鲜度层级, base_score, published_at）降序** — 先保新鲜，再按相关性，再按时间 |
+| 两级的必要性 | 未翻译池里 3 天以上旧货有 **6.4 万条**、近 3 天仅 ~1400 条。若纯按分数排序，**陈年高分条目会永久霸占队列、饿死新新闻** |
+| 接入点 | `tools/translate_local.collect_unjtranslated` + `cloud/citizen_impact.main`（Step2 早已按 `final_score` 取 Top N） |
+| 应急开关 | `OSINT_AI_SCORE_GATE=0` → 退化为纯时间序（等价旧行为） |
 
-**为什么是 `base_score` 而不是 `final_score`**（关键，选错会误杀全部本地条目）：
-- `base_score` = 源权重 × 关键词加权，**写入 jsonl 时持久化**，实测近 3 天**零缺失**；
-- `final_score` 含时间衰减，且本地 `fetch_now`/GDELT 条目**根本没写这个字段**——`refresh.rebuild` 只在内存里补算、不回写 jsonl。日文件里 1057/1462 条 `final_score` 缺失，按它过滤会把这些全判成 0 分误杀。
+**判据用 `base_score` 而非 `final_score`**：后者含时间衰减，且本地 `fetch_now`/GDELT 条目**根本没写这个字段**（`refresh.rebuild` 只在内存补算），按它排序会把本地条目全判成 0。
 
-**阈值依据（实测，非拍定）**：`base_score==0` 与 `keywords_hit` 为空**完全等价**（今日 0 条例外）→ 零误杀；正分条目下界 0.077（GDELT 无关键词评分、保底 0.3），与 0 之间有充足间隔。过滤后**日均保留 422 条**，落在现有配额（译 100/轮、研 50/轮）内。
+### 词表扩充（同日，根因修复）
 
-**宁可缺不可错**：字段缺失/非法值一律**放行**（无法判断→不丢弃），只有明确等于 0 才拦——批量过滤的准则是「没有证据说明它无关」，不是「没有证据说明它有关」。
+`sources.yaml` `keyword_weights` **153 → 304 词**（中文 75→155、英文 78→149）：补市场行情（A股/股市/汇率/黄金/大宗商品）、宏观金融（央行/加息/降息）、产业公司（并购/IPO/芯片，权重刻意压到 1.5 以下避免公告挤占）、地缘政治（中东/俄乌/大选/导弹）、英文国际要闻（missile/election/parliament/summit/earthquake）。定价原则：低于 persona 核心词（就业/失业 3.0），高于泛词（会议/讲话 0.5）。
 
-**验证（2026-10-05）**：闸门单测 9/9（正分放行/零分拦截/None 拦截/缺字段放行/非法值放行/开关两态）；真实数据 zero-leak——translate 扫 3 文件拦 1171 条、保留 578 条且抽验 0 条零分泄漏；citizen_impact 全库拦 40779 条零分；**前后 id 差值比对**确认本轮新增 3 条研判全部 `base_score>0`，零漏网。
+### 存量回填（一次性）
+
+`sources.yaml` 词表改了，但 `base_score` 是**采集时**写入并持久化的——新词表只对**此后新采**条目生效，存量分数仍旧，优先级排序在过渡期（~3 天）对存量无效。
+
+**`tools/rescore_recent.py`（严格增量）**：只补 `base_score` 恰为 0 的条目（0→正分，纯增加），**绝不动已有正分**。**为什么不敢重算正分**：jsonl 里 `source` 字段只存 `"rss"`、拿不到每条真实源权重（实测 0.7~1.3），无法忠实还原 `base_score = 源权重 × kw`，重算会把对的分数改坏。默认窗口 7 天（`--days`），不改更早历史；写回前每文件备份 `.bak_rescore_<时间戳>`。
+
+**实测（2026-10-06）**：近 7 天补分 **4145 条**；未翻译池正分占比 4%→46%；回填后候选前 15 条为加沙停火、法国债市、巴西大选、俄乌、A股定增、纳指新高——**真要闻恢复且排前列**。闸门逻辑断言全过（不丢弃/新鲜优先/新鲜内按分/开关两态）；translate 与 impact 端到端各 6/6、5/5 通过。
 
 - [x] **PLAN-1 RSSHub 中文源接入**（5 源已上线 CI docker run per-job；公共实例 403 已绕过）
 - [x] **PLAN-2 M1 ACH 假设矩阵**（ach_matrix.py + hypothesis_engine 接入 + falsification_criteria 69/69 补完）

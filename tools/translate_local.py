@@ -234,22 +234,21 @@ def translate_batch(items, api_key, deadline=None):
 
 
 def collect_unjtranslated(jsonl_files, max_n=MAX_PER_RUN):
-    """从 jsonl 文件收集未翻译条目 (按 published_at 倒序, 取前 max_n 条)
-    避免反复翻老数据, 优先翻最新 24h 新抓的。
+    """从 jsonl 文件收集未翻译条目，按优先级排序后取前 max_n 条。
 
-    2026-10-05：加筛选闸门——只收 base_score>0 的条目。此前按时间取候选完全不看
-    筛选分，实测 54%~68% 的 AI 预算花在 base_score=0（关键词零命中）的行情播报上。
-    闸门判据/开关见 local/intel_gate.py（base_score 而非 final_score：后者本地条目
-    根本没写、含时间衰减）。
+    2026-10-06：排序键改为「新鲜度优先 → base_score 降序 → 时间降序」
+    （见 local/intel_gate.py）。此前纯按 published_at 倒序，完全不看筛选分；
+    中途曾误改为「按 base_score=0 硬过滤」，已撤销——0 分只代表没命中词表，
+    不代表不值得知道（用户口径：要一个上知天文下至地理的参谋）。
+    现在不丢任何条目，只调整顺序。
     """
     try:
         sys.path.insert(0, str(ROOT))
-        from local.intel_gate import relevance_ok
+        from local.intel_gate import select_priority
     except Exception:
-        relevance_ok = lambda _it: True  # noqa: E731  模块缺失时降级为全放行
+        select_priority = None  # noqa: F811  模块缺失时降级为纯时间序
 
     items = []
-    skipped_irrelevant = 0
     for fp in jsonl_files:
         try:
             lines = Path(fp).read_text(encoding="utf-8", errors="replace").splitlines()
@@ -266,20 +265,18 @@ def collect_unjtranslated(jsonl_files, max_n=MAX_PER_RUN):
             # 必须有原文
             if not d.get("title"):
                 continue
-            # 筛选闸门：base_score=0 的条目筛选层已判其与 persona 主题无关
-            if not relevance_ok(d):
-                skipped_irrelevant += 1
-                continue
             items.append({
                 "id": d.get("id", ""),
                 "title": d.get("title", ""),
                 "content_preview": d.get("content_preview", ""),
                 "published_at": d.get("published_at", ""),
+                "base_score": d.get("base_score"),
                 "_file": str(fp),
             })
-    if skipped_irrelevant:
-        print(f"[translate_local] 筛选闸门拦下 {skipped_irrelevant} 条 base_score=0 条目")
     items.sort(key=lambda x: x.get("published_at", ""), reverse=True)
+    if select_priority:
+        # select_priority 内部已含「新鲜优先 → 分数 → 时间」三级排序
+        return select_priority(items, max_n)
     return items[:max_n]
 
 

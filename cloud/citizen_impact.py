@@ -310,30 +310,31 @@ def main():
         sys.exit(0)
     file_items = {f: load_jsonl(Path(f)) for f in files}
     analyzed_ids = {it.get("id") for f in files for it in file_items[f] if it.get("impact_level")}
-    # 2026-10-05：筛选闸门——只研判 base_score>0 的条目。此前按 published_at 取候选，
-    # 实测 54%~68% 的研判预算花在 base_score=0（关键词零命中）的行情播报上。
-    # 闸门在本地/CI 均可用（base_score 由采集层持久化，CI 同样写入）。
-    # 判据/开关见 local/intel_gate.py；OSINT_AI_SCORE_GATE=0 可关闭。
+    # 2026-10-06：候选按「新鲜度优先 → base_score 降序 → 时间降序」排序（见 local/intel_gate.py）。
+    # 中途曾误改为「base_score=0 硬过滤」，已撤销——0 分只代表没命中词表，不代表不值得知道。
+    # 现在不丢任何条目，只调整处理顺序（高相关+新鲜的先做，额度有余再做低分）。
     try:
         sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-        from local.intel_gate import relevance_ok as _relevance_ok
+        from local.intel_gate import select_priority as _select_priority
     except Exception:
-        _relevance_ok = lambda _it: True  # noqa: E731
+        _select_priority = None
     todo = []
     seen = set()
-    skipped_irrelevant = 0
     for f in files:
         for it in file_items[f]:
             iid = it.get("id")
             if iid in seen or iid in analyzed_ids:
                 continue
             seen.add(iid)
-            if not _relevance_ok(it):
-                skipped_irrelevant += 1
-                continue
             todo.append((f, it))
-    if skipped_irrelevant:
-        print(f"[IMPACT] 筛选闸门拦下 {skipped_irrelevant} 条 base_score=0 条目")
+    if _select_priority:
+        # 先按优先级选出前 N（保留 (file,item) 结构），保证高分新鲜条目优先占用额度
+        picked = _select_priority([it for _, it in todo], args.max)
+        picked_ids = {id(it) for it in picked}
+        todo = [(f, it) for f, it in todo if id(it) in picked_ids]
+    else:
+        todo.sort(key=lambda p: p[1].get("published_at", ""), reverse=True)
+        todo = todo[:args.max]
     todo.sort(key=lambda p: p[1].get("published_at", ""), reverse=True)
     todo = todo[:args.max]
     if not todo:
