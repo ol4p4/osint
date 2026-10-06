@@ -87,6 +87,7 @@ AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key �
 | `tools/rescore_recent.py` | 词表扩充后的**一次性存量回填**（2026-10-06）：只补 `base_score=0` 的条目（严格增量，不改正分），默认近 7 天，写回前自动备份 `.bak_rescore_*` |
 | `tools/fetch_gdelt.py` | P1-5 GDELT 国际侧补源（DOC API 三组查询 24h 窗口，title-only 流入本地翻译管线）；白名单 {api.gdeltproject.org} 脚本内自带；6s 间隔+12s 退避+3h 成功节流（data/.gdelt_last_run）；refresh.py 自动调，失败静默 |
 | `worldview_loader.py` | 三观加载/注入文本构建（worldview.yaml 唯一事实源；缺失静默降级返回空串；**裁判链路明确不注入**保持校准客观）；`--show` 看档案+注入预览 / `--check` 结构校验 |
+| `net_proxy.py` | **git 联网代理探测**（2026-10-06）：探测本地 Clash 代理端口并注入 git 子进程环境变量（`GIT_CONFIG_*`，不改命令行、无注入面），供 local_sync/refresh 共用；CI 无代理自动退回直连，见 §"CI 故障排除 #9b" |
 | `local/worldview_engine.py` | 三观输入引擎：`--seed` AI 从 persona+views 起草初稿（draft:true）/ `--interactive` 9 轮引导（3 阶段×3 问，复用 dialogue_engine 深化机制，覆盖写 draft:false）/ `--show`；AI 合成失败不动 YAML |
 | `worldview.yaml` | 用户三观档案（worldview/lifeview/values + analysis_directives），仓库根提交供 CI 读取；draft=true 标记 AI 初稿待校正；Obsidian 镜像 `视频知识库\wiki\views\worldview.md` |
 | `gen_dashboard.py` + `fix_dashboard.py` | 生成 HTML（必须按此顺序）；gen_dashboard 内嵌 macro 面板 CSS/HTML/JS，趋势图用 Chart.js 4.4 (jsdelivr)，情报流 section 用 `<details>` 折叠默认收起；P1-4 翻车高亮（flipBadge：⚡高确信翻车/↓置信度断崖 + 红边卡片） |
@@ -588,6 +589,13 @@ C conf=0.89 日经225指数低开1.5%                ← 行情？
    - 诊断命令：`gh api repos/ol4p4/osint/actions/runs?event=schedule` 看时间戳间隔
    - 双联防御：CI 已 8x/day（cron `0 */3 * * *`）+ 本地 `OsintWatchdog` 计划任务每 6h 三项检查（v3, 2026-09-12）：① `intel_2*.jsonl` mtime > 8h 静默 → 本地跑 refresh.py 自愈 + `gh workflow run daily.yml`；② 最近 CI 成功 run > 12h → dispatch（此前只看本地 mtime，本地 fetch_now 活着时测不出 CI 死亡）；③ 最新 hypothesis_weekly_*.md > 8 天（错过周一）→ 补跑 daily_run.ps1 -Auto（24h 节流戳 data/.weekly_catchup_last_run）。日志 `data/logs/watchdog_YYYYMMDD.log`
 9. **仪表盘时间错乱**：time_ago 已改为浏览器端动态计算（gen_dashboard.py 内嵌 JS IIFE），不再依赖采集时写死的静态文本
+9b. **本地 git 连不上 GitHub**（`Failed to connect to github.com port 443`）：本机直连 GitHub 常态不通（国内网络），需经本地 Clash 代理。**已根治（2026-10-06）**：`net_proxy.py` 探测本地代理并注入 git 子进程环境变量，`local_sync.git_pull` / `refresh.commit_hypotheses` 全部改用它——**不再需要手工 export 代理**。
+   - 代理候选端口：7897（Clash Verge mixed-port 默认）→ 7890 → 7891 → 7888，探测到端口在监听即采用，缓存 300s
+   - 只注入环境变量（`GIT_CONFIG_COUNT/KEY/VALUE`），命令行保持纯参数列表，无注入面；外部代理 URL 过白名单正则（仅 http:// + 回环 + 端口）
+   - CI 无本地代理 → 探测失败 → 返回空 dict → git 直连，互不影响
+   - 应急开关：`OSINT_GIT_PROXY=none` 强制禁代理；`OSINT_GIT_PROXY=http://127.0.0.1:7897` 显式指定
+   - 诊断：`python -c "import net_proxy; print(net_proxy.describe())"`；`gh` CLI 自带路由，**不受影响**（实测直连/代理都通）
+   - **根因提醒**：Clash 未设自启（HKCU Run 无该键），重启后核心不运行 → 代理全失效。若频繁遇到，需给 Clash 自己开自启（属全局设置，osint 不自作主张）
 10. **fetch_list 采集 0 条**（2026-08-30 诊断）：接口缺陷已修（main 现在写 output jsonl，与 fetch_rss 同接口）；但所有列表源在 CI 上也解析出 0 条——**sources.yaml 的 list_selector 已与改版后的页面结构脱节**（gov.cn 还是 JS 渲染页）。逐源修选择器是持久战，替代方案：改用 RSSHub 或各站 RSS 源。
 11. **仪表盘情报全显示 "8 小时前" 但金十/财联社实际在发**（2026-09-01 诊断；**2026-09-04 已基本根治**）：原 90% 是本地 RSSHub Docker 容器没起。9-04 起 fetch_rss 三级改造后**无 RSSHub 也能拉全源**：
    - 金十/新浪(7x24+滚动) → 官方直连 API（sources.yaml `direct: jin10_flash / sina_zhibo / sina_roll`，不经任何 RSSHub）

@@ -91,9 +91,12 @@ def git_pull():
         # "cannot pull with rebase: You have unstaged changes" 永久失败，
         # 会把整条 refresh 链的拉取卡死（实测 probe_readings.json 残留导致）。
         # autostash 自动暂存/恢复工作区改动，pull 完成后原样还原，不丢本地修改。
+        # 2026-10-06：经 net_proxy 注入本地代理（GitHub 直连常态不通；探测不到
+        # 代理时返回与 os.environ 等价的 env，行为不变）。
+        from net_proxy import git_env
         r = subprocess.run(["git", "pull", "--autostash", "origin", "master"], cwd=str(PROJECT),
                            capture_output=True, text=True, timeout=120,
-                           creationflags=_NO_WINDOW)
+                           env=git_env(), creationflags=_NO_WINDOW)
         print(f"Git pull: {(r.stdout or r.stderr).strip()[:120]}")
         return r.returncode == 0
     except Exception as e:

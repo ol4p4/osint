@@ -609,37 +609,44 @@ def commit_hypotheses():
     改为动态取 data/hypotheses/ 下**已被追踪**的文件：既覆盖 probe_readings，
     也自动纳入日后新增的追踪文件，同时不会误把未追踪的 proposed_*.json 拉进库。"""
     try:
+        # 2026-10-06：全部 git 子进程经 net_proxy 注入本地代理（GitHub 直连常态不通）。
+        # 探测不到代理时 git_env() 返回与 os.environ 等价的 env，行为完全不变。
+        from net_proxy import git_env
+        _genv = git_env()
         ls = subprocess.run(["git", "ls-files", "data/hypotheses/"], cwd=str(PROJECT),
                             capture_output=True, text=True, timeout=60,
-                            creationflags=_NO_WINDOW)
+                            env=_genv, creationflags=_NO_WINDOW)
         files = [ln.strip() for ln in (ls.stdout or "").splitlines() if ln.strip()]
         if not files:
             print("hyp-commit: data/hypotheses/ 无追踪文件, 跳过")
             return
         subprocess.run(["git", "add", "--", *files], cwd=str(PROJECT), capture_output=True,
-                       text=True, timeout=60, creationflags=_NO_WINDOW)
+                       text=True, timeout=60, env=_genv, creationflags=_NO_WINDOW)
         # --quiet: 有 staged 变更返回 1, 无变更返回 0
         diff = subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=str(PROJECT),
-                              capture_output=True, timeout=60, creationflags=_NO_WINDOW)
+                              capture_output=True, timeout=60, env=_genv, creationflags=_NO_WINDOW)
         if diff.returncode == 0:
             print("hyp-commit: 无变更, 跳过")
             return
         msg = f"auto: hypothesis chain update {time.strftime('%Y-%m-%d')}"
         c = subprocess.run(["git", "commit", "-m", msg], cwd=str(PROJECT),
-                           capture_output=True, text=True, timeout=120, creationflags=_NO_WINDOW)
+                           capture_output=True, text=True, timeout=120,
+                           env=_genv, creationflags=_NO_WINDOW)
         if c.returncode != 0:
             print(f"hyp-commit: commit 失败: {(c.stderr or '')[:150]}")
             return
         rb = subprocess.run(["git", "pull", "--rebase", "--autostash", "origin", "master"], cwd=str(PROJECT),
-                            capture_output=True, text=True, timeout=180, creationflags=_NO_WINDOW)
+                            capture_output=True, text=True, timeout=180,
+                            env=_genv, creationflags=_NO_WINDOW)
         if rb.returncode != 0:
             # 冲突时回退 rebase 中间态, 保住本地 commit 留待下轮, 避免污染后续 git_pull
             subprocess.run(["git", "rebase", "--abort"], cwd=str(PROJECT),
-                           capture_output=True, timeout=60, creationflags=_NO_WINDOW)
+                           capture_output=True, timeout=60, env=_genv, creationflags=_NO_WINDOW)
             print(f"hyp-commit: rebase 失败(留下轮): {(rb.stderr or rb.stdout or '')[:150]}")
             return
         ph = subprocess.run(["git", "push", "origin", "master"], cwd=str(PROJECT),
-                            capture_output=True, text=True, timeout=180, creationflags=_NO_WINDOW)
+                            capture_output=True, text=True, timeout=180,
+                            env=_genv, creationflags=_NO_WINDOW)
         print("hyp-commit: pushed" if ph.returncode == 0
               else f"hyp-commit: push 失败(留下轮): {(ph.stderr or '')[:150]}")
     except Exception as e:
