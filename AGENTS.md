@@ -90,7 +90,7 @@ AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key �
 | `net_proxy.py` | **git 联网代理探测**（2026-10-06）：探测本地 Clash 代理端口并注入 git 子进程环境变量（`GIT_CONFIG_*`，不改命令行、无注入面），供 local_sync/refresh 共用；CI 无代理自动退回直连，见 §"CI 故障排除 #9b" |
 | `local/worldview_engine.py` | 三观输入引擎：`--seed` AI 从 persona+views 起草初稿（draft:true）/ `--interactive` 9 轮引导（3 阶段×3 问，复用 dialogue_engine 深化机制，覆盖写 draft:false）/ `--show`；AI 合成失败不动 YAML |
 | `worldview.yaml` | 用户三观档案（worldview/lifeview/values + analysis_directives），仓库根提交供 CI 读取；draft=true 标记 AI 初稿待校正；Obsidian 镜像 `视频知识库\wiki\views\worldview.md` |
-| `gen_dashboard.py` + `fix_dashboard.py` | 生成 HTML（必须按此顺序）；gen_dashboard 内嵌 macro 面板 CSS/HTML/JS，趋势图用 Chart.js 4.4 (jsdelivr)，情报流 section 用 `<details>` 折叠默认收起；P1-4 翻车高亮（flipBadge：⚡高确信翻车/↓置信度断崖 + 红边卡片） |
+| `gen_dashboard.py` + `fix_dashboard.py` | 生成 HTML（必须按此顺序）；gen_dashboard 内嵌 macro 面板 CSS/HTML/JS，趋势图用 Chart.js 4.4 (jsdelivr)；**情报流双栏**（2026-10-06：左「最新消息」时间序 / 右「24h 重要情报」分数序，见 §"情报流双栏"）；P1-4 翻车高亮（flipBadge：⚡高确信翻车/↓置信度断崖 + 红边卡片） |
 | `link_intel_hyp.py` | 情报→假设证据关联（P1-1 起主匹配=TF-IDF 余弦≥0.12 top3 与 cluster_stories 共用分词，DOMAIN_MAP 降为兜底；证据按 story_id 去重；report 带 method 字段） |
 | `daily_briefing.py` / `sync_data.py` / `rebuild_hyps.py` | 简报/同步/重建树 |
 | `views.yaml` | 观点模板（`materialized_hyp_id` 标注已物化的 view，防止周循环重复生成） |
@@ -868,7 +868,30 @@ C conf=0.89 日经225指数低开1.5%                ← 行情？
   - `dim in str(v)` 匹配逻辑仍失效（宏观页「相关情报引用」显示 0 条相关情报），本次按用户决定未改结构，留作后续。
   - **加这条的原因**：40+ 条待续事项里此前**没有任何一条**与知识库写入质量相关，而 47 个 RSS 源都有逐源审计计划——这条单向写入通道（215 个假设页 + 47 个概念页 + 4 个宏观页）从未进过审计视野。
 
-## 知识库写入闸门（2026-09-21 建立）
+## 情报流双栏（2026-10-06）
+
+**问题**：情报流原先只有**一个 200 条列表 + 一个排序切换按钮**（按时间 / 按相关度，二选一）。用户口径是要"最新消息"和"重要情报"**同时看到**——二选一是被迫的取舍。
+
+**方案**：改成左右双栏，各管一件事（用户提出）。
+
+| 栏 | 内容 | 数据源 | 排序 |
+|---|---|---|---|
+| 左「🕐 最新消息」 | 200 条窗口 | `dashboard_data.intelligence` | 时间倒序 |
+| 右「⭐ 24h 重要情报」 | 24h 高分榜 | `dashboard_data.intel_top`（**新增字段**） | 分数倒序 |
+
+**为什么右栏需要独立数据**：`intelligence` 是**按时间截出来的 200 席**，实测有 **144 条 24h 内 ≥0.65 分的高分条目被截在窗口之外**——右栏若复用同一份数据就看不到它们。故 `rebuild_data` 新增产出 `intel_top`：从**全库去重池**取「24h 内 + `base_score>=0.5` + 每源最多 8 条（防单源霸榜）」前 60 条。
+
+**实现要点**：
+- 前端抽 `itemHTML(i)` 复用卡片模板，`R()` 同时填两栏（分类按钮过滤**同步作用于两栏**，实测点"金融市场"→ 左 132 / 右 42）
+- 旧的排序切换按钮与 `S()` 函数已删（`S` 保留空壳以免外部调用报错）
+- 响应式：<1100px 收成单栏（`.intel-cols` 媒体查询）
+- 情报流 `<details>` 默认改**展开**（双栏是主视图，折叠着看不到）
+
+**实测（2026-10-06，Playwright 真浏览器）**：两栏并排（1600px 视口下各 621.5px）；左 200 条 / 右 48 条；分类过滤两栏联动；**控制台 0 错误**；右栏内容为印度加息、铜价新高、软银 DayOne IPO、欧盟能源采购等 24h 真新闻。
+
+**注意**：`intel_top` 是新字段，老 `dashboard_data.json` 没有——gen_dashboard 用 `data.get("intel_top", []) or []` 兜底，缺失时右栏显示"近 24 小时暂无高分情报"，不会报错。
+
+
 
 写入知识库的路径原先各自为政、无质量校验，审计发现的 5 个缺陷是同一根因的 5 次显形。按"闸门内核独立成层、调用点各自 import、签名不动"的方式加固：
 

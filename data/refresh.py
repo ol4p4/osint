@@ -307,9 +307,40 @@ def rebuild_data():
     print(f"window: {sum(1 for x in top200 if _rel_score(x) > 0)}/200 scored, "
           f"reserve kept {len(reserved)}")
 
+    # ③ 24h 高分榜（2026-10-06 新增，供仪表盘双栏右栏"24h 重要情报"）
+    # 动机：单一窗口无法同时满足"看最新"和"看最重要"——top200 按时间截断，
+    # 实测有 144 条 24h 内高分条目（>=0.65）被 200 席之外截掉，右栏因此需要
+    # 独立的榜单，从**全库去重池**取（不受 200 席窗口限制）。
+    # 口径：24h 内 + base_score>=0.5 + 每源最多 8 条（防单源霸榜）+ 去重后取前 60。
+    try:
+        _now_dt = datetime.now(timezone.utc)
+        _h24_cut = (_now_dt - timedelta(hours=24)).strftime('%Y-%m-%d %H:%M')
+
+        def _in_24h(it):
+            return _parse_dt(it.get('published_at')) >= _h24_cut
+
+        _hi = [x for x in unique if _in_24h(x) and _rel_score(x) >= 0.5]
+        _hi.sort(key=lambda x: (_rel_score(x), _rank_time(x)), reverse=True)
+        _per_src = {}
+        intel_top = []
+        for x in _hi:
+            s = x.get('source_name') or x.get('source') or '_unknown'
+            if _per_src.get(s, 0) >= 8:
+                continue
+            _per_src[s] = _per_src.get(s, 0) + 1
+            intel_top.append(x)
+            if len(intel_top) >= 60:
+                break
+        print(f"intel_top: {len(intel_top)} 条 24h 高分（>=0.5，"
+              f"来源 {len(_per_src)} 个）")
+    except Exception as e:
+        intel_top = []
+        print(f"intel_top failed (non-blocking): {e}")
+
     output = {
         "generated_at": datetime.now().isoformat(),
         "intelligence": top200,
+        "intel_top": intel_top,
         "intel_count": len(unique),
         "hypotheses": hyps,
         "macro": {},

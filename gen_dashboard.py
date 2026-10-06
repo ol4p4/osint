@@ -39,6 +39,9 @@ m_json = json.dumps(major_ids, ensure_ascii=False)
 mega_ids = [h["id"] for h in hyps if h.get("level") == "mega"]
 mega_json = json.dumps(mega_ids, ensure_ascii=False)
 i_json = json.dumps(intel, ensure_ascii=False)
+# 24h 高分榜（rebuild_data 产出，供右栏"24h 重要情报"；老数据无该字段时为空数组）
+intel_top = data.get("intel_top", []) or []
+itop_json = json.dumps(intel_top, ensure_ascii=False)
 ach_json = json.dumps(ach_data, ensure_ascii=False) if ach_data else "null"
 
 # 宏观指标数据（fetch_macro_indicators.py 产出）
@@ -255,6 +258,13 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
 .btn:hover{border-color:var(--accent);color:var(--accent)}
 .btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
 .sort-btns{display:flex;gap:6px}
+/* 情报流双栏（2026-10-06）：左=最新消息（时间序），右=24h 重要情报（分数序） */
+.intel-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+@media(max-width:1100px){.intel-cols{grid-template-columns:1fr}}
+.intel-col-head{display:flex;align-items:baseline;gap:8px;margin-bottom:8px;padding-bottom:6px;border-bottom:2px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:2}
+.intel-col-head h3{font-size:13px;font-weight:700;color:var(--text);margin:0}
+.intel-col-head .col-sub{font-size:10px;color:var(--text-muted)}
+.intel-col-head .col-count{font-size:10px;color:var(--text-secondary);margin-left:auto;font-family:"JetBrains Mono",monospace}
 .item{border:1px solid var(--border);border-radius:6px;padding:12px 14px;margin-bottom:8px;transition:all .15s;background:var(--bg);border-left:3px solid transparent}
 .item:hover{border-color:var(--border-hover);border-left-color:var(--accent);box-shadow:var(--shadow-sm)}
 .meta-row{display:flex;gap:6px;margin-bottom:5px;flex-wrap:wrap;align-items:center}
@@ -463,20 +473,33 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
 </div>
 
 <!-- Intel Feed -->
-<details class="section section-collapsible" id="intelSection">
+<details class="section section-collapsible" id="intelSection" open>
   <summary>
     <div class="section-title">📡 情报流 <span id="intelCount" style="font-weight:400;color:var(--text-muted)"></span></div>
-    <span class="section-toggle-hint">点击展开 ▾</span>
+    <span class="section-toggle-hint">点击收起 ▾</span>
   </summary>
   <div class="section-body">
     <div class="filter-row">
-      <div class="sort-btns">
-        <button class="btn" id="sort-relevance" onclick="S('relevance')">按相关度</button>
-        <button class="btn active" id="sort-time" onclick="S('time')">按时间</button>
-      </div>
       <div class="btns" id="catBtns"></div>
     </div>
-    <div id="il"></div>
+    <div class="intel-cols">
+      <div class="intel-col">
+        <div class="intel-col-head">
+          <h3>🕐 最新消息</h3>
+          <span class="col-sub">按时间倒序</span>
+          <span class="col-count" id="cntLeft"></span>
+        </div>
+        <div id="il"></div>
+      </div>
+      <div class="intel-col">
+        <div class="intel-col-head">
+          <h3>⭐ 24h 重要情报</h3>
+          <span class="col-sub">按相关度 · 近 24 小时</span>
+          <span class="col-count" id="cntRight"></span>
+        </div>
+        <div id="ilTop"></div>
+      </div>
+    </div>
   </div>
 </details>
 
@@ -940,13 +963,24 @@ parts.append('\n'.join(hyp_js_lines))
 # Intelligence JS
 intel_js_lines = []
 intel_js_lines.append('<script>')
-intel_js_lines.append('var D=' + i_json + ';')
+intel_js_lines.append('var D=' + i_json + ';var DTOP=' + itop_json + ';')
 intel_js_lines.append("""var curSort="time";var curCat="";
 var catNames={"macro":"宏观经济","finance":"金融市场","geopolitics":"地缘政治","energy":"能源安全","east_asia":"东亚","trade":"贸易","tech":"科技","social":"社会"};
 function buildCatBtns(){var cats={};D.forEach(function(i){var c=i.category_cn||"other";cats[c]=(cats[c]||0)+1});var html='<button class="btn active" onclick="filterCat(\\'\\')">全部</button>';Object.keys(cats).sort(function(a,b){return cats[b]-cats[a]}).forEach(function(c){html+='<button class="btn" onclick="filterCat(\\''+c+'\\')">'+(catNames[c]||c)+' ('+cats[c]+')</button>'});document.getElementById("catBtns").innerHTML=html;document.getElementById("intelCount").textContent="("+D.length+" 条)"}
 function filterCat(cat){curCat=cat;R(cat)}
-function R(cat){var list=cat?D.filter(function(i){return i.category_cn===cat}):D;var sorted=list.slice();if(curSort==="time"){sorted.sort(function(a,b){return new Date(b.published_at||0)-new Date(a.published_at||0)})}else{sorted.sort(function(a,b){return ((b.final_score||b.base_score)||0)-((a.final_score||a.base_score)||0)})}document.getElementById("il").innerHTML=sorted.map(function(i){var cc=i.category_cn||"other";var sc=((i.final_score||i.base_score)||0);var rv=sc>=0.6?5:sc>=0.35?4:sc>=0.15?3:0;var lang=(i.language||"en").toUpperCase();var pub=i.published_cn||"";if(!pub&&i.published_at){var pd=new Date(i.published_at);if(!isNaN(pd.getTime()))pub=pd.toLocaleDateString("zh-CN")}var ago=(function(){var pa=new Date(i.published_at||0);if(isNaN(pa.getTime()))return i.time_ago||"";var dm=(Date.now()-pa.getTime())/60000;if(dm<0)dm=0;return dm<1?"刚刚":dm<60?Math.round(dm)+"分钟前":dm<1440?Math.round(dm/60)+"小时前":Math.round(dm/1440)+"天前"})();var kf=(i.key_facts&&i.key_facts.length)?i.key_facts.join("; "):"";var hasOrig=i.content_full&&i.content_full.length>30;return '<div class="item"><div class="meta-row"><span class="cat cat-'+cc+'">'+cc+'</span><span class="badge">'+lang+'</span>'+(i.story_size>1?'<span class="badge story" title="聚类自同一事件(余弦'+(i.story_id||'').slice(0,8)+')">同事件×'+i.story_size+'</span>':'')+'<span class="rel rel-'+rv+'">R'+Math.round(sc*10)+'</span><span class="src">'+(i.source_name||"")+'</span></div><div class="meta-row"><span class="time-tag">'+pub+'</span><span class="time-tag">'+ago+'</span></div><div class="item-title">'+esc(i.cn_title||i.title||"")+'</div><div class="item-body">'+esc(i.cn_summary||"")+'</div>'+(kf?'<div class="kf">关键事实: '+esc(kf)+'</div>':'')+(i.impact?'<div class="impact">👤 '+esc(i.impact)+'</div>':'')+(i.graduate_impact?'<div class="impact grad">🎓 '+esc(i.graduate_impact)+'</div>':'')+(i.dims?'<details class="dims"><summary>四维诊断</summary><div class="dims-body">'+Object.entries(i.dims).map(function(p){return '<div><b>'+({accumulation_node:'积累制度',spatial_layer:'空间修正',state_market_shift:'国家-市场',class_interest:'阶级利益'}[p[0]]||p[0])+'</b>：'+esc(p[1])+'</div>'}).join('')+'</div></details>':'')+(hasOrig?'<button class="expand-btn" onclick="tog(this)">展开原文</button><div class="orig">'+esc(i.content_full)+'</div>':'')+'</div>'}).join("")}
-function S(s){curSort=s;document.getElementById("sort-relevance").classList.toggle("active",s==="relevance");document.getElementById("sort-time").classList.toggle("active",s==="time");R(curCat)}
+function itemHTML(i){var cc=i.category_cn||"other";var sc=((i.final_score||i.base_score)||0);var rv=sc>=0.6?5:sc>=0.35?4:sc>=0.15?3:0;var lang=(i.language||"en").toUpperCase();var pub=i.published_cn||"";if(!pub&&i.published_at){var pd=new Date(i.published_at);if(!isNaN(pd.getTime()))pub=pd.toLocaleDateString("zh-CN")}var ago=(function(){var pa=new Date(i.published_at||0);if(isNaN(pa.getTime()))return i.time_ago||"";var dm=(Date.now()-pa.getTime())/60000;if(dm<0)dm=0;return dm<1?"刚刚":dm<60?Math.round(dm)+"分钟前":dm<1440?Math.round(dm/60)+"小时前":Math.round(dm/1440)+"天前"})();var kf=(i.key_facts&&i.key_facts.length)?i.key_facts.join("; "):"";var hasOrig=i.content_full&&i.content_full.length>30;return '<div class="item"><div class="meta-row"><span class="cat cat-'+cc+'">'+cc+'</span><span class="badge">'+lang+'</span>'+(i.story_size>1?'<span class="badge story" title="聚类自同一事件(余弦'+(i.story_id||'').slice(0,8)+')">同事件×'+i.story_size+'</span>':'')+'<span class="rel rel-'+rv+'">R'+Math.round(sc*10)+'</span><span class="src">'+(i.source_name||"")+'</span></div><div class="meta-row"><span class="time-tag">'+pub+'</span><span class="time-tag">'+ago+'</span></div><div class="item-title">'+esc(i.cn_title||i.title||"")+'</div><div class="item-body">'+esc(i.cn_summary||"")+'</div>'+(kf?'<div class="kf">关键事实: '+esc(kf)+'</div>':'')+(i.impact?'<div class="impact">👤 '+esc(i.impact)+'</div>':'')+(i.graduate_impact?'<div class="impact grad">🎓 '+esc(i.graduate_impact)+'</div>':'')+(i.dims?'<details class="dims"><summary>四维诊断</summary><div class="dims-body">'+Object.entries(i.dims).map(function(p){return '<div><b>'+({accumulation_node:'积累制度',spatial_layer:'空间修正',state_market_shift:'国家-市场',class_interest:'阶级利益'}[p[0]]||p[0])+'</b>：'+esc(p[1])+'</div>'}).join('')+'</div></details>':'')+(hasOrig?'<button class="expand-btn" onclick="tog(this)">展开原文</button><div class="orig">'+esc(i.content_full)+'</div>':'')+'</div>'}
+function R(cat){
+  var list=cat?D.filter(function(i){return i.category_cn===cat}):D;
+  var byTime=list.slice().sort(function(a,b){return new Date(b.published_at||0)-new Date(a.published_at||0)});
+  document.getElementById("il").innerHTML=byTime.map(itemHTML).join("");
+  document.getElementById("cntLeft").textContent=byTime.length+" 条";
+  // 右栏：24h 高分榜（后端 intel_top 产出；同样按分类按钮过滤）
+  var top=cat?DTOP.filter(function(i){return i.category_cn===cat}):DTOP;
+  var byScore=top.slice().sort(function(a,b){return ((b.final_score||b.base_score)||0)-((a.final_score||a.base_score)||0)});
+  document.getElementById("ilTop").innerHTML=byScore.length?byScore.map(itemHTML).join(""):'<div class="empty-tip">近 24 小时暂无高分情报。</div>';
+  document.getElementById("cntRight").textContent=byScore.length+" 条";
+}
+function S(s){return}
 function toggleChat(){var p=document.getElementById("chatPanel");p.classList.toggle("open");if(p.classList.contains("open"))document.getElementById("chatInput").focus()}
 function pushMsg(cls,text){var box=document.getElementById("chatMsgs");var div=document.createElement("div");div.className="chat-msg "+cls;div.textContent=text;box.appendChild(div);box.scrollTop=box.scrollHeight}
 async function sendChat(){var inp=document.getElementById("chatInput");var q=inp.value.trim();if(!q)return;inp.value="";pushMsg("user",q);var box=document.getElementById("chatMsgs");var tip=document.createElement("div");tip.className="chat-msg ai typing";tip.textContent="参谋长研判中……";box.appendChild(tip);box.scrollTop=box.scrollHeight;try{var r=await fetch("/api/ask",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({q:q})});var d=await r.json();tip.remove();pushMsg("ai",d.answer||("出错: "+(d.error||"未知错误")))}catch(e){tip.remove();pushMsg("ai","请求失败: "+e)}}
