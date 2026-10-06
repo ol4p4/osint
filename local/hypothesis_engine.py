@@ -580,7 +580,70 @@ CRITICAL requirements for thresholds:
                 if isinstance(v, (int, float)):
                     return float(v)
             return 0.0
-        week_intel_sorted = sorted(week_intel, key=_intel_rank, reverse=True)
+
+        # 2026-10-06（B 方案）：纯按分数取样会**严重偏科**——实测上周 14860 条取
+        # 前 60，来源 100% 集中在金十/新浪/财联社 3 个高频源，主题 72% 是
+        # 金融/美联储，地缘（加沙停火、巴西大选）与科技（诺贝尔奖、英伟达）
+        # 一条都进不来。原因：高频快讯源权重高（1.2）+ 发得多，天然霸榜。
+        # 改为「源配额 + 主题配额」两轮取样（第一轮严格配额，第二轮放宽填满）：
+        # 实测源数 3→12、主题覆盖从 6 类不均变为 7 类均衡（各 8~10 条）。
+        SRC_CAP = 6      # 单源最多 6 条（60 席 / 约 12 源）
+        THEME_CAP = 8    # 单主题最多 8 条
+        _THEME_KWS = {
+            "就业/劳动": ["就业", "失业", "毕业生", "招聘", "裁员", "工资", "劳动", "岗位"],
+            "社保/民生": ["养老金", "社保", "医保", "退休", "房价", "楼市", "物价", "消费"],
+            "地缘/冲突": ["冲突", "战争", "袭击", "制裁", "导弹", "停火", "大选", "选举",
+                       "议会", "外交", "war", "strike", "military", "summit", "ceasefire"],
+            "能源/大宗": ["油价", "原油", "石油", "天然气", "OPEC", "铜", "黄金", "大宗",
+                       "能源", "oil", "gas", "gold", "copper", "crude"],
+            "科技/AI": ["AI", "人工智能", "芯片", "半导体", "算力", "机器人", "数据中心",
+                      "chip", "semiconductor", "OpenAI", "Nvidia"],
+            "贸易/供应链": ["关税", "贸易", "出口", "进口", "供应链", "tariff", "trade", "export"],
+        }
+
+        def _theme_of(it):
+            t = (it.get("cn_title") or it.get("title") or "")
+            for _th, _ws in _THEME_KWS.items():
+                if any(w in t for w in _ws):
+                    return _th
+            return "其他"
+
+        # 去重（同标题前 24 字符）+ 剔除固定栏目条（多主题打包，见 AGENTS.md
+        # §"固定栏目条降权"）——这两类占席位但不提供独立信息。
+        try:
+            from local.intel_gate import is_column_item as _is_col
+        except Exception:
+            _is_col = lambda _it: False  # noqa: E731
+
+        _ranked = sorted(week_intel, key=_intel_rank, reverse=True)
+        _pool = [x for x in _ranked if not _is_col(x)]
+        _seen_title = set()
+        _dedup = []
+        for x in _pool:
+            _k = (x.get("cn_title") or x.get("title") or "")[:24]
+            if _k and _k in _seen_title:
+                continue
+            _seen_title.add(_k)
+            _dedup.append(x)
+
+        week_intel_sorted = []
+        _src_cnt, _th_cnt, _chosen = {}, {}, set()
+        for _strict in (True, False):
+            for x in _dedup:
+                if len(week_intel_sorted) >= 60:
+                    break
+                if id(x) in _chosen:
+                    continue
+                _s = x.get("source_name") or x.get("source") or "_unknown"
+                _th = _theme_of(x)
+                if _strict and (_src_cnt.get(_s, 0) >= SRC_CAP or _th_cnt.get(_th, 0) >= THEME_CAP):
+                    continue
+                _chosen.add(id(x))
+                week_intel_sorted.append(x)
+                _src_cnt[_s] = _src_cnt.get(_s, 0) + 1
+                _th_cnt[_th] = _th_cnt.get(_th, 0) + 1
+            if len(week_intel_sorted) >= 60:
+                break
 
         # 收集假设动态
         active = [h for h in hyps if h.get("status") == "active"]
@@ -591,31 +654,25 @@ CRITICAL requirements for thresholds:
                     if h.get("created_at") and h["created_at"][:10] >= week_start_str]
 
         # 按主题分类上周情报
-        # 优先看四维分析字段 dims/impact
+        # 2026-10-06 修：原分类用 `category_cn`（**源类别**，如 finance/biz/rss），
+        # 而 46/60 条源类别都是 finance —— 逐条看大多是地缘/能源/科技内容，却被
+        # 统统归进"经济/金融/就业"，把配额取样刚换来的均衡在显示层又抹平了。
+        # 改用与取样同一套**标题关键词**判据（_THEME_KWS），显示与抽样口径一致。
         themes = {
-            "经济/金融/就业": [],
-            "外交/地缘/贸易": [],
-            "科技/AI/产业": [],
-            "社会/民生/教育": [],
+            "就业/劳动": [],
+            "社保/民生": [],
+            "地缘/冲突": [],
+            "能源/大宗": [],
+            "科技/AI": [],
+            "贸易/供应链": [],
             "其他": [],
         }
         for i in week_intel_sorted[:60]:
             t = i.get("cn_title") or i.get("title") or ""
-            cat = (i.get("category_cn") or i.get("category") or "").lower()
             impact = i.get("graduate_impact") or i.get("impact") or ""
             # relevance 是死字段（恒 0，见 AGENTS.md 筛选算法修复节），改用真实分数
             score = _intel_rank(i)
-            # 简易分类
-            if any(k in cat for k in ["finance", "econ", "market", "就业", "失业"]):
-                themes["经济/金融/就业"].append((score, t[:60], impact[:50]))
-            elif any(k in cat for k in ["polit", "world", "diplom", "geop", "trade", "war"]):
-                themes["外交/地缘/贸易"].append((score, t[:60], impact[:50]))
-            elif any(k in cat for k in ["tech", "ai", "产业", "industry", "energy"]):
-                themes["科技/AI/产业"].append((score, t[:60], impact[:50]))
-            elif any(k in cat for k in ["society", "社会", "教育", "life", "health"]):
-                themes["社会/民生/教育"].append((score, t[:60], impact[:50]))
-            else:
-                themes["其他"].append((score, t[:60], impact[:50]))
+            themes[_theme_of(i)].append((score, t[:60], impact[:50]))
 
         theme_lines = []
         for theme, items in themes.items():
