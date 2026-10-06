@@ -447926,6 +447926,6675 @@
    },
    "model": "jev",
    "diagnosed_at": "2026-10-05T11:04:12"
+  },
+  {
+   "key": "ev_ef667ab82c",
+   "date": "2026-10-06",
+   "summary": "机构数据显示9月末中东原油出口量超过伊朗战事前水平",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.83
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.83
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.83
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.83
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.83
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.83
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:51:55"
+  },
+  {
+   "key": "ev_3647ceafe1",
+   "date": "2026-10-06",
+   "summary": "沙特阿美警告全球石油库存接近极限，重建储备可能需两年",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.85,
+     "gate": 0.15,
+     "selectivity": 2.46
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.46
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.46
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.46
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.84,
+     "gate": 0.16,
+     "selectivity": 2.46
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.46
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:51:56"
+  },
+  {
+   "key": "ev_327a78f72f",
+   "date": "2026-10-06",
+   "summary": "全球股市分化AI盈利对冲成关键，政策预期重估与中国生产消费磨底",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.23
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.23
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.23
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.23
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.23
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.23
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:51:57"
+  },
+  {
+   "key": "ev_f193bdf476",
+   "date": "2026-10-06",
+   "summary": "印度风电骤降加剧电力短缺 煤电承压进一步上升",
+   "diagnosis": {
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 3.45
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 3.45
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.45
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 3.45
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 3.45
+    },
+    "HM100": {
+     "code": "I",
+     "lr": 0.75,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.19,
+     "selectivity": 3.45
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:51:58"
+  },
+  {
+   "key": "ev_ce9f56fbff",
+   "date": "2026-10-06",
+   "summary": "沙特阿美总裁称重建全球石油储备或将耗时两年",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.85,
+     "gate": 0.15,
+     "selectivity": 2.14
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.14
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.14
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.14
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.86,
+     "gate": 0.14,
+     "selectivity": 2.14
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.14
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:51:59"
+  },
+  {
+   "key": "ev_2b8d72d9e5",
+   "date": "2026-10-06",
+   "summary": "机构预计2026年四季度商品猪出栏量依旧在高位，前三季度生猪市场供给宽松、猪价底部运行",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:00"
+  },
+  {
+   "key": "ev_f27797e4a6",
+   "date": "2026-10-06",
+   "summary": "尽管霍尔木兹海峡液化天然气流量有所反弹，但仍较战前水平下降超75%",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 2.36
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.36
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.36
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.36
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.87,
+     "gate": 0.13,
+     "selectivity": 2.36
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.36
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:01"
+  },
+  {
+   "key": "ev_f4d839c5e2",
+   "date": "2026-10-06",
+   "summary": "10月4日全社会跨区域人员流动量达30539万人次",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.67
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.67
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.67
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.67
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.67
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.67
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:02"
+  },
+  {
+   "key": "ev_8c4d60de44",
+   "date": "2026-10-06",
+   "summary": "【国庆档票房破8亿！“电影+”新活力激发消费新增量】",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:03"
+  },
+  {
+   "key": "ev_b3f2a64f26",
+   "date": "2026-10-06",
+   "summary": "阿美石油公司CEO称未来18个月全球需每日额外200万桶石油以消耗库存",
+   "diagnosis": {
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 5.43
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 5.43
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 5.43
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 5.43
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 5.43
+    },
+    "HM100": {
+     "code": "I",
+     "lr": 0.53,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.38,
+     "selectivity": 5.43
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:04"
+  },
+  {
+   "key": "ev_4944626c09",
+   "date": "2026-10-06",
+   "summary": "德国9月新车注册量同比增长9%至256,774辆",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 2.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.0
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:05"
+  },
+  {
+   "key": "ev_42ede4a0a6",
+   "date": "2026-10-06",
+   "summary": "2026年国庆假期第4日全社会跨区域人员流动量超3亿人次",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.0
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:06"
+  },
+  {
+   "key": "ev_7ebe1bbe25",
+   "date": "2026-10-06",
+   "summary": "日本9月家庭消费者信心指数降至35.4",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.2
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.2
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.2
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.2
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.2
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.2
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:07"
+  },
+  {
+   "key": "ev_ac359b06c4",
+   "date": "2026-10-06",
+   "summary": "白宫周边达美乐门店客流量极高，五角大楼周边低于均值",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.33
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:08"
+  },
+  {
+   "key": "ev_c7023fc12e",
+   "date": "2026-10-06",
+   "summary": "全球债券抛售加剧 量化对冲基金大幅获利",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.33
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.33
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.33
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:09"
+  },
+  {
+   "key": "ev_3868208dee",
+   "date": "2026-10-06",
+   "summary": "加息压力缓解提振亚太股市，日股重返7万点，港股光通信走强，纳指期货续涨，原油先涨后跌",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.17
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.17
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.17
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.17
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.17
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.17
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:09"
+  },
+  {
+   "key": "ev_b4e1ae285f",
+   "date": "2026-10-06",
+   "summary": "40万亿险资遇上低利率，A股定价规则重构：红利与成长并重",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.78
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.78
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.78
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.78
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.78
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.78
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:10"
+  },
+  {
+   "key": "ev_034299b183",
+   "date": "2026-10-06",
+   "summary": "沙特阿美CEO：目前原油商业库存已降至不到60亿桶",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 2.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.85,
+     "gate": 0.15,
+     "selectivity": 2.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.0
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:11"
+  },
+  {
+   "key": "ev_54a4769ddc",
+   "date": "2026-10-06",
+   "summary": "【伊朗石油部长辞职 正值美国封锁伊朗石油出口】伊朗石油部长穆赫辛·帕克内贾德以个人原因辞职，当前这个伊斯兰共和国正试图在",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.18
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.18
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.18
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.18
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 2.18
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.18
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:12"
+  },
+  {
+   "key": "ev_5eaab02de1",
+   "date": "2026-10-06",
+   "summary": "美印贸易谈判陷入僵局，印财长：“已到平台期”，让步空间极为有限",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.33
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.33
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.33
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.33
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.33
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.33
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:13"
+  },
+  {
+   "key": "ev_a506ffd63f",
+   "date": "2026-10-06",
+   "summary": "英国拟跟进欧盟对中国电动汽车加征关税",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.64
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.64
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.64
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.64
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.64
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.64
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:14"
+  },
+  {
+   "key": "ev_8fc62122be",
+   "date": "2026-10-06",
+   "summary": "美印高官暗示贸易谈判陷入僵局，达成协议面临很大阻力",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.4
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.4
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.4
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.4
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.4
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.4
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:15"
+  },
+  {
+   "key": "ev_fb83e5c54b",
+   "date": "2026-10-06",
+   "summary": "美印贸易谈判陷入僵局 协议前景黯淡",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.4
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.4
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.4
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.4
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.4
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.4
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:16"
+  },
+  {
+   "key": "ev_96edfd4785",
+   "date": "2026-10-06",
+   "summary": "印度财长称美国正寻求通过非谈判手段减少贸易逆差",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.46
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.84,
+     "gate": 0.16,
+     "selectivity": 2.46
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.46
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.46
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.46
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.46
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:16"
+  },
+  {
+   "key": "ev_77bf8b2bc8",
+   "date": "2026-10-06",
+   "summary": "“少数”G20国家拒绝美国关于过剩工业产能的立场",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 3.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 3.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 3.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 3.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 3.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.21,
+     "selectivity": 3.0
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:18"
+  },
+  {
+   "key": "ev_8bccb6e50b",
+   "date": "2026-10-06",
+   "summary": "新加坡8月零售销售年率0.7% 月率下降1%",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.4
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.4
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.4
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.4
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.4
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.4
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:19"
+  },
+  {
+   "key": "ev_18584e1143",
+   "date": "2026-10-06",
+   "summary": "新加坡经季节性调整后8月零售额环比下降1.0%",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.2
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.2
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.2
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.2
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.2
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.2
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:20"
+  },
+  {
+   "key": "ev_43d59cefd7",
+   "date": "2026-10-06",
+   "summary": "新加坡8月零售额同比增长0.7%；7月数据向下修正至1.3%",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.11
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.11
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.11
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.11
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.11
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.11
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:21"
+  },
+  {
+   "key": "ev_b8e97f6e91",
+   "date": "2026-10-06",
+   "summary": "印度财长称美印贸易协定是一项艰难且谈判严密的交易",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.69
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.69
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.69
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.69
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.69
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.69
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:22"
+  },
+  {
+   "key": "ev_802ae298ae",
+   "date": "2026-10-06",
+   "summary": "印度财长称美印贸易协议谈判已达高度，后续达成更多协议将非常困难",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.2
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.2
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.2
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.2
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.2
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.2
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:22"
+  },
+  {
+   "key": "ev_8d9399f783",
+   "date": "2026-10-06",
+   "summary": "国庆假期返程客流启动，长三角铁路今日预计发送超380万人次",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.33
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.33
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:23"
+  },
+  {
+   "key": "ev_a5c9e697e4",
+   "date": "2026-10-06",
+   "summary": "天陇铁路“第一长隧”安化隧道顺利贯通",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:24"
+  },
+  {
+   "key": "ev_9e6a0419c9",
+   "date": "2026-10-06",
+   "summary": "越南警示10%增长目标压力巨大",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.5
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.5
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.5
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.5
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.5
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.5
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:25"
+  },
+  {
+   "key": "ev_b28a1e0c9b",
+   "date": "2026-10-06",
+   "summary": "克普勒：9月末中东原油出口量超过伊朗战事前水平",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 2.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 2.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.0
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:26"
+  },
+  {
+   "key": "ev_7f3c883f18",
+   "date": "2026-10-06",
+   "summary": "中东原油出口已恢复九成：油价为何仍在100美元？",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.82
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.82
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.82
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.82
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.82
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.82
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:27"
+  },
+  {
+   "key": "ev_97efe0e0de",
+   "date": "2026-10-06",
+   "summary": "沙特对亚洲原油售价降至六年最低，11月售价较基准低5美元",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.83
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.83
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.83
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.83
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.83
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.83
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:28"
+  },
+  {
+   "key": "ev_a95c704c55",
+   "date": "2026-10-06",
+   "summary": "从价格战废墟里爬出来，中国清洁电器开始赚全球的钱",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.25
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.25
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:29"
+  },
+  {
+   "key": "ev_f36b9df20e",
+   "date": "2026-10-06",
+   "summary": "低空经济迎政策+出海双重共振 高成长潜力股出炉",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.0
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:30"
+  },
+  {
+   "key": "ev_1a49773aef",
+   "date": "2026-10-06",
+   "summary": "贝莱德对金山软件多头持仓比例增至5.17%",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:31"
+  },
+  {
+   "key": "ev_e958852051",
+   "date": "2026-10-06",
+   "summary": "华尔街见闻早餐FM-Radio | 2026年10月6日",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.38
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.38
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.38
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.38
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.38
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.38
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:32"
+  },
+  {
+   "key": "ev_a29a20356d",
+   "date": "2026-10-06",
+   "summary": "加息压力缓解提振亚太股市，日股涨超2%，港股光通信走强，原油“乌龙式”震荡，欧洲政治动荡施压欧元",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.33
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.33
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.33
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.33
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.33
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:33"
+  },
+  {
+   "key": "ev_98358ae4e8",
+   "date": "2026-10-06",
+   "summary": "美股盘前要闻一览：特朗普宣布成立“超级智能特别工作组”，星展称英伟达估值仍低，曼德海峡控制权仍在争夺",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.83
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.83
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.83
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.83
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.83
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.83
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:33"
+  },
+  {
+   "key": "ev_3d97d8f339",
+   "date": "2026-10-06",
+   "summary": "华尔街AI招聘从“造模型”转向“部署落地”，新型工程师成最抢手人才",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.75
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.75
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.75
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.75
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.75
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.75
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:34"
+  },
+  {
+   "key": "ev_ddc7fb1c1b",
+   "date": "2026-10-06",
+   "summary": "下周重磅日程：美伊与也门局势牵动油价、美联储纪要定价加息预期、诺贝尔奖揭晓",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.89
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.89
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.83,
+     "gate": 0.17,
+     "selectivity": 1.89
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.89
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.89
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.87,
+     "gate": 0.13,
+     "selectivity": 1.89
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:35"
+  },
+  {
+   "key": "ev_0926e0bf08",
+   "date": "2026-10-06",
+   "summary": "“重置之神”Tibo：我们又进入了“新AI时代”，市场还未理解这三大趋势",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.22
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.22
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 2.22
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.22
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.22
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.22
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:36"
+  },
+  {
+   "key": "ev_11d017e78c",
+   "date": "2026-10-06",
+   "summary": "【日本央行副行长称人工智能的影响可能波及中性利率】日本央行副行长内田真一表示，人工智能(AI)正引发需求激增，进而推高通胀压力和长期利率，其影响可能波及中性利率。",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.91
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.91
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 2.91
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.91
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.91
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.16,
+     "selectivity": 2.91
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:38"
+  },
+  {
+   "key": "ev_095e14afdb",
+   "date": "2026-10-06",
+   "summary": "银行撤退、债券折价，AI建设潮的钱不好借了",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 5.17
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 5.17
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 5.17
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 5.17
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.15,
+     "selectivity": 5.17
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.75,
+     "gate": 0.31,
+     "selectivity": 5.17
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:39"
+  },
+  {
+   "key": "ev_745f0df560",
+   "date": "2026-10-06",
+   "summary": "日本央行副行长内田真一称人工智能成央行关键议题，给经济物价带来上行压力",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.5
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.5
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 2.5
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.5
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.5
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.15,
+     "selectivity": 2.5
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:41"
+  },
+  {
+   "key": "ev_cf935e689b",
+   "date": "2026-10-06",
+   "summary": "“AI教父”Hinton首篇RSI论文：当今一年的AI进步未来或仅需5周，人类窗口期已不多",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.87
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.87
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.86,
+     "gate": 0.14,
+     "selectivity": 1.87
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.87
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.87
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 1.87
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:42"
+  },
+  {
+   "key": "ev_85cbb90c84",
+   "date": "2026-10-06",
+   "summary": "长江存储内部人士称全球存储芯片短缺将持续多年",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 3.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 3.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 3.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 3.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.76,
+     "gate": 0.27,
+     "selectivity": 3.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.15,
+     "selectivity": 3.0
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:44"
+  },
+  {
+   "key": "ev_191c248a53",
+   "date": "2026-10-06",
+   "summary": "复刻“半导体时刻”：AI制药版的“瓶颈交易”正在成形",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 4.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 4.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 4.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 4.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 4.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.86,
+     "gate": 0.2,
+     "selectivity": 4.0
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:45"
+  },
+  {
+   "key": "ev_a74db73fde",
+   "date": "2026-10-06",
+   "summary": "浙江温州：着力优化人工智能创业营商环境",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.33
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.33
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.33
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.33
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 2.33
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.33
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:46"
+  },
+  {
+   "key": "ev_4652682c5d",
+   "date": "2026-10-06",
+   "summary": "OpenAI宣布GPT-6提速50%，但订阅额度被指仅为Claude的五分之一",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 2.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.0
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:47"
+  },
+  {
+   "key": "ev_b6520de508",
+   "date": "2026-10-06",
+   "summary": "美国等17国支持《京都愿景》，拟扩大科研AI与算力使用并改革科研资助",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.5
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.5
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.5
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.5
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 2.5
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.6,
+     "gate": 0.15,
+     "selectivity": 2.5
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:49"
+  },
+  {
+   "key": "ev_38ca7f099f",
+   "date": "2026-10-06",
+   "summary": "加息压力缓解提振亚太股市，日股重返7万点，港股光通信走强，台积电新高，纳指、原油先涨后跌",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.08
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.08
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.08
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.08
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.08
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.08
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:50"
+  },
+  {
+   "key": "ev_ea70d2abec",
+   "date": "2026-10-06",
+   "summary": "沙特阿美CEO警告：全球石油库存已“薄得可怕”，补库需两年，海湾出口回暖也压不住百元油价",
+   "diagnosis": {
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.77
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.77
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.77
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.87,
+     "gate": 0.13,
+     "selectivity": 2.77
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.77
+    },
+    "HM100": {
+     "code": "I",
+     "lr": 0.843,
+     "note": "",
+     "conf": 0.61,
+     "gate": 0.18,
+     "selectivity": 2.77
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:51"
+  },
+  {
+   "key": "ev_7a478a822e",
+   "date": "2026-10-06",
+   "summary": "华尔街见闻早餐 | 2026年10月6日",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.5
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.5
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 1.5
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.5
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.5
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:52"
+  },
+  {
+   "key": "ev_6d8979b39f",
+   "date": "2026-10-06",
+   "summary": "日本央行副行长内田真一表示AI或对供给侧产生积极影响，提高生产率并促进资本积累",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.45
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.45
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.45
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.45
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.45
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.45
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:53"
+  },
+  {
+   "key": "ev_36540df9a5",
+   "date": "2026-10-06",
+   "summary": "全面反攻胡塞武装！也门政府军启动军事行动以“收复领土”、袭击曼德海峡战略要地",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 2.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.87,
+     "gate": 0.13,
+     "selectivity": 2.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.0
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:54"
+  },
+  {
+   "key": "ev_082121d372",
+   "date": "2026-10-06",
+   "summary": "【琼州海峡明起将迎来国庆假期返程高峰】",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 2.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 2.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 2.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 2.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 2.0
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:55"
+  },
+  {
+   "key": "ev_c38287c64f",
+   "date": "2026-10-06",
+   "summary": "台湾驻美代表敦促特朗普政府推动停滞的对台军售",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 8.4
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 8.4
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 8.4
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 8.4
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 8.4
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.78,
+     "gate": 0.42,
+     "selectivity": 8.4
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:57"
+  },
+  {
+   "key": "ev_bab0875e2e",
+   "date": "2026-10-06",
+   "summary": "鸿海第三季度销售额3.03万亿元台币 同比增长47.1％",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 2.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.0
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:57"
+  },
+  {
+   "key": "ev_6a32c7bd66",
+   "date": "2026-10-06",
+   "summary": "台驻美代表：有信心特朗普终将批准140亿美元对台军售",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 8.25
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 8.25
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 8.25
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 8.25
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 8.25
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.66,
+     "gate": 0.33,
+     "selectivity": 8.25
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:52:59"
+  },
+  {
+   "key": "ev_73909121ad",
+   "date": "2026-10-06",
+   "summary": "鸿海9月销售额达1.16万亿元台币，同比增长显著",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.45
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.45
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.45
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.45
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.45
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.45
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:00"
+  },
+  {
+   "key": "ev_14e211c9c0",
+   "date": "2026-10-06",
+   "summary": "【也门政府军在曼德海峡附近对胡塞武装发动反攻】一名也门政府军官员5日对新华社记者说，也门政府军当天对控制战略要地曼德海峡",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 2.17
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.17
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.17
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.17
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.87,
+     "gate": 0.13,
+     "selectivity": 2.17
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.17
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:01"
+  },
+  {
+   "key": "ev_190affabd4",
+   "date": "2026-10-06",
+   "summary": "受冷空气影响，浙江台州沿海10条客渡运航线停航",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.5
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.5
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.5
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.5
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.5
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.5
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:02"
+  },
+  {
+   "key": "ev_4bad15609f",
+   "date": "2026-10-06",
+   "summary": "沙特联军在也门行动中袭击324个高价值目标 百架战机参战",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.75
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.75
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.75
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.75
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.75
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.75
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:03"
+  },
+  {
+   "key": "ev_44f73bc2ca",
+   "date": "2026-10-06",
+   "summary": "【也门政府军：重新控制曼德海峡】金十数据：也门政府军已控制国际航运要道曼德海峡",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 2.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.86,
+     "gate": 0.14,
+     "selectivity": 2.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.0
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:03"
+  },
+  {
+   "key": "ev_b59500e66b",
+   "date": "2026-10-06",
+   "summary": "沙特主导的联军称在也门荷台达省实施军事行动",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.6
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.6
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.6
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.6
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:04"
+  },
+  {
+   "key": "ev_653f40524f",
+   "date": "2026-10-06",
+   "summary": "也门政府军袭击曼德海峡战略要地",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 2.17
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.17
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.17
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.17
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.87,
+     "gate": 0.13,
+     "selectivity": 2.17
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.17
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:05"
+  },
+  {
+   "key": "ev_9aeac6dab4",
+   "date": "2026-10-06",
+   "summary": "高盛上调台积电目标价至3300新台币 看好AI驱动强劲增长",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.4
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.4
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 2.4
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.4
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.4
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 2.4
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:06"
+  },
+  {
+   "key": "ev_295eea543f",
+   "date": "2026-10-06",
+   "summary": "【也门政府军称收复红海港口城市穆哈】也门政府军5日称，在激烈战斗后，政府军已从胡塞武装手中收复塔伊兹省的红海港口城市穆哈",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.6
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.6
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.6
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.6
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:07"
+  },
+  {
+   "key": "ev_2b646676f8",
+   "date": "2026-10-06",
+   "summary": "美以伊局势升级：伊朗将提升导弹射程，美航母休整财长甩锅",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.87,
+     "gate": 0.13,
+     "selectivity": 2.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 2.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.0
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:08"
+  },
+  {
+   "key": "ev_72b25ea80d",
+   "date": "2026-10-06",
+   "summary": "昨日今晨重要新闻汇总",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.29
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.29
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.29
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.29
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.29
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.29
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:09"
+  },
+  {
+   "key": "ev_5836ad1272",
+   "date": "2026-10-06",
+   "summary": "【能源冲击再起推升通胀风险 欧洲央行称政策仍应保持适度】欧洲央行首席经济学家连恩表示，在评估第二轮能源冲击对经济的影响之",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.83
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.83
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.83
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.83
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.83
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.83
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:09"
+  },
+  {
+   "key": "ev_9f71026404",
+   "date": "2026-10-06",
+   "summary": "中东局势跟踪：胡塞武装袭击沙特，霍尔木兹海峡局势紧张",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.87,
+     "gate": 0.13,
+     "selectivity": 1.65
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.65
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.65
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.65
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.86,
+     "gate": 0.14,
+     "selectivity": 1.65
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.65
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:10"
+  },
+  {
+   "key": "ev_78c61f0663",
+   "date": "2026-10-06",
+   "summary": "中东局势再升级？沙特炼厂突现黑烟，沙特据报准备大举打击胡塞武装",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 2.46
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.46
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.46
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.46
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.84,
+     "gate": 0.16,
+     "selectivity": 2.46
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.46
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:11"
+  },
+  {
+   "key": "ev_8a24b30a21",
+   "date": "2026-10-06",
+   "summary": "东盟与中日韩宏观经济研究办公室：区域整体仍表现稳健",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.38
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.38
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.38
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.38
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.38
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.38
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:12"
+  },
+  {
+   "key": "ev_ab91503cd1",
+   "date": "2026-10-06",
+   "summary": "金十数据整理：每日全球外汇市场要闻速递（2026-10-05）",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.33
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.33
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.33
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:13"
+  },
+  {
+   "key": "ev_220676254f",
+   "date": "2026-10-06",
+   "summary": "【经济学家：英国服务业增长放缓 企业对明年经济信心走弱】",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.07
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.07
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.07
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.07
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.07
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.07
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:14"
+  },
+  {
+   "key": "ev_1b3c61265c",
+   "date": "2026-10-06",
+   "summary": "“麦加防务联盟”启动集体防御，土巴将向沙特部署军力，特朗普称美轰炸机因“具体威胁”撤离英基地",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.47
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.47
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.47
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.47
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.47
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.47
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:15"
+  },
+  {
+   "key": "ev_faa47d252d",
+   "date": "2026-10-06",
+   "summary": "英国燃气电厂退役推迟，未来十年仍需支撑电网",
+   "diagnosis": {
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 4.77
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 4.77
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 4.77
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 4.77
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 4.77
+    },
+    "HM100": {
+     "code": "I",
+     "lr": 0.566,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.31,
+     "selectivity": 4.77
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:16"
+  },
+  {
+   "key": "ev_37e8f25645",
+   "date": "2026-10-06",
+   "summary": "伊拉克油轮公司：通过VLCC将200万桶原油运过霍尔木兹海峡",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.89
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.89
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.89
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.89
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.87,
+     "gate": 0.13,
+     "selectivity": 2.89
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.89
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:17"
+  },
+  {
+   "key": "ev_178772d91b",
+   "date": "2026-10-06",
+   "summary": "康菲石油加大对美本土投入，预计美国石油产量将突破每日1450万桶",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.86,
+     "gate": 0.14,
+     "selectivity": 2.15
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.15
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.15
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.15
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 2.15
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.15
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:18"
+  },
+  {
+   "key": "ev_3c617865e4",
+   "date": "2026-10-06",
+   "summary": "康菲石油(COP.N)首席执行官：如果油价维持在当前水平，预计美国石油产量将超过每日1,400万至1,450万桶。",
+   "diagnosis": {
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.73
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.73
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.73
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 2.73
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.73
+    },
+    "HM100": {
+     "code": "I",
+     "lr": 0.835,
+     "note": "",
+     "conf": 0.77,
+     "gate": 0.15,
+     "selectivity": 2.73
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:20"
+  },
+  {
+   "key": "ev_068aa10d0c",
+   "date": "2026-10-06",
+   "summary": "中国今年迄今投资结构持续改善",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.43
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.43
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.43
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.43
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.43
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.43
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:20"
+  },
+  {
+   "key": "ev_ede31e4d3b",
+   "date": "2026-10-06",
+   "summary": "伊拉克宣布恢复飞往伊朗的航班时间",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.5
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.5
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.5
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:21"
+  },
+  {
+   "key": "ev_e4b8ae949a",
+   "date": "2026-10-06",
+   "summary": "今年以来我国投资结构优化持续推进，新质生产力领域投资快速增长",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.67
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.67
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.67
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.67
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.67
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.67
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:22"
+  },
+  {
+   "key": "ev_1d50f6688b",
+   "date": "2026-10-06",
+   "summary": "康菲石油公司CEO称中东仍具投资吸引力但需管理风险",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 2.89
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.89
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.89
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.89
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.87,
+     "gate": 0.13,
+     "selectivity": 2.89
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.89
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:23"
+  },
+  {
+   "key": "ev_4f30e2a961",
+   "date": "2026-10-06",
+   "summary": "英国石油首席执行官：资产负债表修复完成前，现在就对现有投资组合之外做出重大调整为时过早",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.83
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.83
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.83
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.83
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.83
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.83
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:24"
+  },
+  {
+   "key": "ev_d9aa93538f",
+   "date": "2026-10-06",
+   "summary": "马来西亚国家石油公司首席执行官表示，中东地质条件的优势无法回避，仍是全球最具勘探前景的资源地之一",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.87,
+     "gate": 0.13,
+     "selectivity": 3.25
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 3.25
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 3.25
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 3.25
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 3.25
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 3.25
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:25"
+  },
+  {
+   "key": "ev_fe823dfc41",
+   "date": "2026-10-06",
+   "summary": "马来西亚国家石油公司首席执行官：中东地质禀赋不容忽视，仍是全球最具勘探开发潜力的资源区之一",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.87,
+     "gate": 0.13,
+     "selectivity": 3.25
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 3.25
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 3.25
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 3.25
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 3.25
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 3.25
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:25"
+  },
+  {
+   "key": "ev_48da95dccb",
+   "date": "2026-10-06",
+   "summary": "靛蓝航空将调整国内和国际航线的燃油附加费",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.71
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.71
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.71
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.71
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.71
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.71
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:26"
+  },
+  {
+   "key": "ev_0e3707fec8",
+   "date": "2026-10-06",
+   "summary": "10月6日会员早报：美国9月服务业价格指数创四年多新高 欧佩克+维持11月产量目标不变",
+   "diagnosis": {
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.5
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.5
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.5
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 2.5
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.5
+    },
+    "HM100": {
+     "code": "I",
+     "lr": 0.829,
+     "note": "",
+     "conf": 0.6,
+     "gate": 0.2,
+     "selectivity": 2.5
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:28"
+  },
+  {
+   "key": "ev_2353e7167d",
+   "date": "2026-10-06",
+   "summary": "美国9月非农遇冷但韧性仍存，中美能源竞争有度合作并行",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.87,
+     "gate": 0.13,
+     "selectivity": 1.37
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.37
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.37
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.37
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 1.37
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.37
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:29"
+  },
+  {
+   "key": "ev_59daf2018c",
+   "date": "2026-10-06",
+   "summary": "金十数据整理：每日全球大宗商品市场要闻速递（2026-10-05）",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 1.85
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.85
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.85
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.85
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.85
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.85
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:30"
+  },
+  {
+   "key": "ev_7da72d3fc3",
+   "date": "2026-10-06",
+   "summary": "美债收益率攀升接近“缩债恐慌”时期，系统性冲击难以避免？",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.29
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.29
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.29
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.29
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.29
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.29
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:31"
+  },
+  {
+   "key": "ev_535b3de6f5",
+   "date": "2026-10-06",
+   "summary": "日本央行副行长内田真一：AI对生产力和劳动力市场具有双重影响",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.4
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.4
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.4
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.4
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.4
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 2.4
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:32"
+  },
+  {
+   "key": "ev_ab87273895",
+   "date": "2026-10-06",
+   "summary": "欧洲央行首席经济学家Lane：长期利率上升抑制经济增长，通胀传导低于预期",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.57
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.57
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.57
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.57
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.57
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.57
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:32"
+  },
+  {
+   "key": "ev_01b88cf6aa",
+   "date": "2026-10-06",
+   "summary": "英国燃气电厂退役或推迟 未来十年仍将支撑电网",
+   "diagnosis": {
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 4.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 4.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 4.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 4.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 4.0
+    },
+    "HM100": {
+     "code": "I",
+     "lr": 0.674,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.24,
+     "selectivity": 4.0
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:34"
+  },
+  {
+   "key": "ev_c15d032191",
+   "date": "2026-10-06",
+   "summary": "【经济学家：欧元区服务业增长加速 令加息预期升温】金十数据10月5讯，标普全球市场情报（S&P Global Market Intelligence）首席经济学家Chris Williamson表示，",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.6
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.6
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.6
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.6
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:35"
+  },
+  {
+   "key": "ev_28c91e6fa3",
+   "date": "2026-10-06",
+   "summary": "经济学家：英国服务业增长放缓，企业对未来一年信心减弱。",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.17
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.17
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.17
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.17
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.17
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.17
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:36"
+  },
+  {
+   "key": "ev_07aafb7059",
+   "date": "2026-10-06",
+   "summary": "美股基金连两周资金净流入，AI乐观情绪缓解收益率担忧",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.33
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.33
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.33
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.33
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:37"
+  },
+  {
+   "key": "ev_cd81c88b50",
+   "date": "2026-10-06",
+   "summary": "日本央行副行长内田指出AI令金融环境更趋宽松，但盈利若未跟上存在回调风险",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.89
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.89
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.89
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.89
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.89
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.87,
+     "gate": 0.13,
+     "selectivity": 2.89
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:38"
+  },
+  {
+   "key": "ev_a86737eff9",
+   "date": "2026-10-06",
+   "summary": "美国9月ISM服务业扩张放缓，价格指数创四年新高显通胀压力再抬头",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.38
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.38
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.38
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.38
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.38
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.38
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:39"
+  },
+  {
+   "key": "ev_e5b4b1f247",
+   "date": "2026-10-06",
+   "summary": "巴西12个月通胀预期为4.59%（前值4.65%），2026年年底SELIC利率预计为13.50%，2026年通胀率预测为5.01%",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.25
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.25
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.25
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.25
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:40"
+  },
+  {
+   "key": "ev_174d8a5e5a",
+   "date": "2026-10-06",
+   "summary": "Anthropic研究员：2030年代，普通人或比今天的富豪过得更好",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.79
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.79
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.83,
+     "gate": 0.17,
+     "selectivity": 1.79
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.79
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.79
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.84,
+     "gate": 0.16,
+     "selectivity": 1.79
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:41"
+  },
+  {
+   "key": "ev_faf2c9e389",
+   "date": "2026-10-06",
+   "summary": "土耳其财政部长西姆谢克表示，服务业通胀动能减弱和大宗商品价格增长放缓将有助于2027年实现通胀回落。",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.17
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.17
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.17
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.17
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.17
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.17
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:42"
+  },
+  {
+   "key": "ev_425ddd4880",
+   "date": "2026-10-06",
+   "summary": "先锋领地首席经济学家王前：能源与AI投资推高通胀预期",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.84,
+     "gate": 0.16,
+     "selectivity": 2.07
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.07
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.78,
+     "gate": 0.22,
+     "selectivity": 2.07
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.07
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 2.07
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.72,
+     "gate": 0.28,
+     "selectivity": 2.07
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:43"
+  },
+  {
+   "key": "ev_b23e8b2c1b",
+   "date": "2026-10-06",
+   "summary": "波兰财政部长多曼斯基表示：政府的燃料降价措施将使年度平均消费者价格指数（CPI）下降0.2至0.3个百分点。",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.75
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.75
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.75
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.75
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.75
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.75
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:44"
+  },
+  {
+   "key": "ev_81fc757a57",
+   "date": "2026-10-06",
+   "summary": "澳大利亚9月道明证券通胀指数数据：环比0.3%，同比4.8%",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.56
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.56
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.56
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.56
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.56
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.56
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:44"
+  },
+  {
+   "key": "ev_a2e20344c7",
+   "date": "2026-10-06",
+   "summary": "德国电信预计AI与自动化到2030年将节省25亿欧元间接成本",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.78
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.78
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.78
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.78
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.78
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.78
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:45"
+  },
+  {
+   "key": "ev_e1a10d1b67",
+   "date": "2026-10-06",
+   "summary": "欧元区10月Sentix投资者信心指数降至2.7",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.33
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.33
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.33
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.33
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.33
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:46"
+  },
+  {
+   "key": "ev_398cd106cc",
+   "date": "2026-10-06",
+   "summary": "美国9月服务业增速放缓 成本指标触及四年高位",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.43
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.43
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.43
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.43
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.43
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.43
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:47"
+  },
+  {
+   "key": "ev_4d9275b3e1",
+   "date": "2026-10-06",
+   "summary": "华尔街见闻早餐FM-Radio | 2026年10月5日",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.87,
+     "gate": 0.13,
+     "selectivity": 1.86
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.86
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.86
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.86
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.86
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.86
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:48"
+  },
+  {
+   "key": "ev_32094ce75d",
+   "date": "2026-10-06",
+   "summary": "四季度投资主线来了！多家公募最新研判：均衡配置，看好AI与出海制造",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.27
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.27
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.27
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.27
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.27
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.27
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:49"
+  },
+  {
+   "key": "ev_6c25419c44",
+   "date": "2026-10-06",
+   "summary": "华尔街见闻早餐 | 2026年10月5日",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 1.6
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.6
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 1.6
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.6
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.6
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-06T09:53:50"
   }
  ],
  "diagnosis": {},
@@ -447933,8 +454602,8 @@
   "HM100": {
    "posterior": 0.05,
    "support": 3,
-   "refute": 66,
-   "evidence_total": 69,
+   "refute": 73,
+   "evidence_total": 76,
    "prior_baseline": 0.78,
    "reliability": "extreme"
   },
@@ -447979,7 +454648,7 @@
    "reliability": "strong"
   }
  },
- "updated": "2026-10-05 08:25",
+ "updated": "2026-10-06 01:56",
  "hypotheses": [
   {
    "id": "HM100",
@@ -448015,7 +454684,7 @@
  "sensitivity": {
   "top1": "HM002",
   "flips": 0,
-  "n_evidence": 6668,
+  "n_evidence": 6785,
   "items": [
    {
     "key": "ev_4680270a87",
@@ -448118,7 +454787,7 @@
     "moved_hyp": "HM003"
    }
   ],
-  "updated_at": "2026-10-05T11:06:09"
+  "updated_at": "2026-10-06T09:56:33"
  },
- "updated_at": "2026-10-05T08:25:24.564682+00:00"
+ "updated_at": "2026-10-06T01:56:33.327637+00:00"
 }
