@@ -1050,7 +1050,60 @@ C conf=0.89 日经225指数低开1.5%                ← 行情？
 
 **结论**：彭博/AP 走 RSSHub 路由但上游已失效；路透未配源。**"改源配额"救不了不存在的源**——要拿这些源需先解决采集（换路由/找新 feed），属独立任务。
 
+## 判断层上云（2026-10-08）
+
+免 key JEV 通道打通后，CI 首次具备**判定**能力（此前 CI 无 `TYPESAFE_API_KEY`，
+JEV 判断链只在本地下跑得到）。落地形态是扩展 `cloud/jev_signal_scan.py`：
+
+| 能力 | 说明 |
+|---|---|
+| 信号扫描 | 当日情报 Top N × 6 major，两段式门控+方向判定 → `jev_signals_YYYYMMDD.json/.md` |
+| **ACH 增量诊断**（新） | 读假设树 `evidence_log` 找未诊断证据 → 读矩阵避免重复 → 判定 → `ach_diagnosis_YYYYMMDD.json` |
+| 判据一致性 | 复用 `ach_matrix.evidence_key` / `_ach_eligible`，与本地 `find_undiagnosed` 同口径 |
+| 只读假设树 | **不写** `data/hypotheses/`（该目录唯一有效写入方是本地，历史教训：CI 改它会被 checkout 丢弃）；判定结果由本地按需合并 |
+
+**踩坑（静默降级，值得记住）**：ACH 路径首版复用信号扫描的 `_text()`，但该函数只读
+`cn_title`/`title`——**证据的正文在 `summary`/`body` 里**，于是空字符串被送进判定，
+6 个 major 全判 N、台海实弹演习的 gate 从 0.53 掉到 0.11，**且没有任何报错**。
+修法：新增 `_evidence_text()` 对齐 `ach_matrix._diagnose_jev` 口径。
+**教训：intel 条目与假设树证据是两种文本结构，"取文"函数不能跨结构复用；
+写跨数据源的工具前，先确认目标数据的字段名。**
+
+**实测**：CI 上扫描 100 条 33s（0.33s/条，比本地 0.86s/条快），0 失败。
+
+## 周报缺口补录（2026-10-08）
+
+巡检发现两处缺口，**都是 9-07 周循环静默失败的连带后果**（非本轮引入）：
+
+| 缺口 | 根因 | 处置 |
+|---|---|---|
+| `hypothesis_weekly` 缺 08-31~09-06 | 9-07 周循环崩溃（`hypothesis_engine` 局部 import 缺陷） | `local/backfill_weekly.py --week-offset 4` 补录 |
+| `policy_week` 缺 636/637 | 政策追踪的原生输入 `analysis_*.jsonl` 那两周**不存在**（Step2 8-30 起从未跑通） | `policy_tracker.py --backfill-start/--backfill-end` 用 intel 的 `dims`/`impact` 作替代输入 |
+
+**关键判断**：政策周报不是"遗漏"而是**源数据不存在**——这种情况要么放弃，
+要么换等价输入。实测 intel 的 `dims`（同一套四维诊断，由 citizen_impact 写入）
+语义等价且量足够（636 周命中 134 条 / 637 周 473 条）。
+
+补录产物带 `backfilled: true` + `covered_range` 标记，**与常规产物区分**——
+补录是事后追述，`created` 是生成时刻而非覆盖区间，不标记会让读者误以为是当期。
+
+**周报 AI 调用的内容安全隔离**（补录时实测踩到）：周报 prompt 把 60 条情报标题
+原样送入，实测 08-31~09-06 周含 145 条涉政条目 → dots 返 403
+`governance.content_safety_input_rejected` → **整份 AI 总结退化成占位文本**。
+修法：识别内容拦截后**降级重试**，去掉逐条标题（保留统计/ACH/假设动态）——
+实测通过且产物是真实分析（引用了那周的真实后验 0.95/0.29/0.05）。
+与 `analyze._analyze_single_batch` 的拆半隔离同源问题，但周报 prompt 是整体
+不可拆，所以用降级而非二分。
+
+**已知缺陷（未修，非本轮引入）**：`policy_tracker.group_by_accumulation` 依赖
+`accumulation_node` 里的英文环节名（production/realization/...），而实际该字段
+是中文长句或 `未识别` → **分组一直失效**，所有证据都落进 production 桶。
+原生 `analysis_*.jsonl` 产物同样如此。影响：政策卡实际是"全部证据混在一起给 AI"，
+效果可用但四环节结构没生效。
+
 ---
-*最后更新：2026-10-06 - 周报取样均衡化（源 3→12、主题 7 类均衡）+ 情报流双栏 + 去重/栏目降权/AI 排序 + 本机 zen 代理接入与 git 代理自动化。前一日：巡检修复（假设树 commit 积压根因 + autostash 纵深防御 + valuation 全零文件重建 + 403 body 补读下沉）*
+*最后更新：2026-10-08 - 判断层上云（CI 跑 ACH 增量诊断）+ 周报/政策缺口补录 +
+周报内容安全隔离 + 翻译/研判吞吐三修（含 JEV 免 key 通道接入）。
+前一日：周报取样均衡化 + 情报流双栏 + 去重/栏目降权/AI 排序 + zen 代理接入。*
 
 
