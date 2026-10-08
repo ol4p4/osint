@@ -1,0 +1,54 @@
+{
+ "date": "20261008",
+ "generated_at": "2026-10-08T11:47:00.516789+00:00",
+ "channel": "JEV: free(jev-1.13-free)",
+ "note": "CI 侧只读诊断产物；本地按需合并进 ach_matrix.json",
+ "diagnosed": 1,
+ "failed": 0,
+ "results": [
+  {
+   "key": "ev_30e21008d9",
+   "hyp_id": "HM001",
+   "date": "2026-10-08",
+   "summary": "台湾若宣布独立 美国调查：大陆八成民众支持有限军事行动",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.62
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.62
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.62
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.62
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.62
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.17,
+     "selectivity": 2.62
+    }
+   }
+  }
+ ]
+}

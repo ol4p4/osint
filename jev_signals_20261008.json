@@ -1,7 +1,7 @@
 {
  "date": "20261008",
- "generated_at": "2026-10-08T11:25:24.829242+00:00",
- "channel": "JEV: free(jev-1.13-free) → paid(jev-latest)",
+ "generated_at": "2026-10-08T11:46:59.591747+00:00",
+ "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
    "id": "HM100",
@@ -28,7 +28,7 @@
    "title": "AI技术成本上升触发宏观经济波动与金融风险"
   }
  ],
- "scanned": 2,
+ "scanned": 100,
  "failed": 0,
  "signal_count": 0,
  "signals": []
