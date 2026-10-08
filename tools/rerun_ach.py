@@ -97,8 +97,9 @@ def main():
 
     jev = JevClient(caller="rerun_ach")
     if not jev.available:
-        print("[RERUN] JEV key 未配置，中止（重跑的目的就是用 JEV 覆盖旧判定）")
+        print("[RERUN] JEV 无可用通道，中止（重跑的目的就是用 JEV 覆盖旧判定）")
         return
+    print("[RERUN] 决策层: " + jev.describe())
 
     # 重跑前的后验（对比基准）
     before = {h["id"]: posterior(rows, h) for h in majors}

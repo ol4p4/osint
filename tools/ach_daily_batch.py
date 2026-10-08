@@ -92,9 +92,9 @@ def main():
             from jev_client import JevClient
             jev = JevClient(caller="ach_daily_batch")
             if jev.available:
-                print("[ACH-BATCH] 决策层: JEV (jev-latest)")
+                print("[ACH-BATCH] 决策层: " + jev.describe())
             else:
-                print("[ACH-BATCH] 决策层: mimo（JEV key 未配置）")
+                print("[ACH-BATCH] 决策层: mimo（JEV 无可用通道）")
                 jev = None
         except Exception as ex:
             print(f"[ACH-BATCH] 决策层: mimo（JEV 初始化失败: {str(ex)[:60]}）")

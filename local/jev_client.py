@@ -14,6 +14,16 @@ schema 内全部概率，实测 0.66s/条（mimo 为 ~45s/条），且概率有�
   官方 confidence 字段 = (P_max − 1/K)/(1 − 1/K)，是分布集中度归一化，
   **不是正确性估计**。喂 derive_lr() 必须取 probabilities[choice] 原始概率。
 
+**通道（2026-10-08 新增免费通道，默认走它）**：
+  1. free —— https://opencode.ai/zen/v1/systemone，模型 jev-1.13-free，
+     **keyless 匿名直连**（不需要任何密钥）。实测与付费通道判定几乎逐条一致
+     （噪声 0.03~0.05 / 信号 0.75，付费为 0.01~0.03 / 0.76），~1s/条，
+     40 次连发 0 失败。⚠️ **必须显式设 User-Agent**——urllib 默认的
+     Python-urllib/3.x 会被 Cloudflare 拦成 403。
+  2. paid —— https://api.typesafe.ai/v1/systemone，模型 jev-latest，需要 key。
+  默认 auto：free 优先（零成本）→ paid 兜底（有 key 时）。环境变量
+  OSINT_JEV_CHANNEL=free|paid|auto 可覆盖；free 失败自动降级 paid，反之不然。
+
 用法：
     from jev_client import JevClient
     c = JevClient()
@@ -21,6 +31,7 @@ schema 内全部概率，实测 0.66s/条（mimo 为 ~45s/条），且概率有�
 """
 import ipaddress
 import json
+import os
 import socket
 import time
 import urllib.error
@@ -28,9 +39,24 @@ import urllib.request
 from pathlib import Path
 from urllib.parse import urlparse
 
+# ---- 通道一：免费（2026-10-08 接入，默认优先）----
+# opencode.ai 的 Zen 网关提供 System One 兼容端点，**无需 key**（匿名直连），
+# 模型 jev-1.13-free。实测与付费判定几乎逐条一致，~1s/条。
+FREE_HOST = "opencode.ai"
+FREE_URL = "https://opencode.ai/zen/v1/systemone"
+FREE_MODEL = "jev-1.13-free"
+
+# ---- 通道二：付费（原主通道，现为兜底）----
 JEV_HOST = "api.typesafe.ai"
 JEV_URL = "https://api.typesafe.ai/v1/systemone"
 DEFAULT_MODEL = "jev-latest"
+
+# SSRF 白名单：只放行上述两个 host
+ALLOWED_HOSTS = (JEV_HOST, FREE_HOST)
+# 免费通道必需的 UA：非 Python-urllib 的任意串均可（Python 默认 UA 被 CF 403）
+DEFAULT_UA = "osint-jev/1.0"
+# 通道选择环境变量（auto|free|paid）
+CHANNEL_ENV = "OSINT_JEV_CHANNEL"
 
 # 官方限流动态调整（250k tok/s、1200 req/min），偶发失败重试即可
 RETRY_ATTEMPTS = 3
@@ -56,67 +82,122 @@ class JevError(Exception):
 def _safe_jev_post(url, payload, key, timeout=120):
     """SSRF 守卫（与 analyze._safe_ai_post 同规格）：仅 https + 白名单 + 非私有地址"""
     parsed = urlparse(url)
-    if parsed.scheme != "https" or (parsed.hostname or "") != JEV_HOST:
+    if parsed.scheme != "https" or (parsed.hostname or "") not in ALLOWED_HOSTS:
         raise ValueError("blocked non-whitelisted JEV endpoint: " + url)
     for info in socket.getaddrinfo(parsed.hostname, 443):
         ip = ipaddress.ip_address(info[4][0])
         if ip.is_private or ip.is_loopback or ip.is_reserved or ip.is_link_local or ip.is_multicast:
             raise ValueError("endpoint resolves to forbidden address: " + str(ip))
+    headers = {"Content-Type": "application/json", "User-Agent": DEFAULT_UA}
+    if key:                       # 免费通道无需 Authorization；付费通道带 key
+        headers["Authorization"] = "Bearer " + key
     req = urllib.request.Request(
         url, data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
-        headers={"Content-Type": "application/json", "Authorization": "Bearer " + key},
-        method="POST")
+        headers=headers, method="POST")
     with urllib.request.urlopen(req, timeout=timeout) as resp:
         return json.loads(resp.read().decode("utf-8"))
 
 
 class JevClient:
+    """JEV 客户端，支持两个通道（2026-10-08 加免费通道）：
+
+      free —— opencode.ai/zen/v1/systemone，模型 jev-1.13-free，**无需 key**
+      paid —— api.typesafe.ai/v1/systemone，模型 jev-latest，需要 key
+
+    channel 取值（也可用环境变量 OSINT_JEV_CHANNEL 指定）：
+      "auto"（默认）—— free 优先，失败降级 paid（无 key 时只用 free）
+      "free"         —— 只用 free（可离线复现、零成本）
+      "paid"         —— 只用 paid（需 key；free 与付费的偏差需对照组时用）
+
+    available 语义变化：free 免 key，故**只要网络可达就为 True**——调用方
+    原有的「无 key → 退出/回退 mimo」分支在无 key 环境下现在会走 JEV。
+    """
+
     def __init__(self, key=None, model=DEFAULT_MODEL, caller="ach_matrix",
-                 retries=RETRY_ATTEMPTS, record_usage=True):
-        if key is None:
-            import sys
-            root = Path(__file__).resolve().parent.parent
-            if str(root) not in sys.path:
-                sys.path.insert(0, str(root))
-            from secrets_loader import get_jev_key
-            key = get_jev_key()
+                 retries=RETRY_ATTEMPTS, record_usage=True, channel=None):
+        channel = (channel or os.environ.get(CHANNEL_ENV) or "auto").strip().lower()
+        if channel not in ("auto", "free", "paid"):
+            channel = "auto"
+        if key is None and channel != "free":
+            # 仅付费通道需要 key；free 通道缺 key 不影响可用性（不再去读）
+            try:
+                import sys
+                root = Path(__file__).resolve().parent.parent
+                if str(root) not in sys.path:
+                    sys.path.insert(0, str(root))
+                from secrets_loader import get_jev_key
+                key = get_jev_key()
+            except Exception:
+                key = ""
         self.key = key or ""
         self.model = model
         self.caller = caller
         self.retries = retries
         self.record_usage = record_usage
+        self.channel = channel
+        self._channels = self._build_channels()
+
+    def _build_channels(self):
+        """按优先级排出可用通道 [(name, url, model, key), ...]。"""
+        chans = []
+        if self.channel in ("auto", "free"):
+            chans.append(("free", FREE_URL, FREE_MODEL, ""))
+        if self.channel in ("auto", "paid") and self.key:
+            chans.append(("paid", JEV_URL, self.model, self.key))
+        return chans
+
+    def describe(self):
+        """一行诊断串（日志/排查用）"""
+        if not self._channels:
+            return "JEV: 无可用通道（paid 需 key；可设 OSINT_JEV_CHANNEL=free 走免 key 通道）"
+        return "JEV: " + " → ".join(c[0] + "(" + c[2] + ")" for c in self._channels)
 
     @property
     def available(self):
-        return bool(self.key)
+        return bool(self._channels)
 
     # ---------- 核心调用 ----------
     def systemone(self, state, questions, timeout=120):
-        """POST /v1/systemone → 原始响应 dict。失败抛 JevError。"""
-        if not self.available:
-            raise JevError("JEV key 未配置（环境变量 TYPESAFE_API_KEY 或 config.local.yaml 的 jev.api_key）")
-        payload = {"model": self.model, "state": state, "questions": questions}
-        last = None
-        for attempt in range(1, self.retries + 1):
-            try:
-                d = _safe_jev_post(JEV_URL, payload, self.key, timeout=timeout)
-                self._account(d.get("usage") or {})
-                return d
-            except urllib.error.HTTPError as ex:
-                body = ""
+        """POST /systemone → 原始响应 dict。按通道顺序尝试，全失败抛 JevError。"""
+        if not self._channels:
+            raise JevError("JEV 无可用通道（paid 需 key：环境变量 TYPESAFE_API_KEY "
+                           "或 config.local.yaml 的 jev.api_key；free 通道无需 key）")
+        errors = []
+        for name, url, model, key in self._channels:
+            payload = {"model": model, "state": state, "questions": questions}
+            last = None
+            for attempt in range(1, self.retries + 1):
                 try:
-                    body = ex.read().decode("utf-8", "replace")[:200]
-                except Exception:
-                    pass
-                # 4xx（除 429）不重试——参数/鉴权问题重试无用
-                if ex.code != 429 and 400 <= ex.code < 500:
-                    raise JevError(f"HTTP {ex.code}: {body}")
-                last = f"HTTP {ex.code}: {body}"
-            except Exception as ex:
-                last = f"{type(ex).__name__}: {str(ex)[:150]}"
-            if attempt < self.retries:
-                time.sleep(RETRY_BACKOFF * attempt)
-        raise JevError(f"JEV 调用失败（{self.retries} 次重试）: {last}")
+                    d = _safe_jev_post(url, payload, key, timeout=timeout)
+                    # 免费端点对不支持的原语/非法请求会返 error body（实测 score 原语
+                    # HTTP 422；读到后换通道，不能当成有效答案继续解析）
+                    if isinstance(d, dict) and d.get("error"):
+                        raise JevError("通道返回 error: " + str(d["error"])[:150])
+                    if name == "paid":
+                        # 只有付费通道记账——free 通道 cost 恒为 0，
+                        # 记进去会把免费 token 按付费单价算成假成本
+                        self._account(d.get("usage") or {})
+                    return d
+                except urllib.error.HTTPError as ex:
+                    body = ""
+                    try:
+                        body = ex.read().decode("utf-8", "replace")[:200]
+                    except Exception:
+                        pass
+                    last = f"HTTP {ex.code}: {body}"
+                    # 4xx（除 429）是参数/鉴权问题，本通道重试无用 → 立即换通道
+                    if ex.code != 429 and 400 <= ex.code < 500:
+                        break
+                except JevError as ex:
+                    last = str(ex)
+                    break   # 业务级错误（error body），换通道而非重试
+                except Exception as ex:
+                    last = f"{type(ex).__name__}: {str(ex)[:150]}"
+                if attempt < self.retries:
+                    time.sleep(RETRY_BACKOFF * attempt)
+            errors.append(name + ": " + str(last))
+        raise JevError("JEV 全部通道失败（" + str(len(self._channels)) + " 个）: "
+                       + " | ".join(errors))
 
     def _account(self, usage):
         """用量记账（API 无用量端点，必须本地累计）"""

@@ -419,7 +419,7 @@ CRITICAL requirements for thresholds:
                     _j = JevClient(caller="weekly_cycle")
                     if _j.available:
                         jev = _j
-                        print("[ACH] 决策层: JEV (jev-latest)")
+                        print("[ACH] 决策层: " + _j.describe())
                 except Exception:
                     pass
                 if undiag:

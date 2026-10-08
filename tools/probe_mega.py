@@ -207,8 +207,9 @@ def main():
     from jev_client import JevClient
     jev = JevClient(caller="probe_mega")
     if not jev.available:
-        print("[PROBE] JEV key 未配置——退出（探针依赖 JEV Noul）")
+        print("[PROBE] JEV 无可用通道——退出（探针依赖 JEV Noul）")
         return
+    print("[PROBE] 决策层: " + jev.describe())
 
     questions = build_probe_questions(probes)
     readings = []
