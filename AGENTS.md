@@ -1101,9 +1101,38 @@ JEV 判断链只在本地下跑得到）。落地形态是扩展 `cloud/jev_sign
 原生 `analysis_*.jsonl` 产物同样如此。影响：政策卡实际是"全部证据混在一起给 AI"，
 效果可用但四环节结构没生效。
 
+## 知识库独立仓库（2026-10-08，笔记上云）
+
+**决策**：知识库 `D:\Codex输出\视频知识库` 独立成私有仓库
+**`ol4p4/osint-knowledge`（PRIVATE）**，而不是并入主仓库。
+
+**为什么不并入主仓库**：主仓库 `ol4p4/osint` 是 **PUBLIC**，而 vault 有 62MB、
+215 篇假设页 + 154 个历史档案（含 `macro-history/20-政治治理.md` 这类
+「中国政治治理」主题 + 年轻人视角分析）。62MB 进公开仓库不可逆（git 历史删不干净）。
+
+| 项 | 内容 |
+|---|---|
+| 仓库 | `ol4p4/osint-knowledge`（私有），分支 `main` |
+| 本地 | vault 自身就是 git 仓库（此前已有 32 个提交的历史，本次接入远端） |
+| 自动同步 | `local/kb_linker.sync_vault()`：写笔记后自动 `add -A` + commit + push |
+| 接线点 | `link_hypothesis_to_kb` / `link_view_card_to_kb` 的**真实变更**分支（unchanged 不触发） |
+| 失败语义 | **静默失败**——笔记已落盘成功，同步失败不该让上游判为写入失败 |
+| 代理 | 走 `net_proxy.git_env()`（本机直连 GitHub 常态不通，见 §CI 故障排除 9b） |
+| 并发防御 | push 被拒时 `pull --rebase --autostash` 重试 3 次（与 CI push 同款） |
+
+**安全边界（推送前已核实）**：
+- vault 的 `.gitignore` 排除 `.env`（**含真实的 `INGEST_API_KEY`**）、`.bak-*` 历史备份、
+  `__pycache__`、`*.ingested` 标记
+- 推送前做了**按内容**的密钥扫描（不只按文件名）：`api_key|secret|password|Bearer|AKIA|ghp_|sk-|ak_` 全无命中
+- 推送后从远端 API 复核：`.env` 返回 **404**（确认未入库）
+
+**⚠️ 给别人接手时的提醒**：这个 vault 里有个人政治经济分析笔记，虽然仓库是私有，
+但**别把它设成 public**，也別把 vault 内容贴进主仓库的 issue/PR/文档。
+
 ---
 *最后更新：2026-10-08 - 判断层上云（CI 跑 ACH 增量诊断）+ 周报/政策缺口补录 +
-周报内容安全隔离 + 翻译/研判吞吐三修（含 JEV 免 key 通道接入）。
-前一日：周报取样均衡化 + 情报流双栏 + 去重/栏目降权/AI 排序 + zen 代理接入。*
+周报内容安全隔离 + 翻译/研判吞吐三修（含 JEV 免 key 通道接入）+
+知识库独立私有仓库（笔记上云）。前一日：周报取样均衡化 + 情报流双栏 +
+去重/栏目降权/AI 排序 + zen 代理接入。*
 
 

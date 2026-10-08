@@ -2,12 +2,70 @@
 r"""kb_linker.py - 知识库双向链接（P2 待续事项：wiki/hypotheses 与 index.md/log.md 同步）
 假设/观点卡写入 视频知识库(D:\Codex输出\视频知识库) 并更新 index.md 的 Hypotheses 区与 log.md。
 幂等：页面已存在则只确保索引链接存在，不重复写。
+
+2026-10-08：vault 已独立成 git 仓库（远端 ol4p4/osint-knowledge，**PRIVATE**），
+供"笔记也上云"——本模块写入后调用 `sync_vault()` 自动 commit+push。
+安全：vault 的 .gitignore 已排除 .env（含 INGEST_API_KEY）与 .bak-* 备份；
+本函数只做 add -A + commit + push，不改写任何忽略规则。
 """
 import re
+import subprocess
+import sys
 from datetime import datetime
 from pathlib import Path
 
 DEFAULT_VAULT = r"D:\Codex输出\视频知识库"
+
+
+def sync_vault(vault_path=DEFAULT_VAULT, quiet=True):
+    """把 vault 的改动 commit + push 到私有远端（供云端/多机同步）。
+
+    设计取舍：
+    - **失败静默**：笔记已经落盘成功了，同步失败不该让上游判定为写入失败
+      （与 refresh 的 `_step()` 隔离思路一致）。
+    - **无改动不 commit**：`git diff --quiet` 先行判断，避免空提交污染历史。
+    - 走 net_proxy 注入 git 代理（本机直连 GitHub 常态不通，见 AGENTS.md 9b）。
+    """
+    vault = Path(vault_path)
+    if not (vault / ".git").exists():
+        return False
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+        import net_proxy
+        env = net_proxy.git_env()
+    except Exception:
+        import os
+        env = dict(os.environ)
+
+    def _git(*args, timeout=90):
+        return subprocess.run(["git", *args], cwd=str(vault), env=env,
+                              capture_output=True, text=True, timeout=timeout)
+
+    try:
+        if _git("status", "--porcelain").stdout.strip() == "":
+            return False                       # 无改动
+        _git("add", "-A")
+        msg = "auto: 参谋系统笔记同步 " + datetime.now().strftime("%Y-%m-%d %H:%M")
+        c = _git("commit", "-m", msg, "-q")
+        if c.returncode != 0 and "nothing to commit" not in (c.stdout + c.stderr):
+            if not quiet:
+                print("[KB-SYNC] commit 失败: " + (c.stderr or c.stdout)[:150])
+            return False
+        # 并发 push 会撞 reject，rebase 重试（与 CI push 同款防御）
+        for i in range(1, 4):
+            p = _git("push", timeout=120)
+            if p.returncode == 0:
+                if not quiet:
+                    print("[KB-SYNC] 已推送（第 %d 次）" % i)
+                return True
+            _git("pull", "--rebase", "--autostash", "origin", "main", timeout=120)
+        if not quiet:
+            print("[KB-SYNC] push 重试 3 次仍失败: " + (p.stderr or "")[:150])
+        return False
+    except Exception as e:
+        if not quiet:
+            print("[KB-SYNC] 同步异常: " + str(e)[:150])
+        return False
 
 
 def _insert_index_link(index_file, link_text, section="## Hypotheses"):
@@ -170,6 +228,9 @@ def link_hypothesis_to_kb(hyp, vault_path=DEFAULT_VAULT):
     if state.startswith(("new", "updated")) or changed:
         _append_log(vault / "wiki" / "log.md", action, f"[[{hyp_id}]] {hyp.get('title', '')}")
     print(f"[KBLINK] {hyp_id}: page={state}, index_updated={changed}")
+    # 有真实变更才同步（README/纯查读不触发 commit）
+    if state.startswith(("new", "updated")) or changed:
+        sync_vault(vault_path)
     return page
 
 
@@ -234,4 +295,6 @@ def link_view_card_to_kb(card, vault_path=DEFAULT_VAULT):
         else:
             state = "unchanged"
     print(f"[KBLINK] card {card_id}: {state}")
+    if state in ("new", "updated"):
+        sync_vault(vault_path)
     return page
