@@ -386,11 +386,11 @@ PM 视角审计发现：每小时线和云端线质量在线，短板集中在�
 | 项 | 状态 |
 |---|---|
 | `tools/jev_probe.py` | Phase 0 探针（A/B 对比 + 金标准测试），已按实测教训固化简单提问模板 |
-| `local/jev_client.py` | **JEV 客户端**（2026-09-21）：自带 SSRF 白名单（`JEV_HOST`）+ 用量记账 + 3 次重试 |
+| `local/jev_client.py` | **JEV 客户端**（2026-09-21）：双通道（free/paid）+ SSRF 白名单 + 用量记账 + 3 次重试 |
 | `tools/jev_usage.py` | **用量账本**：API 无用量端点（`/v1/usage` 等全 404），只能本地记账 |
 | 提问模板 | **不要把 falsification_criteria 塞进 instructions**（实测减半表现） |
 | **接入状态** | **已接入 ACH 主链**：`ai_diagnose(..., jev=)` 优先 JEV，失败自动回退 mimo |
-| 调用方 | `tools/ach_daily_batch.py`（`--no-jev` 可强制回退）、`local/hypothesis_engine.py` 周循环 |
+| 调用方 | `tools/ach_daily_batch.py`（`--no-jev` 可强制回退）、`local/hypothesis_engine.py` 周循环、`tools/probe_mega.py`、`tools/rerun_ach.py`、`cloud/jev_signal_scan.py`（CI） |
 | 本地复刻 | **不需要**（中文够用）。备选 `jaredpalmer/kev`（Qwen 底座，含训练代码） |
 
 **架构要点**：JEV 走**独立客户端**（`local/jev_client.py`），**不经过 `analyze._call_api`**——因此
@@ -406,6 +406,49 @@ JEV 客户端自带同规格 SSRF 守卫（仅 https + 白名单域名 + 拒绝�
 JEV 调用抛错时调用方会对同一条回退 mimo 重试一次，避免因决策层故障丢证据（实测遇 `503 no healthy upstream` 可正确回退）。
 
 **限流提示**：官方限流动态调整（250k tok/s、1200 req/min），实测偶发失败条，下轮重试即可。
+
+### 免 key 免费通道（2026-10-08 接入，**默认首选**）
+
+**来源**：opencode.ai 的 Zen 网关提供 System One 兼容端点，模型 `jev-1.13-free`，
+**匿名直连、不需要任何 key**。此前 CI 无 `TYPESAFE_API_KEY`，JEV 判断链**从未在线上跑过**——这是接它的根本动机。
+
+| 项 | 内容 |
+|---|---|
+| 端点 | `POST https://opencode.ai/zen/v1/systemone`，body 同 TypeSafe（`state` + `questions`） |
+| 模型名 | 只有 `jev-1.13-free` 可用；`jev-latest`/`jev-1`/`systemone` 均返 401 `Model not supported`；`jev-1.13`（付费版）返 401 `Missing API key` |
+| 通道选择 | 默认 `auto`（free 优先 → paid 兜底）；`OSINT_JEV_CHANNEL=free\|paid` 可覆盖；free 失败自动降级 paid，反之不然 |
+| available 语义 | **不再要求 key**——无 key 环境（CI）现在也走 JEV，不再回退 mimo |
+| 记账 | **free 调用不计入付费账本**（其 cost 恒为 `"0"`，记进去会把免费 token 按付费单价算成假成本） |
+| 原语支持 | 只支持 `noul` / `choice`；**`score` 返 HTTP 422 error body**（客户端已按通道故障处理并降级） |
+| ⚠️ UA 必需 | **必须显式设 User-Agent**（客户端已设 `osint-jev/1.0`）。urllib 默认 `Python-urllib/3.x` 在本地被 Cloudflare 拦成 403；**CI runner 上实测无 UA 也 200**（地域/指纹差异），但不能依赖这一点 |
+| 白名单 | `ALLOWED_HOSTS = (api.typesafe.ai, opencode.ai)`，SSRF 守卫同规格（仅 https + 拒绝私有/环回/保留地址） |
+
+**质量 A/B（2026-10-08，8 样本 × 2 轮，生产 `gate_and_diagnose` 模板）**：
+
+| 样本 | 付费基线 | free | paid（本次同日） | free−paid |
+|---|---|---|---|---|
+| 铁路/原油/A股/日经（噪声） | 0.01~0.03 | 0.03~0.05 | 0.03~0.05 | 0.000~−0.005 |
+| 国台办/军售/台领导人（边缘） | 0.14~0.18 | 0.11~0.22 | 0.11~0.22 | 0.000 |
+| 解放军实弹演习（信号） | 0.86 | 0.75~0.76 | 0.75~0.76 | 0.000 |
+
+**结论：free 与 paid 判定逐条一致**（多数差值 0.000，最大 0.005）。噪声上界 0.05 / 信号下界 0.75 有 **15 倍间隔**，门控阈值 0.15 稳稳落在中间。单条 ~0.8~1.9s，**40 次连发 0 失败**（无 RPM 限制迹象）。
+
+**CI 可达性（已实测，非推测）**：临时探针 workflow（run `37723919445`）全绿——curl 免 key `HTTP=200 time=0.51s`；项目客户端 `通道: JEV: free(jev-1.13-free) / available: True`；`ach_matrix` 集成 `诊断 0.74s, 6 个假设`，HM102 判 C(conf=0.73, gate=0.63)。
+
+**⚠️ selectivity 在小假设数下失真**：探针只给 2 个假设时，台海信号的 selectivity 算成 1.88 < `SEL_MIN=2.5` → 高 gate(0.75) 反被判 N。生产 6 个 major 不受影响（实测 sel=7.33）。**凡是小规模对照测试，别用 selectivity 判据下结论**——它衡量的是"能否区分竞争假设"，假设太少时分母失真。
+
+### CI 侧信号扫描（`cloud/jev_signal_scan.py`，2026-10-08）
+
+让线上真正跑判断的落地形态。**只读假设树、只写独立产物**——`data/hypotheses/` 的唯一有效写入方是本地（CI 改它会被 checkout 丢弃，见 §"周循环链路加固"的教训）。
+
+| 项 | 内容 |
+|---|---|
+| 输入 | `intel_2*.jsonl` 最近 2 个文件，经 `intel_gate.select_priority_unique` 取 Top N（默认 100） |
+| 判定 | 生产同款 `gate_and_diagnose`（Noul 门控 → Choice 方向）× 6 个 major |
+| 产物 | `jev_signals_YYYYMMDD.json`（机器可读）+ `.md`（人读摘要），CI commit 时一并带走 |
+| 调度 | `daily.yml` 的 impact 之后、briefing 之前；`|| echo skip` 兜底，端点不可达不失败 job |
+| 实测 | 本地 20 条 17s（0.86s/条）；12 条真实候选 max gate 0.05~0.11 全低于阈值（行情类噪声，与 Phase 0 噪声上界吻合） |
+| 语义边界 | **不累积、不改后验**——它是当日快照观察；累积式 ACH 仍只在本地跑 |
 
 ### 两段式门控（2026-09-21 二次实测，**必须遵守**）
 
