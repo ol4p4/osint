@@ -120,7 +120,18 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "auto: daily intel update $(date -u +%Y-%m-%d)"
-            git push || echo "Push failed"
+            # 2026-10-08 加固：并发 push 会让裸 push 被拒（实测 CI 产物因此丢失，
+            # 日志只留 "! [rejected] master -> master (fetch first)"）。
+            # 与本地 net_proxy 时代之前的坑同源：自动化里的裸 push 必须有重试。
+            # rebase --autostash 保证工作区脏文件不阻塞（AGENTS.md 同款教训）。
+            for i in 1 2 3; do
+              if git push; then
+                echo "Pushed (attempt $i)"; break
+              fi
+              echo "Push rejected, rebase+retry $i"
+              git pull --rebase --autostash origin master || git rebase --abort || true
+              sleep 5
+            done
           fi
       
       - name: Summary
