@@ -200,7 +200,7 @@ def chat_completion(model, messages, temperature=0.3, max_tokens=8192, timeout=1
 def _selftest():
     """手动自检：python local/zen_proxy_client.py [模型名]"""
     import sys
-    model = sys.argv[1] if len(sys.argv) > 1 else "mimo-v2.5-free"
+    model = sys.argv[1] if len(sys.argv) > 1 else "mimo-v2.6-flash-free"
     print("[selftest] reachable:", reachable())
     if not reachable():
         print("[selftest] 代理未监听，跳过（启动: pythonw E:\\OpenCode\\zen-proxy.py）")

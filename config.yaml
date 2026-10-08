@@ -7,11 +7,17 @@
 api:
   base_url: "https://opencode.ai/zen/v1"
   api_key: ""  # 密钥已于2026-08-30从本文件移除（仓库PUBLIC曾泄露，须在OpenCode平台重置）；真实值在 config.local.yaml 或 GitHub Secret OPENCODE_API_KEY
-  model: "mimo-v2.5-free"
+  model: "mimo-v2.6-flash-free"
   # 备用模型（主模型失败时降级）
   # 2026-09-16 实测修正：deepseek-v4-flash-free 列在 /models 但调用返回
   # "Model is unavailable"（死模型）；muse-spark 系地区受限（403 RegionError）。
-  # 替换为实测可用的 nemotron-3-ultra-free 与 ling-3.0-flash-fin-free。
+  # 2026-10-08 二次修正（实测驱动）：
+  #   ① mimo-v2.5-free 已被官方弃用 → 410 Gone（提示改用 mimo-v2.6-flash-free）；
+  #   ② 旧降级链三个模型在**官网直连**下全部失效（nemotron-3.5 403 /
+  #      ling-3.0-fin 403），但经本机 4010 代理**实测可用**——本地 AI 实际
+  #      只靠代理这条腿（官网直连 2026-09-17 起对非官方客户端全线 403）。
+  #   ③ ling-3.0-flash-fin-free 经代理返 404（Cannot find model），已剔除。
+  # 现状：主 mimo-v2.6，降级链取经代理实测可用的三个不同血统模型。
   fallback_models:
     - base_url: "https://opencode.ai/zen/v1"
       model: "nemotron-3.5-lightning-free"
@@ -20,8 +26,8 @@ api:
       model: "nemotron-3-ultra-free"
       api_key: ""  # 密钥已于2026-08-30从本文件移除（仓库PUBLIC曾泄露，须在OpenCode平台重置）；真实值在 config.local.yaml 或 GitHub Secret OPENCODE_API_KEY
     - base_url: "https://opencode.ai/zen/v1"
-      model: "ling-3.0-flash-fin-free"
-      api_key: ""  # 密钥已于2026-08-30从本文件移除（仓库PUBLIC曾泄露，须在OpenCode平台重置）；真实值在 config.local.yaml 或 GitHub Secret OPENCODE_API_KEY
+      model: "longcat-2.5-preview-free"
+      api_key: ""  # 2026-10-08 新增：经代理实测可用（3.0s）；替代已 404 的 ling-3.0-fin
 
 # 运行模式
 mode:

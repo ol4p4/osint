@@ -538,6 +538,17 @@ def impact_now():
     实测 18:35 Step2 启动、18:36 refresh 跑完 impact_now(35 次) 时，Step2 全程 403，
     而同一时刻独立进程测试同一 key 全部 200。故加 ai_heavy.lock 互斥：
     拿不到锁就跳过本轮（下一小时自然重试），不阻塞 refresh 主流程。
+
+    **2026-10-08 提容（实测驱动）**：--max 50 → 150，判据是「预算从未用尽」——
+    近 3 天 52 轮里 `time budget exhausted` 出现 **0 次**，每轮都只吃满 47/50 条
+    就停，说明瓶颈是 --max 这个人工上限、不是 AI 速度。
+
+    **容量必须按真实负载算**：初次估算取 2.3s/条（那是用空内容假数据测的），
+    改用真实新闻正文重测是 **6.2s/条**（5 条批次 28~34s）→ 900s 预算实际
+    只能跑约 145 条。故取 150（而非 240）——留余量给单轮 960s 硬超时与
+    translate_now 的配额共享。首版按 240 上线，实测 720s 只跑完 114 条就被
+    预算截断（`time budget exhausted, 115 items left`），印证了这个偏差。
+    日吞吐 1200 → 3600 条，仍高于日新增 2000~2800。
     """
     lock = Path(_tempfile.gettempdir()) / "osint_ai_heavy.lock"
     if lock.exists():
@@ -558,7 +569,7 @@ def impact_now():
     try:
         r = subprocess.run(
             [sys.executable, str(PROJECT / "cloud" / "citizen_impact.py"),
-             "--dir", str(BASE), "--max", "50", "--budget", "900"],
+             "--dir", str(BASE), "--max", "150", "--budget", "900"],
             cwd=str(PROJECT), capture_output=True, text=True, timeout=960,
             creationflags=_NO_WINDOW,
         )

@@ -205,6 +205,35 @@ def dedup_enabled():
     return v not in ("0", "false", "no", "off")
 
 
+# ── 外语源保底带（2026-10-08）──────────────────────────────────────
+# 为什么需要：关键词表以中文为主（词表 153 词里中文 90 个，且都偏
+# 「就业/能源/宏观」），外语条目因此系统性低分——实测未研判池 en 13482 条
+# 的 base_score 中位是 **0.000**，而 cn 条目 100% 有 cn_title（外语仅 2%）、
+# 分数普遍 0.7+。结果 top240 里 en 只占 1 席。而用户口径是「上知天文下至
+# 地理的参谋」，国际侧（路透/CNBC/DW/日经）正是"上知天文"的部分。
+#
+# 与 §"AI 准入排序"的硬过滤教训同源：**低分不等于不重要，可能只是我的词表
+# 没覆盖**。所以这里只做"保底配额"（不丢任何条目、不改排序），不是过滤。
+#
+# 配比 25%：留够国际视角，又不至于挤掉中文主战场（国内源是 persona 直接
+# 相关）。环境变量 OSINT_FOREIGN_RESERVE=0 可关闭，=0.4 可调高。
+FOREIGN_RESERVE_RATIO = 0.25
+# 哪些算"外语"：显式 language 字段（fetch_rss 用 _detect_lang 标注）为准。
+# 缺字段的按中文处理（本地源以中文为主，避免把缺字段条目误判成外语）。
+FOREIGN_LANGS = ("en", "eng", "ja", "jp", "ko", "kr", "fr", "de", "es", "ru", "ar")
+
+
+def is_foreign(item):
+    """是否外语条目（用于保底带配额计数）。"""
+    lang = str(item.get("language") or "").strip().lower()
+    return lang in FOREIGN_LANGS
+
+
+def _foreign_quota_enabled():
+    v = os.environ.get("OSINT_FOREIGN_RESERVE", "").strip().lower()
+    return v not in ("0", "false", "no", "off")
+
+
 def select_priority_unique(items, max_n, now=None):
     """按优先级排序 + 去重后取前 max_n 条。
 
@@ -213,19 +242,58 @@ def select_priority_unique(items, max_n, now=None):
     是"本轮该处理谁"，不是"删掉其余"）。
 
     去重关闭（OSINT_AI_DEDUP=0）或原语导入失败时，退化为纯 select_priority。
+
+    **外语源保底带（2026-10-08 新增，默认 25%）**：纯排序下外语条目系统性
+    饿死——实测未研判池 6.8 万条里 `en` 有 13482 条，但 base_score 中位为
+    0.000（关键词表以中文为主），且仅 2% 有 cn_title（中文源才刚由本地
+    摘标题补上），导致 top240 里 en 只占 1 席、排在第 218 位之后。
+    保底带按「分数降序」在**全部未入选条目里**补足外语席位，让外语源
+    不因词表偏向而永久排不上队。配比灵感来自 refresh.rebuild_data 的
+    RESERVE_TOPICS 主题保底带（同类问题、同类解法）。
     """
     now = now or datetime.now()
     ordered = sorted(items, key=lambda it: rank_key(it, now), reverse=True)
     if not dedup_enabled():
-        return ordered[:max_n]
-    add = make_deduper()
-    if add is None:
-        return ordered[:max_n]
-    picked = []
-    for it in ordered:
-        if add(it):
-            picked.append(it)
-            if len(picked) >= max_n:
-                break
+        picked = ordered[:max_n]
+    else:
+        add = make_deduper()
+        if add is None:
+            picked = ordered[:max_n]
+        else:
+            picked = []
+            for it in ordered:
+                if add(it):
+                    picked.append(it)
+                    if len(picked) >= max_n:
+                        break
+
+    # 外语保底带：见 docstring。只在确实有外语条目被挤出时才生效。
+    # **总量严格守恒 = max_n**：首版实现直接 extend，实测 max=50 返回了 59 条
+    # （超发会让调用方的预算失控）。改为「从末尾踢掉同数量的非外语条目」。
+    try:
+        quota = int(max_n * FOREIGN_RESERVE_RATIO)
+        if quota > 0 and _foreign_quota_enabled():
+            have = sum(1 for x in picked if is_foreign(x))
+            need = quota - have
+            if need > 0:
+                picked_ids = {id(x) for x in picked}
+                extra = [x for x in ordered
+                         if id(x) not in picked_ids and is_foreign(x)][:need]
+                if extra:
+                    keep = list(picked)
+                    # 只腾出 len(extra) 个位置：从末尾（分数最低处）踢非外语条目。
+                    # 踩坑：首版循环条件写错，把中文条目全踢光（上限 50 只剩 18 条）。
+                    need_slots = len(extra)
+                    idx = len(keep) - 1
+                    while need_slots > 0 and idx >= 0:
+                        if not is_foreign(keep[idx]):
+                            keep.pop(idx)
+                            need_slots -= 1
+                        idx -= 1
+                    picked = keep + extra
+                    # 恢复排序语义（下游 translate_local 按顺序分批处理）
+                    picked.sort(key=lambda it: rank_key(it, now), reverse=True)
+    except Exception:
+        pass
     return picked
 

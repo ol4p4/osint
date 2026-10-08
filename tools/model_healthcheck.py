@@ -19,9 +19,9 @@ sys.path.insert(0, str(PROJECT))
 BASE = "https://opencode.ai/zen/v1"
 AI_ALLOWED_HOST = "opencode.ai"
 PROBE_MODELS = [
-    "mimo-v2.5-free",                # 参谋长：主分析/研判/对话/世界观
+    "mimo-v2.6-flash-free",          # 参谋长：主分析/研判/对话/世界观（2026-10-08 换：旧 mimo-v2.5-free 已 410 弃用）
     "nemotron-3.5-lightning-free",   # 裁判/降级1
-    "deepseek-v4-flash-free",        # 降级2（translate_local 实测 400 被剔除）
+    "longcat-2.5-preview-free",      # 降级2（2026-10-08 实测经代理可用；旧 ling-3.0-fin 返 404）
 ]
 
 

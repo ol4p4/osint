@@ -30,9 +30,11 @@ ZEN_PROXY_BASE = "http://127.0.0.1:4010/v1"
 #   但加 reasoning_effort=low 后 2 秒返回正常答案；真实裁判任务 20s vs glm-flash 173s 空响应。
 #   → 裁判/副笔用 gpt-oss-20b（快、稳）；主笔生成用 glm-5.3（中文长文质量好）。
 _NV_SLUG_MAP = {
-    "mimo-v2.5-free": "z-ai/glm-5.3",
+    "mimo-v2.5-free": "z-ai/glm-5.3",          # 旧名保留（历史条目/旧配置仍可能引用）
+    "mimo-v2.6-flash-free": "z-ai/glm-5.3",    # 2026-10-08: mimo-v2.5-free 已 410 弃用，接替者同血统
     "nemotron-3.5-lightning-free": "openai/gpt-oss-20b",
     "nemotron-3-ultra-free": "openai/gpt-oss-20b",
+    "longcat-2.5-preview-free": "openai/gpt-oss-20b",   # 2026-10-08 新增（替代已 404 的 ling-3.0-fin）
     "ling-3.0-flash-fin-free": "openai/gpt-oss-20b",
 }
 

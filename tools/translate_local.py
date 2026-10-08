@@ -21,9 +21,9 @@ sys.path.insert(0, str(ROOT))
 from local.analyze import _safe_ai_post  # noqa: E402
 from secrets_loader import get_opencode_key, get_dots_key  # noqa: E402
 
-# 模型降级链 (实测可用: mimo + nemotron; 其他 deepseek-v4-flash-free 报 400)
+# 模型降级链 (2026-10-08 实测更新: mimo-v2.5-free 已 410 弃用; ling-3.0-fin 返 404)
 MODEL_CHAIN = [
-    "mimo-v2.5-free",
+    "mimo-v2.6-flash-free",
     "nemotron-3.5-lightning-free",
 ]
 
@@ -48,6 +48,68 @@ def _build_prompt():
         "Each output object MUST carry the id of the ITEM it translates. "
         "Only output JSON, no markdown."
     )
+
+
+def _is_chinese_text(text):
+    """文本是否已是中文（判定「无需翻译」用）。
+
+    判据：中文字符 >= 6 个 且 占比 > 0.3。用占比而非绝对数，
+    避免英文长文里夹几个汉字被误判成中文。
+    """
+    t = text or ""
+    if not t:
+        return False
+    cjk = len(re.findall(r"[\u4e00-\u9fff]", t))
+    return cjk >= 6 and cjk / max(len(t), 1) > 0.3
+
+
+def _extract_cn_title(title):
+    """从中文长文标题里摘出纯标题（零 AI 成本）。
+
+    **为什么需要**（2026-10-08）：中文源（金十/新浪/财联社）的 title 常是
+    「【标题】正文…」的长文格式，而下游（仪表盘/简报/聚类/证据匹配）统一读
+    cn_title。此前靠 AI「翻译」把它们摘成纯标题——实测翻译管线候选里
+    **81% 是这种本就中文的条目**，AI 只是在做摘标题的活，30s/2 条的额度
+    全浪费在这里，而真英文（19%）排不上队。
+
+    实测中文条目里 31% 是「【…】」长文格式、59% 本身已是短标题（<60 字）。
+    两者都能纯本地处理：短标题原样用作 cn_title，长文取【】内容。
+    """
+    t = (title or "").strip()
+    if not t:
+        return ""
+    m = re.match(r"^\s*【([^】]+)】", t)
+    if m:
+        return m.group(1).strip()
+    # 无【】：截到第一个句末标点（标题通常在第一句）
+    m = re.match(r"^(.{4,80}?)[。！？；\n]", t)
+    if m:
+        return m.group(1).strip()
+    # 仍是长文（无标点）→ 控长
+    return t[:80].strip()
+
+
+def local_prefill_chinese(items):
+    """把「本就中文」的条目就地补上 cn_title，不需要任何 AI 调用。
+
+    返回补好的条数。补过的条目 language 保持原样（zh/cn 都是中文），
+    只填 cn_title——它正是下游判定「已翻译」的标志位，填上后就不再进翻译队列。
+
+    **摘要不在此处生成**：cn_summary 留给研判链路（citizen_impact）按需产出，
+    翻译管线的职责只是「让中文条目具备对外展示所需的 cn_title」。
+    """
+    n = 0
+    for it in items:
+        if it.get("cn_title"):
+            continue
+        title = it.get("title") or ""
+        if not _is_chinese_text(title):
+            continue
+        cn = _extract_cn_title(title)
+        if cn:
+            it["cn_title"] = cn
+            n += 1
+    return n
 
 
 def _parse_response(content):
@@ -346,6 +408,20 @@ def main():
     # 取最新 24h 未翻译, 限 max 条
     candidates = collect_unjtranslated(jsonl_files, max_n=args.max)
     print(f"[translate_local] {len(candidates)} untranslated candidates")
+
+    # 2026-10-08：先把「本就中文」的条目就地补 cn_title（零 AI 成本），
+    # 它们不再占用翻译额度——实测原先 81% 的额度浪费在这上面（AI 只是把
+    # 中文标题摘一遍），修后同样额度可多翻约 4 倍真英文。
+    # 先在更大的池子里摘（max×4），让 AI 额度能被真英文填满；否则中文占满
+    # 候选窗口后，本轮只剩少数英文可翻，额度空转。
+    pool = collect_unjtranslated(jsonl_files, max_n=max(args.max * 4, args.max))
+    n_local = local_prefill_chinese(pool)
+    if n_local:
+        written = write_back_to_jsonl(pool, jsonl_files)
+        print(f"[translate_local] 本地摘标题 {n_local} 条（中文条目，零 AI 成本），写回 {written} 条")
+    # 只剩真需要翻译的（英文等），取前 args.max 条占用本轮额度
+    candidates = [c for c in pool if not c.get("cn_title")][:args.max]
+    print(f"[translate_local] 其中需 AI 翻译 {len(candidates)} 条")
 
     if not candidates:
         print("[translate_local] nothing to translate")

@@ -106,7 +106,8 @@ def call_ai(config, prompt):
         sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
         from local.zen_proxy_client import reachable as _zen_reachable
         if _zen_reachable():
-            for m in ("mimo-v2.5-free", "nemotron-3.5-lightning-free"):
+            # 2026-10-08: mimo-v2.5-free → mimo-v2.6-flash-free（旧名已 410 弃用）
+            for m in ("mimo-v2.6-flash-free", "nemotron-3.5-lightning-free"):
                 attempts.append({"provider": "zen_proxy", "base_url": "", "model": m, "api_key": ""})
     except Exception:
         pass
@@ -336,7 +337,12 @@ def main():
     else:
         todo.sort(key=lambda p: p[1].get("published_at", ""), reverse=True)
         todo = todo[:args.max]
-    todo.sort(key=lambda p: p[1].get("published_at", ""), reverse=True)
+    # 2026-10-08：**不再按时间重排**。原第 340 行 `todo.sort(published_at)` 会把
+    # select_priority_unique 的优先级顺序（含外语保底带补进来的席位）全部打乱——
+    # 实测保底带选出 60 条外语，重排后落到队尾，预算耗尽时一条没跑到
+    # （首轮 114 条几乎全是 cn）。排序职责归 intel_gate，此处只按时间序兜底。
+    if not _select_priority:
+        todo.sort(key=lambda p: p[1].get("published_at", ""), reverse=True)
     todo = todo[:args.max]
     if not todo:
         print("[IMPACT] all items already analyzed")
