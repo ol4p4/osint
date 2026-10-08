@@ -1,6 +1,6 @@
 {
  "date": "20261008",
- "generated_at": "2026-10-08T04:03:18.644177+00:00",
+ "generated_at": "2026-10-08T04:11:43.364281+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -37,14 +37,14 @@
    "title": "苏姿丰欲锁韩国供应链，AMD寻求与三星和海力士“3-5年甚至更长期间合作”",
    "source": "华尔街见闻-全球",
    "published_at": "2026-10-08T01:00:12+00:00",
-   "score": 0.73,
+   "score": 0.728,
    "hits": [
     {
      "hyp_id": "HM102",
      "code": "C",
      "conf": 0.51,
-     "gate": 0.37,
-     "selectivity": 6.73
+     "gate": 0.35,
+     "selectivity": 6.36
     }
    ]
   }
