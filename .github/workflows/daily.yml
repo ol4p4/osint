@@ -69,14 +69,17 @@ jobs:
       # 它们改 data/hypotheses/ 但 git add 列表不含该目录, 每轮成果被 checkout 丢弃,
       # 纯属无效劳动; 假设链只跑本地 (refresh.py run_hypothesis_chain, 有 AI + git 版本化)
 
-      # JEV 信号扫描 (2026-10-08 新增): 免 key 免费通道 (jev-1.13-free) 让 CI 首次
-      # 具备判定能力——此前 CI 无 TYPESAFE_API_KEY, JEV 判断从未在线上跑过。
-      # **只读假设树、只写独立产物** (jev_signals_*.json/md), 不碰 data/hypotheses/
-      # (该目录唯一有效写入方是本地, 见 AGENTS.md)。端点不可达时静默跳过, 不失败 job。
-      - name: JEV signal scan (keyless free channel)
+      # JEV 信号扫描 + ACH 增量诊断 (2026-10-08 新增): 免 key 免费通道
+      # (jev-1.13-free) 让 CI 首次具备判定能力——此前 CI 无 TYPESAFE_API_KEY,
+      # JEV 判断从未在线上跑过。
+      # **只读假设树、只写独立产物** (jev_signals_*.json/md + ach_diagnosis_*.json),
+      # 不碰 data/hypotheses/ (该目录唯一有效写入方是本地, 见 AGENTS.md)。
+      # ACH 诊断读假设树的 evidence_log 找未诊断证据、读矩阵避免重复，
+      # 判定结果由本地按需合并进 ach_matrix。端点不可达时静默跳过, 不失败 job。
+      - name: JEV signal scan + ACH diagnosis (keyless free channel)
         run: |
           cd ${{ github.workspace }}
-          python cloud/jev_signal_scan.py --dir . --limit 100 || echo "JEV scan skipped"
+          python cloud/jev_signal_scan.py --dir . --limit 100 --ach-limit 60 || echo "JEV scan skipped"
 
       - name: Generate daily briefing
         run: |
@@ -113,8 +116,8 @@ jobs:
           # 2026-09-10: 移除 hypotheses/（仓库根旧树 8-27 已删除；活跃树在 data/hypotheses，本地管理不入 CI）
           git add intel_${TODAY}.jsonl intel_summary_${TODAY}.json briefing_*.md 2>/dev/null || true
           git add -A intel_2*.jsonl 2>/dev/null || true
-          # JEV 信号扫描产物 (2026-10-08): 让线上判定结果随仓库带回本地
-          git add jev_signals_*.json jev_signals_*.md 2>/dev/null || true
+          # JEV 信号扫描 + ACH 诊断产物 (2026-10-08): 让线上判定结果随仓库带回本地
+          git add jev_signals_*.json jev_signals_*.md ach_diagnosis_*.json 2>/dev/null || true
           git status
           if git diff --staged --quiet; then
             echo "No changes to commit"

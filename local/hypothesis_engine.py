@@ -771,8 +771,34 @@ ACH 排名前 5 中哪些被强化/削弱？新出现的反常点是什么？本
         try:
             summary = self.analyzer._call_api(system, prompt)
         except Exception as e:
-            print("[ENGINE] AI weekly summary failed: " + str(e))
-            summary = "（AI 周报生成失败，请看 hypothesis_weekly_*.md 了解活跃假设列表）"
+            # 2026-10-08：内容安全拦截的降级（补录 09-07 周报时实测踩到）。
+            # dots 网关对 prompt 做内容审查，而周报 prompt 会把 60 条情报标题
+            # 原样塞进去——实测 08-31~09-06 那周有 145 条涉政条目（领导人活动等），
+            # 整体送审被 403 `governance.content_safety_input_rejected`，
+            # **整份周报的 AI 总结因此退化成占位文本**。
+            # 与 analyze._analyze_single_batch 的拆半隔离同源问题，但周报 prompt
+            # 是一个整体（不是可拆的条目列表），所以改用**降级重试**：
+            # 去掉逐条标题（保留统计/ACH/假设动态），只泄露聚合信息，实测可通过。
+            is_block = False
+            try:
+                is_block = MacroAnalyzer._is_content_block(e)
+            except Exception:
+                is_block = ("content_safety" in str(e).lower()
+                            or "safety system" in str(e).lower())
+            if is_block:
+                print("[ENGINE] AI weekly summary 被内容安全拦截，降级为无逐条标题版重试")
+                safe_prompt = prompt.replace(themes_block, "（逐条情报标题因内容安全策略省略；"
+                                                         "以下结论基于上方统计与假设矩阵）")
+                try:
+                    summary = self.analyzer._call_api(system, safe_prompt)
+                    summary = ("（注：本周情报标题因第三方内容安全策略未能送入 AI，"
+                               "以下总结基于统计与假设矩阵。）\n\n" + summary)
+                except Exception as e2:
+                    print("[ENGINE] AI weekly summary 降级重试仍失败: " + str(e2)[:160])
+                    summary = "（AI 周报生成失败，请看 hypothesis_weekly_*.md 了解活跃假设列表）"
+            else:
+                print("[ENGINE] AI weekly summary failed: " + str(e))
+                summary = "（AI 周报生成失败，请看 hypothesis_weekly_*.md 了解活跃假设列表）"
 
         out = ["# 参谋周报 - " + date_str, ""]
         out.append(f"> {week_label} | 视角：公民 + 年轻失业毕业生 | 来源：ACH 矩阵 + 假设验证 + 情报")

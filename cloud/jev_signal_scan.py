@@ -53,6 +53,8 @@ sys.path.insert(0, str(ROOT / "local"))
 DEFAULT_LIMIT = 100
 # 单次运行的时间预算（秒）：超时即停，已扫的部分照常落盘
 DEFAULT_BUDGET = 420
+# ACH 增量诊断上限：每轮诊断多少条待诊断证据（0=关闭）
+DEFAULT_ACH_LIMIT = 60
 
 
 def load_majors(hyp_file):
@@ -103,20 +105,132 @@ def load_candidates(directory, limit):
 
 
 def _text(item, cap=700):
-    """证据文本：标题 + 正文片段（对齐 ach_matrix._diagnose_jev 的取文方式）"""
+    """**intel 条目**的取文：标题 + 正文片段（信号扫描路径用）。
+
+    ⚠️ 不要用它处理假设树证据——证据的正文在 `summary`/`body`，此处不读，
+    会得到空串（踩坑：ACH 路径首版复用了本函数，把空文本送进判定，
+    结果 6 个 major 全判 N，台海实弹演习的 gate 掉到 0.11）。
+    证据取文用 _evidence_text()。
+    """
     title = str(item.get("cn_title") or item.get("title") or "")
     body = str(item.get("cn_summary") or item.get("content_preview") or "")
     text = title + ("\n" + body if body and body not in title else "")
     return text[:cap]
 
 
+def _evidence_text(ev, cap=700):
+    """**假设树证据**的取文（ACH 路径用）。
+
+    字段口径对齐 `ach_matrix._diagnose_jev`：证据正文在 `summary` +
+    `body`（2026-09-28 起证据带正文，此前只有 title[:100] 导致门控区分不出
+    「A股军工板块拉升」与「解放军台海演习」）。
+    """
+    summary = str(ev.get("summary") or "")
+    body = str(ev.get("body") or "")
+    text = summary + ("\n" + body if body and body not in summary else "")
+    return text[:cap]
+
+
+def run_ach_diagnosis(majors, jev, out_dir, budget, limit):
+    """ACH 增量诊断（2026-10-08 新增，让"判断"真正上云）。
+
+    **为什么之前云端没有判断能力**：CI 的 Secrets 没有 TYPESAFE_API_KEY，
+    JEV 判断链只在本地下跑得到；免 key 免费通道补上了这个缺口。
+
+    **为什么必须只读假设树**：`data/hypotheses/` 的唯一有效写入方是本地
+    （历史上 CI 跑 link/verify 因 git add 不含该目录，成果被 checkout 丢弃）。
+    所以本函数**读**假设树的 evidence_log 找出未诊断证据、**读**矩阵避免重复，
+    判定结果只写独立产物 `ach_diagnosis_YYYYMMDD.json`，由本地按需合并。
+
+    判据与本地 `ach_matrix.find_undiagnosed` 一致：只收 `_ach_eligible` 的强证据
+    （TF-IDF 命中，或 DOMAIN ≥0.4），避免把长尾弱证据灌进来。
+    """
+    hyp_file = ROOT / "data" / "hypotheses" / "active_hypotheses.json"
+    matrix_file = ROOT / "data" / "hypotheses" / "ach_matrix.json"
+    try:
+        hyps = json.loads(hyp_file.read_text(encoding="utf-8"))
+    except Exception as ex:
+        print("[JEV-ACH] 读取假设树失败，跳过: " + str(ex)[:100])
+        return None
+    diagnosed = set()
+    if matrix_file.exists():
+        try:
+            m = json.loads(matrix_file.read_text(encoding="utf-8"))
+            diagnosed = {e.get("key") for e in (m.get("evidence") or [])}
+        except Exception:
+            pass
+    print("[JEV-ACH] 矩阵已有诊断 %d 条" % len(diagnosed))
+
+    # 收集未诊断证据（跨 major 去重，与本地 find_undiagnosed 同口径）
+    try:
+        sys.path.insert(0, str(ROOT / "local"))
+        from ach_matrix import evidence_key, _ach_eligible
+    except Exception as ex:
+        print("[JEV-ACH] 无法导入 ach_matrix 判据，跳过: " + str(ex)[:100])
+        return None
+
+    pending = []
+    seen = set()
+    for h in hyps:
+        if h.get("level") != "major":
+            continue
+        for ev in (h.get("evidence_log") or []):
+            if not isinstance(ev, dict) or not ev.get("summary"):
+                continue
+            k = evidence_key(ev)
+            if k in diagnosed or k in seen:
+                continue
+            if not _ach_eligible(ev):
+                continue
+            seen.add(k)
+            pending.append({"key": k, "hyp_id": h.get("id"), "ev": ev})
+    print("[JEV-ACH] 未诊断的准入证据 %d 条（上限 %d）" % (len(pending), limit))
+    if not pending:
+        return {"diagnosed": 0, "results": []}
+
+    # 新证据优先（与本地一致：本地按 date 降序处理新证据）
+    pending.sort(key=lambda e: str(e["ev"].get("date") or ""), reverse=True)
+    pending = pending[:limit]
+
+    t0 = time.time()
+    results = []
+    failed = 0
+    for e in pending:
+        if time.time() - t0 > budget:
+            print("[JEV-ACH] 预算用尽")
+            break
+        ev = e["ev"]
+        state = "证据（" + str(ev.get("date", "")) + "）：" + _evidence_text(ev)
+        try:
+            got = jev.gate_and_diagnose(state, majors)
+        except Exception as ex:
+            failed += 1
+            if failed <= 3:
+                print("[JEV-ACH] 诊断失败: " + str(ex)[:100])
+            continue
+        results.append({
+            "key": e["key"],
+            "hyp_id": e["hyp_id"],
+            "date": ev.get("date"),
+            "summary": str(ev.get("summary") or "")[:120],
+            "diagnosis": {hid: {"code": v["code"], "conf": v["conf"],
+                                "gate": v.get("gate"), "selectivity": v.get("selectivity")}
+                          for hid, v in got.items()},
+        })
+    print("[JEV-ACH] 诊断 %d 条（失败 %d），耗时 %.0fs"
+          % (len(results), failed, time.time() - t0))
+    return {"diagnosed": len(results), "failed": failed, "results": results}
+
+
 def main():
-    ap = argparse.ArgumentParser(description="CI 侧 JEV 信号扫描")
+    ap = argparse.ArgumentParser(description="CI 侧 JEV 信号扫描 + ACH 增量诊断")
     ap.add_argument("--dir", default=".", help="intel_*.jsonl 所在目录（CI 为仓库根）")
     ap.add_argument("--limit", type=int, default=DEFAULT_LIMIT)
     ap.add_argument("--budget", type=int, default=DEFAULT_BUDGET, help="秒；超时即停")
     ap.add_argument("--out-dir", default=None, help="产物目录（默认与 --dir 相同）")
     ap.add_argument("--dry", action="store_true", help="只看候选不调 AI")
+    ap.add_argument("--ach-limit", type=int, default=DEFAULT_ACH_LIMIT,
+                    help="ACH 增量诊断上限（0=关闭，只做信号扫描）")
     args = ap.parse_args()
 
     out_dir = Path(args.out_dir or args.dir)
@@ -194,6 +308,22 @@ def main():
     out_dir.mkdir(parents=True, exist_ok=True)
     json_path = out_dir / ("jev_signals_" + today + ".json")
     json_path.write_text(json.dumps(payload, ensure_ascii=False, indent=1), encoding="utf-8")
+
+    # ACH 增量诊断（2026-10-08）：让"判断"也上云，只写独立产物、不碰假设树
+    if args.ach_limit and args.ach_limit > 0:
+        ach = run_ach_diagnosis(majors, jev, out_dir, args.budget, args.ach_limit)
+        if ach and ach.get("results"):
+            ach_path = out_dir / ("ach_diagnosis_" + today + ".json")
+            ach_path.write_text(json.dumps({
+                "date": today,
+                "generated_at": datetime.now(timezone.utc).isoformat(),
+                "channel": jev.describe(),
+                "note": "CI 侧只读诊断产物；本地按需合并进 ach_matrix.json",
+                "diagnosed": ach["diagnosed"],
+                "failed": ach.get("failed", 0),
+                "results": ach["results"],
+            }, ensure_ascii=False, indent=1), encoding="utf-8")
+            print("[JEV-ACH] 产物: " + ach_path.name)
 
     # 人读摘要
     title_of = {m.get("id"): m.get("title", "") for m in majors}

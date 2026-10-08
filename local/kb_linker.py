@@ -185,6 +185,14 @@ def link_view_card_to_kb(card, vault_path=DEFAULT_VAULT):
         "type: view-card",
         f"id: {card_id}",
         f"created: {card.get('created', '-')}",
+    ]
+    # 补录标记（2026-10-08）：created 是"生成时刻"，补录卡的真实覆盖区间要单列，
+    # 否则读者会把 08-31 那一周的内容误当成最新一期。
+    if card.get("covered_range"):
+        lines.append(f"covered_range: {card['covered_range']}")
+    if card.get("backfilled"):
+        lines.append("backfilled: true")
+    lines += [
         "---",
         "",
         f"# 观点卡：{card.get('title', '?')}",
