@@ -44,6 +44,15 @@ DOMAIN_MAP = {
     "青年": ["青年", "失业", "毕业生", "就业", "NEET", "youth", "unemployment", "graduate"],
     "房地产": ["房价", "房地产", "楼市", "房贷", "地产", "housing", "property", "real estate"],
     "供应链": ["供应链", "物流", "运输", "航运", "港口", "supply chain", "shipping", "logistics"],
+    # 2026-10-09 新增：俄罗斯伊尔库茨克防鼠疫研究所员工死亡事件（10-02）此前
+    # 51 条相关情报在 75 节点树上无处可挂——DOMAIN_MAP 无任何健康域。域内词与
+    # sources.yaml 的公卫词表对齐，但**不含泛词「疫情」/「隔离」**（历史背景引用
+    # 占比 47% / 非公卫语境假阳性 14%，见 sources.yaml 注释），避免无关条目被匹配。
+    "公共卫生": ["鼠疫", "肺鼠疫", "炭疽", "霍乱", "埃博拉", "不明原因肺炎", "传染病", "公共卫生",
+                 "生物安全", "检疫", "疾控", "世卫组织", "世界卫生组织", "肺炎", "疫苗",
+                 "plague", "pneumonic", "anthrax", "cholera", "ebola", "quarantine", "pandemic",
+                 "infectious disease", "biosecurity", "outbreak", "epidemic", "pneumonia",
+                 "vaccine", "world health organization", "public health"],
 }
 
 def _load_cluster_module():

@@ -466,6 +466,63 @@ rss_sources:
   type: rss
   category: finance
   weight: 0.7
+# ── 公共卫生源（2026-10-09 新增）──
+# 动机：俄罗斯伊尔库茨克防鼠疫研究所事件（10-02 首发）系统 10-05 才从 CNBC/DW
+# 转载拿到（滞后 2.6 天），且无任何权威公卫源可交叉验证官方口径。
+# 可达性实测（本机直连 + UA 伪装 + 15s 超时，2026-10-09）：下列源全部 200 且解析正常。
+- name: ECDC-News
+  url: https://www.ecdc.europa.eu/en/taxonomy/term/1307/feed
+  type: rss
+  category: health
+  weight: 1.0
+- name: ECDC-CDTR
+  url: https://www.ecdc.europa.eu/en/taxonomy/term/1505/feed
+  type: rss
+  category: health
+  weight: 1.0
+- name: CIDRAP-News
+  url: https://www.cidrap.umn.edu/news/49/rss
+  type: rss
+  category: health
+  weight: 1.0
+# ── 俄语/俄罗斯源（2026-10-09 新增）──
+# 动机：本次事件首发是俄媒（Moscow Times / REN TV / Lyudi Baikala，10-02 17:24 MSK），
+# 而 sources.yaml 此前**零俄语源**，只能等英文媒体转载。TASS 为官方口径、
+# Moscow Times 与 Meduza 为独立/流亡媒体，三者并列可形成口径对照。
+- name: TASS-EN
+  url: https://tass.com/rss/v2.xml
+  type: rss
+  category: geopolitics
+  weight: 1.0
+- name: MoscowTimes
+  url: https://www.themoscowtimes.com/rss/news
+  type: rss
+  category: geopolitics
+  weight: 1.0
+- name: Meduza-EN
+  url: https://meduza.io/rss/en/all
+  type: rss
+  category: geopolitics
+  weight: 1.0
+# ── 境内直连不通，仅 CI 采集（实测：连接重置 / 超时）──
+- name: Sputnik
+  url: https://sputnikglobe.com/export/rss2/archive/index.xml
+  scope: ci
+  type: rss
+  category: geopolitics
+  weight: 0.8
+- name: DW-Russian
+  url: https://rss.dw.com/rdf/rss-ru-all
+  scope: ci
+  type: rss
+  category: geopolitics
+  weight: 0.7
+- name: Rospotrebnadzor
+  url: https://www.rospotrebnadzor.ru/rss_all/
+  scope: ci
+  type: rss
+  category: health
+  weight: 1.2
 gov_portals:
 - name: 中国政府网-政策文件
   url: https://www.gov.cn/zhengce/zuixin.htm
@@ -897,6 +954,30 @@ keyword_weights:
   大模型: 2.0
   机器人: 1.5
   互联网: 1.2
+  # ── 公共卫生/生物安全词（2026-10-09 扩充）──
+  # 动机：俄罗斯伊尔库茨克防鼠疫研究所员工死亡事件（10-02 首发），系统 10-05 才
+  # 从 CNBC/DW 转载拿到，且 51 条相关情报无一进仪表盘/假设树——根因是 304 词表里
+  # 公卫词仅 outbreak/epidemic 两个英文词，中文公卫事件零覆盖。
+  # 定价按 specificity：专指病名(2.5) > 事件特征词(2.2) > 领域词(2.0/1.8) > 泛词(1.5)。
+  鼠疫: 2.5
+  肺鼠疫: 2.5
+  炭疽: 2.5
+  霍乱: 2.5
+  埃博拉: 2.5
+  不明原因肺炎: 2.2
+  实验室泄漏: 2.2
+  生物安全: 2.0
+  公共卫生: 1.8
+  检疫: 1.8
+  疾控: 1.8
+  世卫组织: 1.8
+  世界卫生组织: 1.8
+  传染病: 1.5
+  疫情: 1.2
+  肺炎: 1.5
+  疫苗: 1.5
+  # 注意：**不加「隔离」**——实测在非公卫语境高频（"集装箱铁水联运隔离"、
+  # "AI 模型隔离部署"），14% 假阳性率。`检疫`/`疾控` 已覆盖防控语义。
   # ── 英文国际要闻词（同日扩充）──
   # 原英文 78 词偏就业/经济，缺军事/政治/灾害类。CI 的国际源（AP/Reuters/DW/CNN）
   # 产出大量英文短讯，此前同样命中不了任何词。实测扩表后英文条目恢复率显著。
@@ -968,6 +1049,36 @@ keyword_weights:
   outbreak: 1.8
   epidemic: 1.8
   wildfire: 1.5
+  # ── 英文公共卫生/生物安全词（2026-10-09 扩充）──
+  # 注意：**故意不加 `who`**——_calc_keyword_score 对 ASCII 词加 \b 词边界且大小写
+  # 不敏感，`who` 会命中英文疑问代词/关系代词（极高词频），等于给几乎所有英文文章
+  # 白送 1.8 分。用 `world health organization` 短语替代。
+  plague: 2.5
+  pneumonic: 2.2
+  anthrax: 2.5
+  cholera: 2.5
+  ebola: 2.5
+  lab leak: 2.2
+  biosecurity: 2.0
+  quarantine: 1.8
+  pandemic: 1.8
+  infectious disease: 1.8
+  world health organization: 1.8
+  disease control: 1.8
+  cdc: 1.8
+  vaccine: 1.5
+  public health: 1.5
+  pneumonia: 1.5
+  virus: 1.2
+  # 动物疫病/流感（2026-10-09 补：CIDRAP 禽流感 feed 实测 0 分，缺这些词）
+  avian flu: 2.0
+  bird flu: 2.0
+  h5n1: 2.2
+  mpox: 2.2
+  measles: 1.8
+  # 注意：**不加 `isolation`**——"social isolation"（孤独/社会隔离）在社科类
+  # 报道中极高频，实测会误命中（如"Loneliness and social isolation can take
+  # six years off your life"）。`quarantine` 已覆盖「检疫隔离」的主要含义。
 source_base_weights:
   gov: 1.3
   stats: 1.5
@@ -999,3 +1110,11 @@ keyword_rules:
   贸易摩擦:
     any: [关税, 贸易摩擦, 出口管制, 实体清单, "tariff", "trade war", "export control", "entity list"]
     weight: 0.3
+  公共卫生事件:
+    # 2026-10-09 新增：俄罗斯鼠疫事件暴露公卫词表零覆盖（详见 keyword_weights 段注释）
+    # 实测修正：`疫情`/`pandemic` **不列入 any**——它们单独命中时多为历史背景引用
+    # （"后疫情时代"/"疫情期间"/"post-pandemic era"，实测占「疫情」命中 47%），
+    # 会让央行汇率/电影票房这类无关条目白拿 0.35 规则分。规则只认专指词。
+    any: [鼠疫, 肺鼠疫, 炭疽, 霍乱, 埃博拉, 不明原因肺炎, 传染病, 公共卫生, 生物安全, 检疫, 疾控,
+          "plague", "pneumonic", "anthrax", "cholera", "ebola", "quarantine", "infectious disease", "biosecurity"]
+    weight: 0.35
