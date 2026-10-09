@@ -611,17 +611,25 @@ def run_hypothesis_chain():
         except Exception:
             pass
     steps = [
-        ("link", [sys.executable, str(PROJECT / "link_intel_hyp.py")], 600, ("Linked", "[TFIDF]")),
-        ("verify", [sys.executable, str(PROJECT / "verify_hypotheses.py")], 600, ("指标更新",)),
-        ("ach-batch", [sys.executable, str(PROJECT / "tools" / "ach_daily_batch.py")], 1600, ("[ACH-BATCH]",)),
+        ("link", [sys.executable, str(PROJECT / "link_intel_hyp.py")], 600, ("Linked", "[TFIDF]"), True),
+        ("verify", [sys.executable, str(PROJECT / "verify_hypotheses.py")], 600, ("指标更新",), True),
+        ("ach-batch", [sys.executable, str(PROJECT / "tools" / "ach_daily_batch.py")], 1600, ("[ACH-BATCH]",), True),
         # 探针读数（2026-09-28 接入）：mega 节点不进 ACH 矩阵，靠 JEV Noul
         # 逐条测「情报是否实质推动该情景」→ 信号率落 probe_reading 字段。
         # 实测 0.88s/条，200 条约 3 分钟、成本 ~$0.005；不写 confidence。
+        #
+        # 末位 critical=False（2026-10-09 加）：probe 是**只读观测**——不写
+        # confidence、不写 ACH 矩阵，且强依赖 JEV 外部通道。此前它被算进
+        # 「4 步全成才写节流戳」，JEV 一挂就每小时重跑整链、每次白等 600s
+        # 被强杀（实测单日空转 6 次），而 link/verify/ach 其实早已被各自
+        # 节流跳过、无事可做。**外部依赖的观测步骤不该阻塞核心链的节流。**
         ("probe", [sys.executable, str(PROJECT / "tools" / "probe_mega.py"),
-                   "--limit", "200", "--write"], 600, ("[PROBE]",)),
+                   "--limit", "200", "--write"], 600, ("[PROBE]",), False),
     ]
     ok = 0
-    for name, cmd, tmo, keys in steps:
+    critical_ok = 0
+    critical_total = sum(1 for s in steps if s[4])
+    for name, cmd, tmo, keys, critical in steps:
         try:
             r = subprocess.run(cmd, cwd=str(PROJECT), capture_output=True, text=True,
                                timeout=tmo, creationflags=_NO_WINDOW)
@@ -631,17 +639,28 @@ def run_hypothesis_chain():
                         print(f"hyp-chain[{name}]: {line.strip()[:150]}")
             if r.returncode == 0:
                 ok += 1
+                if critical:
+                    critical_ok += 1
             else:
                 print(f"hyp-chain[{name}] exit={r.returncode}: {(r.stderr or '')[:150]}")
         except subprocess.TimeoutExpired:
             print(f"hyp-chain[{name}]: timeout {tmo}s (跳过, 下轮继续)")
         except Exception as e:
             print(f"hyp-chain[{name}] failed: {str(e)[:150]}")
-    if ok == len(steps):
+    # 节流戳判据：只看 critical 步骤（2026-10-09 改）。
+    # 旧判据 `ok == len(steps)` 把 probe（只读观测 + 强依赖外部 JEV）也算进
+    # 「全成才写戳」，导致 JEV 挂掉时整链每小时重跑、每次白等 600s。
+    # 现在 critical 步骤（link/verify/ach-batch）全成才写戳；
+    # probe 失败只记日志，不影响节流。
+    if critical_ok == critical_total:
         state.write_text(str(time.time()), encoding="utf-8")
         commit_hypotheses()
+        if ok < len(steps):
+            print(f"hyp-chain: critical {critical_ok}/{critical_total} 全成，"
+                  f"已写节流戳（非关键步骤 {ok - critical_ok} 个失败）")
     else:
-        print(f"hyp-chain: {ok}/{len(steps)} 成功, 不写节流戳, 下轮重试")
+        print(f"hyp-chain: critical {critical_ok}/{critical_total} 成功"
+              f"（总 {ok}/{len(steps)}），不写节流戳，下轮重试")
 
 
 def commit_hypotheses():

@@ -214,6 +214,14 @@ def main():
     questions = build_probe_questions(probes)
     readings = []
     t0 = time.time()
+    # 连续失败熔断（2026-10-09 加）：JEV 通道故障时每次调用要等满 timeout(60s)，
+    # 200 条 = 最坏 3.3 小时，而 refresh 给 probe 的预算是 600s——实测每轮
+    # 白等 600s 被强杀（refresh 日志「probe: timeout 600s」），且因 hyp_chain
+    # 「4 步全成才写节流戳」的设计，下一小时又重来一遍，单日空转 6 次。
+    # 与 analyze.py 的 CONSECUTIVE_FAIL_LIMIT 同款判据：连续多次无有效产出
+    # 即判定通道不可用，快速失败退出，把时间留给下轮调度。
+    CONSECUTIVE_FAIL_LIMIT = 3
+    consecutive_fail = 0
     for i, it in enumerate(items, 1):
         text = (it.get("cn_title") or it.get("title") or "")[:300]
         if not text:
@@ -221,8 +229,15 @@ def main():
         try:
             d = jev.systemone(text, questions, timeout=60)
         except Exception as ex:
-            print(f"[PROBE] {i}/{len(items)} 调用失败: {str(ex)[:80]}")
+            consecutive_fail += 1
+            print(f"[PROBE] {i}/{len(items)} 调用失败（连续 {consecutive_fail}/"
+                  f"{CONSECUTIVE_FAIL_LIMIT}）: {str(ex)[:80]}")
+            if consecutive_fail >= CONSECUTIVE_FAIL_LIMIT:
+                print("[PROBE] 连续多次调用失败，判定 JEV 通道不可用，提前退出"
+                      "（保留已收集读数，不写盘）")
+                return
             continue
+        consecutive_fail = 0
         answers = d.get("answers") or {}
         for p in probes:
             a = answers.get("p_" + p["id"]) or {}

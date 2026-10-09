@@ -94,7 +94,7 @@ AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key �
 | `link_intel_hyp.py` | 情报→假设证据关联（P1-1 起主匹配=TF-IDF 余弦≥0.12 top3 与 cluster_stories 共用分词，DOMAIN_MAP 降为兜底；证据按 story_id 去重；report 带 method 字段） |
 | `daily_briefing.py` / `sync_data.py` / `rebuild_hyps.py` | 简报/同步/重建树 |
 | `views.yaml` | 观点模板（`materialized_hyp_id` 标注已物化的 view，防止周循环重复生成） |
-| `sources.yaml`(50源) / `config.yaml`(key+路径) / `weights.yaml` / `daily_question.ps1`(P2a/P2b入口) | 配置与入口 |
+| `sources.yaml`(55源) / `config.yaml`(key+路径) / `weights.yaml` / `daily_question.ps1`(P2a/P2b入口) | 配置与入口 |
 
 ## 信息源分层（2026-09-04 定稿）
 - **主要渠道**（weight 1.1-1.2，本地+CI 双采）：金十数据、新浪财经(7x24+滚动，官方直连 API)、财联社——国内市场行情/快讯/政策的主入口
@@ -110,7 +110,7 @@ AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key �
 | `refresh.py` | 刷新入口：git pull + 合并 + 翻译 + rebuild + fetch_macro + gen_html，日志落 `logs/refresh_YYYYMMDD.log` |
 | `daily_run.ps1` | 本地分析+周循环运行器（`-Auto` 参数供计划任务用；**必须带 UTF-8 BOM**） |
 | `intel_YYYYMMDD.jsonl` | 每日情报（`intel_raw_*`/`intel_final_*` 不参与重建和翻译） |
-| `hypotheses/active_hypotheses.json` | 假设树（71 节点：2mega/8大/20中/41小，status 支持 active/falsified；deadline 2026-09-05 已 71/71 回填，落在 2026-12~2028-09） |
+| `hypotheses/active_hypotheses.json` | 假设树（**79 节点**：4mega/7大/23中/40小/5view，status 支持 active/falsified；deadline 全量回填，落在 2026-12~2027-10） |
 | `hypotheses/resolutions.jsonl` | P0-1：到期假设验证结果（周循环 record_resolution 幂等追加），calibration.py 的输入 |
 | `calibration.json` | P0-1：Brier + Murphy 三分解 + 十桶校准曲线（gen_dashboard 校准面板读取） |
 | `dialogues/view_cards/` `questions/` `reports/` | 观点卡 / 每日开放问题 / 周报 |
@@ -138,6 +138,7 @@ python -c "..." # 见 daily_run.ps1 Step3，或等 OsintWeekly 周一 09:30 自�
 ```
 
 ## 约束与禁忌 / MUST NOT
+- **节点数/源数/词数的「现状」看这里，历史段落里的数字是当时快照**（2026-10-09 更新）：假设树 **79 节点** = 4 mega（探针）+ 7 major（ACH 诊断对象）+ 23 medium + 40 small + 5 view 物化；`sources.yaml` **55 源**（本地双采 23 / 仅 CI 32）；`keyword_weights` **343 词** + **6 组** `keyword_rules`。下文带日期的段落（如"75 节点 = 6 major"是 09-28、"71 节点"是 09-16 前的记录）保留历史语境，**不要当成现状引用**。
 - **禁止引用旧路径** `C:\Users\admin\Documents\osint`（旧仓库）和 `D:\Codex输出\osint_卫星图`（旧产物目录，均已废弃）；仓库= `D:\osint`，产物= `D:\osint\data`，路径常量只在文件头部定义一次。
 - **禁止绕过白名单**：外发请求只允许 https + 白名单域名（verify_hypotheses 的 `ALLOWED_HOSTS`、analyze.py 的 opencode.ai 校验）。加新 API 必须先加白名单。
 - **禁止让周循环重复生成假设**：views.yaml 加新 view 时若已在树里，必须填 `materialized_hyp_id`。
@@ -708,6 +709,7 @@ C conf=0.89 日经225指数低开1.5%                ← 行情？
 | Zen 网关有付费版 `jev-1.13` | 带 key 返 **402 `Insufficient account funds`**（认证通过，余额为 0）；无 key 返 401 | AGENTS.md 旧记「jev-1.13 返 401 Missing API key」需更新——那是无 key 环境的结论 |
 | `subprocess.run(timeout=)` 在 Windows 不杀子进程树 | probe_mega 超时后子进程残留 | 既有平台缺陷；正常情况 probe 3 分钟完成不碰超时，本轮因 JEV 限流（45s/条×200）才暴露 |
 | `SEL_MIN=2.5` 校准已脱节 | 实测当前分布 p50=1.75/p90=2.89（注释写"p50=2.3"是 9-28 改措辞前的旧值），2.5 落在 p88，只放行 ~16% 证据 | 独立问题，与本轮无关，建议单独评估 |
+| **probe 空转**（已修，2026-10-09） | JEV 不可用时 `probe_mega` 每次调用等满 60s 超时，200 条 = 最坏 3.3 小时；refresh 给 600s 预算 → 每轮被强杀 → 因 `ok==len(steps)` 全成才写节流戳，下一小时又重来，**单日空转 6 次** | 双修：①`probe_mega` 加连续失败熔断（3 次即退出，实测 27s 完成）；②`refresh.run_hypothesis_chain` 引入 `critical` 标记（link/verify/ach-batch 为 critical，probe 为非 critical），**节流戳只看 critical 全成**。实测整链 87s 完成且节流戳正确写入 |
 
 ## 数据量级真相（2026-08-30 诊断 / 2026-09-13 筛选修复后更新）
 - ~~关键词表是中文、47 源以英文为主、每日命中 0~3 条~~ → 2026-09-05 起词表已扩到 153 词（63 英 + 90 中）+ keyword_rules 5 组；实测语料 79.5% 为中文（本地直连源为主力），语言错配已非主要矛盾
