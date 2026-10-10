@@ -86,6 +86,7 @@ AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key �
 | `local/intel_gate.py` | **AI 准入排序**（2026-10-05 建 / 2026-10-06 从硬过滤改为排序）：按「新鲜度 → `base_score` → 时间」排优先级，**不丢弃任何条目**；`OSINT_AI_SCORE_GATE=0` 退化纯时间序；被 translate_local / citizen_impact 共用，见 §"AI 准入排序" |
 | `tools/rescore_recent.py` | 词表扩充后的**一次性存量回填**（2026-10-06）：只补 `base_score=0` 的条目（严格增量，不改正分），默认近 7 天，写回前自动备份 `.bak_rescore_*` |
 | `tools/fetch_gdelt.py` | P1-5 GDELT 国际侧补源（DOC API 三组查询 24h 窗口，title-only 流入本地翻译管线）；白名单 {api.gdeltproject.org} 脚本内自带；6s 间隔+12s 退避+3h 成功节流（data/.gdelt_last_run）；refresh.py 自动调，失败静默 |
+| `tools/assess_indicators.py` | **叙述式阈值 AI 判定**（2026-10-10）：对有真实抓取值的 `needs_ai` 指标提前出 met/unmet/uncertain 判定 → `data/indicator_assessments.json`。**不改 confidence、不回写假设树**（展示层，gen_dashboard 渲染时合并）；日节流 `data/.assess_last_run`；refresh 步骤 `assess`（critical=False） |
 | `worldview_loader.py` | 三观加载/注入文本构建（worldview.yaml 唯一事实源；缺失静默降级返回空串；**裁判链路明确不注入**保持校准客观）；`--show` 看档案+注入预览 / `--check` 结构校验 |
 | `net_proxy.py` | **git 联网代理探测**（2026-10-06）：探测本地 Clash 代理端口并注入 git 子进程环境变量（`GIT_CONFIG_*`，不改命令行、无注入面），供 local_sync/refresh 共用；CI 无代理自动退回直连，见 §"CI 故障排除 #9b" |
 | `local/worldview_engine.py` | 三观输入引擎：`--seed` AI 从 persona+views 起草初稿（draft:true）/ `--interactive` 9 轮引导（3 阶段×3 问，复用 dialogue_engine 深化机制，覆盖写 draft:false）/ `--show`；AI 合成失败不动 YAML |
@@ -138,7 +139,7 @@ python -c "..." # 见 daily_run.ps1 Step3，或等 OsintWeekly 周一 09:30 自�
 ```
 
 ## 约束与禁忌 / MUST NOT
-- **节点数/源数/词数的「现状」看这里，历史段落里的数字是当时快照**（2026-10-09 更新）：假设树 **79 节点** = 4 mega（探针）+ 7 major（ACH 诊断对象）+ 23 medium + 40 small + 5 view 物化；`sources.yaml` **55 源**（本地双采 23 / 仅 CI 32）；`keyword_weights` **343 词** + **6 组** `keyword_rules`。下文带日期的段落（如"75 节点 = 6 major"是 09-28、"71 节点"是 09-16 前的记录）保留历史语境，**不要当成现状引用**。
+- **节点数/源数/词数的「现状」看这里，历史段落里的数字是当时快照**（2026-10-10 更新）：假设树 **79 节点** = 4 mega（探针）+ 7 major（ACH 诊断对象）+ 23 medium + 40 small + 5 view 物化；**139 个验证指标**（有真实抓取值的 11 个 / 无免费 API 的标 no_source 交 AI 裁判）；`sources.yaml` **55 源**（本地双采 23 / 仅 CI 32）；`keyword_weights` **343 词** + **6 组** `keyword_rules`。下文带日期的段落（如"75 节点 = 6 major"是 09-28、"71 节点"是 09-16 前的记录）保留历史语境，**不要当成现状引用**。
 - **禁止引用旧路径** `C:\Users\admin\Documents\osint`（旧仓库）和 `D:\Codex输出\osint_卫星图`（旧产物目录，均已废弃）；仓库= `D:\osint`，产物= `D:\osint\data`，路径常量只在文件头部定义一次。
 - **禁止绕过白名单**：外发请求只允许 https + 白名单域名（verify_hypotheses 的 `ALLOWED_HOSTS`、analyze.py 的 opencode.ai 校验）。加新 API 必须先加白名单。
 - **禁止让周循环重复生成假设**：views.yaml 加新 view 时若已在树里，必须填 `materialized_hyp_id`。
@@ -710,6 +711,27 @@ C conf=0.89 日经225指数低开1.5%                ← 行情？
 | `subprocess.run(timeout=)` 在 Windows 不杀子进程树 | probe_mega 超时后子进程残留 | 既有平台缺陷；正常情况 probe 3 分钟完成不碰超时，本轮因 JEV 限流（45s/条×200）才暴露 |
 | `SEL_MIN=2.5` 校准已脱节 | 实测当前分布 p50=1.75/p90=2.89（注释写"p50=2.3"是 9-28 改措辞前的旧值），2.5 落在 p88，只放行 ~16% 证据 | 独立问题，与本轮无关，建议单独评估 |
 | **probe 空转**（已修，2026-10-09） | JEV 不可用时 `probe_mega` 每次调用等满 60s 超时，200 条 = 最坏 3.3 小时；refresh 给 600s 预算 → 每轮被强杀 → 因 `ok==len(steps)` 全成才写节流戳，下一小时又重来，**单日空转 6 次** | 双修：①`probe_mega` 加连续失败熔断（3 次即退出，实测 27s 完成）；②`refresh.run_hypothesis_chain` 引入 `critical` 标记（link/verify/ach-batch 为 critical，probe 为非 critical），**节流戳只看 critical 全成**。实测整链 87s 完成且节流戳正确写入 |
+
+## 指标阈值"从不判定"修复（2026-10-10，用户质疑驱动）
+
+**用户观察**：仪表盘军事对照节点的指标全是「当前：未知 / 未达阈值」，阈值写了却像从不生效。**排查证实=139 个指标真正被阈值判定过的数量是 0**，四层根因：
+
+| 层 | 根因 | 修法 |
+|---|---|---|
+| 验证器层级 | `verify_hypotheses.main()` 硬跳过 `level != "small"` → medium/major/mega 的 **99 个指标从未被触碰** | 放开层级：所有带指标的层级都取数+判定+标注；**只有 small 写 confidence**（medium/major/mega 的置信度归 ACH 后验与周循环裁判——`evaluate_hypothesis(write_confidence=False)`，`verify_stats.readonly` 标记） |
+| 前端判定 | `indicatorBlock` 用 `String(v).indexOf(整句中文阈值)` —— 数值永远不可能命中长文本 → **标签恒显"未达阈值"**，与真实状态无关 | 改真实四态：`checked_met`（命中）/`checked_unmet`（真未达）/`needs_ai`（叙述式阈值，待 AI）/无值（无数据源） |
+| 取数映射 | `fetch_indicator_value` 只认 FRED/NBS/WB/macro 四套映射，SIPRI/各国国防部/TrendForce 等**一个都不在** → 直接标 `no_source` | 保留 no_source 语义（诚实），另补**情报提及计数**降级读数（纯展示、不判定、不改置信度，挂假设级避免同域 20 指标重复打印） |
+| AI 兜底 | `needs_ai` 设计上交给周循环 AI 裁判，但裁判只在 deadline 到期（最早 2026-12）触发 → **长期不判** | 新增 `tools/assess_indicators.py`：对有真实值的 needs_ai 指标**提前** AI 判定，日节流，`critical=False` 接入 refresh |
+
+**同时修复的严重错配（放开层级后立刻暴露）**：`MACRO_ALIASES` 是子串匹配，8 个命中里 **6 个语义错配**——「青年失业率跨国差异」被填中国单值 18.9、「核心PCE通胀率」被填中国 CPI 0.8、「AI资本开支增速与GDP增速偏离度」被填 GDP 增速 4.96。**这正是 AGENTS.md「数值型抓取必须内置自洽校验」的同类问题**。修法：`_macro_semantic_ok()` 双重护栏（派生量标记 + 地域口径前缀）+ 速率型指标不得由 WorldBank 水平序列填充 + **取不到值时清除旧抓取读数**（`data_source` 非空的才清，保留假设生成时的 AI 基线）。
+
+**关键教训（已固化为规则）**：
+- **"阈值写了" ≠ "阈值在判定"**：排查数值管道时，先跑一次看**真正产出判定的条数**，不要看阈值文本是否存在。139 个指标写了阈值、0 个产出判定，面板还能显示得像在工作——因为标签是硬编码的。
+- **前端用"包含匹配"做数值判定必然恒真/恒假**：`indexOf(数值, 整句阈值文本)` 永远 -1 → 恒显"未达阈值"。**凡是把数值与文本比对的代码，先问它能不能命中**。
+- **放开一个 `continue` 会暴露被压住的老 bug**：层级闸门一放开，语义错配立刻从 0 变成 6 个。**改闸门范围时，先审计闸门后面那条路的所有取值点**。
+- **子串别名映射必须带语义校验**：`"失业率" in "青年失业率跨国差异"` 成立，但前者是水平值、后者是派生量。**凡"别名∈指标名"的映射，都要问：这个别名回答得了这个指标名吗？**
+- **取不到值时不清旧值 = 陈旧值陷阱**：护栏加上后，之前已写入 JSON 的错值不会自动消失（验证器只标 no_source、不清 current_value）。**加校验规则时要同时设计"已污染的存量怎么办"**——要么清理，要么重跑迁移。
+- **展示层产物不要回写共享状态文件**：`assess_indicators` 一度把 `ai_assessment` 写进 `active_hypotheses.json`（已有 link/verify/ach/probe 四个写入方）→ 改为独立产物 `indicator_assessments.json`，由 gen_dashboard 按 `(hyp_id, indicator)` 渲染时合并。**写入方越多，竞态面越大。**
 
 ## 数据量级真相（2026-08-30 诊断 / 2026-09-13 筛选修复后更新）
 - ~~关键词表是中文、47 源以英文为主、每日命中 0~3 条~~ → 2026-09-05 起词表已扩到 153 词（63 英 + 90 中）+ keyword_rules 5 组；实测语料 79.5% 为中文（本地直连源为主力），语言错配已非主要矛盾

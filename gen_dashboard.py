@@ -60,6 +60,25 @@ if CLOUD_MODE:
     for _h in hyps:
         _h.pop("evidence_log", None)
 
+# 指标 AI 判定合并（tools/assess_indicators.py 产出，展示层）：
+# 按 (hyp_id, indicator) 把判定结果挂到对应指标上。**不改 confidence**——
+# 只让面板显示"AI 判定：尚未到期/命中/未达"及其依据。必须在 h_json 之前执行。
+ASSESS_FILE = _DATA / "indicator_assessments.json"
+try:
+    _ad = json.loads(ASSESS_FILE.read_text(encoding="utf-8"))
+    _assess_map = {(i.get("hyp_id"), i.get("indicator")): i for i in (_ad.get("items") or [])
+                   if i.get("hyp_id") and i.get("indicator")}
+    if _assess_map:
+        for _h in hyps:
+            for _ind in (_h.get("indicators") or []):
+                _m = _assess_map.get((_h.get("id"), _ind.get("name")))
+                if _m:
+                    _ind["ai_assessment"] = {"verdict": _m.get("verdict"),
+                                             "reason": _m.get("reason"),
+                                             "assessed_at": _m.get("assessed_at")}
+except Exception:
+    pass
+
 # ACH 矩阵数据（周循环产出，不存在时面板不显示）
 ACH_FILE = _DATA / "hypotheses" / "ach_matrix.json"
 ach_data = None
@@ -403,8 +422,11 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
 .indicator b{color:var(--accent);font-size:11px;font-family:"JetBrains Mono",monospace}
 .indicator .yes{color:var(--success)}
 .indicator .no{color:var(--danger)}
+.indicator .muted{color:var(--text-muted)}
+.indicator .pending{color:#d97706}
 .note{margin-top:8px;padding:8px;border-radius:6px;font-size:10px;line-height:1.45}
 .no-note{background:#fef2f2;color:#b91c1c;border-left:2px solid var(--danger)}
+.intel-note{background:var(--bg-subtle);color:var(--text-secondary);border-left:2px solid var(--border)}
 .empty-tip{padding:16px;border:1px dashed var(--border);border-radius:6px;color:var(--text-muted);text-align:center;font-size:11px}
 
 /* ===== Chat ===== */
@@ -702,7 +724,21 @@ hyp_js_lines.append('var RESOLUTIONS=' + resolutions_json + ';')
 hyp_js_lines.append('function flipBadge(id){var r=RESOLUTIONS[id];if(!r)return"";var pre=r.confidence_at_deadline;var drop=(pre!=null&&r.confidence_after!=null)?(pre-r.confidence_after):0;if(r.outcome==="refuted"&&pre!=null&&pre>=0.7)return\'<span class="flip-badge flip-high">\\u26a1\\u9ad8\\u786e\\u4fe1\\u7ffb\\u8f66 \\u9884\\u6d4b\'+Math.round(pre*100)+\'%</span>\';if(r.outcome==="refuted")return\'<span class="flip-badge">\\u26a1\\u5df2\\u7ffb\\u8f66 \\u9884\\u6d4b\'+Math.round((pre||0)*100)+\'%</span>\';if(drop>0.2)return\'<span class="flip-badge flip-drop">\\u2193\\u7f6e\\u4fe1\\u5ea6\\u65ad\\u5d16 -\'+Math.round(drop*100)+\'%</span>\';return""}')
 hyp_js_lines.append('function isFlip(id){var r=RESOLUTIONS[id];if(!r)return false;var pre=r.confidence_at_deadline;return r.outcome==="refuted"||(pre!=null&&r.confidence_after!=null&&(pre-r.confidence_after)>0.2)}')
 hyp_js_lines.append('function progress(x,big){var c=x.confidence||0;var col=c>=0.7?"#16a34a":c>=0.4?"#d97706":"#dc2626";var cls=big?"progress-large":"";return \'<div class="progress \'+cls+\'"><span style="width:\'+Math.round(c*100)+\'%;background:\'+col+\'"></span><b>\'+Math.round(c*100)+\'%</b></div>\'}')
-hyp_js_lines.append('function indicatorBlock(ind){var v=ind.current_value;var t=ind.threshold_support;var matched=v&&t&&String(v).indexOf(String(t))>-1;var cls=matched?"yes":"no";return \'<div class="indicator"><b>\'+esc(ind.name)+\'</b><span>\\u5f53\\u524d: \'+(v||"\\u672a\\u77e5")+\'</span><span class="\'+cls+\'">\'+(matched?"\\u5df2\\u89e6\\u53d1\\u652f\\u6301":"\\u672a\\u8fbe\\u9608\\u503c")+\'</span><span>\\u6765\\u6e90: \'+esc(ind.source||"\\u672a\\u77e5")+\'</span></div>\'}')
+hyp_js_lines.append('''function indicatorBlock(ind){
+var v=(ind.current_value===null||ind.current_value===undefined)?"":ind.current_value;
+var st=ind.verify_status||"";
+var cls="muted",label="未判定";
+if(!v){cls="muted";label="\\u65e0\\u6570\\u636e\\u6e90";}
+else if(st==="checked_met"){cls="yes";label=((ind.threshold_eval||{}).signal==="refute")?"\\u547d\\u4e2d\\u8bc1\\u4f2a\\u9608\\u503c":"\\u547d\\u4e2d\\u652f\\u6301\\u9608\\u503c";}
+else if(st==="checked_unmet"){cls="no";label="\\u672a\\u8fbe\\u9608\\u503c";}
+else if(st==="needs_ai"){cls="pending";label="\\u5f85AI\\u88c1\\u5224";}
+var aa=ind.ai_assessment;
+if(aa&&v){var vm={met:["yes","AI\\u5224\\u5b9a\\uff1a\\u547d\\u4e2d\\u9608\\u503c"],unmet:["no","AI\\u5224\\u5b9a\\uff1a\\u672a\\u8fbe\\u9608\\u503c"],uncertain:["pending","AI\\u5224\\u5b9a\\uff1a\\u5c1a\\u672a\\u5230\\u671f"]}[aa.verdict];if(vm){cls=vm[0];label=vm[1];}}
+var thr=ind.threshold_support?('<span class="muted">\\u652f\\u6301\\u9608\\u503c: '+esc(ind.threshold_support)+'</span>'):"";
+var upd=ind.last_updated?('<span class="muted">\\u53d6\\u6570: '+esc(ind.last_updated)+'</span>'):"";
+var aar=(aa&&aa.reason)?('<span class="muted">AI\\u4f9d\\u636e: '+esc(aa.reason)+'</span>'):"";
+return '<div class="indicator"><b>'+esc(ind.name)+'</b><span>\\u5f53\\u524d: '+(v||"\\u672a\\u77e5")+'</span><span class="'+cls+'">'+label+'</span>'+thr+aar+'<span>\\u6765\\u6e90: '+esc(ind.source||"\\u672a\\u77e5")+'</span>'+upd+'</div>'}
+function intelCountNote(x){var c=x.intel_count;if(!c)return"";return '<div class="note intel-note">\\u65e0\\u6570\\u636e\\u6e90\\u6307\\u6807 '+c.window_days+'\\u5929\\u5185\\u60c5\\u62a5\\u63d0\\u53ca\\u300c'+esc(c.topic)+'\\u300d<'+'b>'+c.count+'</b> \\u6761\\uff08\\u4ec5\\u8ba1\\u6570\\uff0c\\u4e0d\\u4f5c\\u9608\\u503c\\u5224\\u5b9a\\uff09</div>'}''')
 
 render_majors = """function renderMajors(){var q=document.getElementById('hypSearch').value.trim().toLowerCase();var rows=orderedMajors.map(function(id){return byId[id]}).filter(function(x){return !q||(x.title+' '+x.rationale+' '+x.direction).toLowerCase().includes(q)});document.getElementById('majorGrid').innerHTML=rows.map(function(x){var n=descendants(x.id).length;return '<button class="major-card'+(isFlip(x.id)?' flip':'')+'" onclick="openMajor(\\''+x.id+'\\')"><div class="card-top"><span class="level-pill">大假设</span><span>'+statusLabel(x.status)+'</span>'+flipBadge(x.id)+'</div><h3>'+esc(x.title)+'</h3><p>'+esc(x.rationale)+'</p>'+progress(x,true)+'<div class="card-foot"><span>'+esc(x.direction||"方向未标")+'</span><span>'+n+' 条下级</span><span>'+esc(x.deadline||"无期限")+'</span></div></button>'}).join("")||'<div class="empty-tip">没有匹配的大假设。</div>'}"""
 hyp_js_lines.append(render_majors)
@@ -713,10 +749,10 @@ hyp_js_lines.append(open_major)
 render_medium = """function renderMediumCard(x){var kids=(x.children||[]).map(function(cid){return byId[cid]}).filter(Boolean);return '<button class="medium-card '+(currentMedium===x.id?"selected":"")+'" onclick="openMedium(\\''+x.id+'\\')"><div class="card-top"><span class="level-pill medium">中假设</span><span>'+kids.length+' 小假设</span></div><h4>'+esc(x.title)+'</h4>'+progress(x)+'<div class="card-foot"><span>'+esc(x.deadline||"无期限")+'</span><span>权重 '+esc(x.weight??"—")+'</span></div></button>'}"""
 hyp_js_lines.append(render_medium)
 
-open_medium = """function openMedium(id){currentMedium=id;var m=byId[id],major=byId[currentMajor];if(!m||!major)return;var mediums=(major.children||[]).map(function(cid){return byId[cid]}).filter(Boolean);document.getElementById('hypBreadcrumb').innerHTML='<button onclick="openMajor(\\''+currentMajor+'\\')">'+esc(major.title)+'</button><b>'+esc(m.title)+'</b>';document.getElementById('majorPane').innerHTML='<button class="back-btn" onclick="openMajor(\\''+currentMajor+'\\')">返回大假设</button><div class="detail-hero"><span class="level-pill medium">中假设</span><h2>'+esc(m.title)+'</h2><p>'+esc(m.rationale)+'</p>'+progress(m,true)+'<div class="meta-grid"><span>方向<br><b>'+esc(m.direction||"未标")+'</b></span><span>到期<br><b>'+esc(m.deadline||"无")+'</b></span><span>权重<br><b>'+esc(m.weight??"—")+'</b></span><span>状态<br><b>'+statusLabel(m.status)+'</b></span></div>'+(m.indicators||[]).map(indicatorBlock).join("")+(m.falsification_criteria?'<div class="note no-note">证伪标准：'+esc(m.falsification_criteria)+'</div>':"")+'</div><div class="pane-title">同组中假设</div>'+mediums.map(renderMediumCard).join("");var smalls=(m.children||[]).map(function(cid){return byId[cid]}).filter(Boolean);if(!smalls.length&&(m.indicators||[]).length)smalls=m.indicators.map(function(ind){return{title:ind.name,rationale:"验证来源："+(ind.source||"未填"),confidence:m.confidence,status:m.status,deadline:m.deadline,direction:m.direction,weight:m.weight,indicators:[ind]}});document.getElementById('branchPane').innerHTML='<div class="pane-title">小假设与验证指标</div>'+smalls.map(renderSmallCard).join("")||'<div class="empty-tip">暂无小假设。</div>'}"""
+open_medium = """function openMedium(id){currentMedium=id;var m=byId[id],major=byId[currentMajor];if(!m||!major)return;var mediums=(major.children||[]).map(function(cid){return byId[cid]}).filter(Boolean);document.getElementById('hypBreadcrumb').innerHTML='<button onclick="openMajor(\\''+currentMajor+'\\')">'+esc(major.title)+'</button><b>'+esc(m.title)+'</b>';document.getElementById('majorPane').innerHTML='<button class="back-btn" onclick="openMajor(\\''+currentMajor+'\\')">返回大假设</button><div class="detail-hero"><span class="level-pill medium">中假设</span><h2>'+esc(m.title)+'</h2><p>'+esc(m.rationale)+'</p>'+progress(m,true)+'<div class="meta-grid"><span>方向<br><b>'+esc(m.direction||"未标")+'</b></span><span>到期<br><b>'+esc(m.deadline||"无")+'</b></span><span>权重<br><b>'+esc(m.weight??"—")+'</b></span><span>状态<br><b>'+statusLabel(m.status)+'</b></span></div>'+(m.indicators||[]).map(indicatorBlock).join("")+intelCountNote(m)+(m.falsification_criteria?'<div class="note no-note">证伪标准：'+esc(m.falsification_criteria)+'</div>':"")+'</div><div class="pane-title">同组中假设</div>'+mediums.map(renderMediumCard).join("");var smalls=(m.children||[]).map(function(cid){return byId[cid]}).filter(Boolean);if(!smalls.length&&(m.indicators||[]).length)smalls=m.indicators.map(function(ind){return{title:ind.name,rationale:"验证来源："+(ind.source||"未填"),confidence:m.confidence,status:m.status,deadline:m.deadline,direction:m.direction,weight:m.weight,indicators:[ind]}});document.getElementById('branchPane').innerHTML='<div class="pane-title">小假设与验证指标</div>'+smalls.map(renderSmallCard).join("")||'<div class="empty-tip">暂无小假设。</div>'}"""
 hyp_js_lines.append(open_medium)
 
-render_small = """function renderSmallCard(x){return '<article class="small-card'+(isFlip(x.id)?' flip':'')+'"><div class="card-top"><span class="level-pill small">小假设</span><span>'+statusLabel(x.status)+'</span>'+flipBadge(x.id)+'</div><h4>'+esc(x.title)+'</h4><p>'+esc(x.rationale||"")+'</p>'+(x.indicators||[]).map(indicatorBlock).join("")+(x.falsification_criteria?'<div class="note no-note">证伪标准：'+esc(x.falsification_criteria)+'</div>':"")+'</article>'}"""
+render_small = """function renderSmallCard(x){return '<article class="small-card'+(isFlip(x.id)?' flip':'')+'"><div class="card-top"><span class="level-pill small">小假设</span><span>'+statusLabel(x.status)+'</span>'+flipBadge(x.id)+'</div><h4>'+esc(x.title)+'</h4><p>'+esc(x.rationale||"")+'</p>'+(x.indicators||[]).map(indicatorBlock).join("")+intelCountNote(x)+(x.falsification_criteria?'<div class="note no-note">证伪标准：'+esc(x.falsification_criteria)+'</div>':"")+'</article>'}"""
 hyp_js_lines.append(render_small)
 
 hyp_js_lines.append('function closeHyp(){document.getElementById("hypModal").classList.remove("open");currentMajor=null;currentMedium=null}')

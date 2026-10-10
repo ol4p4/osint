@@ -181,6 +181,36 @@ def fetch_world_bank(indicator_code, country="CN"):
         print(f"  WorldBank fetch failed for {indicator_code}: {e}")
     return None
 
+# 语义护栏（2026-10-10 加）：MACRO_ALIASES 是子串匹配，会把「派生/比较量」或
+# 「他国口径」的指标错配到单一原始值上。实测放开层级后 8 个命中里 6 个错：
+#   「青年失业率跨国差异」← 中国 18.9（单值冒充跨国差异）
+#   「核心PCE通胀率」    ← 中国 CPI 0.8（口径完全不同）
+#   「AI资本开支增速与GDP增速偏离度」← GDP 增速 4.96（单值冒充偏离度）
+# 按 AGENTS.md「数值型抓取必须内置自洽校验，宁可缺不可错」——语义不符一律返回
+# None，让指标落 no_source 交周循环 AI 裁判，而不是把错值当"已验证"喂给下游。
+MACRO_DERIVED_MARKERS = ("差异", "差距", "收敛", "偏离", "比值", "比率", "占比",
+                         "排名", "对比", "增速差", "相关性", "贡献度")
+# 速率型：需要同比/环比变化量，水平型序列（WB/宏观快照存的都是水平值）答不了
+MACRO_RATE_MARKERS = ("年均增速", "增速", "增长率", "变化率", "同比", "环比",
+                      "年增幅", "涨跌幅")
+MACRO_REGION_RULES = (
+    (("美国", "美联储", "美债", "PCE"), ("us_",)),
+    (("日本",), ("japan_", "jp_")),
+    (("韩国",), ("kr_",)),
+    (("欧元区", "欧洲", "欧元"), ("eur_", "eu_")),
+)
+
+def _macro_semantic_ok(indicator_name, hit_id):
+    """指标名与命中的宏观序列是否语义相符（派生量 / 地域口径双重校验）"""
+    for mk in MACRO_DERIVED_MARKERS:
+        if mk in indicator_name:
+            return False       # 派生量：单一序列答不了，需计算或 AI 裁判
+    for markers, prefixes in MACRO_REGION_RULES:
+        if any(m in indicator_name for m in markers):
+            if not any(hit_id.startswith(p) for p in prefixes):
+                return False   # 地域口径不符（如"美国…"填了 cn_ 序列）
+    return True
+
 def lookup_macro(indicator_name):
     """从本地宏观快照取值（refresh.py 每小时产出，含 17 个指标）"""
     if not MACRO_FILE.exists():
@@ -197,6 +227,8 @@ def lookup_macro(indicator_name):
             break
     if not hit_id or hit_id not in inds:
         return None
+    if not _macro_semantic_ok(indicator_name, hit_id):
+        return None
     entry = inds[hit_id]
     val = entry.get("value")
     if val is None:
@@ -205,7 +237,17 @@ def lookup_macro(indicator_name):
 
 def fetch_indicator_value(indicator_name):
     """Try multiple sources to fetch indicator value
-    优先级：本地宏观快照 → FRED → WorldBank → Frankfurter（汇率类）"""
+    优先级：本地宏观快照 → FRED → WorldBank → Frankfurter（汇率类）
+
+    派生量前置拦截（2026-10-10）：指标名若是「差异/占比/偏离/收敛」等派生量，
+    任何单一原始序列都答不了它——必须由计算或 AI 裁判给出。实测放开层级后
+    「老年抚养比年均增速」被 WorldBank 的抚养比**水平值** 14.91 填上、
+    「AI资本开支增速与GDP增速偏离度」被 GDP 增速填上，都是量纲/语义错配。
+    """
+    for mk in MACRO_DERIVED_MARKERS:
+        if mk in indicator_name:
+            return None
+
     # ① 本地宏观快照（免外发请求）
     local = lookup_macro(indicator_name)
     if local:
@@ -219,11 +261,15 @@ def fetch_indicator_value(indicator_name):
             return result
 
     # ③ World Bank（子串匹配）
-    for key, wb_code in WB_MAPPING.items():
-        if wb_code and (key == indicator_name or key in indicator_name):
-            result = fetch_world_bank(wb_code)
-            if result:
-                return result
+    # 速率型护栏（2026-10-10）：WB_MAPPING 全是**水平值**序列（抚养比/占比），
+    # 答不了"增速/年均/变化率"。「老年抚养比年均增速」曾被抚养比水平值 14.91 填上，
+    # 量纲错配。宏观快照分支不受此限（cn_gdp_growth 本就是速率序列）。
+    if not any(rk in indicator_name for rk in MACRO_RATE_MARKERS):
+        for key, wb_code in WB_MAPPING.items():
+            if wb_code and (key == indicator_name or key in indicator_name):
+                result = fetch_world_bank(wb_code)
+                if result:
+                    return result
 
     # ④ 汇率类走 Frankfurter
     if "汇率" in indicator_name or "美元" in indicator_name:
@@ -233,10 +279,57 @@ def fetch_indicator_value(indicator_name):
 
     return None
 
-def evaluate_hypothesis(hyp, evidence_from_intel=None):
+# ---------- 情报计数降级读数（2026-10-10） ----------
+# 定位：给**没有免费 API** 的指标（SIPRI/各国国防部/TrendForce 等）补一个客观读数，
+# 让面板不再只有"无数据源"三个字。**纯展示用途**：
+#   - 不进 threshold_eval、不参与 support/refute 计数、不改 confidence；
+#   - 只回答"近 N 天语料里有多少条在谈这件事"，不回答"达标没有"。
+# 为什么不做成自动判定（AGENTS.md 教训）：关键词计数衡量的是**话题热度**，不是
+# "这条情报是否支持该假设"——曾把「三战在5年内爆发」从 0.05 推到 0.94。所以此处
+# 严格限定为"提及计数"，并在 UI 上明示"非阈值判定"。
+INTEL_TOPIC_TABLE = [
+    ("台海军演", ["军演", "演习", "实弹", "巡弋", "绕台"]),
+    ("对台军售", ["军售", "军购", "对台", "台湾关系法"]),
+    ("国防开支", ["军费", "国防预算", "国防开支", "防务开支"]),
+    ("青年就业", ["青年失业", "毕业生就业", "青年就业", "失业率"]),
+    ("房地产", ["房价", "房地产", "商品房", "楼市", "房贷"]),
+    ("养老金社保", ["养老金", "养老保险", "社保", "退休金"]),
+    ("能源供应", ["原油", "石油", "天然气", "LNG", "油价"]),
+    ("芯片半导体", ["芯片", "半导体", "晶圆", "光刻"]),
+    ("AI算力", ["算力", "大模型", "AI芯片", "数据中心"]),
+    ("贸易关税", ["关税", "贸易战", "出口管制", "制裁"]),
+]
+
+def _intel_text(item):
+    return " ".join(str(item.get(k) or "") for k in
+                    ("title", "cn_title", "summary", "cn_summary"))
+
+def count_intel_for_indicator(indicator_name, hyp_title, intel_items, window_days=3):
+    """按受控主题词表给无源指标补「提及计数」读数（纯展示）"""
+    if not intel_items:
+        return None
+    hay = (hyp_title or "") + " " + (indicator_name or "")
+    best = None
+    for topic, kws in INTEL_TOPIC_TABLE:
+        if any(kw in hay for kw in kws):
+            cnt = sum(1 for it in intel_items
+                      if any(kw in _intel_text(it) for kw in kws))
+            if best is None or cnt > best[1]:
+                best = (topic, cnt)
+    if best is None:
+        return None
+    return {"topic": best[0], "count": best[1], "window_days": window_days,
+            "note": "情报提及计数，非阈值判定"}
+
+def evaluate_hypothesis(hyp, evidence_from_intel=None, write_confidence=True):
     """Evaluate a single hypothesis based on indicator values
     P0-2: 阈值真正比较数值；refute 命中降置信、support 命中升置信；
-    无数据源的指标标 no_source（留给周循环 AI 裁判），自由文本阈值标 needs_ai"""
+    无数据源的指标标 no_source（留给周循环 AI 裁判），自由文本阈值标 needs_ai。
+
+    write_confidence=False（2026-10-10 加）：只做读数与判定标注，不写 confidence。
+    用于非 small 层——medium/major/mega 的置信度归 ACH 后验与周循环裁判所有
+    （AGENTS.md「置信度只能由判定层写」）；若这里也按指标信号加减，会与 ACH
+    贝叶斯后验反复互相覆盖。"""
     indicators = hyp.get("indicators", [])
     if not indicators:
         return hyp, []
@@ -254,6 +347,17 @@ def evaluate_hypothesis(hyp, evidence_from_intel=None):
         real_value = fetch_indicator_value(name)
         if not real_value:
             ind["verify_status"] = "no_source"
+            # 清掉旧抓取读数（2026-10-10）：否则护栏拦下的错值会以"陈旧 current_value"
+            # 形式留在面板上继续冒充已验证。只清带 data_source 标记的（抓取产物），
+            # 保留假设生成时 AI 写的基线（source 为空，非抓取）。
+            if ind.get("data_source"):
+                ind.pop("current_value", None)
+                ind.pop("last_updated", None)
+                ind.pop("data_source", None)
+                ind.pop("threshold_eval", None)
+            # 降级读数（2026-10-10）：无免费 API 的指标所属假设补「情报提及计数」，
+            # 纯展示，不进阈值判定、不改 confidence（理由见 count_intel_for_indicator 注释）。
+            # 挂在**假设级**（下方统一算）——按指标挂会让同域 20 个指标重复打印同一计数。
             continue
         ind["current_value"] = real_value["value"]
         ind["last_updated"] = real_value["date"]
@@ -283,8 +387,28 @@ def evaluate_hypothesis(hyp, evidence_from_intel=None):
             "support_parsed": thr_support is not None,
             "signal": signal,
         }
-        if not (thr_refute is not None or thr_support is not None):
+        # verify_status 三态（2026-10-10 明确化，供面板区分显示）：
+        #   checked_met  = 取到值且命中支持/证伪阈值（判定发生了）
+        #   checked_unmet= 取到值、阈值可解析，但未命中（真正的"未达阈值"）
+        #   needs_ai     = 取到值但阈值是叙述式文本，数值比较不适用 → 交周循环 AI 裁判
+        if signal in ("support", "refute"):
+            ind["verify_status"] = "checked_met"
+        elif thr_refute is not None or thr_support is not None:
+            ind["verify_status"] = "checked_unmet"
+        else:
             ind["verify_status"] = "needs_ai"  # 自由文本阈值，走周循环 AI 裁判
+
+    # 假设级降级读数（2026-10-10）：本假设若有 no_source 指标，补一个话题提及计数。
+    # 挂在假设级而非指标级——同域 20 个指标会重复打印同一计数（噪声）。
+    if any(ind.get("verify_status") == "no_source" for ind in indicators):
+        ic = count_intel_for_indicator(hyp.get("title", ""), hyp.get("title", ""),
+                                       evidence_from_intel)
+        if ic:
+            hyp["intel_count"] = ic
+            updates.append(f"  无源指标 {sum(1 for i in indicators if i.get('verify_status')=='no_source')} 个；"
+                           f"近{ic['window_days']}天情报提及「{ic['topic']}」{ic['count']} 条（非阈值判定）")
+    else:
+        hyp.pop("intel_count", None)
 
     # Adjust confidence based on evidence
     # 幂等闸门（2026-09-10 修复）：信号状态未变化时不再重复应用增量——
@@ -296,46 +420,50 @@ def evaluate_hypothesis(hyp, evidence_from_intel=None):
     new_confidence = old_confidence
     applied = False
 
-    if (refute_hits or support_hits) and prev_stats.get("signal_state") != cur_sig:
-        # P0-2: 指标阈值信号驱动置信度（证伪信号权重 > 支持信号）
-        if refute_hits:
-            new_confidence = max(0.05, new_confidence - 0.05 * refute_hits)
-        if support_hits:
-            new_confidence = min(0.95, new_confidence + 0.03 * support_hits)
-        applied = True
+    if write_confidence:
+        if (refute_hits or support_hits) and prev_stats.get("signal_state") != cur_sig:
+            # P0-2: 指标阈值信号驱动置信度（证伪信号权重 > 支持信号）
+            if refute_hits:
+                new_confidence = max(0.05, new_confidence - 0.05 * refute_hits)
+            if support_hits:
+                new_confidence = min(0.95, new_confidence + 0.03 * support_hits)
+            applied = True
 
-    # 情报关键词微调：仅在无指标信号时生效，且每日至多应用一次
-    if (not (refute_hits or support_hits) and evidence_from_intel
-            and prev_stats.get("intel_adjusted_at") != today_str):
-        for intel in evidence_from_intel:
-            # Simple keyword matching to determine support/contradict
-            title = intel.get("cn_title", "") + " " + intel.get("cn_summary", "")
-            hyp_title = hyp.get("title", "") + " " + hyp.get("rationale", "")
+        # 情报关键词微调：仅在无指标信号时生效，且每日至多应用一次
+        if (not (refute_hits or support_hits) and evidence_from_intel
+                and prev_stats.get("intel_adjusted_at") != today_str):
+            for intel in evidence_from_intel:
+                # Simple keyword matching to determine support/contradict
+                title = intel.get("cn_title", "") + " " + intel.get("cn_summary", "")
+                hyp_title = hyp.get("title", "") + " " + hyp.get("rationale", "")
 
-            # Check if intel keywords match hypothesis
-            hyp_keywords = set(re.findall(r'[\u4e00-\u9fff]+', hyp_title))
-            intel_keywords = set(re.findall(r'[\u4e00-\u9fff]+', title))
-            overlap = hyp_keywords & intel_keywords
+                # Check if intel keywords match hypothesis
+                hyp_keywords = set(re.findall(r'[\u4e00-\u9fff]+', hyp_title))
+                intel_keywords = set(re.findall(r'[\u4e00-\u9fff]+', title))
+                overlap = hyp_keywords & intel_keywords
 
-            if len(overlap) >= 2:
-                # Likely related - check direction
-                direction = hyp.get("direction", "toward")
-                if any(w in title for w in ["增长", "上升", "加速", "扩大"]):
-                    new_confidence = min(0.95, new_confidence + 0.02)
-                    applied = True
-                elif any(w in title for w in ["下降", "减少", "放缓", "收缩"]):
-                    if direction == "toward":
-                        new_confidence = min(0.95, new_confidence + 0.01)
-                    else:
-                        new_confidence = max(0.05, new_confidence - 0.02)
-                    applied = True
+                if len(overlap) >= 2:
+                    # Likely related - check direction
+                    direction = hyp.get("direction", "toward")
+                    if any(w in title for w in ["增长", "上升", "加速", "扩大"]):
+                        new_confidence = min(0.95, new_confidence + 0.02)
+                        applied = True
+                    elif any(w in title for w in ["下降", "减少", "放缓", "收缩"]):
+                        if direction == "toward":
+                            new_confidence = min(0.95, new_confidence + 0.01)
+                        else:
+                            new_confidence = max(0.05, new_confidence - 0.02)
+                        applied = True
 
-    hyp["confidence"] = round(new_confidence, 2)
+    if write_confidence:
+        hyp["confidence"] = round(new_confidence, 2)
     hyp["verify_stats"] = {"checked_at": today_str, "indicators_checked": checked,
                            "support_hits": support_hits, "refute_hits": refute_hits,
                            "signal_state": cur_sig,
                            "confidence_applied": applied,
-                           "intel_adjusted_at": (today_str if (evidence_from_intel and not (refute_hits or support_hits))
+                           "readonly": (not write_confidence),
+                           "intel_adjusted_at": (today_str if (write_confidence and evidence_from_intel
+                                                              and not (refute_hits or support_hits))
                                                  else prev_stats.get("intel_adjusted_at"))}
     return hyp, updates
 
@@ -382,13 +510,21 @@ def main():
     today_str = datetime.now().strftime("%Y-%m-%d")
 
     # Evaluate each hypothesis
+    # 2026-10-10 放开层级：此前只跑 level=="small"，导致 medium/major/mega 的
+    # 83 个指标从头到尾没人读（99 个指标「从未验证」的根因之一）。
+    # 现在所有带指标的层级都做「取数 + 阈值判定 + 标注 verify_status」，
+    # 但只有 small 层写 confidence——其余层的置信度归 ACH 后验与周循环裁判
+    # （AGENTS.md「置信度只能由判定层写，挂载层不许碰」）。
     total_updates = 0
+    layer_counter = {}
     for hyp in hyps:
-        if hyp.get("level") != "small":
-            continue  # Only verify small hypotheses with indicators
-
-        hyp, updates = evaluate_hypothesis(hyp, intel_items)
+        if not (hyp.get("indicators") or []):
+            continue  # 无指标节点无需取数
+        lv = hyp.get("level") or "none"
+        write_conf = (lv == "small")
+        hyp, updates = evaluate_hypothesis(hyp, intel_items, write_confidence=write_conf)
         total_updates += len(updates)
+        layer_counter[lv] = layer_counter.get(lv, 0) + 1
 
         # Update history
         for ind in hyp.get("indicators", []):
@@ -406,7 +542,7 @@ def main():
                     })
 
         if updates:
-            print(f"\n{hyp['id']}: {hyp['title']}")
+            print(f"\n{hyp['id']} [{lv}]: {hyp['title']}")
             for u in updates:
                 print(u)
 
@@ -419,6 +555,14 @@ def main():
     print(f"\n=== 完成 ===")
     print(f"指标更新: {total_updates} 项")
     print(f"历史记录: {len(history)} 个指标")
+    if layer_counter:
+        print("按层级处理: " + ", ".join(f"{k}={v}" for k, v in sorted(layer_counter.items())))
+    # 覆盖率自检：多少指标真正拿到了数值（取不到值的会标 no_source，面板显示"无数据源"）
+    total_ind = sum(len(h.get("indicators") or []) for h in hyps)
+    with_val = sum(1 for h in hyps for ind in (h.get("indicators") or [])
+                   if ind.get("current_value") is not None)
+    print(f"指标取数覆盖: {with_val}/{total_ind}"
+          f"（其余按 verify_status 标注 no_source/needs_ai，交周循环 AI 裁判）")
 
 if __name__ == "__main__":
     main()

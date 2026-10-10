@@ -659,6 +659,12 @@ def run_hypothesis_chain():
         ("link", [sys.executable, str(PROJECT / "link_intel_hyp.py")], 600, ("Linked", "[TFIDF]"), True),
         ("verify", [sys.executable, str(PROJECT / "verify_hypotheses.py")], 600, ("指标更新",), True),
         ("ach-batch", [sys.executable, str(PROJECT / "tools" / "ach_daily_batch.py")], 1600, ("[ACH-BATCH]",), True),
+        # 指标 AI 判定（2026-10-10 接入）：对**有真实抓取值**的叙述式阈值指标
+        # 提前出判定。verify_hypotheses 只做数值比较，叙述式阈值标 needs_ai 等
+        # 周循环裁判——而裁判要 deadline 到期才跑（最早 2026-12），等于长期不判。
+        # 纯展示产物，不改 confidence、不回写假设树；日节流；AI 挂时静默跳过。
+        # critical=False：外部 AI 依赖的观测步骤，不该阻塞核心链节流戳（同 probe 教训）。
+        ("assess", [sys.executable, str(PROJECT / "tools" / "assess_indicators.py")], 300, ("待判定指标",), False),
         # 探针读数（2026-09-28 接入）：mega 节点不进 ACH 矩阵，靠 JEV Noul
         # 逐条测「情报是否实质推动该情景」→ 信号率落 probe_reading 字段。
         # 实测 0.88s/条，200 条约 3 分钟、成本 ~$0.005；不写 confidence。
