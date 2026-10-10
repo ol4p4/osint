@@ -178,6 +178,7 @@ class JevClient:
                               "（paid 需 key：环境变量 TYPESAFE_API_KEY 或 "
                               "config.local.yaml 的 jev.api_key；free 通道无需 key）"))
         errors = []
+        all_failed = True
         for name, url, model, key in live:
             payload = {"model": model, "state": state, "questions": questions}
             last = None
@@ -192,6 +193,8 @@ class JevClient:
                         # 只有付费通道记账——free 通道 cost 恒为 0，
                         # 记进去会把免费 token 按付费单价算成假成本
                         self._account(d.get("usage") or {})
+                    all_failed = False
+                    self._consec_fail = 0
                     return d
                 except urllib.error.HTTPError as ex:
                     body = ""
@@ -216,7 +219,16 @@ class JevClient:
                 if attempt < self.retries:
                     time.sleep(RETRY_BACKOFF * attempt)
             errors.append(name + ": " + str(last))
-        raise JevError("JEV 全部通道失败（" + str(len(self._channels)) + " 个）: "
+        # 连续全失败计数（2026-10-10）：网络类失败（10060 超时等）重试是正确策略，
+        # 但**持续断网**时每条证据仍要等满重试链 → 批量任务被拖死。连续 3 次调用
+        # 全通道失败即判网络不可达，熔断全部通道（进程内）；mimo 回退链不受影响。
+        if all_failed:
+            self._consec_fail = getattr(self, "_consec_fail", 0) + 1
+            if self._consec_fail >= 3:
+                self._dead_channels.update(c[0] for c in self._live_channels())
+        else:
+            self._consec_fail = 0
+        raise JevError("JEV 全部通道失败（" + str(len(live)) + " 个）: "
                        + " | ".join(errors))
 
     def _account(self, usage):
