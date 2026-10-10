@@ -123,6 +123,16 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *a, **k):
         super().__init__(*a, directory=ROOT, **k)
 
+    def end_headers(self):
+        """禁止浏览器缓存仪表盘，否则 rebuild 后仍显示旧快照（2026-10-10）。
+        SimpleHTTPRequestHandler 只发 Last-Modified，浏览器按启发式规则可缓存
+        数分钟~数十分钟；面板 rebuild 后用户刷新仍看到旧数据，误以为"没更新"。
+        """
+        self.send_header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+        self.send_header("Pragma", "no-cache")
+        self.send_header("Expires", "0")
+        super().end_headers()
+
     def do_GET(self):
         # 根路径或任何不存在的路径一律跳转仪表盘（容错手输错误 URL）
         if self.path in ("/", "/index.html"):
@@ -218,6 +228,16 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 except Exception:
                     pass
             self._json_response(200, {"status": "idle", "message": "未启动抓取"})
+            return
+        # 版本探测端点（2026-10-10）：返回仪表盘文件的 mtime+size，
+        # 供已打开的页面轮询判断"是否有更新"，避免 34MB 页面盲目自动重载。
+        if self.path == "/api/version":
+            f = Path(ROOT) / "interactive_dashboard.html"
+            try:
+                st = f.stat()
+                self._json_response(200, {"mtime": int(st.st_mtime), "size": st.st_size})
+            except OSError:
+                self._json_response(200, {"mtime": 0, "size": 0})
             return
         # 根路径或任何不存在的路径一律跳转仪表盘（容错手输错误 URL）
         if self.path in ("/", "/index.html"):

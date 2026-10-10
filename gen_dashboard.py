@@ -1,12 +1,44 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import json, sys
+import json, os, re, sys
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
 
-DATA_FILE = Path(r"D:\osint\data\dashboard_data.json")
-HYP_FILE = Path(r"D:\osint\data\hypotheses\active_hypotheses.json")
-HTML_FILE = Path(r"D:\osint\data\interactive_dashboard.html")
+
+def _resolve_root():
+    """解析项目根目录（2026-10-10）。
+
+    本地默认 D:\\osint；云端 CI 用 OSINT_ROOT 指向 checkout 目录。
+    环境变量来自外部输入，必须先校验再用（禁止 `..` 片段、必须是绝对路径），
+    否则构成路径穿越面。校验失败退回默认根，绝不据此访问任意路径。
+    """
+    default = r"D:\osint"
+    raw = (os.environ.get("OSINT_ROOT") or "").strip()
+    if not raw:
+        return Path(default)
+    if ".." in raw.replace("\\", "/").split("/"):
+        return Path(default)
+    p = Path(raw)
+    if not p.is_absolute():
+        return Path(default)
+    return p
+
+
+_ROOT = _resolve_root()
+_DATA = _ROOT / "data"
+CLOUD_MODE = os.environ.get("OSINT_CLOUD", "").strip() in ("1", "true", "yes", "on")
+
+DATA_FILE = _DATA / "dashboard_data.json"
+HYP_FILE = _DATA / "hypotheses" / "active_hypotheses.json"
+# 输出路径可覆盖（2026-10-10）：云端 CI 产物要落在 Pages 用的 dist/ 目录，
+# 不覆盖仓库里的本地产物。为空时写回默认位置（本地行为不变）。
+# 同 _resolve_root：环境变量属外部输入，先校验（禁 `..`）再用。
+_HTML_OUT = (os.environ.get("OSINT_HTML_OUT") or "").strip()
+if _HTML_OUT and ".." not in _HTML_OUT.replace("\\", "/").split("/"):
+    _out = Path(_HTML_OUT)
+    HTML_FILE = _out if _out.is_absolute() else (Path.cwd() / _out)
+else:
+    HTML_FILE = _DATA / "interactive_dashboard.html"
 
 with open(DATA_FILE, "r", encoding="utf-8") as f:
     data = json.load(f)
@@ -21,14 +53,26 @@ try:
 except:
     pass
 
+# 云端瘦身（2026-10-10）：evidence_log 面板**零引用**（实测 JS 里 0 次），
+# 但单节点可达 1MB，全树合计 12.9MB——占面板 1/3 体积却无人消费。
+# 云端只读看板剔除该字段（本地保留，本地有 ACH 调试需要）。
+if CLOUD_MODE:
+    for _h in hyps:
+        _h.pop("evidence_log", None)
+
 # ACH 矩阵数据（周循环产出，不存在时面板不显示）
-ACH_FILE = Path(r"D:\osint\data\hypotheses\ach_matrix.json")
+ACH_FILE = _DATA / "hypotheses" / "ach_matrix.json"
 ach_data = None
 try:
     with open(ACH_FILE, "r", encoding="utf-8") as f:
         ach_data = json.load(f)
 except:
     pass
+
+# 云端瘦身：ACH 的 evidence 数组（7166 条 / 6.9MB）面板同样**从不读取**——
+# 实测 JS 只用 ACH_DATA.scoring 与 ACH_DATA.hypotheses。剔除后 6.9MB → ~0.2MB。
+if CLOUD_MODE and isinstance(ach_data, dict):
+    ach_data = {k: v for k, v in ach_data.items() if k != "evidence"}
 
 by_id = {h["id"]: h for h in hyps}
 major_ids = [h["id"] for h in hyps if h.get("level") == "major"]
@@ -45,7 +89,7 @@ itop_json = json.dumps(intel_top, ensure_ascii=False)
 ach_json = json.dumps(ach_data, ensure_ascii=False) if ach_data else "null"
 
 # 宏观指标数据（fetch_macro_indicators.py 产出）
-MACRO_FILE = Path(r"D:\osint\data\macro_indicators.json")
+MACRO_FILE = _DATA / "macro_indicators.json"
 macro_data = None
 try:
     with open(MACRO_FILE, "r", encoding="utf-8") as f:
@@ -55,7 +99,7 @@ except:
 macro_json = json.dumps(macro_data, ensure_ascii=False) if macro_data else "null"
 
 # 失业率历史时间序列
-UNRATE_FILE = Path(r"D:\osint\data\cn_unemployment_history.json")
+UNRATE_FILE = _DATA / "cn_unemployment_history.json"
 unrate_data = None
 try:
     with open(UNRATE_FILE, "r", encoding="utf-8") as f:
@@ -65,7 +109,7 @@ except:
 unrate_json = json.dumps(unrate_data, ensure_ascii=False) if unrate_data else "null"
 
 # 估值数据 (A 股/港股/美股 PE 面板)
-VALUATION_FILE = Path(r"D:\osint\data\index_valuation.json")
+VALUATION_FILE = _DATA / "index_valuation.json"
 valuation_data = None
 try:
     with open(VALUATION_FILE, "r", encoding="utf-8") as f:
@@ -75,7 +119,7 @@ except:
 valuation_json = json.dumps(valuation_data, ensure_ascii=False) if valuation_data else "null"
 
 # 校准数据（local/calibration.py 产出，P0-1：Brier + Murphy 三分解 + 十桶校准曲线）
-CALIB_FILE = Path(r"D:\osint\data\calibration.json")
+CALIB_FILE = _DATA / "calibration.json"
 calib_data = None
 try:
     with open(CALIB_FILE, "r", encoding="utf-8") as f:
@@ -85,7 +129,7 @@ except:
 calib_json = json.dumps(calib_data, ensure_ascii=False) if calib_data else "null"
 
 # 验证结果明细（P1-4 高确信翻车高亮：resolutions.jsonl → hyp_id 索引）
-RESOLUTIONS_FILE = Path(r"D:\osint\data\hypotheses\resolutions.jsonl")
+RESOLUTIONS_FILE = _DATA / "hypotheses" / "resolutions.jsonl"
 resolutions_map = {}
 try:
     for _line in RESOLUTIONS_FILE.read_text(encoding="utf-8").splitlines():
@@ -383,13 +427,110 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
 
 /* ===== Responsive ===== */
 @media(max-width:850px){.header{flex-direction:column;align-items:flex-start}#hypSearch{width:100%}.hyp-modal{padding:8px}.hyp-modal-box{height:96vh}.hyp-modal-columns{grid-template-columns:1fr;height:calc(100% - 53px)}.branch-pane{border-left:0;border-top:1px solid var(--border)}.meta-grid{grid-template-columns:repeat(2,1fr)}.kpi-bar{grid-template-columns:1fr}.kpi-ach{border-left:0;border-top:1px solid var(--border);padding-left:0;padding-top:16px}}
+
+/* ===== 终端风覆盖层（2026-10-10）=====
+   动机：原界面 emoji 密集（固定文案 23 个）、品类色 10 种高饱和、渐变 + 大圆角，
+   视觉噪音压过信息本身，读起来像 AI 生成的展示页而非工作台。
+   本层统一为「灰阶为主 + 单一强调色 + 细线 + 小圆角 + 紧凑行高」。
+   放在最末以覆盖上方规则；**删掉本块即可完全还原**（不动上方任何定义）。 */
+:root{
+  --bg:#ffffff;--bg-subtle:#f7f7f8;--bg-muted:#eeeef0;
+  --border:#e2e2e6;--border-hover:#c8c8cf;
+  --accent:#3a5bd9;--accent-light:#eef1fb;
+  --text:#17171a;--text-secondary:#4b4b54;--text-muted:#85858e;
+  --success:#15803d;--danger:#b42318;--warning:#a15c07;
+}
+body.dark{
+  --bg:#101013;--bg-subtle:#16161a;--bg-muted:#222228;
+  --border:#28282f;--border-hover:#3a3a43;
+  --accent:#8aa4ff;--accent-light:#1a2133;
+  --text:#e6e6e9;--text-secondary:#9d9da6;--text-muted:#67676f;
+  --success:#4ade80;--danger:#f87171;--warning:#fbbf24;
+}
+/* 密度：容器更宽、间距减半、圆角收窄（终端感来自紧凑而非装饰） */
+.container{max-width:1680px;padding:10px 14px 40px}
+.section{padding:12px 14px;margin-bottom:8px;border-radius:3px;box-shadow:none}
+.section-header{margin-bottom:8px}
+.section-title{font-size:11px;letter-spacing:.3px}
+.section-subtitle{font-size:10px}
+.header{padding:8px 0;margin-bottom:2px}
+.header h1{font-size:16px;letter-spacing:0}
+.header-updated{font-size:10px;padding:3px 8px;border-radius:3px}
+/* 去渐变：AI 味最重的装饰之一 */
+.mega-card{background:var(--bg);border-left-width:3px}
+/* 品类色：10 种高饱和 → 灰底 + 单色文字，仅靠左侧细条区分 */
+.cat{font-size:9px;padding:1px 5px;border-radius:2px;background:var(--bg-muted);color:var(--text-secondary);font-weight:500;letter-spacing:0;border-left:2px solid var(--border-hover)}
+.cat-finance,.cat-金融市场{border-left-color:#a16207}
+.cat-geopolitics,.cat-地缘政治{border-left-color:#b42318}
+.cat-energy,.cat-能源安全{border-left-color:#15803d}
+.cat-tech,.cat-科技,.cat-科技产业{border-left-color:#3a5bd9}
+.cat-east_asia,.cat-东亚,.cat-东亚政治经济{border-left-color:#7c3aed}
+.cat-trade,.cat-贸易,.cat-贸易政策{border-left-color:#0e7490}
+.cat-social,.cat-社会{border-left-color:#c2410c}
+.cat-health,.cat-公共卫生{border-left-color:#9d174d}
+.cat-macro,.cat-macroeconomics{border-left-color:#6d28d9}
+/* 情报卡片：紧凑行高（一屏多看几条） */
+.item{padding:7px 9px;margin-bottom:4px;border-radius:2px;border-left-width:2px}
+.item-title{font-size:12.5px;line-height:1.4;margin-bottom:3px}
+.item-body{font-size:11px;line-height:1.45}
+.meta-row{gap:5px;margin-bottom:3px}
+.badge,.rel,.time-tag{font-size:9px;padding:1px 4px;border-radius:2px}
+/* 两条 AI 影响：绿/蓝底 → 中性底 + 细色条 + 文字标签（见 imp-label） */
+.impact{font-size:10.5px;line-height:1.45;padding:4px 7px;margin-top:4px;border-radius:2px;background:var(--bg-muted);color:var(--text-secondary);border-left:2px solid var(--text-muted)}
+.impact.grad{background:var(--bg-muted);color:var(--text-secondary);border-left-color:var(--accent)}
+.imp-label{font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--text-muted);margin-right:5px;letter-spacing:.3px}
+.imp-label.grad-label{color:var(--accent)}
+.kf{font-size:10.5px;padding:4px 7px;background:var(--bg-muted);color:var(--text-secondary);border-left-color:var(--border-hover);border-radius:2px}
+.intel-cols{gap:10px}
+.intel-col-head{border-bottom-width:1px}
+.intel-col-head h3{font-size:12px}
+.section-body{max-height:760px;padding:10px 12px 12px}
+.badge.story{background:var(--bg-muted);color:var(--text-muted)}
+/* R 值：红黄绿三色 → 单色深浅（靠字重区分强弱） */
+.rel-5,.rel-4,.rel-3{background:var(--bg-muted);color:var(--text-secondary)}
+.rel-5{color:var(--text);font-weight:700}
+/* 假设卡片：紧凑 + 取消悬浮位移 */
+.major-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px}
+.mega-grid{grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:8px}
+.major-card,.medium-card,.small-card{padding:9px 11px;border-radius:3px}
+.major-card:hover{transform:none;box-shadow:none;background:var(--bg-subtle)}
+.major-card h3{font-size:13px;min-height:34px;margin:5px 0}
+.major-card p,.medium-card p,.small-card p{font-size:10.5px;line-height:1.4}
+.mega-card{padding:11px 13px;border-radius:3px}
+.mega-card .mega-title{font-size:13.5px}
+.mega-card .mega-rationale{font-size:11px;line-height:1.45}
+.mega-card .mega-conf{font-size:19px}
+/* 宏观格：一行放得下更多指标 */
+.macro-grid{grid-template-columns:repeat(6,1fr);gap:6px}
+.macro-cell{padding:7px 8px;border-radius:3px}
+.macro-cell .val{font-size:14px}
+.macro-cell .lab{font-size:9.5px;min-height:22px;margin-bottom:3px}
+.macro-cell .meta{font-size:8.5px}
+@media(max-width:1400px){.macro-grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:900px){.macro-grid{grid-template-columns:repeat(3,1fr)}}
+/* 排名/校准/估值：紧凑 */
+.ach-rank{padding:5px 7px;margin-bottom:3px;border-radius:2px}
+.ach-rank .rank-num{font-size:13px;min-width:20px}
+.ach-rank .rank-title{font-size:10.5px}
+.calib-stat{padding:5px 8px;border-radius:3px}
+.valuation-card{padding:6px 8px;border-radius:3px}
+/* 层级药丸：彩色底 → 中性底（层级靠文字已可读） */
+.level-pill{padding:1px 5px;border-radius:2px;background:var(--bg-muted);color:var(--text-secondary)}
+.level-pill.medium{background:var(--bg-muted);color:var(--text-secondary)}
+.level-pill.small{background:var(--bg-muted);color:var(--text-secondary)}
+.progress{height:3px;border-radius:0}
+.progress span{border-radius:0}
+.progress b{font-size:9px;top:-3px}
+.btn{padding:3px 9px;border-radius:2px;font-size:10.5px}
+.btn.active{background:var(--text);border-color:var(--text);color:var(--bg)}
+.expand-btn{border-radius:2px;font-size:9.5px;padding:2px 7px}
 </style>
 <link rel="icon" href="data:,">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body class="''' + THEME + '''">
-<button id="themeToggle" onclick="toggleTheme()" style="position:fixed;top:14px;right:14px;z-index:1000;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:14px;cursor:pointer;box-shadow:var(--shadow-sm)">🌓</button>
-<button id="refreshBtn" onclick="manualRefresh()" style="position:fixed;top:14px;right:60px;z-index:1000;background:var(--accent);color:#fff;border:1px solid var(--accent);border-radius:6px;padding:6px 10px;font-size:13px;cursor:pointer;box-shadow:var(--shadow-sm)">🔄 重建</button>
+<button id="themeToggle" onclick="toggleTheme()" style="position:fixed;top:14px;right:14px;z-index:1000;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:14px;cursor:pointer;box-shadow:var(--shadow-sm)">主题</button>
+<button id="refreshBtn" onclick="manualRefresh()" style="position:fixed;top:14px;right:60px;z-index:1000;background:var(--accent);color:#fff;border:1px solid var(--accent);border-radius:6px;padding:6px 10px;font-size:13px;cursor:pointer;box-shadow:var(--shadow-sm)">重建</button>
 <div class="container">
 
 <!-- Header -->
@@ -405,7 +546,7 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
 <div class="section">
   <div class="kpi-bar kpi-bar-3col">
     <div class="kpi-macro">
-      <div class="section-title">📊 宏观关键指标</div>
+      <div class="section-title">宏观关键指标</div>
       <div class="section-subtitle">汇率 / 利率 / 通胀 / 就业 / 增长 · 每日自动抓取</div>
       <div id="macroPanel" style="display:none;margin-top:12px">
         <div id="macroGrid" class="macro-grid"></div>
@@ -413,19 +554,19 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
       </div>
     </div>
     <div class="kpi-valuation">
-      <div class="section-title">💹 估值分位</div>
+      <div class="section-title">估值分位</div>
       <div class="section-subtitle">PE-TTM 10 年百分位 · 多市场</div>
       <div id="valuationPanel" style="display:none;margin-top:12px">
         <div id="valuationGrid" class="valuation-grid"></div>
         <details style="margin-top:10px">
-          <summary style="font-size:11px;color:var(--text-secondary);cursor:pointer;padding:4px 0">📈 查看 10 年历史走势</summary>
+          <summary style="font-size:11px;color:var(--text-secondary);cursor:pointer;padding:4px 0">查看 10 年历史走势</summary>
           <div style="position:relative;height:240px;margin-top:6px"><canvas id="valuationChart"></canvas></div>
         </details>
         <div id="valuationMeta" style="font-size:10px;color:var(--text-muted);margin-top:8px"></div>
       </div>
     </div>
     <div class="kpi-ach">
-      <div class="ach-title">🔬 ACH 竞争性假设排名</div>
+      <div class="ach-title">ACH 竞争性假设排名</div>
       <div id="achPanel" style="display:none">
         <div id="achMeta" style="font-size:10px;color:var(--text-muted);margin-bottom:8px;font-family:'JetBrains Mono',monospace"></div>
         <div id="achRanks"></div>
@@ -439,7 +580,7 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
 <div class="section">
   <div class="section-header">
     <div>
-      <div class="section-title">📈 中国分年龄组失业率走势</div>
+      <div class="section-title">中国分年龄组失业率走势</div>
       <div class="section-subtitle">16-24岁（不含在校生）核心指标 · 月度 NBS 数据 · 财新转载抓取</div>
     </div>
   </div>
@@ -461,7 +602,7 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
 <div class="section">
   <div class="section-header">
     <div>
-      <div class="section-title">🎯 假设校准（Brier / Murphy 三分解）</div>
+      <div class="section-title">假设校准 · Brier / Murphy 三分解</div>
       <div class="section-subtitle">预测概率 vs 实际命中率 · 验证结果由周循环写入 resolutions</div>
     </div>
   </div>
@@ -476,7 +617,7 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
 <!-- Intel Feed -->
 <details class="section section-collapsible" id="intelSection" open>
   <summary>
-    <div class="section-title">📡 情报流 <span id="intelCount" style="font-weight:400;color:var(--text-muted)"></span></div>
+    <div class="section-title">情报流 <span id="intelCount" style="font-weight:400;color:var(--text-muted)"></span></div>
     <span class="section-toggle-hint">点击收起 ▾</span>
   </summary>
   <div class="section-body">
@@ -486,7 +627,7 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
     <div class="intel-cols">
       <div class="intel-col">
         <div class="intel-col-head">
-          <h3>🕐 最新消息</h3>
+          <h3>最新消息</h3>
           <span class="col-sub">按时间倒序</span>
           <span class="col-count" id="cntLeft"></span>
         </div>
@@ -494,7 +635,7 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
       </div>
       <div class="intel-col">
         <div class="intel-col-head">
-          <h3>⭐ 24h 重要情报</h3>
+          <h3>24h 重要情报</h3>
           <span class="col-sub">按相关度 · 近 24 小时</span>
           <span class="col-count" id="cntRight"></span>
         </div>
@@ -508,7 +649,7 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
 <div class="section">
   <div class="section-header">
     <div>
-      <div class="section-title">🌐 超大假设 <span style="font-weight:400;color:var(--text-muted);font-size:12px">概率极低 × 影响最大 × 跨大假设关联</span></div>
+      <div class="section-title">超大假设 <span style="font-weight:400;color:var(--text-muted);font-size:12px">概率极低 × 影响最大 × 跨大假设关联</span></div>
       <div class="section-subtitle">战略级 mega 假设 · 历史先例驱动 · 不进 ACH 周循环 (单次 AI 成本太高)</div>
     </div>
     <div class="filter-row">
@@ -523,7 +664,7 @@ body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans
 <div class="section">
   <div class="section-header">
     <div>
-      <div class="section-title">🎯 假设驾驶舱</div>
+      <div class="section-title">假设驾驶舱</div>
       <div class="section-subtitle">点击大假设 → 中假设 → 小假设与验证指标</div>
     </div>
     <input id="hypSearch" placeholder="搜索三战、经济危机、城投、AI、台海…" oninput="renderMajors()">
@@ -556,7 +697,7 @@ hyp_js_lines.append('var H=' + h_json + ';')
 hyp_js_lines.append('var byId={};H.forEach(function(h){byId[h.id]=h});')
 hyp_js_lines.append('var orderedMajors=' + m_json + ';')
 hyp_js_lines.append('function descendants(id){var h=byId[id];if(!h||!h.children)return[];var r=[];h.children.forEach(function(c){r.push(c);r=r.concat(descendants(c))});return r}')
-hyp_js_lines.append('function statusLabel(s){return s==="active"?"\\u{1f7e2}\\u6d3b\\u8dc3":s==="verified"?"\\u2705\\u5df2\\u9a8c\\u8bc1":s==="falsified"?"\\u274c\\u5df2\\u8bc1\\u4f2a":"\\u2b1c\\u5f85\\u5b9a"}')
+hyp_js_lines.append('function statusLabel(s){return s==="active"?"\\u6d3b\\u8dc3":s==="verified"?"\\u5df2\\u9a8c\\u8bc1":s==="falsified"?"\\u5df2\\u8bc1\\u4f2a":"\\u5f85\\u5b9a"}')
 hyp_js_lines.append('var RESOLUTIONS=' + resolutions_json + ';')
 hyp_js_lines.append('function flipBadge(id){var r=RESOLUTIONS[id];if(!r)return"";var pre=r.confidence_at_deadline;var drop=(pre!=null&&r.confidence_after!=null)?(pre-r.confidence_after):0;if(r.outcome==="refuted"&&pre!=null&&pre>=0.7)return\'<span class="flip-badge flip-high">\\u26a1\\u9ad8\\u786e\\u4fe1\\u7ffb\\u8f66 \\u9884\\u6d4b\'+Math.round(pre*100)+\'%</span>\';if(r.outcome==="refuted")return\'<span class="flip-badge">\\u26a1\\u5df2\\u7ffb\\u8f66 \\u9884\\u6d4b\'+Math.round((pre||0)*100)+\'%</span>\';if(drop>0.2)return\'<span class="flip-badge flip-drop">\\u2193\\u7f6e\\u4fe1\\u5ea6\\u65ad\\u5d16 -\'+Math.round(drop*100)+\'%</span>\';return""}')
 hyp_js_lines.append('function isFlip(id){var r=RESOLUTIONS[id];if(!r)return false;var pre=r.confidence_at_deadline;return r.outcome==="refuted"||(pre!=null&&r.confidence_after!=null&&(pre-r.confidence_after)>0.2)}')
@@ -613,10 +754,10 @@ var ACH_DATA=""" + ach_json + """;
   // 可信度徽章：区分"有证据的判断"与"没被判断过的先验"
   function relBadge(r){
     if(r.rel==='none'||r.n===0){
-      return '<span class="rel-badge rel-warn" title="零 C/I 证据：显示的是先验值，不是判断结果">⚠️ 无证据</span>';
+      return '<span class="rel-badge rel-warn" title="零 C/I 证据：显示的是先验值，不是判断结果">无证据</span>';
     }
     if(r.rel==='extreme'){
-      return '<span class="rel-badge rel-warn" title="证据量大但后验贴边界，LR 复利放大，结论需谨慎">⚠️ 极端值</span>';
+      return '<span class="rel-badge rel-warn" title="证据量大但后验贴边界，LR 复利放大，结论需谨慎">极端值</span>';
     }
     if(r.rel==='weak'){
       return '<span class="rel-badge rel-dim" title="1-2 条证据，易被单条左右">样本少</span>';
@@ -933,7 +1074,7 @@ function renderMegas(){
       return '<div class="mega-ind"><b>'+esc(i.name)+':</b> '+esc(i.current_value||'\u672a\u77e5')+' (\u652f\u6301\u9608\u503c '+esc(i.threshold_support||'-')+' / \u53cd\u9a73\u9608\u503c '+esc(i.threshold_refute||'-')+') <span style="color:var(--text-muted)">\u2014 '+esc(i.source||'')+'</span></div>';
     }).join('');
     return '<div class="mega-card">'
-      +'<div class="mega-level">\U0001F310 \u8d85\u5927\u5047\u8bbe \u00b7 \u6218\u7565\u7ea7</div>'
+      +'<div class="mega-level">\u8d85\u5927\u5047\u8bbe \u00b7 \u6218\u7565\u7ea7</div>'
       +'<div class="mega-conf">'+Math.round((m.confidence||0)*100)+'%</div>'
       +'<div class="mega-title">'+esc(m.title)+'</div>'
       +'<div class="mega-rationale">'+esc(m.rationale||'')+'</div>'
@@ -969,7 +1110,7 @@ intel_js_lines.append("""var curSort="time";var curCat="";
 var catNames={"macro":"宏观经济","finance":"金融市场","geopolitics":"地缘政治","energy":"能源安全","east_asia":"东亚","trade":"贸易","tech":"科技","social":"社会","health":"公共卫生"};
 function buildCatBtns(){var cats={};D.forEach(function(i){var c=i.category_cn||"other";cats[c]=(cats[c]||0)+1});var html='<button class="btn active" onclick="filterCat(\\'\\')">全部</button>';Object.keys(cats).sort(function(a,b){return cats[b]-cats[a]}).forEach(function(c){html+='<button class="btn" onclick="filterCat(\\''+c+'\\')">'+(catNames[c]||c)+' ('+cats[c]+')</button>'});document.getElementById("catBtns").innerHTML=html;document.getElementById("intelCount").textContent="("+D.length+" 条)"}
 function filterCat(cat){curCat=cat;R(cat)}
-function itemHTML(i){var cc=i.category_cn||"other";var sc=((i.final_score||i.base_score)||0);var rv=sc>=0.6?5:sc>=0.35?4:sc>=0.15?3:0;var lang=(i.language||"en").toUpperCase();var pub=i.published_cn||"";if(!pub&&i.published_at){var pd=new Date(i.published_at);if(!isNaN(pd.getTime()))pub=pd.toLocaleDateString("zh-CN")}var ago=(function(){var pa=new Date(i.published_at||0);if(isNaN(pa.getTime()))return i.time_ago||"";var dm=(Date.now()-pa.getTime())/60000;if(dm<0)dm=0;return dm<1?"刚刚":dm<60?Math.round(dm)+"分钟前":dm<1440?Math.round(dm/60)+"小时前":Math.round(dm/1440)+"天前"})();var kf=(i.key_facts&&i.key_facts.length)?i.key_facts.join("; "):"";var hasOrig=i.content_full&&i.content_full.length>30;return '<div class="item"><div class="meta-row"><span class="cat cat-'+cc+'">'+cc+'</span><span class="badge">'+lang+'</span>'+(i.story_size>1?'<span class="badge story" title="聚类自同一事件(余弦'+(i.story_id||'').slice(0,8)+')">同事件×'+i.story_size+'</span>':'')+'<span class="rel rel-'+rv+'">R'+Math.round(sc*10)+'</span><span class="src">'+(i.source_name||"")+'</span></div><div class="meta-row"><span class="time-tag">'+pub+'</span><span class="time-tag">'+ago+'</span></div><div class="item-title">'+esc(i.cn_title||i.title||"")+'</div><div class="item-body">'+esc(i.cn_summary||"")+'</div>'+(kf?'<div class="kf">关键事实: '+esc(kf)+'</div>':'')+(i.impact?'<div class="impact">👤 '+esc(i.impact)+'</div>':'')+(i.graduate_impact?'<div class="impact grad">🎓 '+esc(i.graduate_impact)+'</div>':'')+(i.dims?'<details class="dims"><summary>四维诊断</summary><div class="dims-body">'+Object.entries(i.dims).map(function(p){return '<div><b>'+({accumulation_node:'积累制度',spatial_layer:'空间修正',state_market_shift:'国家-市场',class_interest:'阶级利益'}[p[0]]||p[0])+'</b>：'+esc(p[1])+'</div>'}).join('')+'</div></details>':'')+(hasOrig?'<button class="expand-btn" onclick="tog(this)">展开原文</button><div class="orig">'+esc(i.content_full)+'</div>':'')+'</div>'}
+function itemHTML(i){var cc=i.category_cn||"other";var sc=((i.final_score||i.base_score)||0);var rv=sc>=0.6?5:sc>=0.35?4:sc>=0.15?3:0;var lang=(i.language||"en").toUpperCase();var pub=i.published_cn||"";if(!pub&&i.published_at){var pd=new Date(i.published_at);if(!isNaN(pd.getTime()))pub=pd.toLocaleDateString("zh-CN")}var ago=(function(){var pa=new Date(i.published_at||0);if(isNaN(pa.getTime()))return i.time_ago||"";var dm=(Date.now()-pa.getTime())/60000;if(dm<0)dm=0;return dm<1?"刚刚":dm<60?Math.round(dm)+"分钟前":dm<1440?Math.round(dm/60)+"小时前":Math.round(dm/1440)+"天前"})();var kf=(i.key_facts&&i.key_facts.length)?i.key_facts.join("; "):"";var hasOrig=i.content_full&&i.content_full.length>30;return '<div class="item"><div class="meta-row"><span class="cat cat-'+cc+'">'+cc+'</span><span class="badge">'+lang+'</span>'+(i.story_size>1?'<span class="badge story" title="聚类自同一事件(余弦'+(i.story_id||'').slice(0,8)+')">同事件×'+i.story_size+'</span>':'')+'<span class="rel rel-'+rv+'">R'+Math.round(sc*10)+'</span><span class="src">'+(i.source_name||"")+'</span></div><div class="meta-row"><span class="time-tag">'+pub+'</span><span class="time-tag">'+ago+'</span></div><div class="item-title">'+esc(i.cn_title||i.title||"")+'</div><div class="item-body">'+esc(i.cn_summary||"")+'</div>'+(kf?'<div class="kf">关键事实: '+esc(kf)+'</div>':'')+(i.impact?'<div class="impact"><span class="imp-label">公民</span>'+esc(i.impact)+'</div>':'')+(i.graduate_impact?'<div class="impact grad"><span class="imp-label grad-label">就业</span>'+esc(i.graduate_impact)+'</div>':'')+(i.dims?'<details class="dims"><summary>四维诊断</summary><div class="dims-body">'+Object.entries(i.dims).map(function(p){return '<div><b>'+({accumulation_node:'积累制度',spatial_layer:'空间修正',state_market_shift:'国家-市场',class_interest:'阶级利益'}[p[0]]||p[0])+'</b>：'+esc(p[1])+'</div>'}).join('')+'</div></details>':'')+(hasOrig?'<button class="expand-btn" onclick="tog(this)">展开原文</button><div class="orig">'+esc(i.content_full)+'</div>':'')+'</div>'}
 function R(cat){
   var list=cat?D.filter(function(i){return i.category_cn===cat}):D;
   var byTime=list.slice().sort(function(a,b){return new Date(b.published_at||0)-new Date(a.published_at||0)});
@@ -986,7 +1127,7 @@ function toggleChat(){var p=document.getElementById("chatPanel");p.classList.tog
 function pushMsg(cls,text){var box=document.getElementById("chatMsgs");var div=document.createElement("div");div.className="chat-msg "+cls;div.textContent=text;box.appendChild(div);box.scrollTop=box.scrollHeight}
 async function sendChat(){var inp=document.getElementById("chatInput");var q=inp.value.trim();if(!q)return;inp.value="";pushMsg("user",q);var box=document.getElementById("chatMsgs");var tip=document.createElement("div");tip.className="chat-msg ai typing";tip.textContent="参谋长研判中……";box.appendChild(tip);box.scrollTop=box.scrollHeight;try{var r=await fetch("/api/ask",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({q:q})});var d=await r.json();tip.remove();pushMsg("ai",d.answer||("出错: "+(d.error||"未知错误")))}catch(e){tip.remove();pushMsg("ai","请求失败: "+e)}}
 document.addEventListener("keydown",function(e){if(e.key==="Enter"&&!e.shiftKey&&document.activeElement===document.getElementById("chatInput")){e.preventDefault();sendChat()}});
-function toggleTheme(){var b=document.body;var isDark=b.classList.contains("dark");var next=isDark?"light":"dark";if(next==="dark"){b.classList.add("dark")}else{b.classList.remove("dark")}try{localStorage.setItem("osint-theme",next)}catch(e){}document.getElementById("themeToggle").textContent=next==="dark"?"🌙":"☀️"}
+function toggleTheme(){var b=document.body;var isDark=b.classList.contains("dark");var next=isDark?"light":"dark";if(next==="dark"){b.classList.add("dark")}else{b.classList.remove("dark")}try{localStorage.setItem("osint-theme",next)}catch(e){}document.getElementById("themeToggle").textContent=next==="dark"?"暗":"亮"}
 function manualRefresh(){
   var btn=document.getElementById("refreshBtn");
   var orig=btn.textContent;
@@ -995,23 +1136,23 @@ function manualRefresh(){
   fetch("/api/refresh",{method:"POST"}).then(function(r){
     if(r.status===202){pollStatus(btn,orig,0);return;}
     r.json().then(function(d){
-      btn.textContent="❌ "+(d.error||"未知错误");
+      btn.textContent="失败: "+(d.error||"未知错误");
       setTimeout(function(){btn.disabled=false;btn.textContent=orig;},3000);
     });
   }).catch(function(){
-    btn.textContent="❌ 网络错误";
+    btn.textContent="网络错误";
     setTimeout(function(){btn.disabled=false;btn.textContent=orig;},3000);
   });
 }
 function pollStatus(btn,orig,attempt){
   fetch("/api/refresh/status").then(function(r){return r.json();}).then(function(d){
     if(d.status==="done"){
-      btn.textContent="✅ "+d.message;
+      btn.textContent=d.message;
       setTimeout(function(){location.reload();},1200);
       return;
     }
     if(d.status==="error"){
-      btn.textContent="❌ "+(d.error||"未知错误");
+      btn.textContent="失败: "+(d.error||"未知错误");
       setTimeout(function(){btn.disabled=false;btn.textContent=orig;},5000);
       return;
     }
@@ -1021,24 +1162,53 @@ function pollStatus(btn,orig,attempt){
     if(attempt<30){setTimeout(function(){pollStatus(btn,orig,attempt+1);},2000);}
   });
 }
-try{var saved=localStorage.getItem("osint-theme");if(saved){if(saved==="dark"){document.body.classList.add("dark")}else{document.body.classList.remove("dark")}document.getElementById("themeToggle").textContent=saved==="dark"?"🌙":"☀️"}}catch(e){}
+try{var saved=localStorage.getItem("osint-theme");if(saved){if(saved==="dark"){document.body.classList.add("dark")}else{document.body.classList.remove("dark")}document.getElementById("themeToggle").textContent=saved==="dark"?"暗":"亮"}}catch(e){}
 function tog(btn){var c=btn.nextElementSibling;var open=c.style.display!=="block";c.style.display=open?"block":"none";btn.textContent=open?"收起原文":"展开原文"}
 function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
 buildCatBtns();R("");""")
 intel_js_lines.append('</script>')
 intel_js_lines.append('<script>var _lastUpdate="' + generated_at + '";(function(){var el=document.getElementById("headerUpdated");if(!el)return;var dt=new Date(_lastUpdate);if(isNaN(dt.getTime())){el.textContent="最近更新: "+_lastUpdate;return;}var local=dt.toLocaleString("zh-CN",{hour12:false,timeZone:"Asia/Shanghai"});el.textContent="最近更新: "+local;el.title="UTC: "+_lastUpdate;})();</script>')
+# 新数据提示（2026-10-10）：页面 34MB，不能盲目自动重载。改为轮询轻量
+# /api/version（mtime+size），后台刷新产出新面板时给出显式"点击刷新"横幅，
+# 让用户一眼分清「没新新闻」和「页面是旧快照」。
+# 云端只读版无后端，跳过轮询（否则每 3 分钟一次 404 噪音）。
+if not CLOUD_MODE:
+    intel_js_lines.append('''<script>(function(){
+var base=null,banner=null;
+function mk(msg){if(banner)return;banner=document.createElement("div");banner.style.cssText="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:2000;background:var(--accent);color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.25)";banner.textContent=msg;banner.onclick=function(){location.reload()};document.body.appendChild(banner);}
+function check(){fetch("/api/version").then(function(r){return r.json()}).then(function(d){
+  if(!d||!d.mtime)return;
+  if(base===null){base=d.mtime;return;}
+  if(d.mtime!==base){mk("有更新数据，点击刷新");}
+}).catch(function(){});}
+check();setInterval(check,180000);
+})();</script>''')
 
 parts.append('\n'.join(intel_js_lines))
 parts.append('''
-<div id="chatFab" onclick="toggleChat()" title="向参谋长提问 / 提出假设">💬</div>
+<div id="chatFab" onclick="toggleChat()" title="向参谋长提问 / 提出假设">问</div>
 <div id="chatPanel">
-  <div class="chat-head">🎓 参谋长 · 四维研判对话 <button onclick="toggleChat()">✕</button></div>
+  <div class="chat-head">参谋长 · 四维研判对话 <button onclick="toggleChat()">✕</button></div>
   <div id="chatMsgs" class="chat-msgs"><div class="chat-msg ai">我是你的参谋长。可以向我提问（"如果美联储9月降息对我意味着什么？"）或提出你的假设，我会按四维框架给你研判、行动向量与避坑提示。</div></div>
   <div class="chat-input-row">
     <textarea id="chatInput" placeholder="输入问题或假设，Enter 发送（Shift+Enter 换行）" rows="2"></textarea>
     <button onclick="sendChat()">发送</button>
   </div>
 </div>
+''')
+
+# 云端只读版（2026-10-10）：静态托管无后端，隐藏依赖 /api 的聊天面板与"重建"按钮。
+# 纯 CSS 覆盖（不改结构，本地版行为完全不受影响）。
+if CLOUD_MODE:
+    parts.append('''
+<style>
+#chatFab,#chatPanel,#refreshBtn{display:none !important}
+</style>
+<script>
+/* 静态页无后端：给"最近更新"补一句说明，避免用户以为刷新坏了 */
+(function(){var el=document.getElementById("headerUpdated");
+if(el){el.title=(el.title||"")+" · 云端只读快照";}})();
+</script>
 ''')
 parts.append('\n</body>\n</html>')
 

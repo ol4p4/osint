@@ -1,7 +1,15 @@
 # -*- coding: utf-8 -*-
+import os
 from pathlib import Path
 
-path = r"D:\osint\data\interactive_dashboard.html"
+# 路径可配置（2026-10-10）：云端 CI 产物落在 dist/，本地默认 D:\osint\data。
+# 与 gen_dashboard 共用 OSINT_HTML_OUT（同一环境变量，workflow 里一处设置两处生效）。
+# 环境变量属外部输入，先校验（禁 `..` 片段）再用。
+_out = (os.environ.get("OSINT_HTML_OUT") or "").strip()
+if _out and ".." not in _out.replace("\\", "/").split("/"):
+    path = Path(_out)
+else:
+    path = Path(r"D:\osint\data\interactive_dashboard.html")
 html = Path(path).read_text(encoding="utf-8")
 
 # Find the byId line and add esc right after it

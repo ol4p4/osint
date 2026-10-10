@@ -45,7 +45,14 @@ def _host_is_safe(host):
 
 
 def _get(url, timeout=TIMEOUT):
-    """白名单 + IP 校验的 URL 拉取。"""
+    """白名单 + IP 校验的 URL 拉取。
+
+    IPv6 回退（2026-10-10）：本机 IPv6 出口被 TLS 中间人劫持（证书链是自签的），
+    urllib 默认按 getaddrinfo 顺序优先连 IPv6 → 对 Cloudflare 系主机（如
+    api.frankfurter.app）持续 CERTIFICATE_VERIFY_FAILED，而同主机 IPv4 完全正常
+    （实测 issuer=Google Trust Services）。故 TLS 失败时强制 IPv4 重试一次。
+    只影响本函数的解析过程，不改全局 socket 行为。
+    """
     parsed = urlparse(url)
     if parsed.scheme != "https":
         raise ValueError(f"scheme {parsed.scheme!r} not allowed (https only)")
@@ -54,14 +61,38 @@ def _get(url, timeout=TIMEOUT):
     if not _host_is_safe(parsed.hostname):
         raise ValueError(f"host {parsed.hostname!r} resolves to unsafe IP")
     req = Request(url, headers={"User-Agent": "osint-dashboard/1.0"})
-    with urlopen(req, timeout=timeout) as r:
-        return r.read().decode("utf-8")
+    try:
+        with urlopen(req, timeout=timeout) as r:
+            return r.read().decode("utf-8")
+    except Exception as e:
+        # 仅 TLS 证书类错误才回退（DNS/超时等回退无意义）
+        if "CERTIFICATE_VERIFY_FAILED" not in str(e):
+            raise
+    _orig_gai = socket.getaddrinfo
+
+    def _ipv4_only(host, port, family=0, *a, **k):
+        return _orig_gai(host, port, socket.AF_INET, *a, **k)
+
+    socket.getaddrinfo = _ipv4_only
+    try:
+        with urlopen(req, timeout=timeout) as r:
+            return r.read().decode("utf-8")
+    finally:
+        socket.getaddrinfo = _orig_gai
 
 
-def fetch_fred(series_id):
-    """FRED 公开 CSV 端点（无需 key）。"""
+def fetch_fred(series_id, transformation=None):
+    """FRED 公开 CSV 端点（无需 key）。
+
+    transformation: 可选 FRED 转换，如 "pc1" = 同比百分比变化（year-over-year %）。
+    指数型序列（CPIAUCSL/PPIACO 等）原始值是**指数点位**（如 334.13），
+    加 pc1 才是用户要看的「同比 %」。年度序列（FPCPITOTLZGUSA）发布滞后一年，
+    不要用于「最新月度」指标。
+    """
     try:
         url = f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={series_id}"
+        if transformation:
+            url += f"&transformation={transformation}"
         text = _get(url)
         # 取最后非空数据行（csv: DATE,VALUE）
         last_date = ""
@@ -130,16 +161,23 @@ def fetch_te_china_indicator(page_slug, label_keyword):
     page_slug: URL 路径段，如 "youth-unemployment-rate" 或 "inflation-cpi"
     label_keyword: meta description 里的英文短语（区分 Youth/General Unemployment/Inflation）
     返回 date 字段为 ISO 月份 "YYYY-MM" 格式。
+
+    TE 句式有两种（2026-10-10 实测）：
+      A) "... increased to 0.80 percent in August from ..."     ← CPI/失业率等
+      B) "... increased 3.80 percent in August of 2026 over ..." ← PPI（**无 to**，年份在 of 后）
+    旧版只匹配 A，导致 PPI 页始终返回 None。现在两种都试。
     """
     import re
     try:
         te_url = f"https://tradingeconomics.com/china/{page_slug}"
         html = _get(te_url, timeout=15)  # 走白名单+IP安全检查
-        # 单位宽容: percent/points/CNY Billion/CNY Hundred Million 等; 时间: in Month / on Weekday
+        # 单位宽容: percent/points/CNY Billion/CNY Hundred Million 等
         unit = r"(?:percent|points|CNY [A-Z][A-Za-z ]{2,20}?)"
-        when = r"(?:in (\w+)(?:\s+(\d{4}))?|on \w+)"
+        # 时间两种写法: "in August" / "in August of 2026"
+        when = r"(?:in (\w+)(?:\s+of\s+(\d{4}))?(?:\s+(\d{4}))?|on \w+)"
+        verb = r"(?:increased|decreased|rose|fell|was)"
         m = re.search(
-            rf"{re.escape(label_keyword)} in China (?:increased|decreased|rose|fell|was) to ([\d.]+) {unit} {when}",
+            rf"{re.escape(label_keyword)} in China {verb}(?: to)? ([\d.]+) {unit} {when}",
             html,
         )
         if not m:
@@ -149,8 +187,9 @@ def fetch_te_china_indicator(page_slug, label_keyword):
                 html,
             )
         if m:
+            # 分组: (1)=数值 (2)=月份 (3)="of YYYY"的年份 (4)="Month YYYY"的年份
             month_name = m.group(2)
-            year = m.group(3)  # 可能 None
+            year = m.group(3) or m.group(4)
             # TE HTML 一般不返年份, 兜底用当前年(1 月抓 12 月数据时可能有偏差, 但仪表盘上 "2026-01" 总比 "January" 好)
             if not year:
                 year = str(datetime.now().year)
@@ -398,13 +437,22 @@ INDICATORS = [
     {"id": "us_10y", "label": "美国 10 年期国债收益率 (%)", "category": "利率", "fmt": "{:.3f}",
      "fetcher": lambda: fetch_fred("DGS10")},
     {"id": "us_fed_funds", "label": "美联储联邦基金利率 (%)", "category": "利率", "fmt": "{:.2f}",
-     "fetcher": lambda: fetch_fred("FEDFUNDS")},
+     "fetcher": lambda: fetch_fred("DFF")},
     # 中国通胀（核心视角，NBS 月度数据经 TE 同步）
     {"id": "cn_cpi", "label": "中国 CPI 同比 (%)", "category": "通胀", "fmt": "{:.2f}",
      "fetcher": lambda: fetch_te_china_indicator("inflation-cpi", "Inflation Rate")},
-    # 美国通胀（影响美联储决策，间接影响中国）
+    # 中国 PPI（工业生产者出厂价格同比；NBS 月度，TE 同步）
+    {"id": "cn_ppi", "label": "中国 PPI 同比 (%)", "category": "通胀", "fmt": "{:.2f}",
+     "fetcher": lambda: fetch_te_china_indicator("producer-prices-change", "Producer Prices")},
+    # 美国 CPI（月度同比；CPIAUCSL 是季调指数，pc1 转同比 → 用户要看的 %）
+    # 2026-10-10 修: 原先用 FPCPITOTLZGUSA，那是**年度**序列（滞后一年，实测停在 2024-01）
     {"id": "us_cpi", "label": "美国 CPI 同比 (%)", "category": "通胀", "fmt": "{:.2f}",
-     "fetcher": lambda: fetch_fred("FPCPITOTLZGUSA")},
+     "max_age_days": 90,
+     "fetcher": lambda: fetch_fred("CPIAUCSL", transformation="pc1")},
+    # 美国 PPI（最终需求同比；FRED PPIFIS 指数 pc1 转同比）
+    {"id": "us_ppi", "label": "美国 PPI 同比 (%)", "category": "通胀", "fmt": "{:.2f}",
+     "max_age_days": 90,
+     "fetcher": lambda: fetch_fred("PPIFIS", transformation="pc1")},
     # 中国就业（核心视角指标，NBS 月度数据经 TE 同步）
     {"id": "cn_unrate", "label": "中国城镇调查失业率 (%)", "category": "就业", "fmt": "{:.1f}",
      "fetcher": lambda: fetch_te_china_indicator("unemployment-rate", "Unemployment Rate")},
@@ -499,9 +547,9 @@ def main():
                         entry["stale_reason"] = f"age {age_days}d > 180d"
                 if dt:
                     age_days = (datetime.now() - dt).days
-                    # 月级数据有 1-2 月发布延迟 (NBS 8 月数据 9 月才发), 用 90d
-                    # 日级 > 14d 标 stale
-                    threshold = 90 if len(d_str) == 7 else 14
+                    # 阈值优先级：指标自带 max_age_days（月频 FRED 序列日期是完整日期
+                    # "2026-08-01"，无法靠格式区分月/日频）> 月级(YYYY-MM) 90d > 日级 14d
+                    threshold = ind.get("max_age_days") or (90 if len(d_str) == 7 else 14)
                     if age_days > threshold:
                         entry["stale"] = True
                         entry["stale_reason"] = f"age {age_days}d > {threshold}d"

@@ -371,6 +371,28 @@ def gen_html():
     print(f"fix_dashboard: OK")
     return r1.returncode == 0
 
+def publish_pages():
+    """发布云端只读看板到 GitHub Pages（2026-10-10）。
+
+    非 critical 步骤：失败只记日志，不影响其他子步骤与节流戳。
+    生成走 publish_pages.build()（与本地产物同一套 gen_dashboard，云端模式
+    剔除面板不用的 evidence_log，33MB → 0.88MB），再覆盖式推 gh-pages。
+    本机关机时云端停在最后一次成功推送——这是本方案唯一的代价。
+    """
+    r = subprocess.run(
+        [sys.executable, str(BASE / "publish_pages.py")],
+        cwd=str(PROJECT), capture_output=True, text=True, timeout=420,
+        creationflags=_NO_WINDOW,
+    )
+    if r.stdout:
+        for line in r.stdout.splitlines():
+            if "publish_pages" in line:
+                print(f"publish_pages: {line.strip()}")
+    if r.returncode != 0 and r.stderr:
+        print(f"publish_pages stderr: {r.stderr.strip()[:200]}")
+    return r.returncode == 0
+
+
 def fetch_macro():
     """拉取宏观指标（汇率/利率/GDP等）→ data/macro_indicators.json"""
     r = subprocess.run(
@@ -520,11 +542,26 @@ def translate_now():
     """本地 OpenCode Zen 翻译未翻译条目 (mimo-v2.5-free + nemotron 降级链)。
     2026-09-04: 翻译挪出 CI 后本地承担全部翻译吞吐, 放宽到 100 条/900s;
     替代依赖 CI 翻译 (CI 50 条/4h 跟不上本地 fetch_now 200+ 条/24h)。
+
+    2026-10-10: 预算 900s→600s→540s。根因是**单轮总耗时超过了 30 分钟调度间隔**：
+    本步骤 + impact_now 串行，加上采集/重建，实测单轮 32.7~34.9 分钟 > 30 分钟
+    → 下一轮触发时上一轮还持有单实例锁，被直接挡掉 → 实际只有一半轮次跑成
+    （10-09 全天:40 轮成功、:10 轮全跳）。缩短后单轮约 24 分钟，轮次能跑满。
+
+    **硬超时必须 > 预算 + 单批最长耗时**（2026-10-10 二次踩坑）：首版只把预算
+    降到 600s、硬超时设 660s，实测 14:10 轮 `[STEP] impact_now: timeout, skip`
+    ——批次在预算点检查通过后仍要跑完当前批（单次 AI 调用超时上限 150s，且会
+    沿降级链重试多轮），600+150=750s > 660s → 整步被 kill、**零产出**。
+    故预算取 420s、硬超时 600s（留 180s 给最后一批）。
+    **判据：子进程软预算 + 单批最坏耗时 ≤ 硬超时，否则最后一批永远被腰斩。**
+
+    为什么是 420s：单轮必须稳定 < 30 分钟调度间隔。本步骤 + impact_now + 采集
+    (约 3 分钟) + 重建(约 3 分钟) ≈ 20 分钟（420×2 + 360）。轮次跑满比单轮跑得多更重要。
     """
     r = subprocess.run(
         [sys.executable, str(PROJECT / "tools" / "translate_local.py"),
-         "--max", "100", "--budget", "900"],
-        cwd=str(PROJECT), capture_output=True, text=True, timeout=960,
+         "--max", "100", "--budget", "420"],
+        cwd=str(PROJECT), capture_output=True, text=True, timeout=600,
         creationflags=_NO_WINDOW,
     )
     if r.stdout:
@@ -558,6 +595,14 @@ def impact_now():
     translate_now 的配额共享。首版按 240 上线，实测 720s 只跑完 114 条就被
     预算截断（`time budget exhausted, 115 items left`），印证了这个偏差。
     日吞吐 1200 → 3600 条，仍高于日新增 2000~2800。
+
+    **2026-10-10 回调上限 --max 150→100、预算 900→420s、硬超时 600s**：与 translate_now
+    同一根因——两个 AI 步骤各 900s 预算串行 = 30 分钟纯 AI，单轮实测 32.7~34.9 分钟
+    > 30 分钟调度间隔，导致隔轮被单实例锁挡掉、实际只有半数轮次跑成。
+    另修一处**硬超时腰斩**：预算点检查通过后仍要跑完当前批（单批最坏 150s），
+    预算+单批必须 ≤ 硬超时，否则整步被 kill、零产出（14:10 轮实测 `timeout, skip`）。
+    现预算 420s + 硬超时 600s，单轮约 20 分钟 < 间隔，轮次跑满。
+    **先保证每轮都能跑完**——150 条的上限在轮次被砍半时毫无意义。
     """
     lock = Path(_tempfile.gettempdir()) / "osint_ai_heavy.lock"
     if lock.exists():
@@ -578,8 +623,8 @@ def impact_now():
     try:
         r = subprocess.run(
             [sys.executable, str(PROJECT / "cloud" / "citizen_impact.py"),
-             "--dir", str(BASE), "--max", "150", "--budget", "900"],
-            cwd=str(PROJECT), capture_output=True, text=True, timeout=960,
+             "--dir", str(BASE), "--max", "100", "--budget", "420"],
+            cwd=str(PROJECT), capture_output=True, text=True, timeout=600,
             creationflags=_NO_WINDOW,
         )
         if r.stdout:
@@ -771,6 +816,7 @@ if __name__ == "__main__":
             _step(fetch_unemployment_history, "unrate_history")
             _step(check_valuation, "valuation")   # 估值分位看护(陈旧提醒+重算, 2026-09-19)
             _step(gen_html, "gen_html")
+            _step(publish_pages, "publish_pages")  # 云端看板(2026-10-10, 非critical)
             print(f"=== Done: {count} intel ===")
     finally:
         try:

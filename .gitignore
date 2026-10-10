@@ -10,6 +10,7 @@ data/*
 !data/refresh.py
 !data/daily_run.ps1
 !data/serve.py
+!data/publish_pages.py
 !data/run_all.py
 !data/sync_data.py
 !data/rebuild_hyps.py
