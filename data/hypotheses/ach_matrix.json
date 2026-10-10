@@ -519056,6 +519056,210 @@
    },
    "model": "mimo",
    "diagnosed_at": "2026-10-09T12:06:32"
+  },
+  {
+   "key": "ev_1b20a02519",
+   "date": "2026-10-10",
+   "summary": "全球量子计算企业已超400家，产业化落地提速",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "证据聚焦量子计算产业化，与能源消费指标无直接关联。",
+     "conf": 0.9
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "证据涉及量子计算企业，与美加贸易摩擦及供应链无关。",
+     "conf": 0.9
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "量子计算属技术领域，但证据未涉及AI算力或材料短缺指标。",
+     "conf": 0.6
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "证据关于量子计算发展，与台海军事外交活动无关。",
+     "conf": 0.9
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "证据描述量子计算产业化，与能源供应格局及投资无关。",
+     "conf": 0.9
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "量子计算产业化或间接关联技术成本，但证据未提AI经济波动。",
+     "conf": 0.6
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "证据内容纯技术产业化，与生物安全事件及防控无关。",
+     "conf": 0.9
+    }
+   },
+   "model": "mimo",
+   "diagnosed_at": "2026-10-10T20:48:35"
+  },
+  {
+   "key": "ev_d2e577ef7c",
+   "date": "2026-10-10",
+   "summary": "中国黄金周人均旅游消费创四年新低 出境游需求强劲",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "证据关于旅游消费，与全球能源需求无直接关联。",
+     "conf": 0.1
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "证据涉及中国旅游数据，与美加贸易摩擦无关。",
+     "conf": 0.1
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "证据聚焦旅游消费，未涉及AI技术或材料短缺。",
+     "conf": 0.1
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "旅游数据与台海军事活动无直接联系，无法判断。",
+     "conf": 0.1
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "证据内容与能源供应格局重塑不相关。",
+     "conf": 0.1
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "旅游消费下降可能反映经济压力，但未直接涉及AI成本。",
+     "conf": 0.2
+    },
+    "HM004": {
+     "code": "I",
+     "lr": 0.6,
+     "note": "出境游需求强劲表明无跨境防控升级，证伪生物安全事件升级假设。",
+     "conf": 0.8
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-10T20:49:09"
+  },
+  {
+   "key": "ev_0dacbf1c80",
+   "date": "2026-10-10",
+   "summary": "普京：俄愿向美国及全球市场供应石油和石油产品",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "证据涉及石油供应意愿，与能源需求下降假设无关。",
+     "conf": 0.2
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "证据关于俄罗斯石油供应，与美加贸易摩擦假设无关。",
+     "conf": 0.2
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "证据涉及能源领域，与AI技术短缺假设无关。",
+     "conf": 0.2
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "证据关于石油供应，与台海冲突风险假设无关。",
+     "conf": 0.2
+    },
+    "HM002": {
+     "code": "C",
+     "lr": 1.35,
+     "note": "俄罗斯愿供应石油，暗示能源供应格局可能重塑，与假设一致。",
+     "conf": 0.7
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "证据涉及能源供应，与AI成本上升假设无关。",
+     "conf": 0.2
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "证据关于石油贸易，与生物安全事件假设无关。",
+     "conf": 0.2
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-10T20:49:48"
+  },
+  {
+   "key": "ev_37133a397b",
+   "date": "2026-10-10",
+   "summary": "北京：着力提高入境消费便利化水平",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "证据关于入境消费便利化，与全球能源消费无关。",
+     "conf": 0.9
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "证据聚焦消费政策，与美加贸易摩擦无关。",
+     "conf": 0.9
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "证据涉及入境消费，与AI技术短缺无关。",
+     "conf": 0.9
+    },
+    "HM001": {
+     "code": "I",
+     "lr": 0.7,
+     "note": "提高入境便利化暗示台海风险未升级，与冲突预期相斥。",
+     "conf": 0.6
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "证据关于消费政策，与能源供应格局无关。",
+     "conf": 0.9
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "证据涉及入境消费，与AI成本波动无关。",
+     "conf": 0.9
+    },
+    "HM004": {
+     "code": "I",
+     "lr": 0.6,
+     "note": "便利化政策与生物安全升级预期相斥，表明防控未收紧。",
+     "conf": 0.8
+    }
+   },
+   "model": "jev",
+   "diagnosed_at": "2026-10-10T20:50:46"
   }
  ],
  "diagnosis": {},
@@ -519085,18 +519289,18 @@
    "reliability": "extreme"
   },
   "HM001": {
-   "posterior": 0.29,
+   "posterior": 0.222,
    "support": 5,
-   "refute": 9,
-   "evidence_total": 14,
+   "refute": 10,
+   "evidence_total": 15,
    "prior_baseline": 0.55,
    "reliability": "strong"
   },
   "HM002": {
    "posterior": 0.95,
-   "support": 15,
+   "support": 16,
    "refute": 0,
-   "evidence_total": 15,
+   "evidence_total": 16,
    "prior_baseline": 0.6,
    "reliability": "extreme"
   },
@@ -519109,15 +519313,15 @@
    "reliability": "extreme"
   },
   "HM004": {
-   "posterior": 0.694,
+   "posterior": 0.449,
    "support": 9,
-   "refute": 3,
-   "evidence_total": 12,
+   "refute": 5,
+   "evidence_total": 14,
    "prior_baseline": 0.35,
    "reliability": "strong"
   }
  },
- "updated": "2026-10-09 04:09",
+ "updated": "2026-10-10 12:53",
  "hypotheses": [
   {
    "id": "HM100",
@@ -519158,18 +519362,8 @@
  "sensitivity": {
   "top1": "HM002",
   "flips": 0,
-  "n_evidence": 7166,
+  "n_evidence": 7170,
   "items": [
-   {
-    "key": "ev_4680270a87",
-    "summary": "苏起：习特二会台湾非焦点 美对台军售恐令北京翻脸",
-    "date": "2026-09-19",
-    "top1_flip": false,
-    "new_top1": "HM002",
-    "top1_delta": 0.0,
-    "max_abs_delta": 0.133,
-    "moved_hyp": "HM001"
-   },
    {
     "key": "ev_9867d49e17",
     "summary": "俄官方宣布伊尔库茨克市正解除防疫措施",
@@ -519177,7 +519371,7 @@
     "top1_flip": false,
     "new_top1": "HM002",
     "top1_delta": 0.0,
-    "max_abs_delta": 0.111,
+    "max_abs_delta": 0.148,
     "moved_hyp": "HM004"
    },
    {
@@ -519187,7 +519381,7 @@
     "top1_flip": false,
     "new_top1": "HM002",
     "top1_delta": 0.0,
-    "max_abs_delta": 0.097,
+    "max_abs_delta": 0.127,
     "moved_hyp": "HM004"
    },
    {
@@ -519197,17 +519391,37 @@
     "top1_flip": false,
     "new_top1": "HM002",
     "top1_delta": 0.0,
-    "max_abs_delta": 0.097,
+    "max_abs_delta": 0.127,
     "moved_hyp": "HM004"
    },
    {
-    "key": "ev_964fafbce9",
-    "summary": "美官员据报对大陆攻台可能性作判断 大陆促美慎重处理台湾问题",
-    "date": "2026-10-07",
+    "key": "ev_d2e577ef7c",
+    "summary": "中国黄金周人均旅游消费创四年新低 出境游需求强劲",
+    "date": "2026-10-10",
     "top1_flip": false,
     "new_top1": "HM002",
     "top1_delta": 0.0,
-    "max_abs_delta": 0.087,
+    "max_abs_delta": 0.127,
+    "moved_hyp": "HM004"
+   },
+   {
+    "key": "ev_37133a397b",
+    "summary": "北京：着力提高入境消费便利化水平",
+    "date": "2026-10-10",
+    "top1_flip": false,
+    "new_top1": "HM002",
+    "top1_delta": 0.0,
+    "max_abs_delta": 0.127,
+    "moved_hyp": "HM004"
+   },
+   {
+    "key": "ev_4680270a87",
+    "summary": "苏起：习特二会台湾非焦点 美对台军售恐令北京翻脸",
+    "date": "2026-09-19",
+    "top1_flip": false,
+    "new_top1": "HM002",
+    "top1_delta": 0.0,
+    "max_abs_delta": 0.117,
     "moved_hyp": "HM001"
    },
    {
@@ -519217,7 +519431,7 @@
     "top1_flip": false,
     "new_top1": "HM002",
     "top1_delta": 0.0,
-    "max_abs_delta": 0.084,
+    "max_abs_delta": 0.089,
     "moved_hyp": "HM004"
    },
    {
@@ -519227,7 +519441,7 @@
     "top1_flip": false,
     "new_top1": "HM002",
     "top1_delta": 0.0,
-    "max_abs_delta": 0.084,
+    "max_abs_delta": 0.089,
     "moved_hyp": "HM004"
    },
    {
@@ -519237,7 +519451,7 @@
     "top1_flip": false,
     "new_top1": "HM002",
     "top1_delta": 0.0,
-    "max_abs_delta": 0.084,
+    "max_abs_delta": 0.089,
     "moved_hyp": "HM004"
    },
    {
@@ -519247,21 +519461,11 @@
     "top1_flip": false,
     "new_top1": "HM002",
     "top1_delta": 0.0,
-    "max_abs_delta": 0.084,
-    "moved_hyp": "HM004"
-   },
-   {
-    "key": "ev_8c3ca49612",
-    "summary": "西伯利亚疑似肺鼠疫：致命疫情的防控与警示",
-    "date": "2026-10-09",
-    "top1_flip": false,
-    "new_top1": "HM002",
-    "top1_delta": 0.0,
-    "max_abs_delta": 0.084,
+    "max_abs_delta": 0.089,
     "moved_hyp": "HM004"
    }
   ],
-  "updated_at": "2026-10-09T12:09:02"
+  "updated_at": "2026-10-10T20:53:44"
  },
- "updated_at": "2026-10-09T04:09:02.403669+00:00"
+ "updated_at": "2026-10-10T12:53:44.638982+00:00"
 }
