@@ -298,15 +298,63 @@ class ACHMatrix:
         start = response.find("[")
         if start < 0:
             raise ValueError("AI 未返回 JSON 数组")
+        # 解析容错（2026-10-10）：原先一次性 json.loads，模型输出里的非转义引号
+        # 或中途截断会让**整条**诊断直接失败（实测 `Expecting ',' delimiter`），
+        # ACH 批因此零产出，表象是"假设链跑不通"。复用与 analyze.py 同源的两级
+        # 抢救：①转义字符串内的裸引号 ②括号配对逐条提取完整对象。
+        # 判据：坏元素不该拖垮整批（AGENTS.md 既有教训）。
+        import sys as _sys
+        from pathlib import Path as _Path
+        _root = str(_Path(__file__).resolve().parent.parent)
+        if _root not in _sys.path:
+            _sys.path.insert(0, _root)
+        body = response[start:]
+        try:
+            from local.analyze import MacroAnalyzer as _MA
+            body = _MA._repair_unescaped_quotes(body)
+        except Exception:
+            pass
+        end = body.rfind("]")
+        if end > 0:
+            try:
+                return json.loads(body[:end + 1])
+            except Exception:
+                pass
+        # 兜底：逐条提取完整对象（截断处的半条丢弃，前面的全保住）
+        items = []
         depth = 0
-        for i in range(start, len(response)):
-            if response[i] == "[":
-                depth += 1
-            elif response[i] == "]":
-                depth -= 1
+        obj_start = -1
+        in_string = False
+        escaped = False
+        for idx, ch in enumerate(body):
+            if in_string:
+                if escaped:
+                    escaped = False
+                elif ch == "\\":
+                    escaped = True
+                elif ch == '"':
+                    in_string = False
+                continue
+            if ch == '"':
+                in_string = True
+            elif ch == "{":
                 if depth == 0:
-                    return json.loads(response[start:i + 1])
-        raise ValueError("AI 输出 JSON 不完整")
+                    obj_start = idx
+                depth += 1
+            elif ch == "}":
+                if depth > 0:
+                    depth -= 1
+                    if depth == 0 and obj_start >= 0:
+                        try:
+                            obj = json.loads(body[obj_start:idx + 1])
+                            if isinstance(obj, dict) and obj.get("hyp_id"):
+                                items.append(obj)
+                        except Exception:
+                            pass
+                        obj_start = -1
+        if items:
+            return items
+        raise ValueError("AI 输出 JSON 无法解析（抢救后仍无完整条目）")
 
     def record(self, evidence_entry, diagnosis, model=None):
         """写入/更新一条证据的矩阵行。

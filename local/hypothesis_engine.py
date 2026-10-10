@@ -423,7 +423,13 @@ CRITICAL requirements for thresholds:
                 except Exception:
                     pass
                 if undiag:
-                    print(f"[ACH] 诊断 {len(undiag)} 条证据 × {len(majors)} 个 major 假设")
+                    # 批上限（2026-10-10）：原先无上限，积压 120 条 × mimo 53s/条
+                    # ≈ 106 分钟，周循环被 ACH 拖死（其余步骤全被推迟）。日常增量
+                    # 由 refresh 每轮的 ach_daily_batch（20h 节流）负责，这里只做
+                    # 周度收尾：上限 30 条 ≈ 27 分钟，其余留给日常批消化。
+                    undiag = undiag[:30]
+                    print(f"[ACH] 诊断 {len(undiag)} 条证据 × {len(majors)} 个 major 假设"
+                          f"（周度上限 30，积压由日常批消化）")
                     for e in undiag:
                         try:
                             diag = ach.ai_diagnose(e, self.analyzer, jev=jev)

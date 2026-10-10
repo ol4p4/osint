@@ -136,6 +136,13 @@ class JevClient:
         self.record_usage = record_usage
         self.channel = channel
         self._channels = self._build_channels()
+        # 通道熔断表（2026-10-10）：记录本次进程内已判定"必然失败"的通道名。
+        # 动机：实测 JEV 两通道均被地域封锁（HTTP 451 "not available in your region"
+        # / "Endpoint is unavailable"），而**每条证据**都会重走「2 通道 × 3 重试 ×
+        # 120s 超时」= 最坏 720s → 1600s 预算连 3 条都跑不完，日志表现为整批
+        # `timeout, 跳过`、零产出，看上去像"假设链跑不通"。
+        # 451/403 这类**地域/策略性拒绝**重试必然无效，命中即熔断该通道。
+        self._dead_channels = set()
 
     def _build_channels(self):
         """按优先级排出可用通道 [(name, url, model, key), ...]。"""
@@ -154,16 +161,24 @@ class JevClient:
 
     @property
     def available(self):
-        return bool(self._channels)
+        """是否有**未被熔断**的通道。熔断后 available 转 False，
+        调用方（ai_diagnose）据此直接走 mimo，不再逐条白撞。"""
+        return bool([c for c in self._channels if c[0] not in self._dead_channels])
 
     # ---------- 核心调用 ----------
+    def _live_channels(self):
+        return [c for c in self._channels if c[0] not in self._dead_channels]
+
     def systemone(self, state, questions, timeout=120):
         """POST /systemone → 原始响应 dict。按通道顺序尝试，全失败抛 JevError。"""
-        if not self._channels:
-            raise JevError("JEV 无可用通道（paid 需 key：环境变量 TYPESAFE_API_KEY "
-                           "或 config.local.yaml 的 jev.api_key；free 通道无需 key）")
+        live = self._live_channels()
+        if not live:
+            raise JevError("JEV 无可用通道"
+                           + ("（均已被熔断：地域封锁/策略拒绝）" if self._channels else
+                              "（paid 需 key：环境变量 TYPESAFE_API_KEY 或 "
+                              "config.local.yaml 的 jev.api_key；free 通道无需 key）"))
         errors = []
-        for name, url, model, key in self._channels:
+        for name, url, model, key in live:
             payload = {"model": model, "state": state, "questions": questions}
             last = None
             for attempt in range(1, self.retries + 1):
@@ -185,6 +200,11 @@ class JevClient:
                     except Exception:
                         pass
                     last = f"HTTP {ex.code}: {body}"
+                    # 地域/策略性拒绝（451 未获法律许可、403 禁止）→ 该通道本次
+                    # 进程内必然失败，熔断之，避免后续每条证据重复白等超时。
+                    if ex.code in (451, 403):
+                        self._dead_channels.add(name)
+                        break
                     # 4xx（除 429）是参数/鉴权问题，本通道重试无用 → 立即换通道
                     if ex.code != 429 and 400 <= ex.code < 500:
                         break
