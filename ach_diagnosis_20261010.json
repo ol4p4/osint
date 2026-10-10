@@ -1,211 +1,11 @@
 {
  "date": "20261010",
- "generated_at": "2026-10-10T12:15:28.755609+00:00",
+ "generated_at": "2026-10-10T13:41:44.416273+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "note": "CI 侧只读诊断产物；本地按需合并进 ach_matrix.json",
  "diagnosed": 60,
  "failed": 0,
  "results": [
-  {
-   "key": "ev_1b20a02519",
-   "hyp_id": "HM100",
-   "date": "2026-10-10",
-   "summary": "全球量子计算企业已超400家，产业化落地提速",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.25
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.25
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 2.25
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.25
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.25
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 2.25
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.25
-    }
-   }
-  },
-  {
-   "key": "ev_d2e577ef7c",
-   "hyp_id": "HM100",
-   "date": "2026-10-10",
-   "summary": "中国黄金周人均旅游消费创四年新低 出境游需求强劲",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.0
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.0
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.0
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.0
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.0
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.0
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.0
-    }
-   }
-  },
-  {
-   "key": "ev_0dacbf1c80",
-   "hyp_id": "HM100",
-   "date": "2026-10-10",
-   "summary": "普京：俄愿向美国及全球市场供应石油和石油产品",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.9,
-     "gate": 0.1,
-     "selectivity": 1.38
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.38
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.38
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.38
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.89,
-     "gate": 0.11,
-     "selectivity": 1.38
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.38
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.38
-    }
-   }
-  },
-  {
-   "key": "ev_37133a397b",
-   "hyp_id": "HM100",
-   "date": "2026-10-10",
-   "summary": "北京：着力提高入境消费便利化水平",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.0
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.0
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.0
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 1.0
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 1.0
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.0
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.0
-    }
-   }
-  },
   {
    "key": "ev_a50a430a49",
    "hyp_id": "HM100",
@@ -216,43 +16,43 @@
      "code": "N",
      "conf": 0.92,
      "gate": 0.08,
-     "selectivity": 2.0
+     "selectivity": 2.67
     },
     "HM101": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.0
+     "selectivity": 2.67
     },
     "HM102": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 2.0
+     "selectivity": 2.67
     },
     "HM001": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.0
+     "selectivity": 2.67
     },
     "HM002": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 2.0
+     "selectivity": 2.67
     },
     "HM003": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.0
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.67
     },
     "HM004": {
      "code": "N",
      "conf": 0.98,
      "gate": 0.02,
-     "selectivity": 2.0
+     "selectivity": 2.67
     }
    }
   },
@@ -262,47 +62,47 @@
    "date": "2026-10-10",
    "summary": "霍尔木兹危机导致欧盟天然气库存不足，冬季面临短缺",
    "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.86,
-     "gate": 0.14,
-     "selectivity": 2.29
-    },
     "HM101": {
      "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 2.29
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.67
     },
     "HM102": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 2.29
+     "selectivity": 2.67
     },
     "HM001": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 2.29
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.84,
-     "gate": 0.16,
-     "selectivity": 2.29
+     "selectivity": 2.67
     },
     "HM003": {
      "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 2.29
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.67
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.29
+     "selectivity": 2.67
+    },
+    "HM100": {
+     "code": "N",
+     "conf": 0.59,
+     "gate": 0.15,
+     "selectivity": 2.67
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 1.0,
+     "gate": 0.16,
+     "selectivity": 2.67
     }
    }
   },
@@ -314,45 +114,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.25
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
     },
     "HM101": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.25
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
     },
     "HM102": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.25
+     "selectivity": 1.5
     },
     "HM001": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.25
+     "selectivity": 1.5
     },
     "HM002": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.25
+     "selectivity": 1.5
     },
     "HM003": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.25
+     "selectivity": 1.5
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.25
+     "selectivity": 1.5
     }
    }
   },
@@ -364,45 +164,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.9,
-     "gate": 0.1,
-     "selectivity": 2.0
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 2.2
     },
     "HM101": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 2.0
+     "selectivity": 2.2
     },
     "HM102": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.0
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.2
     },
     "HM001": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.0
+     "selectivity": 2.2
     },
     "HM002": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 2.0
+     "selectivity": 2.2
     },
     "HM003": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.0
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.2
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.0
+     "selectivity": 2.2
     }
    }
   },
@@ -416,43 +216,43 @@
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.67
+     "selectivity": 1.25
     },
     "HM101": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.67
+     "selectivity": 1.25
     },
     "HM102": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.67
+     "selectivity": 1.25
     },
     "HM001": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.67
+     "selectivity": 1.25
     },
     "HM002": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.67
+     "selectivity": 1.25
     },
     "HM003": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.67
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.67
+     "selectivity": 1.25
     }
    }
   },
@@ -464,45 +264,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.0
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
     },
     "HM101": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.0
+     "selectivity": 1.33
     },
     "HM102": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.0
+     "selectivity": 1.33
     },
     "HM001": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.0
+     "selectivity": 1.33
     },
     "HM002": {
      "code": "N",
      "conf": 0.98,
      "gate": 0.02,
-     "selectivity": 1.0
+     "selectivity": 1.33
     },
     "HM003": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.0
+     "selectivity": 1.33
     },
     "HM004": {
      "code": "N",
      "conf": 0.98,
      "gate": 0.02,
-     "selectivity": 1.0
+     "selectivity": 1.33
     }
    }
   },
@@ -514,45 +314,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 3.0
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.67
     },
     "HM101": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 3.0
+     "selectivity": 2.67
     },
     "HM102": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 3.0
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.67
     },
     "HM001": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 3.0
+     "selectivity": 2.67
     },
     "HM002": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 3.0
+     "selectivity": 2.67
     },
     "HM003": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 3.0
+     "selectivity": 2.67
     },
     "HM004": {
      "code": "N",
      "conf": 0.98,
      "gate": 0.02,
-     "selectivity": 3.0
+     "selectivity": 2.67
     }
    }
   },
@@ -614,45 +414,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.89,
-     "gate": 0.11,
-     "selectivity": 1.83
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.67
     },
     "HM101": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 1.83
+     "selectivity": 1.67
     },
     "HM102": {
      "code": "N",
      "conf": 0.91,
      "gate": 0.09,
-     "selectivity": 1.83
+     "selectivity": 1.67
     },
     "HM001": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.83
+     "selectivity": 1.67
     },
     "HM002": {
      "code": "N",
      "conf": 0.92,
      "gate": 0.08,
-     "selectivity": 1.83
+     "selectivity": 1.67
     },
     "HM003": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 1.83
+     "selectivity": 1.67
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.83
+     "selectivity": 1.67
     }
    }
   },
@@ -664,45 +464,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.88,
-     "gate": 0.12,
-     "selectivity": 2.4
+     "conf": 0.87,
+     "gate": 0.13,
+     "selectivity": 2.6
     },
     "HM101": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 2.4
+     "selectivity": 2.6
     },
     "HM102": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 2.4
+     "selectivity": 2.6
     },
     "HM001": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 2.4
+     "selectivity": 2.6
     },
     "HM002": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 2.4
+     "selectivity": 2.6
     },
     "HM003": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.4
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.6
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.4
+     "selectivity": 2.6
     }
    }
   },
@@ -714,45 +514,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.0
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
     },
     "HM101": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.0
+     "selectivity": 1.33
     },
     "HM102": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.0
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.33
     },
     "HM001": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.0
+     "selectivity": 1.33
     },
     "HM002": {
      "code": "N",
      "conf": 0.98,
      "gate": 0.02,
-     "selectivity": 1.0
+     "selectivity": 1.33
     },
     "HM003": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.0
+     "selectivity": 1.33
     },
     "HM004": {
      "code": "N",
      "conf": 0.98,
      "gate": 0.02,
-     "selectivity": 1.0
+     "selectivity": 1.33
     }
    }
   },
@@ -764,8 +564,8 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
+     "conf": 0.97,
+     "gate": 0.03,
      "selectivity": 1.33
     },
     "HM101": {
@@ -776,8 +576,8 @@
     },
     "HM102": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
+     "conf": 0.97,
+     "gate": 0.03,
      "selectivity": 1.33
     },
     "HM001": {
@@ -832,8 +632,8 @@
     },
     "HM001": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
+     "conf": 0.96,
+     "gate": 0.04,
      "selectivity": 1.75
     },
     "HM002": {
@@ -866,43 +666,43 @@
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 2.67
+     "selectivity": 2.5
     },
     "HM102": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 2.67
+     "selectivity": 2.5
     },
     "HM001": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 2.67
+     "selectivity": 2.5
     },
     "HM002": {
      "code": "N",
      "conf": 0.9,
      "gate": 0.1,
-     "selectivity": 2.67
+     "selectivity": 2.5
     },
     "HM003": {
      "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 2.67
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.5
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.67
+     "selectivity": 2.5
     },
     "HM100": {
      "code": "N",
-     "conf": 0.78,
-     "gate": 0.16,
-     "selectivity": 2.67
+     "conf": 0.79,
+     "gate": 0.15,
+     "selectivity": 2.5
     }
    }
   },
@@ -914,45 +714,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 2.25
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.6
     },
     "HM101": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.25
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
     },
     "HM102": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 2.25
+     "selectivity": 1.6
     },
     "HM001": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.25
+     "selectivity": 1.6
     },
     "HM002": {
      "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 2.25
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
     },
     "HM003": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.25
+     "selectivity": 1.6
     },
     "HM004": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.25
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
     }
    }
   },
@@ -966,43 +766,43 @@
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 2.25
+     "selectivity": 2.5
     },
     "HM101": {
      "code": "N",
      "conf": 0.91,
      "gate": 0.09,
-     "selectivity": 2.25
+     "selectivity": 2.5
     },
     "HM102": {
      "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 2.25
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 2.5
     },
     "HM001": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.25
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.5
     },
     "HM002": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.25
+     "selectivity": 2.5
     },
     "HM003": {
      "code": "N",
      "conf": 0.93,
      "gate": 0.07,
-     "selectivity": 2.25
+     "selectivity": 2.5
     },
     "HM004": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.25
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.5
     }
    }
   },
@@ -1020,8 +820,8 @@
     },
     "HM101": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
+     "conf": 0.94,
+     "gate": 0.06,
      "selectivity": 1.2
     },
     "HM102": {
@@ -1038,8 +838,8 @@
     },
     "HM002": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
+     "conf": 0.95,
+     "gate": 0.05,
      "selectivity": 1.2
     },
     "HM003": {
@@ -1050,8 +850,8 @@
     },
     "HM004": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
+     "conf": 0.96,
+     "gate": 0.04,
      "selectivity": 1.2
     }
    }
@@ -1116,43 +916,43 @@
      "code": "N",
      "conf": 0.92,
      "gate": 0.08,
-     "selectivity": 1.33
+     "selectivity": 1.14
     },
     "HM101": {
      "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.33
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.14
     },
     "HM102": {
      "code": "N",
      "conf": 0.92,
      "gate": 0.08,
-     "selectivity": 1.33
+     "selectivity": 1.14
     },
     "HM001": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.33
+     "selectivity": 1.14
     },
     "HM002": {
      "code": "N",
      "conf": 0.93,
      "gate": 0.07,
-     "selectivity": 1.33
+     "selectivity": 1.14
     },
     "HM003": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 1.33
+     "selectivity": 1.14
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.33
+     "selectivity": 1.14
     }
    }
   },
@@ -1164,45 +964,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 2.17
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.0
     },
     "HM101": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 2.17
+     "selectivity": 2.0
     },
     "HM102": {
      "code": "N",
      "conf": 0.92,
      "gate": 0.08,
-     "selectivity": 2.17
+     "selectivity": 2.0
     },
     "HM001": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 2.17
+     "selectivity": 2.0
     },
     "HM002": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 2.17
+     "selectivity": 2.0
     },
     "HM003": {
      "code": "N",
-     "conf": 0.87,
-     "gate": 0.13,
-     "selectivity": 2.17
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 2.0
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.17
+     "selectivity": 2.0
     }
    }
   },
@@ -1216,43 +1016,43 @@
      "code": "N",
      "conf": 0.93,
      "gate": 0.07,
-     "selectivity": 2.33
+     "selectivity": 2.14
     },
     "HM101": {
      "code": "N",
-     "conf": 0.86,
-     "gate": 0.14,
-     "selectivity": 2.33
+     "conf": 0.85,
+     "gate": 0.15,
+     "selectivity": 2.14
     },
     "HM102": {
      "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 2.33
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.14
     },
     "HM001": {
      "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 2.33
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.14
     },
     "HM002": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 2.33
+     "selectivity": 2.14
     },
     "HM003": {
      "code": "N",
      "conf": 0.93,
      "gate": 0.07,
-     "selectivity": 2.33
+     "selectivity": 2.14
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.33
+     "selectivity": 2.14
     }
    }
   },
@@ -1276,14 +1076,14 @@
     },
     "HM102": {
      "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
+     "conf": 0.94,
+     "gate": 0.06,
      "selectivity": 1.67
     },
     "HM001": {
      "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
+     "conf": 0.95,
+     "gate": 0.05,
      "selectivity": 1.67
     },
     "HM002": {
@@ -1316,43 +1116,43 @@
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.25
+     "selectivity": 1.5
     },
     "HM101": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.25
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
     },
     "HM102": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.25
+     "selectivity": 1.5
     },
     "HM001": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.25
+     "selectivity": 1.5
     },
     "HM002": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.25
+     "selectivity": 1.5
     },
     "HM003": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.25
+     "selectivity": 1.5
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.25
+     "selectivity": 1.5
     }
    }
   },
@@ -1382,20 +1182,20 @@
     },
     "HM001": {
      "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
+     "conf": 0.92,
+     "gate": 0.08,
      "selectivity": 1.62
     },
     "HM002": {
      "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
+     "conf": 0.94,
+     "gate": 0.06,
      "selectivity": 1.62
     },
     "HM003": {
      "code": "N",
-     "conf": 0.89,
-     "gate": 0.11,
+     "conf": 0.9,
+     "gate": 0.1,
      "selectivity": 1.62
     },
     "HM004": {
@@ -1466,43 +1266,43 @@
      "code": "N",
      "conf": 0.9,
      "gate": 0.1,
-     "selectivity": 2.4
+     "selectivity": 2.2
     },
     "HM101": {
      "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 2.4
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.2
     },
     "HM102": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 2.4
+     "selectivity": 2.2
     },
     "HM001": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 2.4
+     "selectivity": 2.2
     },
     "HM002": {
      "code": "N",
-     "conf": 0.88,
-     "gate": 0.12,
-     "selectivity": 2.4
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 2.2
     },
     "HM003": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 2.4
+     "selectivity": 2.2
     },
     "HM004": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.4
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.2
     }
    }
   },
@@ -1514,45 +1314,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.9,
-     "gate": 0.1,
-     "selectivity": 1.44
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.33
     },
     "HM101": {
      "code": "N",
-     "conf": 0.89,
-     "gate": 0.11,
-     "selectivity": 1.44
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 1.33
     },
     "HM102": {
      "code": "N",
-     "conf": 0.87,
-     "gate": 0.13,
-     "selectivity": 1.44
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 1.33
     },
     "HM001": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 1.44
+     "selectivity": 1.33
     },
     "HM002": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 1.44
+     "selectivity": 1.33
     },
     "HM003": {
      "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 1.44
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.33
     },
     "HM004": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.44
+     "selectivity": 1.33
     }
    }
   },
@@ -1576,8 +1376,8 @@
     },
     "HM102": {
      "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
+     "conf": 0.95,
+     "gate": 0.05,
      "selectivity": 1.4
     },
     "HM001": {
@@ -1588,14 +1388,14 @@
     },
     "HM002": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
+     "conf": 0.96,
+     "gate": 0.04,
      "selectivity": 1.4
     },
     "HM003": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
+     "conf": 0.95,
+     "gate": 0.05,
      "selectivity": 1.4
     },
     "HM004": {
@@ -1614,45 +1414,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.4
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.2
     },
     "HM101": {
      "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.4
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.2
     },
     "HM102": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.4
+     "selectivity": 1.2
     },
     "HM001": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.4
+     "selectivity": 1.2
     },
     "HM002": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.4
+     "selectivity": 1.2
     },
     "HM003": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.4
+     "selectivity": 1.2
     },
     "HM004": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.4
+     "selectivity": 1.2
     }
    }
   },
@@ -1664,45 +1464,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.6
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.8
     },
     "HM101": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.6
+     "selectivity": 1.8
     },
     "HM102": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.6
+     "selectivity": 1.8
     },
     "HM001": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.6
+     "selectivity": 1.8
     },
     "HM002": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 1.6
+     "selectivity": 1.8
     },
     "HM003": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.6
+     "selectivity": 1.8
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.6
+     "selectivity": 1.8
     }
    }
   },
@@ -1744,8 +1544,8 @@
     },
     "HM003": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
+     "conf": 0.95,
+     "gate": 0.05,
      "selectivity": 1.4
     },
     "HM004": {
@@ -1814,45 +1614,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 5.25
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 4.2
     },
     "HM102": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 5.25
+     "selectivity": 4.2
     },
     "HM001": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 5.25
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 4.2
     },
     "HM002": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 5.25
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 4.2
     },
     "HM003": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 5.25
+     "selectivity": 4.2
     },
     "HM004": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 5.25
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 4.2
     },
     "HM101": {
      "code": "I",
-     "conf": 0.72,
+     "conf": 0.69,
      "gate": 0.21,
-     "selectivity": 5.25
+     "selectivity": 4.2
     }
    }
   },
@@ -1866,43 +1666,43 @@
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 8.2
+     "selectivity": 8.4
     },
     "HM102": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 8.2
+     "selectivity": 8.4
     },
     "HM001": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 8.2
+     "selectivity": 8.4
     },
     "HM002": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 8.2
+     "selectivity": 8.4
     },
     "HM003": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 8.2
+     "selectivity": 8.4
     },
     "HM004": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 8.2
+     "selectivity": 8.4
     },
     "HM101": {
      "code": "N",
-     "conf": 0.51,
-     "gate": 0.41,
-     "selectivity": 8.2
+     "conf": 0.55,
+     "gate": 0.42,
+     "selectivity": 8.4
     }
    }
   },
@@ -1932,8 +1732,8 @@
     },
     "HM001": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
+     "conf": 0.95,
+     "gate": 0.05,
      "selectivity": 2.2
     },
     "HM002": {
@@ -1970,14 +1770,14 @@
     },
     "HM101": {
      "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
+     "conf": 0.91,
+     "gate": 0.09,
      "selectivity": 1.5
     },
     "HM102": {
      "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
+     "conf": 0.93,
+     "gate": 0.07,
      "selectivity": 1.5
     },
     "HM001": {
@@ -2032,8 +1832,8 @@
     },
     "HM001": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
+     "conf": 0.95,
+     "gate": 0.05,
      "selectivity": 1.71
     },
     "HM002": {
@@ -2066,43 +1866,43 @@
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.25
+     "selectivity": 1.5
     },
     "HM101": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.25
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
     },
     "HM102": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.25
+     "selectivity": 1.5
     },
     "HM001": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.25
+     "selectivity": 1.5
     },
     "HM002": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.25
+     "selectivity": 1.5
     },
     "HM003": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.25
+     "selectivity": 1.5
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.25
+     "selectivity": 1.5
     }
    }
   },
@@ -2116,43 +1916,43 @@
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.75
+     "selectivity": 1.4
     },
     "HM101": {
      "code": "N",
      "conf": 0.93,
      "gate": 0.07,
-     "selectivity": 1.75
+     "selectivity": 1.4
     },
     "HM102": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.75
+     "selectivity": 1.4
     },
     "HM001": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.75
+     "selectivity": 1.4
     },
     "HM002": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.75
+     "selectivity": 1.4
     },
     "HM003": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.75
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.4
     },
     "HM004": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.75
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.4
     }
    }
   },
@@ -2182,8 +1982,8 @@
     },
     "HM001": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
+     "conf": 0.95,
+     "gate": 0.05,
      "selectivity": 1.71
     },
     "HM002": {
@@ -2200,8 +2000,8 @@
     },
     "HM004": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
+     "conf": 0.96,
+     "gate": 0.04,
      "selectivity": 1.71
     }
    }
@@ -2216,43 +2016,43 @@
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 2.5
+     "selectivity": 2.33
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.86,
+     "gate": 0.14,
+     "selectivity": 2.33
     },
     "HM102": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 2.5
+     "selectivity": 2.33
     },
     "HM001": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 2.5
+     "selectivity": 2.33
     },
     "HM002": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.5
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.33
     },
     "HM003": {
      "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 2.5
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.33
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.5
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.15,
-     "selectivity": 2.5
+     "selectivity": 2.33
     }
    }
   },
@@ -2282,14 +2082,14 @@
     },
     "HM001": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
+     "conf": 0.95,
+     "gate": 0.05,
      "selectivity": 1.43
     },
     "HM002": {
      "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
+     "conf": 0.92,
+     "gate": 0.08,
      "selectivity": 1.43
     },
     "HM003": {
@@ -2300,8 +2100,8 @@
     },
     "HM004": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
+     "conf": 0.97,
+     "gate": 0.03,
      "selectivity": 1.43
     }
    }
@@ -2314,45 +2114,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.89,
-     "gate": 0.11,
-     "selectivity": 2.2
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 2.0
     },
     "HM101": {
      "code": "N",
      "conf": 0.93,
      "gate": 0.07,
-     "selectivity": 2.2
+     "selectivity": 2.0
     },
     "HM102": {
      "code": "N",
      "conf": 0.9,
      "gate": 0.1,
-     "selectivity": 2.2
+     "selectivity": 2.0
     },
     "HM001": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 2.2
+     "selectivity": 2.0
     },
     "HM002": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 2.2
+     "selectivity": 2.0
     },
     "HM003": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.2
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.0
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.2
+     "selectivity": 2.0
     }
    }
   },
@@ -2466,43 +2266,43 @@
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.5
+     "selectivity": 2.0
     },
     "HM101": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.5
+     "selectivity": 2.0
     },
     "HM102": {
      "code": "N",
      "conf": 0.98,
      "gate": 0.02,
-     "selectivity": 1.5
+     "selectivity": 2.0
     },
     "HM001": {
      "code": "N",
      "conf": 0.98,
      "gate": 0.02,
-     "selectivity": 1.5
+     "selectivity": 2.0
     },
     "HM002": {
      "code": "N",
      "conf": 0.98,
      "gate": 0.02,
-     "selectivity": 1.5
+     "selectivity": 2.0
     },
     "HM003": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.5
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.0
     },
     "HM004": {
      "code": "N",
      "conf": 0.98,
      "gate": 0.02,
-     "selectivity": 1.5
+     "selectivity": 2.0
     }
    }
   },
@@ -2566,43 +2366,43 @@
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 2.25
+     "selectivity": 2.5
     },
     "HM101": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 2.25
+     "selectivity": 2.5
     },
     "HM102": {
      "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 2.25
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 2.5
     },
     "HM001": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.25
+     "selectivity": 2.5
     },
     "HM002": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.25
+     "selectivity": 2.5
     },
     "HM003": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.25
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.5
     },
     "HM004": {
      "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 2.25
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.5
     }
    }
   },
@@ -2614,45 +2414,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 1.44
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.2
     },
     "HM101": {
      "code": "N",
-     "conf": 0.87,
-     "gate": 0.13,
-     "selectivity": 1.44
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 1.2
     },
     "HM102": {
      "code": "N",
      "conf": 0.88,
      "gate": 0.12,
-     "selectivity": 1.44
+     "selectivity": 1.2
     },
     "HM001": {
      "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.44
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.2
     },
     "HM002": {
      "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.44
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.2
     },
     "HM003": {
      "code": "N",
      "conf": 0.9,
      "gate": 0.1,
-     "selectivity": 1.44
+     "selectivity": 1.2
     },
     "HM004": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.44
+     "selectivity": 1.2
     }
    }
   },
@@ -2664,45 +2464,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.75
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.33
     },
     "HM101": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.75
+     "selectivity": 2.33
     },
     "HM102": {
      "code": "N",
      "conf": 0.93,
      "gate": 0.07,
-     "selectivity": 1.75
+     "selectivity": 2.33
     },
     "HM001": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.75
+     "selectivity": 2.33
     },
     "HM002": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.75
+     "selectivity": 2.33
     },
     "HM003": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.75
+     "selectivity": 2.33
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.75
+     "selectivity": 2.33
     }
    }
   },
@@ -2716,43 +2516,43 @@
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.5
+     "selectivity": 1.75
     },
     "HM101": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.5
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.75
     },
     "HM102": {
      "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.5
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.75
     },
     "HM001": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.5
+     "selectivity": 1.75
     },
     "HM002": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.5
+     "selectivity": 1.75
     },
     "HM003": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 1.5
+     "selectivity": 1.75
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.5
+     "selectivity": 1.75
     }
    }
   },
@@ -2766,43 +2566,43 @@
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 2.0
+     "selectivity": 2.25
     },
     "HM101": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 2.0
+     "selectivity": 2.25
     },
     "HM102": {
      "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 2.0
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 2.25
     },
     "HM001": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.0
+     "selectivity": 2.25
     },
     "HM002": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.0
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.25
     },
     "HM003": {
      "code": "N",
      "conf": 0.92,
      "gate": 0.08,
-     "selectivity": 2.0
+     "selectivity": 2.25
     },
     "HM004": {
      "code": "N",
      "conf": 0.98,
      "gate": 0.02,
-     "selectivity": 2.0
+     "selectivity": 2.25
     }
    }
   },
@@ -2816,43 +2616,43 @@
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 2.25
+     "selectivity": 2.0
     },
     "HM101": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 2.25
+     "selectivity": 2.0
     },
     "HM102": {
      "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 2.25
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.0
     },
     "HM001": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.25
+     "selectivity": 2.0
     },
     "HM002": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.25
+     "selectivity": 2.0
     },
     "HM003": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 2.25
+     "selectivity": 2.0
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.25
+     "selectivity": 2.0
     }
    }
   },
@@ -2864,45 +2664,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 1.5
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.67
     },
     "HM101": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 1.5
+     "selectivity": 1.67
     },
     "HM102": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 1.5
+     "selectivity": 1.67
     },
     "HM001": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.5
+     "selectivity": 1.67
     },
     "HM002": {
      "code": "N",
      "conf": 0.93,
      "gate": 0.07,
-     "selectivity": 1.5
+     "selectivity": 1.67
     },
     "HM003": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.5
+     "selectivity": 1.67
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.5
+     "selectivity": 1.67
     }
    }
   },
@@ -2916,43 +2716,43 @@
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 2.5
+     "selectivity": 2.0
     },
     "HM101": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.5
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.0
     },
     "HM102": {
      "code": "N",
      "conf": 0.9,
      "gate": 0.1,
-     "selectivity": 2.5
+     "selectivity": 2.0
     },
     "HM001": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.5
+     "selectivity": 2.0
     },
     "HM002": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 2.5
+     "selectivity": 2.0
     },
     "HM003": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.5
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.0
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.5
+     "selectivity": 2.0
     }
    }
   },
@@ -2964,45 +2764,245 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 4.0
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 3.75
     },
     "HM101": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 4.0
+     "selectivity": 3.75
     },
     "HM001": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 4.0
+     "selectivity": 3.75
     },
     "HM002": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 4.0
+     "selectivity": 3.75
     },
     "HM003": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 4.0
+     "selectivity": 3.75
     },
     "HM004": {
      "code": "N",
      "conf": 0.98,
      "gate": 0.02,
-     "selectivity": 4.0
+     "selectivity": 3.75
     },
     "HM102": {
      "code": "N",
      "conf": 0.98,
-     "gate": 0.16,
+     "gate": 0.15,
+     "selectivity": 3.75
+    }
+   }
+  },
+  {
+   "key": "ev_a8f2f17197",
+   "hyp_id": "HM102",
+   "date": "2026-10-10",
+   "summary": "商务部：中方愿通过“绿色通道”机制，为稀土及永磁体对欧出口许可审批继续提供便利",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.92,
+     "gate": 0.08,
      "selectivity": 4.0
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 4.0
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 4.0
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 4.0
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 4.0
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 4.0
+    },
+    "HM102": {
+     "code": "I",
+     "conf": 0.72,
+     "gate": 0.28,
+     "selectivity": 4.0
+    }
+   }
+  },
+  {
+   "key": "ev_365ca4fc39",
+   "hyp_id": "HM102",
+   "date": "2026-10-10",
+   "summary": "乌克兰2027年需额外670亿美元军费，自身财政收入仅717亿",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.2
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.2
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.2
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.2
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.2
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.2
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.2
+    }
+   }
+  },
+  {
+   "key": "ev_4353e2b7f9",
+   "hyp_id": "HM102",
+   "date": "2026-10-10",
+   "summary": "2026年前8个月零售贸易营业额高于去年同期——俄罗斯工业部",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.4
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.4
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.4
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.4
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.4
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.4
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.4
+    }
+   }
+  },
+  {
+   "key": "ev_1174657e08",
+   "hyp_id": "HM102",
+   "date": "2026-10-10",
+   "summary": "AI回报疑虑暂退，标普纳指反弹，Lumentum领涨光通信股，电信股重挫，油价“过山车”",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.25
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.25
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.25
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.25
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.25
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.25
     }
    }
   }
