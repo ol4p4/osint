@@ -43,6 +43,7 @@ HYP_FILE = Path(r"D:\osint\data\hypotheses\active_hypotheses.json")
 INTEL_DIR = Path(r"D:\osint\data")
 HISTORY_FILE = Path(r"D:\osint\data\indicator_history.json")
 MACRO_FILE = Path(r"D:\osint\data\macro_indicators.json")
+FACTS_FILE = Path(r"D:\osint\data\indicator_facts.json")
 
 # FRED series mapping for known indicators
 FRED_SERIES = {
@@ -235,15 +236,54 @@ def lookup_macro(indicator_name):
         return None
     return {"value": float(val), "date": entry.get("date", ""), "source": "macro_snapshot:" + hit_id}
 
+def lookup_facts(indicator_name):
+    """检索核实层（2026-10-10）：读 data/indicator_facts.json，按指标名精确匹配。
+
+    定位：`fetch_indicator_value` 的其他分支都是**自动抓取**（映射表里没有就返回
+    None → 面板显示"未知"）。但"未知"≠"查不到"——SIPRI 军费、DSCA 对台军售这类
+    公开数据只是管道没接上。本层存**经检索核实、带来源 URL + 原文引证**的值，
+    由 tools/indicator_facts.py 维护。
+
+    只做精确名匹配（不做子串），避免重蹈 MACRO_ALIASES 语义错配的覆辙。
+    """
+    if not FACTS_FILE.exists():
+        return None
+    try:
+        facts = (json.loads(FACTS_FILE.read_text(encoding="utf-8")) or {}).get("facts", {})
+    except Exception:
+        return None
+    e = facts.get(indicator_name)
+    if not e or e.get("value") is None:
+        return None
+    val = e["value"]
+    unit = e.get("unit") or ""
+    # 口径说明必须随值一起带出（2026-10-10）：检索值常与阈值**基数年份不同**
+    # （如 SIPRI 给 2024→2025 增速，而阈值要"较 2026 年"），AI 判定/面板
+    # 若看不到 note 会把不同基数的数字直接比，得出错误结论。
+    return {"value": val,
+            "date": e.get("as_of", ""),
+            "source": f"检索核实:{e.get('source_name') or '未标'}"
+                      + (f"（{unit}）" if unit else ""),
+            "source_url": e.get("source_url", ""),
+            "quote": e.get("quote", ""),
+            "note": e.get("note", "")}
+
 def fetch_indicator_value(indicator_name):
     """Try multiple sources to fetch indicator value
-    优先级：本地宏观快照 → FRED → WorldBank → Frankfurter（汇率类）
+    优先级：检索核实层 → 本地宏观快照 → FRED → WorldBank → Frankfurter（汇率类）
 
     派生量前置拦截（2026-10-10）：指标名若是「差异/占比/偏离/收敛」等派生量，
     任何单一原始序列都答不了它——必须由计算或 AI 裁判给出。实测放开层级后
     「老年抚养比年均增速」被 WorldBank 的抚养比**水平值** 14.91 填上、
     「AI资本开支增速与GDP增速偏离度」被 GDP 增速填上，都是量纲/语义错配。
     """
+    # ⓪ 检索核实层（2026-10-10）：显式维护、带来源 URL + 原文引证的值。
+    # **必须先于派生量护栏**——护栏挡的是"自动匹配填错值"，而事实库是人工/agent
+    # 核实过的，它答得了派生量（如"三国军费开支同比增长率"可由 SIPRI 三国增速算出）。
+    fact = lookup_facts(indicator_name)
+    if fact:
+        return fact
+
     for mk in MACRO_DERIVED_MARKERS:
         if mk in indicator_name:
             return None
