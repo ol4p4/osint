@@ -27,6 +27,7 @@ ALLOWED_HOSTS = {
     "data.stats.gov.cn",
     "tradingeconomics.com",
     "economy.caixin.com",
+    "hq.sinajs.cn",   # 新浪实时汇率（2026-10-11）：境内直连、分钟级，替代 Frankfurter 的 T-1 延迟
 }
 
 
@@ -44,8 +45,11 @@ def _host_is_safe(host):
     return True
 
 
-def _get(url, timeout=TIMEOUT):
+def _get(url, timeout=TIMEOUT, headers=None, encoding="utf-8"):
     """白名单 + IP 校验的 URL 拉取。
+
+    headers: 附加请求头（如新浪接口要求的 Referer），与默认 UA 合并。
+    encoding: 响应解码编码（新浪汇率接口是 GBK）。
 
     IPv6 回退（2026-10-10）：本机 IPv6 出口被 TLS 中间人劫持（证书链是自签的），
     urllib 默认按 getaddrinfo 顺序优先连 IPv6 → 对 Cloudflare 系主机（如
@@ -60,10 +64,13 @@ def _get(url, timeout=TIMEOUT):
         raise ValueError(f"host {parsed.hostname!r} not in whitelist")
     if not _host_is_safe(parsed.hostname):
         raise ValueError(f"host {parsed.hostname!r} resolves to unsafe IP")
-    req = Request(url, headers={"User-Agent": "osint-dashboard/1.0"})
+    req_headers = {"User-Agent": "osint-dashboard/1.0"}
+    if headers:
+        req_headers.update(headers)
+    req = Request(url, headers=req_headers)
     try:
         with urlopen(req, timeout=timeout) as r:
-            return r.read().decode("utf-8")
+            return r.read().decode(encoding)
     except Exception as e:
         # 仅 TLS 证书类错误才回退（DNS/超时等回退无意义）
         if "CERTIFICATE_VERIFY_FAILED" not in str(e):
@@ -76,7 +83,7 @@ def _get(url, timeout=TIMEOUT):
     socket.getaddrinfo = _ipv4_only
     try:
         with urlopen(req, timeout=timeout) as r:
-            return r.read().decode("utf-8")
+            return r.read().decode(encoding)
     finally:
         socket.getaddrinfo = _orig_gai
 
@@ -117,6 +124,42 @@ def fetch_fred(series_id, transformation=None):
     except Exception as e:
         return {"error": str(e)[:80], "source": "FRED"}
     return None
+
+
+def fetch_sina_fx(symbol):
+    """新浪实时汇率（2026-10-11）：境内直连、分钟级报价，替代 Frankfurter 的 T-1 延迟。
+
+    接口：https://hq.sinajs.cn/list=fx_susdcny（GBK 编码，需带 Referer 过防盗链）。
+    请求经 _get 发出——白名单、IP 安全校验、IPv6 回退全部复用同一处实现。
+
+    返回字段（前4个）：时间, 买价, 卖价, 昨结/中间价 … 行情日期。
+    周末/休市时返回最近一个交易日的收盘价（date 字段如实带日期+时间，
+    面板按此显示数据时点，不会把休市价误标成"现在"）。
+    """
+    import datetime as _dt
+    try:
+        text = _get(f"https://hq.sinajs.cn/list={symbol}",
+                    headers={"Referer": "https://finance.sina.com.cn"},
+                    encoding="gbk")
+        m = re.search(r'="([^"]*)"', text)
+        if not m:
+            return None
+        fields = m.group(1).split(",")
+        # 实测 fx_s* 汇率接口 18 字段（2026-10-11）：[0]=时间 [1]=买价 … [17]=行情日期
+        if len(fields) < 18 or not fields[1]:
+            return None
+        price = float(fields[1])          # 买价（外汇即期报价即现价）
+        ts_date = fields[-1]              # YYYY-MM-DD
+        ts_time = fields[0]               # HH:MM:SS（交易时段内分钟级）
+        date_str = ts_date
+        try:
+            _dt.datetime.strptime(ts_time, "%H:%M:%S")
+            date_str = f"{ts_date} {ts_time[:5]}"   # 交易时段内拼上时间
+        except ValueError:
+            pass
+        return {"value": round(price, 4), "date": date_str, "source": "新浪实时"}
+    except Exception as e:
+        return {"error": str(e)[:80], "source": "新浪实时"}
 
 
 def fetch_frankfurter(base, target):
@@ -427,12 +470,14 @@ def fetch_unemployment_history(prev=None):
 # 指标清单（按"对年轻失业毕业生视角重要性"排序）
 INDICATORS = [
     # 汇率（直接影响海淘/留学/外贸就业）
+    # 2026-10-11 切新浪实时（分钟级、境内直连）；Frankfurter 只到 T-1 且曾受
+    # IPv6 劫持/301 影响。新浪失败时 _get 的错误会自然落进 stale fallback。
     {"id": "fx_usd_cny", "label": "美元/人民币", "category": "汇率", "fmt": "{:.4f}",
-     "fetcher": lambda: fetch_frankfurter("USD", "CNY")},
+     "fetcher": lambda: fetch_sina_fx("fx_susdcny")},
     {"id": "fx_eur_cny", "label": "欧元/人民币", "category": "汇率", "fmt": "{:.4f}",
-     "fetcher": lambda: fetch_frankfurter("EUR", "CNY")},
+     "fetcher": lambda: fetch_sina_fx("fx_seurcny")},
     {"id": "fx_jpy_cny", "label": "日元/人民币（100日元）", "category": "汇率", "fmt": "{:.4f}",
-     "fetcher": lambda: fetch_frankfurter("JPY", "CNY")},
+     "fetcher": lambda: fetch_sina_fx("fx_sjpycny")},
     # 美国利率（影响全球资本流向、A 股估值）
     {"id": "us_10y", "label": "美国 10 年期国债收益率 (%)", "category": "利率", "fmt": "{:.3f}",
      "fetcher": lambda: fetch_fred("DGS10")},
