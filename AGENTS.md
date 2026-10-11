@@ -1464,9 +1464,16 @@ schema 描述、示例值、字段说明里的措辞都会被子模型模仿。
   `propose_hypotheses` 自动提议。全程有产物、有日志、可追溯。
 - **遗留 ①**：`propose_hypotheses` **没有被任何调度调用**（refresh/daily_run/CI 均无）——
   只能手动跑。是否接入周期调度（如每周随周循环跑一次、提议落盘待人审）留用户决策。
-- **遗留 ②**：JEV 免费通道的地域封锁（451）是**今天新出现的**（此前只有限流 429）。
-  若持续，ACH 判定长期走 mimo（53s/条 vs 0.66s/条），吞吐降 80 倍——需关注
-  opencode 端点是否恢复，或验证 CI 侧（境外网络）jev-1.13-free 是否可达。
+- **遗留 ②（已验证，2026-10-11 CI 探针）**：`jev-1.13-free` 的故障**不是本地网络问题**——
+  在 GitHub 美国 runner 上探针（run 38103907965）同样失败，curl 与项目 client 两种路径
+  均返 **422 `Upstream request failed: Endpoint is unavailable`**。结论：
+  **opencode zen 网关上游的 System One 端点本身故障**，等 opencode 修复即可，无需改代码。
+  期间 ACH 判定自动走 mimo（53s/条 vs 0.66s/条），熔断机制保证不拖死批量任务。
+  ⚠️ 更正一条旧记录：此前把 free 通道错误写成"451 地域封锁"是误读——**451 属于 paid
+  通道**（Typesafe 官方，"not available in your region"，老问题）；free 通道的真实错误
+  是上游故障，opencode 网关把它包装成了不同状态码（本地见过 451 包装、CI 见 422）。
+  **判据：同一错误体（`Endpoint is unavailable`）在不同网络/包装下状态码不同，
+  定位故障要读 error body 而非只看状态码。**
 
 **判据（可复用）**：
 - "批量任务整批零产出"先查**单条最坏耗时 × 队列长度 vs 预算**——比例失衡时
