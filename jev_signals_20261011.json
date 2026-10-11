@@ -1,0 +1,88 @@
+{
+ "date": "20261011",
+ "generated_at": "2026-10-11T02:10:38.096650+00:00",
+ "channel": "JEV: free(jev-1.13-free)",
+ "majors": [
+  {
+   "id": "HM100",
+   "title": "全球能源转型加速导致传统能源需求骤降"
+  },
+  {
+   "id": "HM101",
+   "title": "美加贸易摩擦升级引发全球供应链重构"
+  },
+  {
+   "id": "HM102",
+   "title": "AI算力与关键材料短缺限制技术商业化速度"
+  },
+  {
+   "id": "HM001",
+   "title": "台海冲突升级风险"
+  },
+  {
+   "id": "HM002",
+   "title": "全球能源供应格局重塑导致大国竞争"
+  },
+  {
+   "id": "HM003",
+   "title": "AI技术成本上升触发宏观经济波动与金融风险"
+  },
+  {
+   "id": "HM004",
+   "title": "生物安全事件升级引发跨境防控收紧"
+  }
+ ],
+ "scanned": 100,
+ "failed": 0,
+ "signal_count": 3,
+ "signals": [
+  {
+   "id": "64cd6a44b4cc99d7",
+   "title": "世界卫生组织：10月2日，世卫组织通过媒体报道获悉，俄罗斯西伯利亚与远东地区伊尔库茨克抗鼠疫研究所一名雇员死亡。据报道，",
+   "source": "新浪财经-7x24直播",
+   "published_at": "2026-10-10T16:00:39+00:00",
+   "score": 0.894,
+   "hits": [
+    {
+     "hyp_id": "HM004",
+     "code": "C",
+     "conf": 0.87,
+     "gate": 0.67,
+     "selectivity": 16.75
+    }
+   ]
+  },
+  {
+   "id": "246c36466ce77414",
+   "title": "特朗普联手普京增加柴油供应 乌克兰与欧洲盟友强烈反对",
+   "source": "新浪财经-滚动新闻",
+   "published_at": "2026-10-10T16:09:35+00:00",
+   "score": 0.716,
+   "hits": [
+    {
+     "hyp_id": "HM100",
+     "code": "I",
+     "conf": 0.73,
+     "gate": 0.15,
+     "selectivity": 2.5
+    }
+   ]
+  },
+  {
+   "id": "279fd58f8e3137ce",
+   "title": "Taiwan’s leader says increasing defense spending to ‘deter war’",
+   "source": "Japan Times",
+   "published_at": "2026-10-10T04:29:00+00:00",
+   "score": 0.461,
+   "hits": [
+    {
+     "hyp_id": "HM001",
+     "code": "C",
+     "conf": 0.51,
+     "gate": 0.44,
+     "selectivity": 7.33
+    }
+   ]
+  }
+ ]
+}
