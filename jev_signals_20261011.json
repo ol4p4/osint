@@ -1,6 +1,6 @@
 {
  "date": "20261011",
- "generated_at": "2026-10-11T04:01:40.832145+00:00",
+ "generated_at": "2026-10-11T12:10:36.110000+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,7 +34,7 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 4,
+ "signal_count": 5,
  "signals": [
   {
    "id": "64cd6a44b4cc99d7",
@@ -46,25 +46,9 @@
     {
      "hyp_id": "HM004",
      "code": "C",
-     "conf": 0.85,
-     "gate": 0.71,
-     "selectivity": 17.75
-    }
-   ]
-  },
-  {
-   "id": "e01a95a796746c2e",
-   "title": "【世卫：俄不明原因肺炎事件无持续传播证据】世界卫生组织10日在其官网发布公报说，关于俄罗斯伊尔库茨克西伯利亚与远东防鼠疫",
-   "source": "新浪财经-7x24直播",
-   "published_at": "2026-10-11T03:44:52+00:00",
-   "score": 0.956,
-   "hits": [
-    {
-     "hyp_id": "HM004",
-     "code": "I",
-     "conf": 0.48,
-     "gate": 0.32,
-     "selectivity": 10.67
+     "conf": 0.86,
+     "gate": 0.66,
+     "selectivity": 22.0
     }
    ]
   },
@@ -73,7 +57,7 @@
    "title": "特朗普联手普京增加柴油供应 乌克兰与欧洲盟友强烈反对",
    "source": "新浪财经-滚动新闻",
    "published_at": "2026-10-10T16:09:35+00:00",
-   "score": 0.697,
+   "score": 0.769,
    "hits": [
     {
      "hyp_id": "HM100",
@@ -94,9 +78,41 @@
     {
      "hyp_id": "HM004",
      "code": "C",
-     "conf": 0.52,
-     "gate": 0.47,
-     "selectivity": 15.67
+     "conf": 0.5,
+     "gate": 0.46,
+     "selectivity": 15.33
+    }
+   ]
+  },
+  {
+   "id": "a12dae7a5b9d8684",
+   "title": "三星明年存储产量的80%已被长协锁定",
+   "source": "华尔街见闻-全球",
+   "published_at": "2026-10-11T05:11:42+00:00",
+   "score": 0.68,
+   "hits": [
+    {
+     "hyp_id": "HM102",
+     "code": "C",
+     "conf": 0.63,
+     "gate": 0.41,
+     "selectivity": 8.2
+    }
+   ]
+  },
+  {
+   "id": "26efb47e8e7af637",
+   "title": "全国首个百万千瓦级光伏光热项目并网发电",
+   "source": "华尔街见闻-快讯",
+   "published_at": "2026-10-10T06:15:08+00:00",
+   "score": 0.575,
+   "hits": [
+    {
+     "hyp_id": "HM100",
+     "code": "C",
+     "conf": 0.51,
+     "gate": 0.18,
+     "selectivity": 6.0
     }
    ]
   }
