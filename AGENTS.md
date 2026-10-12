@@ -27,6 +27,8 @@ refresh.py: git pull + 合并 CI 数据 + 可选翻译
   → impact_now()    → cloud/citizen_impact.py 本地 AI 研判 50 条/小时
   → run_hypothesis_chain() → **每日假设链（20h 节流, data/.hyp_chain_last_run）**：
        link_intel_hyp（TF-IDF 匹配+story 去重）→ verify_hypotheses（数值阈值）
+       → merge_ci_diagnosis（合并云端 ACH 判定，2026-10-12，纯本地零 AI）
+       → merge_ci_weekly（收编云端周报，2026-10-12，纯文件操作）
        → tools/ach_daily_batch.py（ACH 增量诊断 ~33 条/天，data/.ach_last_run 18h 节流）
   → rebuild_data → dashboard_data.json（去重后跑事件聚类 assign_story_ids，条目带 story_id/story_size）
   → run_calibration() → local/calibration.py 读 resolutions.jsonl → data/calibration.json
@@ -77,6 +79,10 @@ AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key �
 | `tools/train_sp_tokenizer.py` | SP 词表训练（8000 词 unigram，从近 7 天语料学习）→ `data/.sp_unigram.model`（**已入库**，缺失会静默降级）；语料显著变化时重训 |
 | `local/calibration.py` | P0-1 校准评分：读 resolutions.jsonl 算 Brier + Murphy 三分解 + 十桶校准曲线 → `data/calibration.json`；refresh.py 自动调 |
 | `local/jev_client.py` | **JEV 决策模型客户端**（2026-09-21）：System One API 调用 + SSRF 白名单 + 用量记账 + 重试；`diagnose_evidence()` 供 ACH 用 |
+| `local/weekly_report.py` | **周报共享逻辑**（2026-10-12）：取材（源/主题配额取样）+ 组 prompt + 渲染，纯逻辑不碰网络；本地 `hypothesis_engine` 与云端 `weekly_report_cloud` 共用，见 §"周报上云" |
+| `cloud/weekly_report_cloud.py` | **CI 侧周报**（2026-10-12）：只读假设树、只写 `weekly_cloud_*.md`；散文通道链 Gemini→dots→zen→OpenCode；自带周一判断 + 当日产物幂等闸门 |
+| `tools/merge_ci_weekly.py` | **收编云端周报**（2026-10-12）：三情形——本地无→收编 / 本地失败占位→替换 / 本地成功→保留本地；refresh 链 `merge-weekly` 步自动跑 |
+| `tools/merge_ci_diagnosis.py` | **合并云端 ACH 诊断**（2026-10-12）：把 CI 的 `ach_diagnosis_*.json` 增量补进矩阵（只补空不覆盖），零 AI 调用；refresh 链 `merge-ci` 步自动跑 |
 | `tools/jev_probe.py` | JEV Phase 0 探针：A/B 对比历史判定 + 人工金标准测试 |
 | `tools/jev_usage.py` | JEV 用量账本（API 无用量端点，本地记账）→ `data/jev_usage.json` |
 | `tools/fetch_macro_indicators.py` | 宏观指标抓取（汇率/利率/GDP/CPI/失业率，12个指标），产物 `data/macro_indicators.json`，refresh.py 自动调用；`--history` 子命令抓 NBS 分年龄组失业率历史月度序列 |
@@ -1208,6 +1214,48 @@ refresh.py 的步骤表里没有合并步骤。注释写的「由本地按需合
 
 **教训**：**「由 X 按需合并」这类注释等于没实现**——写下游消费方时，要在验收里
 grep 一遍「产物名是否真有读取者」，否则上游跑得再勤也只是在仓库里堆垃圾。
+
+## 周报上云（2026-10-12，AI 通道分裂驱动）
+
+**起因**：同一天实测到一个**分裂**——本地周循环因 AI 通道断供**静默挂死**
+（零 CPU/零网络超 5 分钟、无声退出，**周报未产出**），而云端 CI 的 AI 通道
+是好的（Gemini 跑 `citizen_impact` 正常）。既然云端 AI 可用，周报就不该只在
+本地这一条路上赌。
+
+**架构决策：不复制 prompt。** 周报的取材逻辑（源配额 + 主题配额取样、60 席分配、
+反幻觉护栏、内容安全降级）是多轮踩坑调优的结果，复制一份必然漂移、调优经验分裂。
+抽成**共享纯逻辑层** `local/weekly_report.py`（不碰网络、不写盘）：
+
+| 调用方 | AI 通道 | 产物 |
+|---|---|---|
+| `local/hypothesis_engine.py` | `analyzer._call_api`（本地链） | `data/reports/weekly_<date>.md` |
+| `cloud/weekly_report_cloud.py` | Gemini → dots → zen → OpenCode（散文链） | `weekly_cloud_<date>.md`（仓库根） |
+| `tools/merge_ci_weekly.py` | 不调 AI（纯文件） | 把上者收编成 `data/reports/weekly_<date>.md` |
+
+`hypothesis_engine._save_ai_weekly_summary` 从 ~300 行重构为委托调用（净删 259 行），
+两端出的周报结构完全一致——**"谁的 AI 调用成功"与"周报长什么样"解耦**。
+
+**踩坑一：CI 的 `call_ai` 不能直接复用。** `cloud/citizen_impact.call_ai` 的产出
+校验写死"必须含 `[`"（防推理模型把思维链当正文返回的实测对策），而周报是**散文**，
+会被判失败 → 云端版另写 `call_ai`，通道链同款、只改产出校验（长度 + 非推理开头）。
+
+**踩坑二：周一会有 8 轮 CI 都命中"今天是周一"。** `cron 0 */3 * * *` 每天 8 轮，
+而周报窗口是**上一个完整周**、周一当天内容不变 → 重复生成白烧 8 次 AI 调用 +
+无意义 diff。加幂等闸门：当日产物已存在即跳过（`--force` 可覆盖）。
+
+**踩坑三：收编不能无脑覆盖。** 三情形处置——本地无周报→收编；本地是**失败占位**
+（含"AI 周报生成失败"）→替换；本地是真实内容→**保留本地**。理由：本地周报由周循环
+在完整上下文里生成（含当周 ACH 增量诊断与验证结果），云端只读快照，
+**云端是兜底不是竞品**；反之本地失败时云端是唯一可用版本。
+
+**已知差异（未改，刻意的）**：CI runner 是 UTC、本地是 UTC+8，两端"周一"与周窗口
+边界相差 8 小时。周报是摘要而非精确对账，可接受；若要严格一致需统一按 UTC+8 算窗口。
+
+**实测（端到端，2026-10-12）**：
+- 本地实跑云端脚本 → `dots3-note-prev` 通道成功，产出真实周报（引用真实 ACH 后验 0.95/0.91/0.89）
+- **CI 实跑成功**（run 38220801094）：`通道成功: gemini` → `weekly_cloud_20261012.md（5276 字节）`
+- 拉回本地 → `merge_ci_weekly` 收编 → **今早缺的那份周报补上了**（`data/reports/weekly_20261012.md`）
+- 沙箱三情形（收编/保留/替换，含备份）全过；幂等闸门实测跳过
 
 ## 周报缺口补录（2026-10-08）
 
