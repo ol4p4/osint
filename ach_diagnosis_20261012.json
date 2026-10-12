@@ -1,16 +1,366 @@
 {
  "date": "20261012",
- "generated_at": "2026-10-12T06:26:18.229620+00:00",
+ "generated_at": "2026-10-12T08:05:54.235872+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "note": "CI 侧只读诊断产物；本地按需合并进 ach_matrix.json",
  "diagnosed": 60,
  "failed": 0,
  "results": [
   {
-   "key": "ev_ec7e765222",
-   "hyp_id": "HM100",
+   "key": "ev_1e01cb854f",
+   "hyp_id": "HM001",
    "date": "2026-10-12",
-   "summary": "普京：俄愿向美国及全球市场供应石油和石油产品",
+   "summary": "【“中国天眼”捕获“三体”】近期，中国科学院国家天文台（以下简称国家天文台）研究员韩金林带领国内多家单位的研究人员，结合",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.33
+    }
+   }
+  },
+  {
+   "key": "ev_ae37db177d",
+   "hyp_id": "HM001",
+   "date": "2026-10-12",
+   "summary": "华为折叠机累计发货量已突破2000万台",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.67
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.67
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.67
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.67
+    }
+   }
+  },
+  {
+   "key": "ev_f6700bc6d4",
+   "hyp_id": "HM001",
+   "date": "2026-10-12",
+   "summary": "美乌关系急剧恶化，欧洲盟友感到震惊，特朗普“换乌克兰总统”言论引发风波",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.5
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.5
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.5
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.5
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    }
+   }
+  },
+  {
+   "key": "ev_bcf4dc4542",
+   "hyp_id": "HM001",
+   "date": "2026-10-12",
+   "summary": "英国：不支持美俄就俄提供柴油达成一致",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.83
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.83
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.83
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.83
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.83
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.83
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.83
+    }
+   }
+  },
+  {
+   "key": "ev_77cfbafe90",
+   "hyp_id": "HM001",
+   "date": "2026-10-12",
+   "summary": "【美国中期选举压力加剧之际 特朗普与泽连斯基的关系面临破裂风险】乌克兰总统泽连斯基与美国总统唐纳德·特朗普的关系正走向冲",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.8
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.8
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.8
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.8
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.8
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.8
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.8
+    }
+   }
+  },
+  {
+   "key": "ev_17a0e99a64",
+   "hyp_id": "HM001",
+   "date": "2026-10-12",
+   "summary": "泽连斯基称特朗普与普京的柴油交易中乌克兰被当作“挡箭牌”",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.86
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.86
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.86
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.86
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.87,
+     "gate": 0.13,
+     "selectivity": 1.86
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.86
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.86
+    }
+   }
+  },
+  {
+   "key": "ev_f86709600c",
+   "hyp_id": "HM001",
+   "date": "2026-10-12",
+   "summary": "Montenegro detains founder of Rybar, one of Russia’s most popular pro-war Telegram channels. Here’s ",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.25
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.25
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    }
+   }
+  },
+  {
+   "key": "ev_ceb89a3ec0",
+   "hyp_id": "HM001",
+   "date": "2026-10-12",
+   "summary": "【金十数据整理：中东局势跟踪（10月11日）】",
    "diagnosis": {
     "HM100": {
      "code": "N",
@@ -20,97 +370,697 @@
     },
     "HM101": {
      "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.71
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.71
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.71
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.71
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.71
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.71
+    }
+   }
+  },
+  {
+   "key": "ev_b4e49e9197",
+   "hyp_id": "HM001",
+   "date": "2026-10-12",
+   "summary": "伊朗称美国已接受伊方所提部分条件，伊朗外长称“愿为政治解决也门冲突提供一切帮助”",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.38
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.38
+    },
+    "HM102": {
+     "code": "N",
      "conf": 0.92,
      "gate": 0.08,
-     "selectivity": 1.71
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.71
+     "selectivity": 1.38
     },
     "HM001": {
      "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.71
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.38
     },
     "HM002": {
      "code": "N",
-     "conf": 0.9,
-     "gate": 0.1,
-     "selectivity": 1.71
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.38
     },
     "HM003": {
      "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.71
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.38
     },
     "HM004": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.71
+     "selectivity": 1.38
     }
    }
   },
   {
-   "key": "ev_d2b5d16d9b",
-   "hyp_id": "HM100",
+   "key": "ev_ed6aecc378",
+   "hyp_id": "HM001",
    "date": "2026-10-12",
-   "summary": "金十数据全球财经早餐 | 2026年10月12日",
+   "summary": "【金十数据整理：俄乌冲突最新24小时局势跟踪（10月12日）】 冲突情况： <span c",
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.9,
-     "gate": 0.1,
-     "selectivity": 1.67
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.8
     },
     "HM101": {
      "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.67
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.8
     },
     "HM102": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.67
+     "selectivity": 1.8
     },
     "HM001": {
      "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.67
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.8
     },
     "HM002": {
      "code": "N",
-     "conf": 0.9,
-     "gate": 0.1,
-     "selectivity": 1.67
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.8
     },
     "HM003": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.67
+     "selectivity": 1.8
     },
     "HM004": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
+     "selectivity": 1.8
+    }
+   }
+  },
+  {
+   "key": "ev_c1dafc8f83",
+   "hyp_id": "HM001",
+   "date": "2026-10-12",
+   "summary": "泽连斯基回应特朗普：乌克兰领导人应由乌人民决定",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.67
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.67
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.67
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
      "selectivity": 1.67
     }
    }
   },
   {
-   "key": "ev_47340d7371",
-   "hyp_id": "HM100",
+   "key": "ev_ef6263c84f",
+   "hyp_id": "HM001",
    "date": "2026-10-12",
-   "summary": "ETF两市成交额报3805.81亿元，较上一交易日此时放量1039.57亿元",
+   "summary": "民调：特朗普结束战争也难改选民立场，共和党中期选举翻盘无望",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.25
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.25
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.25
+    }
+   }
+  },
+  {
+   "key": "ev_b658b46f79",
+   "hyp_id": "HM001",
+   "date": "2026-10-12",
+   "summary": "华尔街见闻早餐FM-Radio | 2026年10月12日",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 2.29
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 2.29
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.84,
+     "gate": 0.16,
+     "selectivity": 2.29
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.29
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.29
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.29
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.29
+    }
+   }
+  },
+  {
+   "key": "ev_bb928001ae",
+   "hyp_id": "HM001",
+   "date": "2026-10-12",
+   "summary": "华尔街见闻早餐FM-Radio | 2026年10月10日",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 2.0
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 2.0
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.84,
+     "gate": 0.16,
+     "selectivity": 2.0
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.0
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.0
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.0
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.0
+    }
+   }
+  },
+  {
+   "key": "ev_a509e547d1",
+   "hyp_id": "HM001",
+   "date": "2026-10-12",
+   "summary": "中欧经贸谈判点评：全面贸易冲突风险下降",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.43
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.43
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.43
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.43
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.43
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.43
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.43
+    }
+   }
+  },
+  {
+   "key": "ev_d9b91c6133",
+   "hyp_id": "HM001",
+   "date": "2026-10-12",
+   "summary": "马斯克放话：虽然现在还不懂造芯片，但Terrafab未来要造出“比任何人都更好的芯片”",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.0
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.0
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 2.0
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.0
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.0
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.0
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 2.0
+    }
+   }
+  },
+  {
+   "key": "ev_b0c8ce0af9",
+   "hyp_id": "HM002",
+   "date": "2026-10-12",
+   "summary": "印度储备银行开设专用石油美元窗口，收紧外汇规则以支撑卢比",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.17
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.17
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.17
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.17
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.17
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.17
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.17
+    }
+   }
+  },
+  {
+   "key": "ev_6f516cadf0",
+   "hyp_id": "HM002",
+   "date": "2026-10-12",
+   "summary": "预测市场显示，选举日前汽油价格预计难以出现明显缓解。",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.5
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.5
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.5
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.5
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.5
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.5
+    }
+   }
+  },
+  {
+   "key": "ev_5b1711d865",
+   "hyp_id": "HM002",
+   "date": "2026-10-12",
+   "summary": "世界银行行长班加：中东战争初步影响不如预期严重，但压力正在再次积聚",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 2.2
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.2
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.2
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.2
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 2.2
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.2
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.2
+    }
+   }
+  },
+  {
+   "key": "ev_bb12209f25",
+   "hyp_id": "HM002",
+   "date": "2026-10-12",
+   "summary": "特朗普：立即生效，俄乌冲突达成“能源停火”协议",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.86,
+     "gate": 0.14,
+     "selectivity": 1.88
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.88
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.88
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.88
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.85,
+     "gate": 0.15,
+     "selectivity": 1.88
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.88
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.88
+    }
+   }
+  },
+  {
+   "key": "ev_cdc9eb7430",
+   "hyp_id": "HM002",
+   "date": "2026-10-12",
+   "summary": "市场数据显示 电池ETF本月表现最佳之一",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.8
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.8
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.8
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.8
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.8
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.8
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.8
+    }
+   }
+  },
+  {
+   "key": "ev_189bc42230",
+   "hyp_id": "HM002",
+   "date": "2026-10-12",
+   "summary": "拓普集团表示间接供应充电器和适配器，无法确认是否用于特斯拉Cybercab",
    "diagnosis": {
     "HM100": {
      "code": "N",
@@ -144,8 +1094,8 @@
     },
     "HM003": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
+     "conf": 0.96,
+     "gate": 0.04,
      "selectivity": 1.25
     },
     "HM004": {
@@ -157,29 +1107,229 @@
    }
   },
   {
-   "key": "ev_de2be26479",
-   "hyp_id": "HM100",
+   "key": "ev_fd39fcfe0e",
+   "hyp_id": "HM002",
    "date": "2026-10-12",
-   "summary": "商品期货开盘，20号胶主力合约涨超4%，橡胶、焦煤涨超3%，甲醇、焦炭涨近3%。碳酸锂、苯乙烯、生猪、沥青跌超2%。",
+   "summary": "全球原油和成品油库存已经告急",
    "diagnosis": {
     "HM100": {
      "code": "N",
+     "conf": 0.85,
+     "gate": 0.15,
+     "selectivity": 1.88
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.88
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.88
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.88
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.86,
+     "gate": 0.14,
+     "selectivity": 1.88
+    },
+    "HM003": {
+     "code": "N",
      "conf": 0.93,
      "gate": 0.07,
-     "selectivity": 1.6
+     "selectivity": 1.88
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.88
+    }
+   }
+  },
+  {
+   "key": "ev_18a131b2b8",
+   "hyp_id": "HM002",
+   "date": "2026-10-12",
+   "summary": "华尔街见闻早餐 | 2026年10月12日",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.84,
+     "gate": 0.16,
+     "selectivity": 1.45
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.45
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.86,
+     "gate": 0.14,
+     "selectivity": 1.45
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.45
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.45
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.45
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.45
+    }
+   }
+  },
+  {
+   "key": "ev_71df0b0080",
+   "hyp_id": "HM002",
+   "date": "2026-10-12",
+   "summary": "中法举行战略对话",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.33
     },
     "HM101": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 1.6
+     "selectivity": 1.33
     },
     "HM102": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.33
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.33
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.33
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.33
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    }
+   }
+  },
+  {
+   "key": "ev_9d8f393dc4",
+   "hyp_id": "HM002",
+   "date": "2026-10-12",
+   "summary": "华电新能等在松原成立氢能科技公司，注册资本1000万",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 3.0
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.0
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 3.0
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.0
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 3.0
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.0
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 3.0
+    }
+   }
+  },
+  {
+   "key": "ev_249ddc0836",
+   "hyp_id": "HM002",
+   "date": "2026-10-12",
+   "summary": "威胜控股盘中涨超7% 中东地区取得智能电网订单合约总额约12.5亿元",
+   "diagnosis": {
+    "HM100": {
      "code": "N",
      "conf": 0.92,
      "gate": 0.08,
      "selectivity": 1.6
     },
+    "HM101": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
+    },
     "HM001": {
      "code": "N",
      "conf": 0.97,
@@ -188,14 +1338,14 @@
     },
     "HM002": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
+     "conf": 0.93,
+     "gate": 0.07,
      "selectivity": 1.6
     },
     "HM003": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
+     "conf": 0.96,
+     "gate": 0.04,
      "selectivity": 1.6
     },
     "HM004": {
@@ -207,10 +1357,260 @@
    }
   },
   {
-   "key": "ev_105e95b6e1",
-   "hyp_id": "HM100",
+   "key": "ev_a90db39ed3",
+   "hyp_id": "HM002",
    "date": "2026-10-12",
-   "summary": "北京：到2030年，消费对首都经济发展的基础性作用更加稳固",
+   "summary": "棕榈油期货午盘跳空下跌",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.25
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.25
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.25
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.25
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.25
+    }
+   }
+  },
+  {
+   "key": "ev_f80277b672",
+   "hyp_id": "HM003",
+   "date": "2026-10-12",
+   "summary": "澳洲联储11月加息仍存变数，通胀若再升或触发行动",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.67
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.67
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.67
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
+    }
+   }
+  },
+  {
+   "key": "ev_84def0f56e",
+   "hyp_id": "HM003",
+   "date": "2026-10-12",
+   "summary": "AI预训练研究将在2–3年内自动化，模型智能的有效成本会近乎指数级下降",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 9.0
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 9.0
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 9.0
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 9.0
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 9.0
+    },
+    "HM102": {
+     "code": "I",
+     "conf": 0.66,
+     "gate": 0.29,
+     "selectivity": 9.0
+    },
+    "HM003": {
+     "code": "I",
+     "conf": 0.93,
+     "gate": 0.36,
+     "selectivity": 9.0
+    }
+   }
+  },
+  {
+   "key": "ev_ca418fd1cf",
+   "hyp_id": "HM003",
+   "date": "2026-10-12",
+   "summary": "中国8月份企业信用指数小幅上升",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.25
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.25
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.25
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.25
+    }
+   }
+  },
+  {
+   "key": "ev_95118a7872",
+   "hyp_id": "HM003",
+   "date": "2026-10-12",
+   "summary": "澳联储11月加息概率五五开，通胀回升将触发收紧",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.4
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.4
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.4
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.4
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.4
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.4
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.4
+    }
+   }
+  },
+  {
+   "key": "ev_e25514553e",
+   "hyp_id": "HM003",
+   "date": "2026-10-12",
+   "summary": "埃及9月核心通胀率从14.9%降至14.1%",
    "diagnosis": {
     "HM100": {
      "code": "N",
@@ -220,8 +1620,8 @@
     },
     "HM101": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
+     "conf": 0.95,
+     "gate": 0.05,
      "selectivity": 1.5
     },
     "HM102": {
@@ -238,234 +1638,884 @@
     },
     "HM002": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
+     "conf": 0.96,
+     "gate": 0.04,
      "selectivity": 1.5
     },
     "HM003": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
+     "conf": 0.95,
+     "gate": 0.05,
      "selectivity": 1.5
     },
     "HM004": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
+     "conf": 0.97,
+     "gate": 0.03,
      "selectivity": 1.5
     }
    }
   },
   {
-   "key": "ev_b0a9d707f2",
-   "hyp_id": "HM100",
+   "key": "ev_0591851184",
+   "hyp_id": "HM003",
    "date": "2026-10-12",
-   "summary": "北京：打造开放多元的国际化餐饮消费生态，吸引全球优质品牌集聚",
+   "summary": "中东股市低开，卡塔尔基准指数下跌1%",
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.33
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.6
     },
     "HM101": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.33
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.6
     },
     "HM102": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.33
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
     },
     "HM001": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.33
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
     },
     "HM002": {
      "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 1.33
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.6
     },
     "HM003": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.33
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.33
+     "selectivity": 1.6
     }
    }
   },
   {
-   "key": "ev_80b0528ffb",
-   "hyp_id": "HM100",
+   "key": "ev_88e8497a4a",
+   "hyp_id": "HM003",
    "date": "2026-10-12",
-   "summary": "中国钢铁行业协会： 2026年9月下旬钢材库存量1565万吨，环比上一旬减少143万吨，下降8.4%",
+   "summary": "标普500指数冲击万点：新型ETF为投资者提供非此即彼的指数豪赌",
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 2.75
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.5
     },
     "HM101": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 2.75
+     "selectivity": 1.5
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.5
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.5
+    }
+   }
+  },
+  {
+   "key": "ev_7ba01eec78",
+   "hyp_id": "HM003",
+   "date": "2026-10-12",
+   "summary": "达利欧警告股市对冲债券收益率上升的缓冲空间正在缩小",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.6
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.6
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.6
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.6
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.6
+    }
+   }
+  },
+  {
+   "key": "ev_fbb8d67914",
+   "hyp_id": "HM003",
+   "date": "2026-10-12",
+   "summary": "Ukrainian grandmother released after Russia had her arrested in Kazakhstan on kidnapping charges. Sh",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    }
+   }
+  },
+  {
+   "key": "ev_739ef26d85",
+   "hyp_id": "HM003",
+   "date": "2026-10-12",
+   "summary": "星展集团CEO：市场正在重新评估人工智能建设相关投资的风险",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 4.75
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 4.75
     },
     "HM102": {
      "code": "N",
      "conf": 0.89,
      "gate": 0.11,
-     "selectivity": 2.75
+     "selectivity": 4.75
     },
     "HM001": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.75
+     "selectivity": 4.75
     },
     "HM002": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.75
-    },
-    "HM003": {
-     "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 2.75
+     "selectivity": 4.75
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.75
+     "selectivity": 4.75
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.19,
+     "selectivity": 4.75
     }
    }
   },
   {
-   "key": "ev_b55379fe47",
-   "hyp_id": "HM100",
+   "key": "ev_8def75d0b1",
+   "hyp_id": "HM003",
    "date": "2026-10-12",
-   "summary": "【华泰证券：消费级3D打印设备放量有望带动耗材需求持续增长】华泰证券研报称，消费级3D打印设备放量有望带动耗材需求持续增",
+   "summary": "报道：英伟达正就收购Reflection AI或增加投资进行磋商",
    "diagnosis": {
     "HM100": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 2.67
+     "selectivity": 2.75
     },
     "HM101": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 2.67
+     "selectivity": 2.75
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 2.75
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.75
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.75
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 2.75
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.75
+    }
+   }
+  },
+  {
+   "key": "ev_74f20ddc89",
+   "hyp_id": "HM003",
+   "date": "2026-10-12",
+   "summary": "招商证券策略：未来3至6个月的三个 sequentially 机会",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.6
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
     },
     "HM102": {
      "code": "N",
      "conf": 0.92,
      "gate": 0.08,
-     "selectivity": 2.67
+     "selectivity": 1.6
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.6
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.6
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.6
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.6
+    }
+   }
+  },
+  {
+   "key": "ev_c5d24531c0",
+   "hyp_id": "HM003",
+   "date": "2026-10-12",
+   "summary": "People's Daily: China, EU should be stabilising, balancing key trade partners",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.5
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.5
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.5
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    }
+   }
+  },
+  {
+   "key": "ev_ab694d15e0",
+   "hyp_id": "HM003",
+   "date": "2026-10-12",
+   "summary": "北京：深入推进“人工智能+消费” 增加人工智能手机和电脑、智能穿戴、智能机器人等新一代智能终端产品有效供给",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.25
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.25
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 2.25
     },
     "HM001": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.67
+     "selectivity": 2.25
     },
     "HM002": {
      "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 2.67
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.25
     },
     "HM003": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.67
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.25
     },
     "HM004": {
      "code": "N",
      "conf": 0.98,
      "gate": 0.02,
-     "selectivity": 2.67
+     "selectivity": 2.25
     }
    }
   },
   {
-   "key": "ev_66d08cbfa5",
-   "hyp_id": "HM100",
+   "key": "ev_66094e6724",
+   "hyp_id": "HM003",
    "date": "2026-10-12",
-   "summary": "报道称欧盟将面临15年来最严重的冬季天然气短缺",
+   "summary": "TrendForce：VCSEL需求预计2031年达6.5亿颗",
    "diagnosis": {
     "HM100": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 3.75
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 3.75
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.75
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.75
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 3.75
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 3.75
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.15,
+     "selectivity": 3.75
+    }
+   }
+  },
+  {
+   "key": "ev_00bc3df1b8",
+   "hyp_id": "HM003",
+   "date": "2026-10-12",
+   "summary": "“你不知道的远比你知道的更重要”：瑞·达利欧如何构建抵御AI泡沫破裂的投资组合",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.5
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.5
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.5
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.5
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.5
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 2.5
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 2.5
+    }
+   }
+  },
+  {
+   "key": "ev_58bf0ed213",
+   "hyp_id": "HM003",
+   "date": "2026-10-12",
+   "summary": "特斯拉获知名分析师力挺：实体人工智能最好投资标的",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.5
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.5
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.5
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.5
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.5
+    }
+   }
+  },
+  {
+   "key": "ev_50f8d7218b",
+   "hyp_id": "HM003",
+   "date": "2026-10-12",
+   "summary": "如何看待当前中美科技的背离",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.33
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.33
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.33
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.33
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    }
+   }
+  },
+  {
+   "key": "ev_cb6f695ffa",
+   "hyp_id": "HM003",
+   "date": "2026-10-12",
+   "summary": "沙特机场和油轮遭袭引发供应担忧，油价盘初上涨",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.8
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.8
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.8
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.8
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.8
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.8
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.8
+    }
+   }
+  },
+  {
+   "key": "ev_febd52cf88",
+   "hyp_id": "HM003",
+   "date": "2026-10-12",
+   "summary": "美10月消费者信心指数初值降至五个月低点，经济现况指标创历史新低",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.43
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.43
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.43
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.43
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.43
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.43
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.43
+    }
+   }
+  },
+  {
+   "key": "ev_527ebaa145",
+   "hyp_id": "HM003",
+   "date": "2026-10-12",
+   "summary": "万亿估值背后的“数字口径游戏”：OpenAI与Anthropic的营收竟然无法直接比较",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.33
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.33
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.33
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.33
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.33
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.33
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 2.33
+    }
+   }
+  },
+  {
+   "key": "ev_a7ace6ffb1",
+   "hyp_id": "HM004",
+   "date": "2026-10-12",
+   "summary": "【金十数据整理：周日重要消息汇总】国内与国际关键新闻速览",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.86,
+     "gate": 0.14,
+     "selectivity": 1.42
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.42
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.84,
+     "gate": 0.16,
+     "selectivity": 1.42
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.42
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 1.42
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.42
+    },
+    "HM004": {
      "code": "N",
      "conf": 0.83,
      "gate": 0.17,
-     "selectivity": 2.43
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 2.43
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 2.43
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.43
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.86,
-     "gate": 0.14,
-     "selectivity": 2.43
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 2.43
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.43
+     "selectivity": 1.42
     }
    }
   },
   {
-   "key": "ev_df4cddb2dd",
-   "hyp_id": "HM100",
+   "key": "ev_9fca4a40ed",
+   "hyp_id": "HM004",
    "date": "2026-10-12",
-   "summary": "沪深两市成交额突破1万亿 较上一日此时缩量超1500亿",
+   "summary": "WHO总干事进入竞选周期 中方提名宋莉博士参与角逐",
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
+     "conf": 0.96,
+     "gate": 0.04,
      "selectivity": 1.5
     },
     "HM101": {
@@ -475,173 +2525,173 @@
      "selectivity": 1.5
     },
     "HM102": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.5
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.5
-    },
-    "HM002": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
      "selectivity": 1.5
     },
-    "HM003": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.5
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 1.5
-    }
-   }
-  },
-  {
-   "key": "ev_1a49318085",
-   "hyp_id": "HM100",
-   "date": "2026-10-12",
-   "summary": "特朗普强推“俄乌能源停火”，泽连斯基起初称“不知情”但随后表态“支持”",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.89,
-     "gate": 0.11,
-     "selectivity": 2.2
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.2
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.2
-    },
     "HM001": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 2.2
+     "selectivity": 1.5
     },
     "HM002": {
      "code": "N",
-     "conf": 0.89,
-     "gate": 0.11,
-     "selectivity": 2.2
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
     },
     "HM003": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.2
-    },
-    "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.2
+     "selectivity": 1.5
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
     }
    }
   },
   {
-   "key": "ev_b411d77159",
-   "hyp_id": "HM100",
+   "key": "ev_3dfd2d1f0c",
+   "hyp_id": "HM004",
    "date": "2026-10-12",
-   "summary": "10月12日会员早报：沙特彻底“破防” 特朗普宣布俄乌“能源停火”",
+   "summary": "商务部欧洲司负责人解读中欧贸易投资磋商机制第二次例会成果",
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.88,
-     "gate": 0.12,
-     "selectivity": 1.88
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.2
     },
     "HM101": {
      "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.88
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.2
     },
     "HM102": {
      "code": "N",
-     "conf": 0.85,
-     "gate": 0.15,
-     "selectivity": 1.88
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.2
     },
     "HM001": {
      "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.88
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.2
     },
     "HM002": {
      "code": "N",
-     "conf": 0.89,
-     "gate": 0.11,
-     "selectivity": 1.88
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.2
     },
     "HM003": {
      "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.88
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.2
     },
     "HM004": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.88
+     "selectivity": 1.2
     }
    }
   },
   {
-   "key": "ev_30a9e9777a",
-   "hyp_id": "HM100",
+   "key": "ev_fede0de22d",
+   "hyp_id": "HM004",
    "date": "2026-10-12",
-   "summary": "泽连斯基称支持“能源停火” 乌武装部队已收到相关命令",
+   "summary": "丘成桐牵头成立数学与AI实验室联盟 自主开发中国数学大模型",
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
+     "conf": 0.96,
+     "gate": 0.04,
      "selectivity": 2.25
     },
     "HM101": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
+     "conf": 0.97,
+     "gate": 0.03,
      "selectivity": 2.25
     },
     "HM102": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.25
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 2.25
-    },
-    "HM002": {
      "code": "N",
      "conf": 0.91,
      "gate": 0.09,
      "selectivity": 2.25
     },
+    "HM001": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.25
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.25
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.25
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.25
+    }
+   }
+  },
+  {
+   "key": "ev_867bdafc14",
+   "hyp_id": "HM004",
+   "date": "2026-10-12",
+   "summary": "“2026中国碳中和发展力指数”显示： 五地领跑全国，区域差距收敛",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 2.25
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.25
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.25
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.25
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.25
+    },
     "HM003": {
      "code": "N",
      "conf": 0.97,
@@ -657,45 +2707,45 @@
    }
   },
   {
-   "key": "ev_fb35bba95c",
-   "hyp_id": "HM100",
+   "key": "ev_2a382c8bd4",
+   "hyp_id": "HM004",
    "date": "2026-10-12",
-   "summary": "特朗普称俄乌进入“能源停火”，泽连斯基回应说“这是个新闻”",
+   "summary": "商务部：中欧将于2027年3月召开机制第三次例会",
    "diagnosis": {
     "HM100": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.4
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.4
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.4
-    },
-    "HM001": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
      "selectivity": 1.4
     },
-    "HM002": {
+    "HM101": {
      "code": "N",
      "conf": 0.93,
      "gate": 0.07,
      "selectivity": 1.4
     },
+    "HM102": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.4
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.4
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.4
+    },
     "HM003": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
+     "conf": 0.96,
+     "gate": 0.04,
      "selectivity": 1.4
     },
     "HM004": {
@@ -707,677 +2757,27 @@
    }
   },
   {
-   "key": "ev_5069751d14",
-   "hyp_id": "HM100",
+   "key": "ev_27b67875d0",
+   "hyp_id": "HM004",
    "date": "2026-10-12",
-   "summary": "泽连斯基：正在等待美方提供能源停火相关细节",
+   "summary": "错失三价流感疫苗规模化销售时间窗口，这家流感疫苗企业20cm跌停",
    "diagnosis": {
     "HM100": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.6
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.6
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.6
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.6
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.6
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.6
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.6
-    }
-   }
-  },
-  {
-   "key": "ev_ba42cadbd2",
-   "hyp_id": "HM100",
-   "date": "2026-10-12",
-   "summary": "特朗普宣布俄乌达成“能源停火”，称协议立即生效",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 1.83
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.83
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.83
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.83
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.89,
-     "gate": 0.11,
-     "selectivity": 1.83
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.83
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.83
-    }
-   }
-  },
-  {
-   "key": "ev_4f2b6a85ba",
-   "hyp_id": "HM100",
-   "date": "2026-10-12",
-   "summary": "泽连斯基敦促特朗普支持俄乌“能源停火”",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 1.8
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.8
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.8
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.8
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 1.8
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.8
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.8
-    }
-   }
-  },
-  {
-   "key": "ev_73ec7b2e47",
-   "hyp_id": "HM100",
-   "date": "2026-10-12",
-   "summary": "特朗普宣称俄乌已同意“能源停火” 泽连斯基表示在等待细节",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 1.8
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.8
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.8
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.8
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 1.8
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.8
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.8
-    }
-   }
-  },
-  {
-   "key": "ev_4b4be7bf08",
-   "hyp_id": "HM100",
-   "date": "2026-10-12",
-   "summary": "泽连斯基称对俄乌能源停火不知情",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.6
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.6
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.6
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.6
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.6
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.6
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.6
-    }
-   }
-  },
-  {
-   "key": "ev_0d675c3823",
-   "hyp_id": "HM100",
-   "date": "2026-10-12",
-   "summary": "特朗普称俄乌双方同意“能源停火”",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.9,
-     "gate": 0.1,
-     "selectivity": 1.83
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.83
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.83
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.83
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.89,
-     "gate": 0.11,
-     "selectivity": 1.83
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.83
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.83
-    }
-   }
-  },
-  {
-   "key": "ev_ed164b7239",
-   "hyp_id": "HM100",
-   "date": "2026-10-12",
-   "summary": "A股四大指数集体低开，市场逾2900股下跌",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.6
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.6
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.6
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.6
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.6
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.6
-    },
-    "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.6
-    }
-   }
-  },
-  {
-   "key": "ev_2b155d2d4a",
-   "hyp_id": "HM100",
-   "date": "2026-10-12",
-   "summary": "从光芯片到覆铜板，A股AI硬件板块因何轮番走低",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.0
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.0
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 2.0
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.0
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.0
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 2.0
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.0
-    }
-   }
-  },
-  {
-   "key": "ev_a4864d8ff9",
-   "hyp_id": "HM100",
-   "date": "2026-10-12",
-   "summary": "净缺口32GW",
-   "diagnosis": {
-    "HM101": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 3.1
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 3.1
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.9,
-     "gate": 0.1,
-     "selectivity": 3.1
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 3.1
-    },
-    "HM100": {
-     "code": "I",
-     "conf": 0.76,
-     "gate": 0.23,
-     "selectivity": 3.1
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.8,
-     "gate": 0.17,
-     "selectivity": 3.1
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.63,
-     "gate": 0.31,
-     "selectivity": 3.1
-    }
-   }
-  },
-  {
-   "key": "ev_e0f9c10e01",
-   "hyp_id": "HM100",
-   "date": "2026-10-12",
-   "summary": "超大型油轮运费升至60年来最高",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.86,
-     "gate": 0.14,
-     "selectivity": 2.8
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.8
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.8
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.8
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.86,
-     "gate": 0.14,
-     "selectivity": 2.8
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 2.8
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.8
-    }
-   }
-  },
-  {
-   "key": "ev_ebe8605d19",
-   "hyp_id": "HM101",
-   "date": "2026-10-12",
-   "summary": "关税加伊朗战事反噬 美国制造商苦水难咽",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.9,
-     "gate": 0.1,
-     "selectivity": 1.5
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.85,
-     "gate": 0.15,
-     "selectivity": 1.5
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.89,
-     "gate": 0.11,
-     "selectivity": 1.5
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.5
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.89,
-     "gate": 0.11,
-     "selectivity": 1.5
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.5
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.5
-    }
-   }
-  },
-  {
-   "key": "ev_cd902e03b8",
-   "hyp_id": "HM101",
-   "date": "2026-10-12",
-   "summary": "双边贸易蓬勃发展，为何中日紧张局势加剧？",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.33
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.33
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.33
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.33
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.33
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.33
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.33
-    }
-   }
-  },
-  {
-   "key": "ev_dd654c8542",
-   "hyp_id": "HM101",
-   "date": "2026-10-12",
-   "summary": "圣唐控股与乐添投资订立采购合作协议 共同打造供应链业务运营平台",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.75
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.75
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.75
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.75
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.75
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.75
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.75
-    }
-   }
-  },
-  {
-   "key": "ev_4ff6fb9b9e",
-   "hyp_id": "HM101",
-   "date": "2026-10-12",
-   "summary": "印度史上最大IPO要来了",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
      "selectivity": 1.0
     },
     "HM101": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
+     "conf": 0.97,
+     "gate": 0.03,
      "selectivity": 1.0
     },
     "HM102": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
+     "conf": 0.97,
+     "gate": 0.03,
      "selectivity": 1.0
     },
     "HM001": {
@@ -1385,582 +2785,82 @@
      "conf": 0.97,
      "gate": 0.03,
      "selectivity": 1.0
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.0
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.0
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 1.0
-    }
-   }
-  },
-  {
-   "key": "ev_f4ad707a67",
-   "hyp_id": "HM101",
-   "date": "2026-10-12",
-   "summary": "张国清在吉林调研时强调 持续做大做强先进制造业 提升产业链自主可控水平",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 2.4
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 2.4
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.88,
-     "gate": 0.12,
-     "selectivity": 2.4
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.4
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.4
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.4
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.4
-    }
-   }
-  },
-  {
-   "key": "ev_5850832d7d",
-   "hyp_id": "HM101",
-   "date": "2026-10-12",
-   "summary": "印度央行推出特别石油窗口及支撑卢比的监管措施",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.6
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.6
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.6
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.6
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.6
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.6
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.6
-    }
-   }
-  },
-  {
-   "key": "ev_9407eee8c7",
-   "hyp_id": "HM101",
-   "date": "2026-10-12",
-   "summary": "美俄达成能源合作 泽连斯基感到“遭背叛” 美总统建议乌更换领导人",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.89,
-     "gate": 0.11,
-     "selectivity": 1.83
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.83
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.83
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.83
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.89,
-     "gate": 0.11,
-     "selectivity": 1.83
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.83
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.83
-    }
-   }
-  },
-  {
-   "key": "ev_c782b8d8b6",
-   "hyp_id": "HM101",
-   "date": "2026-10-12",
-   "summary": "美强烈谴责对沙特的袭击",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.33
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.33
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.33
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.33
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.33
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.33
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.33
-    }
-   }
-  },
-  {
-   "key": "ev_309b8de476",
-   "hyp_id": "HM102",
-   "date": "2026-10-12",
-   "summary": "中国AI短剧流行 “不烧心文学”成全网热梗",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.33
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.33
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.33
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.33
     },
     "HM002": {
      "code": "N",
      "conf": 0.98,
      "gate": 0.02,
-     "selectivity": 1.33
+     "selectivity": 1.0
     },
     "HM003": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.33
+     "selectivity": 1.0
     },
     "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    }
+   }
+  },
+  {
+   "key": "ev_f3eb201cab",
+   "hyp_id": "HM004",
+   "date": "2026-10-12",
+   "summary": "金迪克回应股价跌停：三价流感疫苗已经开始分装，具体上市销售时间要看批签发进度",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM101": {
      "code": "N",
      "conf": 0.98,
      "gate": 0.02,
-     "selectivity": 1.33
-    }
-   }
-  },
-  {
-   "key": "ev_d5c04bc016",
-   "hyp_id": "HM102",
-   "date": "2026-10-12",
-   "summary": "软件开发板块短线拉升，格尔软件直线涨停",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.25
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.25
+     "selectivity": 1.0
     },
     "HM102": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.25
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
     },
     "HM001": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.25
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.25
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.25
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.25
-    }
-   }
-  },
-  {
-   "key": "ev_7e45e85596",
-   "hyp_id": "HM102",
-   "date": "2026-10-12",
-   "summary": "中国钢铁行业协会：2026年9月下旬日产钢材392万吨、环比增长4.9%",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 2.5
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.5
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.9,
-     "gate": 0.1,
-     "selectivity": 2.5
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.5
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.5
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.5
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.5
-    }
-   }
-  },
-  {
-   "key": "ev_1f30035fe0",
-   "hyp_id": "HM102",
-   "date": "2026-10-12",
-   "summary": "Jefferies警告“2008时刻”：AI或致美国“资本大毁灭”，份额流向中国开源模型",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 3.67
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 3.67
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.9,
-     "gate": 0.1,
-     "selectivity": 3.67
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 3.67
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 3.67
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 3.67
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.22,
-     "selectivity": 3.67
-    }
-   }
-  },
-  {
-   "key": "ev_cf7b57e895",
-   "hyp_id": "HM102",
-   "date": "2026-10-12",
-   "summary": "机构论后市丨政策延续“存量托底”主基调，密切跟踪AI投资周期拐点",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.8
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.8
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 1.8
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.8
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.8
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 1.8
-    },
-    "HM004": {
      "code": "N",
      "conf": 0.98,
      "gate": 0.02,
-     "selectivity": 1.8
-    }
-   }
-  },
-  {
-   "key": "ev_c060ec1d4d",
-   "hyp_id": "HM102",
-   "date": "2026-10-12",
-   "summary": "How life has changed in a Moscow suburb where Ukrainian drones hit the same apartment building twice",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.25
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.25
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.25
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.25
+     "selectivity": 1.0
     },
     "HM002": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.25
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.0
     },
     "HM003": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.25
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.25
-    }
-   }
-  },
-  {
-   "key": "ev_533e8243f2",
-   "hyp_id": "HM102",
-   "date": "2026-10-12",
-   "summary": "A Ukrainian missile strike killed 20 Russian officers in occupied Donetsk. It was the largest known ",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.25
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.25
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.25
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.25
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.25
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.25
+     "selectivity": 1.0
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.25
+     "selectivity": 1.0
     }
    }
   },
   {
-   "key": "ev_85dd0d59e9",
-   "hyp_id": "HM102",
-   "date": "2026-10-12",
-   "summary": "如今美光赚得比苹果还多",
+   "key": "ev_c5488f07f7",
+   "hyp_id": "HM100",
+   "date": "2026-10-11",
+   "summary": "景嘉微：CH37系列正推进客户导入及小批量量产",
    "diagnosis": {
     "HM100": {
      "code": "N",
@@ -1970,8 +2870,8 @@
     },
     "HM101": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
+     "conf": 0.96,
+     "gate": 0.04,
      "selectivity": 3.25
     },
     "HM102": {
@@ -1982,8 +2882,8 @@
     },
     "HM001": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
+     "conf": 0.97,
+     "gate": 0.03,
      "selectivity": 3.25
     },
     "HM002": {
@@ -1993,1015 +2893,115 @@
      "selectivity": 3.25
     },
     "HM003": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 3.25
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 3.25
+    }
+   }
+  },
+  {
+   "key": "ev_0dd33a70ee",
+   "hyp_id": "HM100",
+   "date": "2026-10-11",
+   "summary": "国庆假期内蒙古接待国内游客2489万人次",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.33
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    }
+   }
+  },
+  {
+   "key": "ev_31a377cf3e",
+   "hyp_id": "HM100",
+   "date": "2026-10-11",
+   "summary": "全球科学信任度跌破疫情前水平，经济困难群体信心下降最明显",
+   "diagnosis": {
+    "HM100": {
      "code": "N",
      "conf": 0.91,
      "gate": 0.09,
-     "selectivity": 3.25
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 3.25
-    }
-   }
-  },
-  {
-   "key": "ev_370c20e0e8",
-   "hyp_id": "HM102",
-   "date": "2026-10-12",
-   "summary": "国泰海通：新质生产力顶层设计落地 推动AI技术在各行业加速落地",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.75
+     "selectivity": 1.5
     },
     "HM101": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.75
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
     },
     "HM102": {
      "code": "N",
-     "conf": 0.89,
-     "gate": 0.11,
-     "selectivity": 2.75
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.5
     },
     "HM001": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.75
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
     },
     "HM002": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.75
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.5
     },
     "HM003": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.5
+    },
+    "HM004": {
      "code": "N",
      "conf": 0.92,
      "gate": 0.08,
-     "selectivity": 2.75
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.75
-    }
-   }
-  },
-  {
-   "key": "ev_3a42daeafe",
-   "hyp_id": "HM102",
-   "date": "2026-10-12",
-   "summary": "美国VC资本流向：从“单一组件”转向“AI工厂”系统集成",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.9,
-     "gate": 0.1,
-     "selectivity": 2.43
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 2.43
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.85,
-     "gate": 0.15,
-     "selectivity": 2.43
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.43
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 2.43
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.83,
-     "gate": 0.17,
-     "selectivity": 2.43
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.43
-    }
-   }
-  },
-  {
-   "key": "ev_cf4dd26789",
-   "hyp_id": "HM102",
-   "date": "2026-10-12",
-   "summary": "俄反对派政党领袖因在选票上写“为了和平”被罚1000卢布",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.33
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.33
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 1.33
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.33
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.33
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.33
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.33
-    }
-   }
-  },
-  {
-   "key": "ev_38d8917ba2",
-   "hyp_id": "HM102",
-   "date": "2026-10-12",
-   "summary": "Several modules of Yandex’s data center in Russia completely knocked out by Ukrainian drone strike",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.0
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.0
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.9,
-     "gate": 0.1,
-     "selectivity": 2.0
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.0
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.0
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 2.0
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.0
-    }
-   }
-  },
-  {
-   "key": "ev_411ea9087e",
-   "hyp_id": "HM102",
-   "date": "2026-10-12",
-   "summary": "OpenAI孵化的AI制药独角兽，9个月征服6家跨国药企，捅破行业天花板",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.33
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.33
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 2.33
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 2.33
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 2.33
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.33
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 2.33
-    }
-   }
-  },
-  {
-   "key": "ev_52ff9f2854",
-   "hyp_id": "HM102",
-   "date": "2026-10-12",
-   "summary": "陶哲轩博客爆上热搜",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 3.0
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 3.0
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 3.0
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 3.0
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 3.0
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 3.0
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 3.0
-    }
-   }
-  },
-  {
-   "key": "ev_9e816a891c",
-   "hyp_id": "HM102",
-   "date": "2026-10-12",
-   "summary": "摩根大通：阿里AI有望提前实现“自我造血”，四季度将迎历史性盈利拐点",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.5
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.5
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.5
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.5
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.5
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.5
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 1.5
-    }
-   }
-  },
-  {
-   "key": "ev_3db91459cc",
-   "hyp_id": "HM102",
-   "date": "2026-10-12",
-   "summary": "Ukrainian drone attacks injure nine in Russia’s Kaluga region and spark fire at chemical plant in Tv",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.2
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.2
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.2
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.2
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.2
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.2
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.2
-    }
-   }
-  },
-  {
-   "key": "ev_55b39615f9",
-   "hyp_id": "HM102",
-   "date": "2026-10-12",
-   "summary": "俄称对乌数据袭击为“强制数字排毒”，基辅回击俄Yandex数据中心",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.5
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.5
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.5
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.5
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.5
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.5
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.5
-    }
-   }
-  },
-  {
-   "key": "ev_57a5aafd97",
-   "hyp_id": "HM102",
-   "date": "2026-10-12",
-   "summary": "计算医学写入“十五五”，AI制药能否成为“变局者”",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.25
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.25
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 2.25
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.25
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.25
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.25
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.25
-    }
-   }
-  },
-  {
-   "key": "ev_f4c7b01b88",
-   "hyp_id": "HM102",
-   "date": "2026-10-12",
-   "summary": "国家发展改革委有关负责同志就《关于发展新质生产力的意见》答记者问",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.6
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.6
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.6
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.6
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.6
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.6
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.6
-    }
-   }
-  },
-  {
-   "key": "ev_cb67a03c73",
-   "hyp_id": "HM102",
-   "date": "2026-10-12",
-   "summary": "标普收涨约0.6%，本周半导体指数跌4.3%",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.6
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.6
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.6
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.6
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.6
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.6
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.6
-    }
-   }
-  },
-  {
-   "key": "ev_fd787f9884",
-   "hyp_id": "HM102",
-   "date": "2026-10-12",
-   "summary": "金十整理：下周重要事件与数据预告——中国与美国9月CPI数据将公布，沃什周五发表讲话，阿斯麦与台积电将公布Q3财报",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.67
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.67
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.9,
-     "gate": 0.1,
-     "selectivity": 1.67
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.67
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.67
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.67
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.67
-    }
-   }
-  },
-  {
-   "key": "ev_6ed0cb5090",
-   "hyp_id": "HM102",
-   "date": "2026-10-12",
-   "summary": "AI重塑中国股市格局！高盛详解中国AI投资双主线",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.4
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.4
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.4
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.4
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.4
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.4
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.4
-    }
-   }
-  },
-  {
-   "key": "ev_283d3a474b",
-   "hyp_id": "HM102",
-   "date": "2026-10-12",
-   "summary": "下周资本市场大事提醒： 中国9月CPI和PPI数据将公布 阿斯麦和台积电财报验证AI基础设施投资的增长势头能否延续",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 2.2
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.2
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.89,
-     "gate": 0.11,
-     "selectivity": 2.2
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.2
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.2
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.9,
-     "gate": 0.1,
-     "selectivity": 2.2
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.2
-    }
-   }
-  },
-  {
-   "key": "ev_8d35b08274",
-   "hyp_id": "HM102",
-   "date": "2026-10-12",
-   "summary": "如何看待未来几年锂价走势？国城矿业回应",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 2.4
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.4
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.88,
-     "gate": 0.12,
-     "selectivity": 2.4
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.4
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.4
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 2.4
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 2.4
-    }
-   }
-  },
-  {
-   "key": "ev_d040f43f86",
-   "hyp_id": "HM001",
-   "date": "2026-10-12",
-   "summary": "中国大陆国防部批赖清德双十讲话：解放军在台周边演训天经地义",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 6.0
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 6.0
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 6.0
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 6.0
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 6.0
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 6.0
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.87,
-     "gate": 0.18,
-     "selectivity": 6.0
-    }
-   }
-  },
-  {
-   "key": "ev_8a3b9ff445",
-   "hyp_id": "HM001",
-   "date": "2026-10-12",
-   "summary": "在伊朗，注册一台iPhone 18的费用超过10亿里亚尔",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.0
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.0
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.0
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 1.0
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 1.0
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.0
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.0
-    }
-   }
-  },
-  {
-   "key": "ev_52d89e1019",
-   "hyp_id": "HM001",
-   "date": "2026-10-12",
-   "summary": "台防长谴责大陆今起五处海域进行军事活动",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 7.5
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 7.5
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 7.5
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 7.5
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 7.5
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 7.5
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.84,
-     "gate": 0.3,
-     "selectivity": 7.5
-    }
-   }
-  },
-  {
-   "key": "ev_14ecd3e0a4",
-   "hyp_id": "HM001",
-   "date": "2026-10-12",
-   "summary": "花旗：海底捞9月翻台率同比持平，维持“买入”评级",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.5
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 1.5
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.5
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 1.5
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 1.5
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.5
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
      "selectivity": 1.5
     }
    }

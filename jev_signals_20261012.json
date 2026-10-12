@@ -1,6 +1,6 @@
 {
  "date": "20261012",
- "generated_at": "2026-10-12T06:25:59.452862+00:00",
+ "generated_at": "2026-10-12T08:05:35.217649+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -37,18 +37,18 @@
  "signal_count": 2,
  "signals": [
   {
-   "id": "76f3d1b184338e3b",
-   "title": "净缺口32GW！电力正成为左右AI资本开支兑现的关键变量，快电源战略升维正当时",
-   "source": "华尔街见闻-全球",
-   "published_at": "2026-10-12T01:49:59+00:00",
-   "score": 0.734,
+   "id": "bdc68723ed0c377b",
+   "title": "【Bernstein上调美国长期电力需求预测，预计2030年前新增约1000太瓦时需求】Bernstein预计，美国电力",
+   "source": "新浪财经-7x24直播",
+   "published_at": "2026-10-12T07:23:32+00:00",
+   "score": 0.916,
    "hits": [
     {
      "hyp_id": "HM100",
      "code": "I",
-     "conf": 0.86,
-     "gate": 0.21,
-     "selectivity": 4.0
+     "conf": 0.91,
+     "gate": 0.29,
+     "selectivity": 3.22
     }
    ]
   },
@@ -63,8 +63,8 @@
      "hyp_id": "HM102",
      "code": "C",
      "conf": 0.66,
-     "gate": 0.44,
-     "selectivity": 8.8
+     "gate": 0.41,
+     "selectivity": 8.2
     }
    ]
   }
