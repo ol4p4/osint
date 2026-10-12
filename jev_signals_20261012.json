@@ -1,6 +1,6 @@
 {
  "date": "20261012",
- "generated_at": "2026-10-12T00:18:05.423818+00:00",
+ "generated_at": "2026-10-12T05:37:22.088403+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,8 +34,24 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 1,
+ "signal_count": 2,
  "signals": [
+  {
+   "id": "76f3d1b184338e3b",
+   "title": "净缺口32GW！电力正成为左右AI资本开支兑现的关键变量，快电源战略升维正当时",
+   "source": "华尔街见闻-全球",
+   "published_at": "2026-10-12T01:49:59+00:00",
+   "score": 0.743,
+   "hits": [
+    {
+     "hyp_id": "HM100",
+     "code": "I",
+     "conf": 0.84,
+     "gate": 0.24,
+     "selectivity": 4.12
+    }
+   ]
+  },
   {
    "id": "a12dae7a5b9d8684",
    "title": "三星明年存储产量的80%已被长协锁定",
@@ -46,9 +62,9 @@
     {
      "hyp_id": "HM102",
      "code": "C",
-     "conf": 0.62,
-     "gate": 0.41,
-     "selectivity": 8.2
+     "conf": 0.66,
+     "gate": 0.45,
+     "selectivity": 9.0
     }
    ]
   }
