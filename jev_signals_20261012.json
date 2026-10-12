@@ -1,6 +1,6 @@
 {
  "date": "20261012",
- "generated_at": "2026-10-12T10:56:00.636144+00:00",
+ "generated_at": "2026-10-12T11:05:47.799441+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -46,9 +46,9 @@
     {
      "hyp_id": "HM102",
      "code": "C",
-     "conf": 0.64,
-     "gate": 0.41,
-     "selectivity": 8.2
+     "conf": 0.6,
+     "gate": 0.43,
+     "selectivity": 8.6
     }
    ]
   }
