@@ -1182,12 +1182,38 @@ C conf=0.89 日经225指数低开1.5%                ← 行情？
 **核心结论：本地与云端的可用通道是互补的**（本地 dots/代理，云端 Gemini/NVIDIA/JEV、
 dots 亦达）。这正是周报断档当天能靠云端兜底的结构性原因。
 
-### 云端补第二条腿（2026-10-12）
+### 云端补腿：1 → 4 条（2026-10-12）
 
-云端此前**只有 Gemini 一条通道**，它一挂则 CI 全部 AI 环节断供。已加 dots 作第二腿：
-`DOTS_API_KEY` 写入 GitHub Secrets（**经 stdin 注入，不落命令行/不打印明文**），
-在两个 AI 步骤的 `env:` 补上。**零代码改动**——`call_ai` 通道链本就有 dots 分支，
-CI 只是缺该环境变量所以静默跳过。实测 CI 已验证注入（日志显示 `DOTS_API_KEY: ***`）。
+云端此前**只有 Gemini 一条通道**，它一挂则 CI 全部 AI 环节断供。本轮补到 4 条：
+
+| 通道 | 接入方式 | 说明 |
+|---|---|---|
+| Gemini | 已有 | 链首 |
+| **dots** | 补 `DOTS_API_KEY` 到 Secrets + 两步 `env:` | **零代码改动**——`call_ai` 通道链本就有该分支，CI 只是缺环境变量所以静默跳过 |
+| **NVIDIA** | 补 `NVIDIA_API_KEY` + **新增代码分支** | 该 Secret 早已存在但 `cloud/` 两个脚本**根本没有 NVIDIA 分支**（只有本地 `analyze.py` 有）——探针实测云端可用（11.6s）却一直闲置 |
+| JEV | 已有（免 key） | 判定专用 |
+
+**NVIDIA 接入的三处细节**（照 `analyze.py` 既有约定，勿另造一套）：
+1. **slug 映射**：`NV_SLUG_MAP` 与 `analyze._NV_SLUG_MAP` 同源（mimo→glm-5.3、
+   nemotron/longcat→gpt-oss-20b）；两处代码都标注"勿各自漂移"
+2. **`reasoning_effort=low` 必需**：gpt-oss-20b 不加会陷入思考循环、`content` 永远为空
+   （analyze.py 同款实测教训）
+3. **headers 用最小集**：NVIDIA 不是 OpenCode 网关，不认 `x-opencode-*` 自定义头
+4. **链序**：Gemini → dots → **NVIDIA** → 本机zen → OpenCode直连
+   （直连两端均 403，任何可用通道都该排它前面）
+
+**验证方法（关键）**：新分支"能跑"不等于"能顶上"。除例行调用外，
+**强制屏蔽前序通道**（dots/gemini/zen 全置不可用）验证新分支真能独立服务：
+`weekly_report_cloud` → `通道成功: z-ai/glm-5.3`；`citizen_impact` → 返回合法 JSON。
+CI 侧实测注入（日志显示 `DOTS_API_KEY: ***` / `NVIDIA_API_KEY: ***`），impact 50/50。
+
+**密钥处理**：全部走 GitHub Secrets 环境变量注入，**源码无任何凭据字面量**
+（grep 验证）；写入经 stdin（不落命令行、不打印明文）。`config.local.yaml`
+在 `.gitignore` 第 4 行且从未被 git 追踪——**"上云就得公开密钥"的顾虑不成立**。
+
+**现状**：云端 4 条腿（Gemini/dots/NVIDIA/JEV），本地 2 条（dots/4010 代理）。
+**本地反而是薄弱侧**——两条腿都是"经第三方中转"的同类风险，且 NVIDIA 本地实测
+时通时不通（40s 超时 ↔ 88.8s 成功）。
 
 ### ⚠️ 重要认知：`/models` 列表不是代理路径的权威
 
