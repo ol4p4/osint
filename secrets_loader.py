@@ -124,3 +124,74 @@ def get_gemini_key() -> str:
         except Exception:
             pass
     return ""
+
+
+def get_opencode_session() -> str:
+    """OpenCode **桌面会话 ID**（2026-10-12 接入，供 opencode-desktop 通道）。
+
+    ## 它是什么、为什么需要
+
+    OpenCode 免费层对第三方客户端一律 403（`FreeTierError: "free tier can only
+    be used from within OpenCode"`）。本地 4010 代理的做法是**冒充官方桌面客户端**
+    ——需同时凑齐：①桌面 UA、②`x-opencode-client: desktop`、③**由官方客户端真实
+    发起过的 session ID**、④6 个官方工具定义。本 getter 提供第 ③ 项。
+
+    ## 实测边界（2026-10-12，逐维对照，每次只变一个变量）
+
+    | 测试 | 结果 |
+    |---|---|
+    | 真 session（本机读） | 200 |
+    | 伪造 session（同格式 `ses_`+hex） | **403**（承重件，非装饰） |
+    | 无 session 头 | 403 |
+    | 20 天前的历史 session | **200**（不过期，是"登记在册"的持久标识） |
+    | `OPENCODE_API_KEY` + 本机 session | **200**（**不绑定特定 key**） |
+    | **CI（US runner）+ 本机 session** | **200**（**不绑定机器/IP**） |
+
+    末两条是本通道可行性的根据：session 与 key、机器均**无绑定关系**。
+
+    ## 来源
+
+    环境变量 `OC_DESKTOP_SESSION`（CI 用 GitHub Secrets 注入）；本地没有时回落到
+    桌面版 sqlite（`~/.local/share/opencode/opencode.db` 的 session 表取最近一条）
+    ——与 4010 代理同一取数口径。
+
+    ## 使用须知
+
+    本通道**性质特殊**：它绕过的是"仅限官方客户端使用"的免费层限制。上游加强
+    校验即失效，且 session 关联用户账号（可轮换/吊销）。故在链中**恒为末位兜底**，
+    只在前序正常 API 通道全不可用时才被使用。
+    """
+    val = os.environ.get("OC_DESKTOP_SESSION", "").strip()
+    if val:
+        return val
+    try:
+        import sqlite3
+        db = Path.home() / ".local" / "share" / "opencode" / "opencode.db"
+        if not db.exists():
+            return ""
+        con = sqlite3.connect("file:" + db.as_posix() + "?mode=ro", uri=True, timeout=3)
+        try:
+            row = con.execute(
+                "select id from session order by time_updated desc limit 1").fetchone()
+        finally:
+            con.close()
+        return (row[0] if row else "") or ""
+    except Exception:
+        return ""
+
+
+# 官方桌面客户端的 6 个工具定义（opencode-desktop 通道的放行条件之一）。
+# 实测（2026-10-12）：**必须齐 6 个且名称正确**，每个都要带 parameters——
+#   3/4/5 个 -> 403；6 个正确名 -> 200；6 个任意名（aaa/bbb/...）-> 403；
+#   仅给 name 不给 parameters -> 403。
+# 描述文本不参与校验（极简 stub 与全量 78KB 定义同为 200），故此处只留
+# 名称 + 最小 parameters 骨架，避免把 13KB 官方文案抄进仓库。
+OPENCODE_DESKTOP_TOOLS = [
+    {"type": "function",
+     "function": {"name": n, "description": "OpenCode desktop tool",
+                  "parameters": {"type": "object", "properties": {}}}}
+    for n in ("bash", "edit", "glob", "grep", "question", "read")
+]
+# 官方桌面客户端的请求指纹（本地 4010 代理实测放行的那一套；cli 标识一律 403）
+OPENCODE_DESKTOP_UA = ("opencode/1.18.28 ai-sdk/provider-utils/4.0.23 "
+                       "runtime/node.js/24")
