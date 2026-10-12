@@ -523160,6 +523160,3906 @@
    },
    "model": "jev-ci",
    "diagnosed_at": "2026-10-12T12:59:40"
+  },
+  {
+   "key": "ev_ec7e765222",
+   "date": "2026-10-12",
+   "summary": "普京：俄愿向美国及全球市场供应石油和石油产品",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 1.71
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.71
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.71
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.71
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.71
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.71
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.71
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_d2b5d16d9b",
+   "date": "2026-10-12",
+   "summary": "金十数据全球财经早餐 | 2026年10月12日",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.67
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.67
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.67
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.67
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.67
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.67
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.67
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_47340d7371",
+   "date": "2026-10-12",
+   "summary": "ETF两市成交额报3805.81亿元，较上一交易日此时放量1039.57亿元",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.25
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.25
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.25
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.25
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_de2be26479",
+   "date": "2026-10-12",
+   "summary": "商品期货开盘，20号胶主力合约涨超4%，橡胶、焦煤涨超3%，甲醇、焦炭涨近3%。碳酸锂、苯乙烯、生猪、沥青跌超2%。",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.8
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.8
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.8
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.8
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.8
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.8
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.8
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_105e95b6e1",
+   "date": "2026-10-12",
+   "summary": "北京：到2030年，消费对首都经济发展的基础性作用更加稳固",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.25
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.25
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.25
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.25
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.25
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_b0a9d707f2",
+   "date": "2026-10-12",
+   "summary": "北京：打造开放多元的国际化餐饮消费生态，吸引全球优质品牌集聚",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.33
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_80b0528ffb",
+   "date": "2026-10-12",
+   "summary": "中国钢铁行业协会： 2026年9月下旬钢材库存量1565万吨，环比上一旬减少143万吨，下降8.4%",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.75
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.75
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 2.75
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.75
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.75
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.75
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.75
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_b55379fe47",
+   "date": "2026-10-12",
+   "summary": "【华泰证券：消费级3D打印设备放量有望带动耗材需求持续增长】华泰证券研报称，消费级3D打印设备放量有望带动耗材需求持续增",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.67
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.67
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.67
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.67
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.67
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.67
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 2.67
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_66d08cbfa5",
+   "date": "2026-10-12",
+   "summary": "报道称欧盟将面临15年来最严重的冬季天然气短缺",
+   "diagnosis": {
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.71
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.71
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.71
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 2.71
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.71
+    },
+    "HM100": {
+     "code": "I",
+     "lr": 0.856,
+     "note": "",
+     "conf": 0.53,
+     "gate": 0.19,
+     "selectivity": 2.71
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.99,
+     "gate": 0.15,
+     "selectivity": 2.71
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_df4cddb2dd",
+   "date": "2026-10-12",
+   "summary": "沪深两市成交额突破1万亿 较上一日此时缩量超1500亿",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.5
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.5
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.5
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.5
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.5
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_1a49318085",
+   "date": "2026-10-12",
+   "summary": "特朗普强推“俄乌能源停火”，泽连斯基起初称“不知情”但随后表态“支持”",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 2.2
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.2
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.2
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.2
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 2.2
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.2
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.2
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_b411d77159",
+   "date": "2026-10-12",
+   "summary": "10月12日会员早报：沙特彻底“破防” 特朗普宣布俄乌“能源停火”",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.87,
+     "gate": 0.13,
+     "selectivity": 1.88
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.88
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.85,
+     "gate": 0.15,
+     "selectivity": 1.88
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.88
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.88
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.88
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.88
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_30a9e9777a",
+   "date": "2026-10-12",
+   "summary": "泽连斯基称支持“能源停火” 乌武装部队已收到相关命令",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.0
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.0
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_fb35bba95c",
+   "date": "2026-10-12",
+   "summary": "特朗普称俄乌进入“能源停火”，泽连斯基回应说“这是个新闻”",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.4
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.4
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.4
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.4
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.4
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.4
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.4
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_5069751d14",
+   "date": "2026-10-12",
+   "summary": "泽连斯基：正在等待美方提供能源停火相关细节",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.6
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.6
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.6
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.6
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_ba42cadbd2",
+   "date": "2026-10-12",
+   "summary": "特朗普宣布俄乌达成“能源停火”，称协议立即生效",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 2.2
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.2
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.2
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.2
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 2.2
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.2
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.2
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_4f2b6a85ba",
+   "date": "2026-10-12",
+   "summary": "泽连斯基敦促特朗普支持俄乌“能源停火”",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.8
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.8
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.8
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.8
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.8
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.8
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.8
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_73ec7b2e47",
+   "date": "2026-10-12",
+   "summary": "特朗普宣称俄乌已同意“能源停火” 泽连斯基表示在等待细节",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.5
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.5
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.5
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_4b4be7bf08",
+   "date": "2026-10-12",
+   "summary": "泽连斯基称对俄乌能源停火不知情",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.6
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.6
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.6
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.6
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.6
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_0d675c3823",
+   "date": "2026-10-12",
+   "summary": "特朗普称俄乌双方同意“能源停火”",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 2.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 2.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.0
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.0
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_ed164b7239",
+   "date": "2026-10-12",
+   "summary": "A股四大指数集体低开，市场逾2900股下跌",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.6
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.6
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.6
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.6
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.6
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.6
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_2b155d2d4a",
+   "date": "2026-10-12",
+   "summary": "从光芯片到覆铜板，A股AI硬件板块因何轮番走低",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.25
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.25
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 2.25
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.25
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.25
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.25
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.25
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_a4864d8ff9",
+   "date": "2026-10-12",
+   "summary": "净缺口32GW",
+   "diagnosis": {
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 3.44
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.44
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 3.44
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 3.44
+    },
+    "HM100": {
+     "code": "I",
+     "lr": 0.77,
+     "note": "",
+     "conf": 0.73,
+     "gate": 0.22,
+     "selectivity": 3.44
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.79,
+     "gate": 0.18,
+     "selectivity": 3.44
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.69,
+     "gate": 0.31,
+     "selectivity": 3.44
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_e0f9c10e01",
+   "date": "2026-10-12",
+   "summary": "超大型油轮运费升至60年来最高",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.87,
+     "gate": 0.13,
+     "selectivity": 2.8
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.8
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.8
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.8
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.86,
+     "gate": 0.14,
+     "selectivity": 2.8
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.8
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.8
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_ebe8605d19",
+   "date": "2026-10-12",
+   "summary": "关税加伊朗战事反噬 美国制造商苦水难咽",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.78
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.84,
+     "gate": 0.16,
+     "selectivity": 1.78
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.78
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.78
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.78
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.78
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.78
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_cd902e03b8",
+   "date": "2026-10-12",
+   "summary": "双边贸易蓬勃发展，为何中日紧张局势加剧？",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.5
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.5
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.5
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.5
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.5
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_dd654c8542",
+   "date": "2026-10-12",
+   "summary": "圣唐控股与乐添投资订立采购合作协议 共同打造供应链业务运营平台",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.5
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.5
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.5
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.5
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_4ff6fb9b9e",
+   "date": "2026-10-12",
+   "summary": "印度史上最大IPO要来了",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.67
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.67
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.67
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.67
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_f4ad707a67",
+   "date": "2026-10-12",
+   "summary": "张国清在吉林调研时强调 持续做大做强先进制造业 提升产业链自主可控水平",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.4
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.4
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 2.4
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.4
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.4
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.4
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.4
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_5850832d7d",
+   "date": "2026-10-12",
+   "summary": "印度央行推出特别石油窗口及支撑卢比的监管措施",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.4
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.4
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.4
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.4
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.4
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.4
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.4
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_9407eee8c7",
+   "date": "2026-10-12",
+   "summary": "美俄达成能源合作 泽连斯基感到“遭背叛” 美总统建议乌更换领导人",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.83
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.83
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.83
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.83
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.83
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.83
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.83
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_c782b8d8b6",
+   "date": "2026-10-12",
+   "summary": "美强烈谴责对沙特的袭击",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.5
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.5
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_309b8de476",
+   "date": "2026-10-12",
+   "summary": "中国AI短剧流行 “不烧心文学”成全网热梗",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.33
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.33
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.33
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.33
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_d5c04bc016",
+   "date": "2026-10-12",
+   "summary": "软件开发板块短线拉升，格尔软件直线涨停",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.25
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.25
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.25
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.25
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_7e45e85596",
+   "date": "2026-10-12",
+   "summary": "中国钢铁行业协会：2026年9月下旬日产钢材392万吨、环比增长4.9%",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.5
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.5
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 2.5
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.5
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.5
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.5
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.5
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_1f30035fe0",
+   "date": "2026-10-12",
+   "summary": "Jefferies警告“2008时刻”：AI或致美国“资本大毁灭”，份额流向中国开源模型",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 4.17
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 4.17
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 4.17
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 4.17
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 4.17
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 4.17
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.25,
+     "selectivity": 4.17
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_cf7b57e895",
+   "date": "2026-10-12",
+   "summary": "机构论后市丨政策延续“存量托底”主基调，密切跟踪AI投资周期拐点",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 2.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 2.0
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.0
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_c060ec1d4d",
+   "date": "2026-10-12",
+   "summary": "How life has changed in a Moscow suburb where Ukrainian drones hit the same apartment building twice",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.25
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.25
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.25
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.25
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_533e8243f2",
+   "date": "2026-10-12",
+   "summary": "A Ukrainian missile strike killed 20 Russian officers in occupied Donetsk. It was the largest known ",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.25
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.25
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.25
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.25
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_85dd0d59e9",
+   "date": "2026-10-12",
+   "summary": "如今美光赚得比苹果还多",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 3.25
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 3.25
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.87,
+     "gate": 0.13,
+     "selectivity": 3.25
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.25
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.25
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 3.25
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 3.25
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_370c20e0e8",
+   "date": "2026-10-12",
+   "summary": "国泰海通：新质生产力顶层设计落地 推动AI技术在各行业加速落地",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 3.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 3.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 3.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 3.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 3.0
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.0
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_3a42daeafe",
+   "date": "2026-10-12",
+   "summary": "美国VC资本流向：从“单一组件”转向“AI工厂”系统集成",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 2.43
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.43
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.85,
+     "gate": 0.15,
+     "selectivity": 2.43
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.43
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.43
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.83,
+     "gate": 0.17,
+     "selectivity": 2.43
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.43
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_cf4dd26789",
+   "date": "2026-10-12",
+   "summary": "俄反对派政党领袖因在选票上写“为了和平”被罚1000卢布",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_38d8917ba2",
+   "date": "2026-10-12",
+   "summary": "Several modules of Yandex’s data center in Russia completely knocked out by Ukrainian drone strike",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.2
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.2
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 2.2
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.2
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.2
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.2
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.2
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_411ea9087e",
+   "date": "2026-10-12",
+   "summary": "OpenAI孵化的AI制药独角兽，9个月征服6家跨国药企，捅破行业天花板",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.33
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.33
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.33
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 2.33
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 2.33
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.33
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 2.33
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_52ff9f2854",
+   "date": "2026-10-12",
+   "summary": "陶哲轩博客爆上热搜",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 3.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 3.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 3.0
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.0
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_9e816a891c",
+   "date": "2026-10-12",
+   "summary": "摩根大通：阿里AI有望提前实现“自我造血”，四季度将迎历史性盈利拐点",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.75
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.75
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.75
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.75
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.75
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.75
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.75
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_3db91459cc",
+   "date": "2026-10-12",
+   "summary": "Ukrainian drone attacks injure nine in Russia’s Kaluga region and spark fire at chemical plant in Tv",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.2
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.2
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.2
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.2
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.2
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.2
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.2
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_55b39615f9",
+   "date": "2026-10-12",
+   "summary": "俄称对乌数据袭击为“强制数字排毒”，基辅回击俄Yandex数据中心",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.5
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_57a5aafd97",
+   "date": "2026-10-12",
+   "summary": "计算医学写入“十五五”，AI制药能否成为“变局者”",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 3.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 3.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 3.0
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.0
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_f4c7b01b88",
+   "date": "2026-10-12",
+   "summary": "国家发展改革委有关负责同志就《关于发展新质生产力的意见》答记者问",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.8
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.8
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.8
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.8
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.8
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.8
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.8
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_cb67a03c73",
+   "date": "2026-10-12",
+   "summary": "标普收涨约0.6%，本周半导体指数跌4.3%",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.6
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.6
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.6
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.6
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.6
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_fd787f9884",
+   "date": "2026-10-12",
+   "summary": "金十整理：下周重要事件与数据预告——中国与美国9月CPI数据将公布，沃什周五发表讲话，阿斯麦与台积电将公布Q3财报",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.5
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.5
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.5
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.5
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.5
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_6ed0cb5090",
+   "date": "2026-10-12",
+   "summary": "AI重塑中国股市格局！高盛详解中国AI投资双主线",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.4
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.4
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.4
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.4
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.4
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.4
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.4
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_283d3a474b",
+   "date": "2026-10-12",
+   "summary": "下周资本市场大事提醒： 中国9月CPI和PPI数据将公布 阿斯麦和台积电财报验证AI基础设施投资的增长势头能否延续",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.2
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.2
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 2.2
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.2
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.2
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 2.2
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.2
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_8d35b08274",
+   "date": "2026-10-12",
+   "summary": "如何看待未来几年锂价走势？国城矿业回应",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.6
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.6
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.87,
+     "gate": 0.13,
+     "selectivity": 2.6
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.6
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.6
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.6
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 2.6
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_d040f43f86",
+   "date": "2026-10-12",
+   "summary": "中国大陆国防部批赖清德双十讲话：解放军在台周边演训天经地义",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 5.67
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 5.67
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 5.67
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 5.67
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 5.67
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 5.67
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.88,
+     "gate": 0.17,
+     "selectivity": 5.67
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_8a3b9ff445",
+   "date": "2026-10-12",
+   "summary": "在伊朗，注册一台iPhone 18的费用超过10亿里亚尔",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.0
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_52d89e1019",
+   "date": "2026-10-12",
+   "summary": "台防长谴责大陆今起五处海域进行军事活动",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 6.75
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 6.75
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 6.75
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 6.75
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 6.75
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 6.75
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.82,
+     "gate": 0.27,
+     "selectivity": 6.75
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
+  },
+  {
+   "key": "ev_14ecd3e0a4",
+   "date": "2026-10-12",
+   "summary": "花旗：海底捞9月翻台率同比持平，维持“买入”评级",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM101": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM102": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM001": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.0
+    },
+    "HM002": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.0
+    },
+    "HM003": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM004": {
+     "code": "N",
+     "lr": 1.0,
+     "note": "",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.0
+    }
+   },
+   "model": "jev-ci",
+   "diagnosed_at": "2026-10-12T13:56:28"
   }
  ],
  "diagnosis": {},
@@ -523167,8 +527067,8 @@
   "HM100": {
    "posterior": 0.05,
    "support": 4,
-   "refute": 74,
-   "evidence_total": 78,
+   "refute": 76,
+   "evidence_total": 80,
    "prior_baseline": 0.78,
    "reliability": "extreme"
   },
@@ -523221,7 +527121,7 @@
    "reliability": "strong"
   }
  },
- "updated": "2026-10-12 04:59",
+ "updated": "2026-10-12 05:56",
  "hypotheses": [
   {
    "id": "HM100",
@@ -523367,5 +527267,5 @@
   ],
   "updated_at": "2026-10-10T20:53:44"
  },
- "updated_at": "2026-10-12T04:59:40.809865+00:00"
+ "updated_at": "2026-10-12T05:56:28.638198+00:00"
 }
