@@ -678,6 +678,11 @@ def run_hypothesis_chain():
         # 纯文件操作、无 AI 调用、秒级；critical=False（外部产物不阻塞节流戳）。
         ("merge-weekly", [sys.executable, str(PROJECT / "tools" / "merge_ci_weekly.py")],
          120, ("[MERGE-WEEKLY]",), False),
+        # opencode-desktop session 巡检（2026-10-12 接入）：该通道复用本机桌面登录态，
+        # 是 5 条腿中唯一会**静默失效**的（恒排链尾、平时不调用，过期也没人知道）。
+        # 本地跑能第一时间发现"该重新注入 session 了"。退出码恒 0，非 critical。
+        ("session-check", [sys.executable, str(PROJECT / "tools" / "check_opencode_session.py")],
+         120, ("[SESSION-CHECK]",), False),
         ("ach-batch", [sys.executable, str(PROJECT / "tools" / "ach_daily_batch.py")], 1600, ("[ACH-BATCH]",), True),
         # 指标 AI 判定（2026-10-10 接入）：对**有真实抓取值**的叙述式阈值指标
         # 提前出判定。verify_hypotheses 只做数值比较，叙述式阈值标 needs_ai 等

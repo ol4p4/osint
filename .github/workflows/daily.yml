@@ -116,6 +116,20 @@ jobs:
           cd ${{ github.workspace }}
           python cloud/weekly_report_cloud.py --dir . || echo "Weekly cloud report skipped"
 
+      # opencode-desktop session 有效性巡检（2026-10-12）
+      # 为什么需要：该通道复用用户桌面登录态的 session，是 5 条腿中唯一会
+      # "静默失效"的——它恒排链尾，平时根本不调用，session 过期/被吊销也没人知道，
+      # 直到某天真的需要兜底才发现腿是断的。本步骤把它变成显式警告。
+      # 退出码恒 0（观测步骤不阻塞流水线，同 probe/assess 教训）；
+      # 失效时发 GitHub ::warning:: 注解（UI 可见，日志易被忽略）。
+      - name: Check opencode-desktop session validity
+        env:
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          OC_DESKTOP_SESSION: ${{ secrets.OC_DESKTOP_SESSION }}
+        run: |
+          cd ${{ github.workspace }}
+          python tools/check_opencode_session.py --github-annotate || echo "Session check skipped"
+
       - name: Generate daily briefing
         run: |
           cd ${{ github.workspace }}
