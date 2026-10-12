@@ -658,6 +658,19 @@ def run_hypothesis_chain():
     steps = [
         ("link", [sys.executable, str(PROJECT / "link_intel_hyp.py")], 600, ("Linked", "[TFIDF]"), True),
         ("verify", [sys.executable, str(PROJECT / "verify_hypotheses.py")], 600, ("指标更新",), True),
+        # 合并云端 ACH 诊断（2026-10-12 接入）：CI 自 2026-10-08 起用免 key JEV
+        # 通道跑增量诊断，产物 ach_diagnosis_*.json 随 git pull 回到本地——但此前
+        # **没有任何代码读它**（全仓库只有生成方自己），云端成果躺在仓库里无人用，
+        # 本地又用自己的 JEV/mimo 重跑同样的证据。本步把「本地矩阵未诊断」的
+        # 云端判定补录进矩阵，**纯本地合并、无 AI 调用**，秒级完成。
+        #
+        # 必须排在 ach-batch **之前**：云端已诊断的证据先入矩阵，本地那 1600s
+        # 预算就能花在云端没覆盖的证据上（实测首轮即有 60 条云端判定待补）。
+        #
+        # critical=False：产物来自外部（CI），缺失/损坏/为空都不该阻塞核心链
+        # 的节流戳（同 probe/assess 教训——外部依赖的步骤不阻塞节流）。
+        ("merge-ci", [sys.executable, str(PROJECT / "tools" / "merge_ci_diagnosis.py")],
+         300, ("[MERGE-CI]",), False),
         ("ach-batch", [sys.executable, str(PROJECT / "tools" / "ach_daily_batch.py")], 1600, ("[ACH-BATCH]",), True),
         # 指标 AI 判定（2026-10-10 接入）：对**有真实抓取值**的叙述式阈值指标
         # 提前出判定。verify_hypotheses 只做数值比较，叙述式阈值标 needs_ai 等
