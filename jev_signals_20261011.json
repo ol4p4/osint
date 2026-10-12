@@ -1,6 +1,6 @@
 {
  "date": "20261011",
- "generated_at": "2026-10-11T12:10:36.110000+00:00",
+ "generated_at": "2026-10-11T19:26:19.912421+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,7 +34,7 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 5,
+ "signal_count": 4,
  "signals": [
   {
    "id": "64cd6a44b4cc99d7",
@@ -46,9 +46,9 @@
     {
      "hyp_id": "HM004",
      "code": "C",
-     "conf": 0.86,
-     "gate": 0.66,
-     "selectivity": 22.0
+     "conf": 0.87,
+     "gate": 0.68,
+     "selectivity": 22.67
     }
    ]
   },
@@ -62,7 +62,7 @@
     {
      "hyp_id": "HM100",
      "code": "I",
-     "conf": 0.75,
+     "conf": 0.73,
      "gate": 0.18,
      "selectivity": 3.0
     }
@@ -79,8 +79,8 @@
      "hyp_id": "HM004",
      "code": "C",
      "conf": 0.5,
-     "gate": 0.46,
-     "selectivity": 15.33
+     "gate": 0.45,
+     "selectivity": 15.0
     }
    ]
   },
@@ -89,30 +89,14 @@
    "title": "三星明年存储产量的80%已被长协锁定",
    "source": "华尔街见闻-全球",
    "published_at": "2026-10-11T05:11:42+00:00",
-   "score": 0.68,
+   "score": 0.612,
    "hits": [
     {
      "hyp_id": "HM102",
      "code": "C",
-     "conf": 0.63,
-     "gate": 0.41,
-     "selectivity": 8.2
-    }
-   ]
-  },
-  {
-   "id": "26efb47e8e7af637",
-   "title": "全国首个百万千瓦级光伏光热项目并网发电",
-   "source": "华尔街见闻-快讯",
-   "published_at": "2026-10-10T06:15:08+00:00",
-   "score": 0.575,
-   "hits": [
-    {
-     "hyp_id": "HM100",
-     "code": "C",
-     "conf": 0.51,
-     "gate": 0.18,
-     "selectivity": 6.0
+     "conf": 0.64,
+     "gate": 0.44,
+     "selectivity": 8.8
     }
    ]
   }
