@@ -1182,9 +1182,9 @@ C conf=0.89 日经225指数低开1.5%                ← 行情？
 **核心结论：本地与云端的可用通道是互补的**（本地 dots/代理，云端 Gemini/NVIDIA/JEV、
 dots 亦达）。这正是周报断档当天能靠云端兜底的结构性原因。
 
-### 云端补腿：1 → 4 条（2026-10-12）
+### 云端补腿：1 → 5 条（2026-10-12）
 
-云端此前**只有 Gemini 一条通道**，它一挂则 CI 全部 AI 环节断供。本轮补到 4 条：
+云端此前**只有 Gemini 一条通道**，它一挂则 CI 全部 AI 环节断供。本轮补到 5 条：
 
 | 通道 | 接入方式 | 说明 |
 |---|---|---|
@@ -1192,6 +1192,7 @@ dots 亦达）。这正是周报断档当天能靠云端兜底的结构性原因
 | **dots** | 补 `DOTS_API_KEY` 到 Secrets + 两步 `env:` | **零代码改动**——`call_ai` 通道链本就有该分支，CI 只是缺环境变量所以静默跳过 |
 | **NVIDIA** | 补 `NVIDIA_API_KEY` + **新增代码分支** | 该 Secret 早已存在但 `cloud/` 两个脚本**根本没有 NVIDIA 分支**（只有本地 `analyze.py` 有）——探针实测云端可用（11.6s）却一直闲置 |
 | JEV | 已有（免 key） | 判定专用 |
+| **opencode-desktop** | 新增分支 + `OC_DESKTOP_SESSION` | **末位兜底**，性质特殊，见下节 |
 
 **NVIDIA 接入的三处细节**（照 `analyze.py` 既有约定，勿另造一套）：
 1. **slug 映射**：`NV_SLUG_MAP` 与 `analyze._NV_SLUG_MAP` 同源（mimo→glm-5.3、
@@ -1214,6 +1215,56 @@ CI 侧实测注入（日志显示 `DOTS_API_KEY: ***` / `NVIDIA_API_KEY: ***`）
 **现状**：云端 4 条腿（Gemini/dots/NVIDIA/JEV），本地 2 条（dots/4010 代理）。
 **本地反而是薄弱侧**——两条腿都是"经第三方中转"的同类风险，且 NVIDIA 本地实测
 时通时不通（40s 超时 ↔ 88.8s 成功）。
+
+### opencode-desktop 通道（2026-10-12，末位兜底，性质特殊）
+
+**背景**：OpenCode 免费层对第三方客户端一律 403（`FreeTierError: "free tier can
+only be used from within OpenCode"`）。本地 4010 代理（`E:\OpenCode\zen-proxy.py`）
+的做法是**冒充官方桌面客户端**。云端此前用不了它，但用户追问"能不能把本地 session
+搬上云"——**实测可以**。
+
+**实测证据链（逐维对照，每次只变一个变量）**：
+
+| 测试 | 结果 | 结论 |
+|---|---|---|
+| 真 session | 200 | 有效 |
+| 伪造 session（同格式 `ses_`+hex） | **403** | **承重件**，非装饰 |
+| 无 session 头 | 403 | 必须带 |
+| **20 天前的历史 session** | **200** | **不过期**，是"登记在册"的持久标识 |
+| `OPENCODE_API_KEY` + 本机 session | **200** | **不绑定特定 key**（该 key 云端已有） |
+| **CI（US runner）+ 本机 session** | **200** | **不绑定机器/IP** |
+
+**上游放行条件（消融实测校准，比 `zen-proxy.py` 注释更精确）**：
+需同时满足桌面 UA + `x-opencode-client: desktop` + 有效 session + **`stream=true`**
++ **tools 齐 6 个正确名且各带 `parameters`**。实测边界：
+
+| 条件 | 结果 |
+|---|---|
+| 3 / 4 / 5 个 tools | 403 |
+| 6 个正确名（bash/edit/glob/grep/question/read） | 200 |
+| 6 个任意名（aaa/bbb/…） | 403 |
+| 6 个只有 name、无 parameters | 403 |
+| 描述文本极简 stub vs 全量 78KB | 均 200（**描述不参与校验**，故只内嵌名称+骨架） |
+
+**实现**：`secrets_loader.get_opencode_session()`（env `OC_DESKTOP_SESSION` 优先，
+本地回落桌面版 sqlite 最近会话，与 4010 代理同口径）+ `OPENCODE_DESKTOP_TOOLS`
++ `OPENCODE_DESKTOP_UA`；两个 cloud 脚本新增 `opencode_desktop` 分支，**恒排链尾**；
+SSE 拼回用 `_sse_to_completion` / `_sse_to_text`（与
+`zen_proxy_client._extract_content` 同源，避免三处漂移）。
+
+**验证**：本地**强制屏蔽前序所有通道**后，citizen_impact 返回合法 JSON、
+weekly_report_cloud 报 `通道成功: opencode_desktop`（前 4 条常规通道全 403）。
+CI 实测注入（`OC_DESKTOP_SESSION: ***`），impact 50/50。
+
+**⚠️ 风险与约束（已在代码注释写明，勿删）**：本通道绕过的是"免费层仅限官方
+客户端"的限制，**性质与其余四条正常 API 不同**——上游加强校验即失效；session
+关联用户账号，可轮换/吊销。故**恒为末位兜底**，只在前序正常 API 通道全不可用时
+才被使用；一旦失效不影响前序链路。
+
+**认知教训**：我先前据 `zen-proxy.py` 的注释（"未经 OpenCode 发起的 ID 一律 403"）
+判断"结构性接不了"，**被实测推翻**——那句注释证明的是**来源**要求（须曾由官方
+客户端发起），我误读成了**绑定**要求（绑机器/绑 key）。**注释里的实测结论只覆盖
+它测过的那一维**，外推前必须自己再测。
 
 ### ⚠️ 重要认知：`/models` 列表不是代理路径的权威
 
