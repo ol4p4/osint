@@ -707,6 +707,7 @@ C conf=0.89 日经225指数低开1.5%                ← 行情？
 |---|---|---|
 | JEV 免费通道会限流 | `HTTP 429 FreeUsageLimitError`，**加 key / 换 4010 代理均无效**（按账号计量，非 IP/key） | 历史上生产零回退记录，属临时性；回退 mimo 已验证可用 |
 | `api.typesafe.ai` 地域封锁 | `HTTP 451 Typesafe is not available in your region` | **付费兜底实际是死的**（法律原因封锁，非临时故障） |
+| **JEV free 通道本地不可达**（2026-10-12 定性） | 本地全 451 `Upstream request failed`，**同刻 CI（US runner）成功 60 条**；模型仍在 `/models` 列表 → **上游故障/地域不可达，不是撤销免费** | 不改代码；本地走 mimo 熔断回退，云端 CI 照常产出，靠 `merge_ci_diagnosis.py` 合并回矩阵（见 §"云端判定的合并回写"） |
 | Zen 网关有付费版 `jev-1.13` | 带 key 返 **402 `Insufficient account funds`**（认证通过，余额为 0）；无 key 返 401 | AGENTS.md 旧记「jev-1.13 返 401 Missing API key」需更新——那是无 key 环境的结论 |
 | `subprocess.run(timeout=)` 在 Windows 不杀子进程树 | probe_mega 超时后子进程残留 | 既有平台缺陷；正常情况 probe 3 分钟完成不碰超时，本轮因 JEV 限流（45s/条×200）才暴露 |
 | `SEL_MIN=2.5` 校准已脱节 | 实测当前分布 p50=1.75/p90=2.89（注释写"p50=2.3"是 9-28 改措辞前的旧值），2.5 落在 p88，只放行 ~16% 证据 | 独立问题，与本轮无关，建议单独评估 |
@@ -1522,16 +1523,36 @@ schema 描述、示例值、字段说明里的措辞都会被子模型模仿。
   `propose_hypotheses` 自动提议。全程有产物、有日志、可追溯。
 - **遗留 ①**：`propose_hypotheses` **没有被任何调度调用**（refresh/daily_run/CI 均无）——
   只能手动跑。是否接入周期调度（如每周随周循环跑一次、提议落盘待人审）留用户决策。
-- **遗留 ②（已验证，2026-10-11 CI 探针）**：`jev-1.13-free` 的故障**不是本地网络问题**——
-  在 GitHub 美国 runner 上探针（run 38103907965）同样失败，curl 与项目 client 两种路径
-  均返 **422 `Upstream request failed: Endpoint is unavailable`**。结论：
+- **遗留 ②（已定性，2026-10-12 复核为「上游故障」而非「撤销免费」）**：`jev-1.13-free`
+  的故障**不是本地网络问题**。2026-10-11 的 CI 探针（run 38103907965）在 GitHub 美国
+  runner 上同样失败，curl 与项目 client 两种路径均返 **422/451
+  `Upstream request failed: Endpoint is unavailable`**。结论：
   **opencode zen 网关上游的 System One 端点本身故障**，等 opencode 修复即可，无需改代码。
-  期间 ACH 判定自动走 mimo（53s/条 vs 0.66s/条），熔断机制保证不拖死批量任务。
   ⚠️ 更正一条旧记录：此前把 free 通道错误写成"451 地域封锁"是误读——**451 属于 paid
   通道**（Typesafe 官方，"not available in your region"，老问题）；free 通道的真实错误
   是上游故障，opencode 网关把它包装成了不同状态码（本地见过 451 包装、CI 见 422）。
   **判据：同一错误体（`Endpoint is unavailable`）在不同网络/包装下状态码不同，
   定位故障要读 error body 而非只看状态码。**
+
+  **2026-10-12 复核（用户问"是坏了还是撤销免费"）——证据链与可复现判据**：
+
+  | 判据 | 观测 | 含义 |
+  |---|---|---|
+  | 模型是否还在售 | `GET /zen/v1/models` 返 83 个模型，**`jev-1.13-free` 仍在列**（与付费版 `jev-1.13` 并列） | 撤销免费会从列表摘除，**未摘除 → 没撤** |
+  | 撤销 vs 故障的网关行为 | 送**不存在的模型名** → `401 ModelError: Model xxx is not supported`；送 `jev-1.13-free` → `451 server_error: Upstream request failed` | **网关认这个模型名**、转发到上游才失败 → **上游故障** |
+  | 同端点其他路由 | 同域 `chat/completions` 正常返结构化错误（401 ModelError） | 网关本身健康，**只有 systemone 路由的上游挂** |
+  | 跨地域同时刻对照 | **CI（美国 runner）06:13 UTC 真跑成功**：`[JEV-ACH] 诊断 60 条（失败 0），耗时 18s`，扫描 100 条 0.49s/条、出 2 条信号 | 端点在美国侧可用；**本地（中国大陆）不通** |
+  | 本地多轮重测 | 06:15 UTC 连测 3 次全 451（0.7~1.5s 快速失败，非超时） | 非间歇、非限流（限流返 429），是**稳定的地域性不可达** |
+
+  **最终结论**：**不是撤销免费，是「上游端点对本地网络不可达」**。免费资格仍在
+  （模型在列、CI 侧照跑照成功），本地这一侧到该上游的路径不通。因此：
+  - **不需要改任何代码**，也不需要"换个 key"（免 key 通道本来就没有 key 可言）；
+  - 本地 ACH/probe 自动回退 mimo（熔断生效，不拖死批量任务）；**云端 CI 的
+    `cloud/jev_signal_scan.py` 每天照常成功产出 `ach_diagnosis_*.json`**——
+    这正是 2026-10-12 新接入的 `tools/merge_ci_diagnosis.py` 的用武之地：
+    **本地断了也不影响判定落地，云端诊断随 git 拉回后被合并进矩阵**。
+  - 复现命令（只读，可随时自查）：`GET /zen/v1/models` 看模型在不在列 +
+    送假模型名对照 401 vs 真模型名 451，两步即可区分"撤销"与"故障"。
 
 **判据（可复用）**：
 - "批量任务整批零产出"先查**单条最坏耗时 × 队列长度 vs 预算**——比例失衡时
