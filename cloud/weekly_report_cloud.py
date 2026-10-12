@@ -238,7 +238,10 @@ def main():
     args = ap.parse_args()
 
     out_dir = Path(args.out_dir or args.dir)
-    # 默认只在周一生成：周报语义是"上一完整周"，周一到周日之间素材不会变
+    # 默认只在周一生成：周报语义是"上一完整周"，周一到周日之间素材不会变。
+    # ⚠️ 时区提示：CI runner 是 UTC，本地是 UTC+8 → 两端的"周一"与周窗口边界
+    # 相差 8 小时。周报是摘要而非精确对账，这点边界差异可接受（如需严格一致，
+    # 应统一按 UTC+8 计算窗口）。这条差异是既有行为（week_window 用本地时间）。
     now = datetime.now()
     if not args.force and now.weekday() != 0:
         print("[WEEKLY-CI] 今天周%d，非周一（--force 可覆盖），跳过" % (now.weekday() + 1))
@@ -287,6 +290,15 @@ def main():
         print(ctx["themes_block"][:600])
         return
 
+    # 幂等闸门（2026-10-12）：workflow 每天跑 8 次（cron 0 */3 * * *），周一会有
+    # 8 轮都命中"今天是周一"。而周报窗口是**上一个完整周**，周一当天内容不变
+    # → 重复生成只是白烧 8 次 AI 调用且产生无意义 diff。已有产物即视为完成。
+    out_dir.mkdir(parents=True, exist_ok=True)
+    path = out_dir / ("weekly_cloud_" + ctx["date_str"] + ".md")
+    if path.exists() and not args.force:
+        print("[WEEKLY-CI] 今日产物已存在，跳过（幂等）: " + path.name)
+        return
+
     degraded = False
     try:
         summary = call_ai(system, prompt)
@@ -297,8 +309,6 @@ def main():
     body = wr.render_weekly_markdown(
         ctx, summary, degraded=degraded,
         generator="cloud/weekly_report_cloud.py（CI 侧生成）")
-    out_dir.mkdir(parents=True, exist_ok=True)
-    path = out_dir / ("weekly_cloud_" + ctx["date_str"] + ".md")
     path.write_text(body, encoding="utf-8")
     print("[WEEKLY-CI] 产物: " + path.name + "（%d 字节）" % len(body))
 
