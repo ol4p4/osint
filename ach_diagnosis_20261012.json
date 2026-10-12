@@ -1,261 +1,11 @@
 {
  "date": "20261012",
- "generated_at": "2026-10-12T08:18:54.791153+00:00",
+ "generated_at": "2026-10-12T09:28:06.559144+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "note": "CI 侧只读诊断产物；本地按需合并进 ach_matrix.json",
  "diagnosed": 60,
  "failed": 0,
  "results": [
-  {
-   "key": "ev_6056155eeb",
-   "hyp_id": "HM101",
-   "date": "2026-10-12",
-   "summary": "德意志银行：新加坡核心通胀未来一年或维持高位，新加坡金管局料进一步推动新元升值",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.5
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.5
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.5
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.5
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.5
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.5
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.5
-    }
-   }
-  },
-  {
-   "key": "ev_1e01cb854f",
-   "hyp_id": "HM001",
-   "date": "2026-10-12",
-   "summary": "【“中国天眼”捕获“三体”】近期，中国科学院国家天文台（以下简称国家天文台）研究员韩金林带领国内多家单位的研究人员，结合",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.33
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.33
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.33
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.33
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.33
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.33
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 1.33
-    }
-   }
-  },
-  {
-   "key": "ev_ae37db177d",
-   "hyp_id": "HM001",
-   "date": "2026-10-12",
-   "summary": "华为折叠机累计发货量已突破2000万台",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.0
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.0
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 2.0
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.0
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.0
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.0
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 2.0
-    }
-   }
-  },
-  {
-   "key": "ev_f6700bc6d4",
-   "hyp_id": "HM001",
-   "date": "2026-10-12",
-   "summary": "美乌关系急剧恶化，欧洲盟友感到震惊，特朗普“换乌克兰总统”言论引发风波",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 1.5
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.5
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.5
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.5
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 1.5
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.5
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.5
-    }
-   }
-  },
-  {
-   "key": "ev_bcf4dc4542",
-   "hyp_id": "HM001",
-   "date": "2026-10-12",
-   "summary": "英国：不支持美俄就俄提供柴油达成一致",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.9,
-     "gate": 0.1,
-     "selectivity": 1.67
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.67
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.67
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.67
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.9,
-     "gate": 0.1,
-     "selectivity": 1.67
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.67
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.67
-    }
-   }
-  },
   {
    "key": "ev_77cfbafe90",
    "hyp_id": "HM001",
@@ -264,276 +14,26 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.5
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.5
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.5
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.5
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 1.5
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.5
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.5
-    }
-   }
-  },
-  {
-   "key": "ev_17a0e99a64",
-   "hyp_id": "HM001",
-   "date": "2026-10-12",
-   "summary": "泽连斯基称特朗普与普京的柴油交易中乌克兰被当作“挡箭牌”",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.89,
-     "gate": 0.11,
-     "selectivity": 2.17
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 2.17
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.17
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 2.17
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.87,
-     "gate": 0.13,
-     "selectivity": 2.17
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.17
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.17
-    }
-   }
-  },
-  {
-   "key": "ev_f86709600c",
-   "hyp_id": "HM001",
-   "date": "2026-10-12",
-   "summary": "Montenegro detains founder of Rybar, one of Russia’s most popular pro-war Telegram channels. Here’s ",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.25
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.25
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.25
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.25
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.25
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.25
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.25
-    }
-   }
-  },
-  {
-   "key": "ev_ceb89a3ec0",
-   "hyp_id": "HM001",
-   "date": "2026-10-12",
-   "summary": "【金十数据整理：中东局势跟踪（10月11日）】",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.88,
-     "gate": 0.12,
-     "selectivity": 2.0
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.0
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 2.0
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 2.0
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.9,
-     "gate": 0.1,
-     "selectivity": 2.0
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.0
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.0
-    }
-   }
-  },
-  {
-   "key": "ev_b4e49e9197",
-   "hyp_id": "HM001",
-   "date": "2026-10-12",
-   "summary": "伊朗称美国已接受伊方所提部分条件，伊朗外长称“愿为政治解决也门冲突提供一切帮助”",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 1.57
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.57
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.57
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.57
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.89,
-     "gate": 0.11,
-     "selectivity": 1.57
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.57
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.57
-    }
-   }
-  },
-  {
-   "key": "ev_ed6aecc378",
-   "hyp_id": "HM001",
-   "date": "2026-10-12",
-   "summary": "【金十数据整理：俄乌冲突最新24小时局势跟踪（10月12日）】 冲突情况： <span c",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
      "conf": 0.91,
      "gate": 0.09,
      "selectivity": 1.8
     },
     "HM101": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
+     "conf": 0.95,
+     "gate": 0.05,
      "selectivity": 1.8
     },
     "HM102": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
+     "conf": 0.96,
+     "gate": 0.04,
      "selectivity": 1.8
     },
     "HM001": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
+     "conf": 0.94,
+     "gate": 0.06,
      "selectivity": 1.8
     },
     "HM002": {
@@ -544,515 +44,15 @@
     },
     "HM003": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
+     "conf": 0.95,
+     "gate": 0.05,
      "selectivity": 1.8
     },
     "HM004": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
+     "conf": 0.97,
+     "gate": 0.03,
      "selectivity": 1.8
-    }
-   }
-  },
-  {
-   "key": "ev_c1dafc8f83",
-   "hyp_id": "HM001",
-   "date": "2026-10-12",
-   "summary": "泽连斯基回应特朗普：乌克兰领导人应由乌人民决定",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.25
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.25
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.25
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.25
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.25
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.25
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.25
-    }
-   }
-  },
-  {
-   "key": "ev_ef6263c84f",
-   "hyp_id": "HM001",
-   "date": "2026-10-12",
-   "summary": "民调：特朗普结束战争也难改选民立场，共和党中期选举翻盘无望",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.25
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.25
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.25
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.25
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.25
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.25
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.25
-    }
-   }
-  },
-  {
-   "key": "ev_b658b46f79",
-   "hyp_id": "HM001",
-   "date": "2026-10-12",
-   "summary": "华尔街见闻早餐FM-Radio | 2026年10月12日",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 2.43
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.9,
-     "gate": 0.1,
-     "selectivity": 2.43
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.83,
-     "gate": 0.17,
-     "selectivity": 2.43
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 2.43
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.43
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 2.43
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.43
-    }
-   }
-  },
-  {
-   "key": "ev_bb928001ae",
-   "hyp_id": "HM001",
-   "date": "2026-10-12",
-   "summary": "华尔街见闻早餐FM-Radio | 2026年10月10日",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.89,
-     "gate": 0.11,
-     "selectivity": 2.12
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.89,
-     "gate": 0.11,
-     "selectivity": 2.12
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.83,
-     "gate": 0.17,
-     "selectivity": 2.12
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 2.12
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 2.12
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 2.12
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.12
-    }
-   }
-  },
-  {
-   "key": "ev_a509e547d1",
-   "hyp_id": "HM001",
-   "date": "2026-10-12",
-   "summary": "中欧经贸谈判点评：全面贸易冲突风险下降",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.57
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 1.57
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.89,
-     "gate": 0.11,
-     "selectivity": 1.57
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.57
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.57
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.57
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.57
-    }
-   }
-  },
-  {
-   "key": "ev_d9b91c6133",
-   "hyp_id": "HM001",
-   "date": "2026-10-12",
-   "summary": "马斯克放话：虽然现在还不懂造芯片，但Terrafab未来要造出“比任何人都更好的芯片”",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 2.17
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 2.17
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.87,
-     "gate": 0.13,
-     "selectivity": 2.17
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.17
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.17
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 2.17
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 2.17
-    }
-   }
-  },
-  {
-   "key": "ev_b0c8ce0af9",
-   "hyp_id": "HM002",
-   "date": "2026-10-12",
-   "summary": "印度储备银行开设专用石油美元窗口，收紧外汇规则以支撑卢比",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.4
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.4
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.4
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.4
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.4
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.4
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.4
-    }
-   }
-  },
-  {
-   "key": "ev_6f516cadf0",
-   "hyp_id": "HM002",
-   "date": "2026-10-12",
-   "summary": "预测市场显示，选举日前汽油价格预计难以出现明显缓解。",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.33
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.33
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.33
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.33
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.33
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.33
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.33
-    }
-   }
-  },
-  {
-   "key": "ev_5b1711d865",
-   "hyp_id": "HM002",
-   "date": "2026-10-12",
-   "summary": "世界银行行长班加：中东战争初步影响不如预期严重，但压力正在再次积聚",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.89,
-     "gate": 0.11,
-     "selectivity": 2.2
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.2
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.2
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.2
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.9,
-     "gate": 0.1,
-     "selectivity": 2.2
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 2.2
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.2
-    }
-   }
-  },
-  {
-   "key": "ev_bb12209f25",
-   "hyp_id": "HM002",
-   "date": "2026-10-12",
-   "summary": "特朗普：立即生效，俄乌冲突达成“能源停火”协议",
-   "diagnosis": {
-    "HM100": {
-     "code": "N",
-     "conf": 0.86,
-     "gate": 0.14,
-     "selectivity": 1.67
-    },
-    "HM101": {
-     "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 1.67
-    },
-    "HM102": {
-     "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 1.67
-    },
-    "HM001": {
-     "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.67
-    },
-    "HM002": {
-     "code": "N",
-     "conf": 0.85,
-     "gate": 0.15,
-     "selectivity": 1.67
-    },
-    "HM003": {
-     "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.67
-    },
-    "HM004": {
-     "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.67
     }
    }
   },
@@ -1064,45 +64,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 1.8
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.6
     },
     "HM101": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.8
+     "selectivity": 1.6
     },
     "HM102": {
      "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.8
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.6
     },
     "HM001": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.8
+     "selectivity": 1.6
     },
     "HM002": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 1.8
+     "selectivity": 1.6
     },
     "HM003": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.8
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.6
     },
     "HM004": {
      "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 1.8
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.6
     }
    }
   },
@@ -1120,8 +120,8 @@
     },
     "HM101": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
+     "conf": 0.95,
+     "gate": 0.05,
      "selectivity": 2.0
     },
     "HM102": {
@@ -1150,8 +150,8 @@
     },
     "HM004": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
+     "conf": 0.98,
+     "gate": 0.02,
      "selectivity": 2.0
     }
    }
@@ -1176,8 +176,8 @@
     },
     "HM102": {
      "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
+     "conf": 0.91,
+     "gate": 0.09,
      "selectivity": 1.75
     },
     "HM001": {
@@ -1216,43 +216,43 @@
      "code": "N",
      "conf": 0.83,
      "gate": 0.17,
-     "selectivity": 1.7
+     "selectivity": 1.55
     },
     "HM101": {
      "code": "N",
-     "conf": 0.9,
-     "gate": 0.1,
-     "selectivity": 1.7
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.55
     },
     "HM102": {
      "code": "N",
      "conf": 0.85,
      "gate": 0.15,
-     "selectivity": 1.7
+     "selectivity": 1.55
     },
     "HM001": {
      "code": "N",
      "conf": 0.92,
      "gate": 0.08,
-     "selectivity": 1.7
+     "selectivity": 1.55
     },
     "HM002": {
      "code": "N",
      "conf": 0.89,
      "gate": 0.11,
-     "selectivity": 1.7
+     "selectivity": 1.55
     },
     "HM003": {
      "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.7
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.55
     },
     "HM004": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 1.7
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.55
     }
    }
   },
@@ -1266,43 +266,43 @@
      "code": "N",
      "conf": 0.92,
      "gate": 0.08,
-     "selectivity": 1.14
+     "selectivity": 1.33
     },
     "HM101": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 1.14
+     "selectivity": 1.33
     },
     "HM102": {
      "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.14
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.33
     },
     "HM001": {
      "code": "N",
      "conf": 0.93,
      "gate": 0.07,
-     "selectivity": 1.14
+     "selectivity": 1.33
     },
     "HM002": {
      "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.14
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.33
     },
     "HM003": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.14
+     "selectivity": 1.33
     },
     "HM004": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.14
+     "selectivity": 1.33
     }
    }
   },
@@ -1316,43 +316,43 @@
      "code": "N",
      "conf": 0.92,
      "gate": 0.08,
-     "selectivity": 3.0
+     "selectivity": 2.25
     },
     "HM101": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 3.0
+     "selectivity": 2.25
     },
     "HM102": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 3.0
+     "selectivity": 2.25
     },
     "HM001": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 3.0
+     "selectivity": 2.25
     },
     "HM002": {
      "code": "N",
      "conf": 0.91,
      "gate": 0.09,
-     "selectivity": 3.0
+     "selectivity": 2.25
     },
     "HM003": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 3.0
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.25
     },
     "HM004": {
      "code": "N",
      "conf": 0.98,
      "gate": 0.02,
-     "selectivity": 3.0
+     "selectivity": 2.25
     }
    }
   },
@@ -1364,45 +364,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.6
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.75
     },
     "HM101": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.6
+     "selectivity": 1.75
     },
     "HM102": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.6
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.75
     },
     "HM001": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.6
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.75
     },
     "HM002": {
      "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.6
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.75
     },
     "HM003": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.6
+     "selectivity": 1.75
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.6
+     "selectivity": 1.75
     }
    }
   },
@@ -1416,43 +416,43 @@
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 1.2
+     "selectivity": 1.5
     },
     "HM101": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.2
+     "selectivity": 1.5
     },
     "HM102": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.2
+     "selectivity": 1.5
     },
     "HM001": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.2
+     "selectivity": 1.5
     },
     "HM002": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.2
+     "selectivity": 1.5
     },
     "HM003": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.2
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
     },
     "HM004": {
      "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 1.2
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.5
     }
    }
   },
@@ -1464,45 +464,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 1.8
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.6
     },
     "HM101": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.8
+     "selectivity": 1.6
     },
     "HM102": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.8
+     "selectivity": 1.6
     },
     "HM001": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.8
+     "selectivity": 1.6
     },
     "HM002": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.8
+     "selectivity": 1.6
     },
     "HM003": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.8
+     "selectivity": 1.6
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.8
+     "selectivity": 1.6
     }
    }
   },
@@ -1514,45 +514,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.5
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.25
     },
     "HM101": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.5
+     "selectivity": 1.25
     },
     "HM102": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.5
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.25
     },
     "HM001": {
      "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 1.5
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.25
     },
     "HM002": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.5
+     "selectivity": 1.25
     },
     "HM003": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.5
+     "selectivity": 1.25
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.5
+     "selectivity": 1.25
     }
    }
   },
@@ -1566,43 +566,43 @@
      "code": "N",
      "conf": 0.92,
      "gate": 0.08,
-     "selectivity": 7.8
+     "selectivity": 8.2
     },
     "HM101": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 7.8
+     "selectivity": 8.2
     },
     "HM001": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 7.8
+     "selectivity": 8.2
     },
     "HM002": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 7.8
+     "selectivity": 8.2
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 7.8
+     "selectivity": 8.2
     },
     "HM102": {
      "code": "I",
-     "conf": 0.59,
-     "gate": 0.3,
-     "selectivity": 7.8
+     "conf": 0.62,
+     "gate": 0.31,
+     "selectivity": 8.2
     },
     "HM003": {
      "code": "I",
-     "conf": 0.94,
-     "gate": 0.39,
-     "selectivity": 7.8
+     "conf": 0.93,
+     "gate": 0.41,
+     "selectivity": 8.2
     }
    }
   },
@@ -1638,20 +638,20 @@
     },
     "HM002": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
+     "conf": 0.96,
+     "gate": 0.04,
      "selectivity": 1.2
     },
     "HM003": {
      "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
+     "conf": 0.95,
+     "gate": 0.05,
      "selectivity": 1.2
     },
     "HM004": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
+     "conf": 0.96,
+     "gate": 0.04,
      "selectivity": 1.2
     }
    }
@@ -1764,45 +764,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.6
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.4
     },
     "HM101": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 1.6
+     "selectivity": 1.4
     },
     "HM102": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.6
+     "selectivity": 1.4
     },
     "HM001": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.6
+     "selectivity": 1.4
     },
     "HM002": {
      "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.6
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.4
     },
     "HM003": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.6
+     "selectivity": 1.4
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.6
+     "selectivity": 1.4
     }
    }
   },
@@ -1870,8 +870,8 @@
     },
     "HM101": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
+     "conf": 0.94,
+     "gate": 0.06,
      "selectivity": 1.6
     },
     "HM102": {
@@ -1888,8 +888,8 @@
     },
     "HM002": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
+     "conf": 0.95,
+     "gate": 0.05,
      "selectivity": 1.6
     },
     "HM003": {
@@ -1966,43 +966,43 @@
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 3.6
+     "selectivity": 3.8
     },
     "HM101": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 3.6
+     "selectivity": 3.8
     },
     "HM102": {
      "code": "N",
      "conf": 0.88,
      "gate": 0.12,
-     "selectivity": 3.6
+     "selectivity": 3.8
     },
     "HM001": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 3.6
+     "selectivity": 3.8
     },
     "HM002": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 3.6
+     "selectivity": 3.8
     },
     "HM004": {
      "code": "N",
      "conf": 0.98,
      "gate": 0.02,
-     "selectivity": 3.6
+     "selectivity": 3.8
     },
     "HM003": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.18,
-     "selectivity": 3.6
+     "conf": 0.94,
+     "gate": 0.19,
+     "selectivity": 3.8
     }
    }
   },
@@ -2016,43 +1016,43 @@
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 2.75
+     "selectivity": 2.2
     },
     "HM101": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 2.75
+     "selectivity": 2.2
     },
     "HM102": {
      "code": "N",
      "conf": 0.89,
      "gate": 0.11,
-     "selectivity": 2.75
+     "selectivity": 2.2
     },
     "HM001": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 2.75
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.2
     },
     "HM002": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.75
+     "selectivity": 2.2
     },
     "HM003": {
      "code": "N",
-     "conf": 0.89,
-     "gate": 0.11,
-     "selectivity": 2.75
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 2.2
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.75
+     "selectivity": 2.2
     }
    }
   },
@@ -2138,8 +1138,8 @@
     },
     "HM002": {
      "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
+     "conf": 0.93,
+     "gate": 0.07,
      "selectivity": 1.5
     },
     "HM003": {
@@ -2150,8 +1150,8 @@
     },
     "HM004": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
+     "conf": 0.95,
+     "gate": 0.05,
      "selectivity": 1.5
     }
    }
@@ -2200,8 +1200,8 @@
     },
     "HM004": {
      "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
+     "conf": 0.97,
+     "gate": 0.03,
      "selectivity": 2.0
     }
    }
@@ -2216,43 +1216,43 @@
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 4.0
+     "selectivity": 3.75
     },
     "HM101": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 4.0
+     "selectivity": 3.75
     },
     "HM001": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 4.0
+     "selectivity": 3.75
     },
     "HM002": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 4.0
+     "selectivity": 3.75
     },
     "HM003": {
      "code": "N",
      "conf": 0.93,
      "gate": 0.07,
-     "selectivity": 4.0
+     "selectivity": 3.75
     },
     "HM004": {
      "code": "N",
      "conf": 0.98,
      "gate": 0.02,
-     "selectivity": 4.0
+     "selectivity": 3.75
     },
     "HM102": {
      "code": "N",
-     "conf": 0.94,
-     "gate": 0.16,
-     "selectivity": 4.0
+     "conf": 0.95,
+     "gate": 0.15,
+     "selectivity": 3.75
     }
    }
   },
@@ -2314,8 +1314,8 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
+     "conf": 0.95,
+     "gate": 0.05,
      "selectivity": 1.5
     },
     "HM101": {
@@ -2366,43 +1366,43 @@
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.33
+     "selectivity": 1.8
     },
     "HM101": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 1.33
+     "selectivity": 1.8
     },
     "HM102": {
      "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 1.33
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.8
     },
     "HM001": {
      "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.33
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.8
     },
     "HM002": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.33
+     "selectivity": 1.8
     },
     "HM003": {
      "code": "N",
      "conf": 0.92,
      "gate": 0.08,
-     "selectivity": 1.33
+     "selectivity": 1.8
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.33
+     "selectivity": 1.8
     }
    }
   },
@@ -2450,8 +1450,8 @@
     },
     "HM004": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
+     "conf": 0.98,
+     "gate": 0.02,
      "selectivity": 1.8
     }
    }
@@ -2464,45 +1464,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 1.29
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.67
     },
     "HM101": {
      "code": "N",
-     "conf": 0.91,
-     "gate": 0.09,
-     "selectivity": 1.29
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.67
     },
     "HM102": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 1.29
+     "selectivity": 1.67
     },
     "HM001": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.29
+     "selectivity": 1.67
     },
     "HM002": {
      "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 1.29
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.67
     },
     "HM003": {
      "code": "N",
      "conf": 0.92,
      "gate": 0.08,
-     "selectivity": 1.29
+     "selectivity": 1.67
     },
     "HM004": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.29
+     "selectivity": 1.67
     }
    }
   },
@@ -2516,43 +1516,43 @@
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 2.33
+     "selectivity": 1.75
     },
     "HM101": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 2.33
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.75
     },
     "HM102": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 2.33
+     "selectivity": 1.75
     },
     "HM001": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.33
+     "selectivity": 1.75
     },
     "HM002": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.33
+     "selectivity": 1.75
     },
     "HM003": {
      "code": "N",
      "conf": 0.93,
      "gate": 0.07,
-     "selectivity": 2.33
+     "selectivity": 1.75
     },
     "HM004": {
      "code": "N",
      "conf": 0.98,
      "gate": 0.02,
-     "selectivity": 2.33
+     "selectivity": 1.75
     }
    }
   },
@@ -2566,43 +1566,43 @@
      "code": "N",
      "conf": 0.85,
      "gate": 0.15,
-     "selectivity": 1.23
+     "selectivity": 1.42
     },
     "HM101": {
      "code": "N",
      "conf": 0.91,
      "gate": 0.09,
-     "selectivity": 1.23
+     "selectivity": 1.42
     },
     "HM102": {
      "code": "N",
      "conf": 0.84,
      "gate": 0.16,
-     "selectivity": 1.23
+     "selectivity": 1.42
     },
     "HM001": {
      "code": "N",
-     "conf": 0.9,
-     "gate": 0.1,
-     "selectivity": 1.23
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.42
     },
     "HM002": {
      "code": "N",
-     "conf": 0.87,
-     "gate": 0.13,
-     "selectivity": 1.23
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 1.42
     },
     "HM003": {
      "code": "N",
      "conf": 0.9,
      "gate": 0.1,
-     "selectivity": 1.23
+     "selectivity": 1.42
     },
     "HM004": {
      "code": "N",
-     "conf": 0.85,
-     "gate": 0.15,
-     "selectivity": 1.23
+     "conf": 0.83,
+     "gate": 0.17,
+     "selectivity": 1.42
     }
    }
   },
@@ -2616,43 +1616,43 @@
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.25
+     "selectivity": 1.5
     },
     "HM101": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.25
+     "selectivity": 1.5
     },
     "HM102": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.25
+     "selectivity": 1.5
     },
     "HM001": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.25
+     "selectivity": 1.5
     },
     "HM002": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.25
+     "selectivity": 1.5
     },
     "HM003": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.25
+     "selectivity": 1.5
     },
     "HM004": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.25
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
     }
    }
   },
@@ -2664,45 +1664,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.94,
-     "gate": 0.06,
-     "selectivity": 1.4
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.75
     },
     "HM101": {
      "code": "N",
      "conf": 0.93,
      "gate": 0.07,
-     "selectivity": 1.4
+     "selectivity": 1.75
     },
     "HM102": {
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.4
+     "selectivity": 1.75
     },
     "HM001": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 1.4
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.75
     },
     "HM002": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.4
+     "selectivity": 1.75
     },
     "HM003": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.4
+     "selectivity": 1.75
     },
     "HM004": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.4
+     "selectivity": 1.75
     }
    }
   },
@@ -2714,45 +1714,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 3.0
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.25
     },
     "HM101": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
-     "selectivity": 3.0
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.25
     },
     "HM102": {
      "code": "N",
      "conf": 0.91,
      "gate": 0.09,
-     "selectivity": 3.0
+     "selectivity": 2.25
     },
     "HM001": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 3.0
+     "selectivity": 2.25
     },
     "HM002": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 3.0
+     "selectivity": 2.25
     },
     "HM003": {
      "code": "N",
-     "conf": 0.93,
-     "gate": 0.07,
-     "selectivity": 3.0
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 2.25
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 3.0
+     "selectivity": 2.25
     }
    }
   },
@@ -2764,45 +1764,45 @@
    "diagnosis": {
     "HM100": {
      "code": "N",
-     "conf": 0.92,
-     "gate": 0.08,
-     "selectivity": 2.0
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 2.25
     },
     "HM101": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 2.0
+     "selectivity": 2.25
     },
     "HM102": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
-     "selectivity": 2.0
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.25
     },
     "HM001": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.0
+     "selectivity": 2.25
     },
     "HM002": {
      "code": "N",
      "conf": 0.94,
      "gate": 0.06,
-     "selectivity": 2.0
+     "selectivity": 2.25
     },
     "HM003": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 2.0
+     "selectivity": 2.25
     },
     "HM004": {
      "code": "N",
-     "conf": 0.98,
-     "gate": 0.02,
-     "selectivity": 2.0
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.25
     }
    }
   },
@@ -2838,8 +1838,8 @@
     },
     "HM002": {
      "code": "N",
-     "conf": 0.95,
-     "gate": 0.05,
+     "conf": 0.96,
+     "gate": 0.04,
      "selectivity": 1.2
     },
     "HM003": {
@@ -2850,8 +1850,8 @@
     },
     "HM004": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
+     "conf": 0.96,
+     "gate": 0.04,
      "selectivity": 1.2
     }
    }
@@ -2870,8 +1870,8 @@
     },
     "HM101": {
      "code": "N",
-     "conf": 0.97,
-     "gate": 0.03,
+     "conf": 0.96,
+     "gate": 0.04,
      "selectivity": 1.33
     },
     "HM102": {
@@ -2900,8 +1900,8 @@
     },
     "HM004": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
+     "conf": 0.97,
+     "gate": 0.03,
      "selectivity": 1.33
     }
    }
@@ -2966,43 +1966,1043 @@
      "code": "N",
      "conf": 0.95,
      "gate": 0.05,
-     "selectivity": 1.25
+     "selectivity": 1.67
     },
     "HM101": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.25
+     "selectivity": 1.67
     },
     "HM102": {
      "code": "N",
-     "conf": 0.96,
-     "gate": 0.04,
-     "selectivity": 1.25
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
     },
     "HM001": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.25
+     "selectivity": 1.67
     },
     "HM002": {
      "code": "N",
      "conf": 0.96,
      "gate": 0.04,
-     "selectivity": 1.25
+     "selectivity": 1.67
     },
     "HM003": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.25
+     "selectivity": 1.67
     },
     "HM004": {
      "code": "N",
      "conf": 0.97,
      "gate": 0.03,
-     "selectivity": 1.25
+     "selectivity": 1.67
+    }
+   }
+  },
+  {
+   "key": "ev_a6dcab3607",
+   "hyp_id": "HM004",
+   "date": "2026-10-12",
+   "summary": "雷迪克：关于您提到的六维力传感器及力控方案，公司目前未涉及该领域的研发与业务布局",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.67
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.67
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.67
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.67
+    }
+   }
+  },
+  {
+   "key": "ev_c5488f07f7",
+   "hyp_id": "HM100",
+   "date": "2026-10-11",
+   "summary": "景嘉微：CH37系列正推进客户导入及小批量量产",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 3.5
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 3.5
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.86,
+     "gate": 0.14,
+     "selectivity": 3.5
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 3.5
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.5
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 3.5
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.5
+    }
+   }
+  },
+  {
+   "key": "ev_0dd33a70ee",
+   "hyp_id": "HM100",
+   "date": "2026-10-11",
+   "summary": "国庆假期内蒙古接待国内游客2489万人次",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.0
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    }
+   }
+  },
+  {
+   "key": "ev_31a377cf3e",
+   "hyp_id": "HM100",
+   "date": "2026-10-11",
+   "summary": "全球科学信任度跌破疫情前水平，经济困难群体信心下降最明显",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 1.67
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.67
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.67
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.67
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.67
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.67
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.67
+    }
+   }
+  },
+  {
+   "key": "ev_c3069eba5f",
+   "hyp_id": "HM100",
+   "date": "2026-10-11",
+   "summary": "壳牌（SHEL.N）表示该作业预计可增加约35亿标准立方米可采天然气",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 2.2
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.2
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.2
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.2
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 2.2
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.2
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 2.2
+    }
+   }
+  },
+  {
+   "key": "ev_aa9f76eb8a",
+   "hyp_id": "HM100",
+   "date": "2026-10-11",
+   "summary": "俄气创纪录地在地下储气库中储备冬季天然气",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 2.8
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.8
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.8
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 2.8
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.86,
+     "gate": 0.14,
+     "selectivity": 2.8
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.8
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.8
+    }
+   }
+  },
+  {
+   "key": "ev_9bce7dc3e3",
+   "hyp_id": "HM100",
+   "date": "2026-10-11",
+   "summary": "沙特阿拉伯八月份工业生产同比下降23.5%",
+   "diagnosis": {
+    "HM101": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.5
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.5
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.5
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.9,
+     "gate": 0.1,
+     "selectivity": 2.5
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.5
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.5
+    },
+    "HM100": {
+     "code": "N",
+     "conf": 0.98,
+     "gate": 0.15,
+     "selectivity": 2.5
+    }
+   }
+  },
+  {
+   "key": "ev_0ec9bfd900",
+   "hyp_id": "HM100",
+   "date": "2026-10-11",
+   "summary": "日本8月家庭消费（所有家庭）同比下降3.1%",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.2
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.2
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.2
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.2
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.2
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.2
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.2
+    }
+   }
+  },
+  {
+   "key": "ev_dfbf0d0d9f",
+   "hyp_id": "HM100",
+   "date": "2026-10-11",
+   "summary": "普京在与特朗普通话后表示：俄罗斯准备向美国及全球市场供应石油",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.87,
+     "gate": 0.13,
+     "selectivity": 2.0
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 2.0
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.0
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.0
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.86,
+     "gate": 0.14,
+     "selectivity": 2.0
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 2.0
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.0
+    }
+   }
+  },
+  {
+   "key": "ev_2ff08c3576",
+   "hyp_id": "HM100",
+   "date": "2026-10-11",
+   "summary": "厦门空港：2026年9月飞机起降15805架次，同比下降0.78%",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.0
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.0
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.0
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.0
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.0
+    }
+   }
+  },
+  {
+   "key": "ev_df9451e817",
+   "hyp_id": "HM100",
+   "date": "2026-10-11",
+   "summary": "沪深两市成交额突破1万亿 较上一日此时放量超300亿",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.5
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.5
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.5
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.5
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.5
+    }
+   }
+  },
+  {
+   "key": "ev_503227f457",
+   "hyp_id": "HM100",
+   "date": "2026-10-11",
+   "summary": "支付数据看“双节”消费：小城出圈，体验型消费兴起",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.67
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.67
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.67
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
+    }
+   }
+  },
+  {
+   "key": "ev_3062cd5e3a",
+   "hyp_id": "HM100",
+   "date": "2026-10-11",
+   "summary": "要和量子巨头掰手腕，太一量生融了10亿",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 3.0
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 3.0
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.88,
+     "gate": 0.12,
+     "selectivity": 3.0
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 3.0
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.0
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 3.0
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.0
+    }
+   }
+  },
+  {
+   "key": "ev_df7cfe4579",
+   "hyp_id": "HM100",
+   "date": "2026-10-11",
+   "summary": "西班牙国家天然气公司Enagás数据显示，西班牙9月天然气进口量为27930吉瓦时，上年同期为27564吉瓦时",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.91,
+     "gate": 0.09,
+     "selectivity": 1.8
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.8
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.8
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.8
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.8
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.8
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.8
+    }
+   }
+  },
+  {
+   "key": "ev_6e2e0f5943",
+   "hyp_id": "HM100",
+   "date": "2026-10-11",
+   "summary": "“绿电高速公路”要来了！烟威1000千伏特高压工程竣工投产",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 3.67
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.67
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 3.67
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.67
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 3.67
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 3.67
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 3.67
+    }
+   }
+  },
+  {
+   "key": "ev_2da9443eaa",
+   "hyp_id": "HM100",
+   "date": "2026-10-11",
+   "summary": "国家发展改革委：发展新质生产力需要通过能源革命来提供可靠安全保障",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.82,
+     "gate": 0.18,
+     "selectivity": 1.38
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.38
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.85,
+     "gate": 0.15,
+     "selectivity": 1.38
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.38
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.87,
+     "gate": 0.13,
+     "selectivity": 1.38
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.87,
+     "gate": 0.13,
+     "selectivity": 1.38
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.38
+    }
+   }
+  },
+  {
+   "key": "ev_e1cfcf53c4",
+   "hyp_id": "HM100",
+   "date": "2026-10-11",
+   "summary": "美俄达成能源合作 泽连斯基感到“遭背叛” 美总统建议乌更换领导人",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.83
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.83
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.83
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 1.83
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.89,
+     "gate": 0.11,
+     "selectivity": 1.83
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.83
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 1.83
+    }
+   }
+  },
+  {
+   "key": "ev_2c8207d4e2",
+   "hyp_id": "HM100",
+   "date": "2026-10-11",
+   "summary": "新奥股份：控股子公司拟赎回全部5.5亿美元绿色优先票据",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.94,
+     "gate": 0.06,
+     "selectivity": 2.0
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.0
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.0
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.0
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.0
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.96,
+     "gate": 0.04,
+     "selectivity": 2.0
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 2.0
+    }
+   }
+  },
+  {
+   "key": "ev_fba59cbf3b",
+   "hyp_id": "HM100",
+   "date": "2026-10-11",
+   "summary": "科远智慧：拟转让灵璧国祯70%股权及债权",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.67
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.67
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.97,
+     "gate": 0.03,
+     "selectivity": 1.67
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.98,
+     "gate": 0.02,
+     "selectivity": 1.67
+    }
+   }
+  },
+  {
+   "key": "ev_b2d1678b65",
+   "hyp_id": "HM100",
+   "date": "2026-10-11",
+   "summary": "印尼削减差旅开支 能源成本挤压财政预算",
+   "diagnosis": {
+    "HM100": {
+     "code": "N",
+     "conf": 0.92,
+     "gate": 0.08,
+     "selectivity": 1.6
+    },
+    "HM101": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
+    },
+    "HM102": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
+    },
+    "HM001": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
+    },
+    "HM002": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.6
+    },
+    "HM003": {
+     "code": "N",
+     "conf": 0.93,
+     "gate": 0.07,
+     "selectivity": 1.6
+    },
+    "HM004": {
+     "code": "N",
+     "conf": 0.95,
+     "gate": 0.05,
+     "selectivity": 1.6
     }
    }
   }
