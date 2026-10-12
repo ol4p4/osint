@@ -18,13 +18,23 @@ api:
   #      只靠代理这条腿（官网直连 2026-09-17 起对非官方客户端全线 403）。
   #   ③ ling-3.0-flash-fin-free 经代理返 404（Cannot find model），已剔除。
   # 现状：主 mimo-v2.6，降级链取经代理实测可用的三个不同血统模型。
+  # 2026-10-12 重要更正（实测推翻）：
+  #   一度以为 nemotron-3-ultra-free "已下线"（GET /zen/v1/models 的 83 个模型里
+  #   确实没有它），准备替换为在列的 step-5-preview-free。**实测否决了这个改动**：
+  #     nemotron-3-ultra-free  经 4010 代理调用 **OK 3.4s**（在列与否不影响代理路径）
+  #     step-5-preview-free    经 4010 代理 **FAIL**（reasoning 吃光 token，
+  #                            finish=length 且无正文——与 dots3 同类问题）
+  #   **判据：/models 列表不是代理路径的权威**——本地 AI 实际走 4010 代理（用官方
+  #   桌面凭据转发），其可服务集合与匿名 API 的 /models 列表**不一致**。
+  #   核对模型可用性必须用**实际调用路径**实测，不能只看 /models（AGENTS.md
+  #   同款判据：available 这类能力探针必须实探，别拿配置/列表当事实）。
   fallback_models:
     - base_url: "https://opencode.ai/zen/v1"
       model: "nemotron-3.5-lightning-free"
       api_key: ""  # 密钥已于2026-08-30从本文件移除（仓库PUBLIC曾泄露，须在OpenCode平台重置）；真实值在 config.local.yaml 或 GitHub Secret OPENCODE_API_KEY
     - base_url: "https://opencode.ai/zen/v1"
       model: "nemotron-3-ultra-free"
-      api_key: ""  # 密钥已于2026-08-30从本文件移除（仓库PUBLIC曾泄露，须在OpenCode平台重置）；真实值在 config.local.yaml 或 GitHub Secret OPENCODE_API_KEY
+      api_key: ""  # 2026-10-12 复核保留：不在 /models 列表但经 4010 代理实测可用（3.4s）
     - base_url: "https://opencode.ai/zen/v1"
       model: "longcat-2.5-preview-free"
       api_key: ""  # 2026-10-08 新增：经代理实测可用（3.0s）；替代已 404 的 ling-3.0-fin
