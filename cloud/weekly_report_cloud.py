@@ -56,23 +56,35 @@ sys.path.insert(0, str(ROOT / "local"))
 
 # 周报是散文（不是 JSON），所以不能复用 citizen_impact.call_ai——那个函数的
 # 返回值检查写死了"必须含 '['"（防推理模型把思维链当正文返回），散文会被判失败。
-# 这里用同一条通道链（Gemini → dots → 本机 zen → OpenCode），只改产出校验。
+# 这里用同一条通道链（Gemini → dots → NVIDIA → 本机 zen → OpenCode），只改产出校验。
 USER_AGENT = "osint-weekly/1.0"
 AI_ALLOWED_HOST = "opencode.ai"
 DOTS_BASE = "https://note3-prev-api.askdiandian.com/v1"
+# NVIDIA integrate（2026-10-12 接入）：US runner 实测可用（11.6s），补作独立血统的
+# 第二条腿。slug 映射与 citizen_impact / analyze 同源，勿各自漂移。
+NVIDIA_BASE = "https://integrate.api.nvidia.com/v1"
+NV_SLUG_MAP = {
+    "mimo-v2.5-free": "z-ai/glm-5.3",
+    "mimo-v2.6-flash-free": "z-ai/glm-5.3",
+    "nemotron-3.5-lightning-free": "openai/gpt-oss-20b",
+    "nemotron-3-ultra-free": "openai/gpt-oss-20b",
+    "longcat-2.5-preview-free": "openai/gpt-oss-20b",
+    "ling-3.0-flash-fin-free": "openai/gpt-oss-20b",
+}
+NV_REASONING_EFFORT = {"openai/gpt-oss-20b": "low"}
 
 
 def _safe_post(url, payload, headers, timeout=180):
     """SSRF 守卫：仅 https + 白名单域名 + 解析结果不得为私有/环回/保留地址。
 
-    白名单与 cloud/citizen_impact.py 同规格（opencode.ai / askdiandian），
-    加 Gemini 由 local/gemini_client 自带守卫负责。
+    白名单与 cloud/citizen_impact.py 同规格（opencode.ai / askdiandian / nvidia），
+    Gemini 由 local/gemini_client 自带守卫负责。
     """
     import ipaddress
     import socket
     from urllib.parse import urlparse
     parsed = urlparse(url)
-    allowed = (AI_ALLOWED_HOST, urlparse(DOTS_BASE).hostname)
+    allowed = (AI_ALLOWED_HOST, urlparse(DOTS_BASE).hostname, urlparse(NVIDIA_BASE).hostname)
     if parsed.scheme != "https" or (parsed.hostname or "") not in allowed:
         raise ValueError("blocked non-whitelisted AI endpoint: " + url)
     for info in socket.getaddrinfo(parsed.hostname, 443):
@@ -113,7 +125,22 @@ def call_ai(system, prompt):
     except Exception:
         pass
 
-    # ③ 本机 zen 代理（CI 无 4010 端口，预检自动跳过）
+    # ③ NVIDIA integrate（2026-10-12 接入；云端实测 11.6s，补独立血统的第二条腿）
+    try:
+        from secrets_loader import get_nvidia_key
+        nvkey = get_nvidia_key()
+    except Exception:
+        nvkey = ""
+    if nvkey:
+        nv_seen = set()
+        for name in ["mimo-v2.6-flash-free", "nemotron-3.5-lightning-free"]:
+            slug = NV_SLUG_MAP.get(name, "")
+            if slug and slug not in nv_seen:
+                nv_seen.add(slug)
+                attempts.append({"base_url": NVIDIA_BASE, "model": slug, "api_key": nvkey,
+                                 "reasoning_effort": NV_REASONING_EFFORT.get(slug)})
+
+    # ④ 本机 zen 代理（CI 无 4010 端口，预检自动跳过）
     try:
         from local.zen_proxy_client import reachable as _z_reach
         if _z_reach():
@@ -122,7 +149,7 @@ def call_ai(system, prompt):
     except Exception:
         pass
 
-    # ④ OpenCode 官网直连（垫底）
+    # ⑤ OpenCode 官网直连（垫底）
     try:
         from secrets_loader import get_opencode_key
         okey = get_opencode_key()
@@ -160,14 +187,19 @@ def call_ai(system, prompt):
                 import urllib.error
                 import urllib.request
                 url = (m.get("base_url") or "").rstrip("/") + "/chat/completions"
-                payload = json.dumps({
+                body = {
                     "model": m.get("model"),
                     "messages": [{"role": "system", "content": system},
                                  {"role": "user", "content": prompt}],
                     "temperature": 0.3,
                     # 推理模型 reasoning 计入 max_tokens，按 reasoning+正文双份估算
                     "max_tokens": 12288,
-                }).encode("utf-8")
+                }
+                # NVIDIA 的 gpt-oss-20b 不加 reasoning_effort 会陷入思考循环、
+                # content 永远为空（analyze.py 同款实测）
+                if m.get("reasoning_effort"):
+                    body["reasoning_effort"] = m["reasoning_effort"]
+                payload = json.dumps(body).encode("utf-8")
                 headers = {"Content-Type": "application/json",
                            "Authorization": "Bearer " + (m.get("api_key") or ""),
                            "User-Agent": USER_AGENT}

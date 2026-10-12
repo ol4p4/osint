@@ -68,6 +68,10 @@ jobs:
           # （call_ai 里 get_dots_key() 非空即入链），只是 CI 没有该环境变量
           # 所以一直静默跳过——此处补上即可，零代码改动。
           DOTS_API_KEY: ${{ secrets.DOTS_API_KEY }}
+          # 2026-10-12: 补 NVIDIA 作第三条腿。US runner 探针实测可用（11.6s），
+          # 此前只有 analyze.py 本地链有该分支、cloud 侧一直没接。现已在
+          # citizen_impact / weekly_report_cloud 补上 NVIDIA 分支。
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
         run: |
           cd ${{ github.workspace }}
           python cloud/citizen_impact.py || echo "Impact step skipped"
@@ -99,6 +103,7 @@ jobs:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
           # 2026-10-12: 同 impact 步骤，补 dots 作第二通道（散文通道链已含该分支）
           DOTS_API_KEY: ${{ secrets.DOTS_API_KEY }}
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
         run: |
           cd ${{ github.workspace }}
           python cloud/weekly_report_cloud.py --dir . || echo "Weekly cloud report skipped"

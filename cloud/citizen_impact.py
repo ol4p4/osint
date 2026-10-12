@@ -26,6 +26,20 @@ from urllib.parse import urlparse
 
 AI_ALLOWED_HOST = "opencode.ai"
 DOTS_BASE = "https://note3-prev-api.askdiandian.com/v1"  # 备援通道（2026-09-19 接入，analyze.py 同款）
+# NVIDIA integrate（2026-10-12 接入）：US runner 实测可用（11.6s），此前只有
+# analyze.py 本地链有该分支、cloud 侧一直没接——这条腿在云端是通的却闲置。
+NVIDIA_BASE = "https://integrate.api.nvidia.com/v1"
+# OpenCode 模型名 → NVIDIA 模型名（与 analyze._NV_SLUG_MAP 同源，勿各自漂移）
+NV_SLUG_MAP = {
+    "mimo-v2.5-free": "z-ai/glm-5.3",
+    "mimo-v2.6-flash-free": "z-ai/glm-5.3",
+    "nemotron-3.5-lightning-free": "openai/gpt-oss-20b",
+    "nemotron-3-ultra-free": "openai/gpt-oss-20b",
+    "longcat-2.5-preview-free": "openai/gpt-oss-20b",
+    "ling-3.0-flash-fin-free": "openai/gpt-oss-20b",
+}
+# 推理型模型需限制思考量，否则陷入思考循环（实测：content 永远为空）
+NV_REASONING_EFFORT = {"openai/gpt-oss-20b": "low"}
 # Google Gemini（2026-10-05 接入）：通道链首。OpenCode 免费层已锁死
 # （"free tier can only be used from within OpenCode"）、dots key 只在本地
 # config.local.yaml（CI 拿不到）→ impact 曾长期 analyzed 0/50。
@@ -66,7 +80,7 @@ GRADUATE_CONTEXT = (
 def _safe_ai_post(url, payload, headers, timeout=120):
     """SSRF 防护：仅 https + 白名单域名 + 解析结果不得指向私有/环回/保留地址"""
     parsed = urlparse(url)
-    allowed = (AI_ALLOWED_HOST, urlparse(DOTS_BASE).hostname)
+    allowed = (AI_ALLOWED_HOST, urlparse(DOTS_BASE).hostname, urlparse(NVIDIA_BASE).hostname)
     if parsed.scheme != "https" or (parsed.hostname or "") not in allowed:
         raise ValueError("blocked non-whitelisted AI endpoint: " + url)
     for info in socket.getaddrinfo(parsed.hostname, 443):
@@ -113,6 +127,23 @@ def call_ai(config, prompt):
     dkey = _dots_key()
     if dkey:
         attempts.append({"base_url": DOTS_BASE, "model": "dots3-note-prev", "api_key": dkey})
+    # NVIDIA integrate（2026-10-12 接入）：云端实测可用（11.6s），补作独立血统的
+    # 第二条腿。放在 dots 之后、OpenCode 直连之前——直连在本地与 CI 均 403
+    # （FreeTierError），任何可用通道都该排它前面。
+    try:
+        from secrets_loader import get_nvidia_key
+        nvkey = get_nvidia_key()
+    except Exception:
+        nvkey = ""
+    if nvkey:
+        nv_seen = set()
+        for name in [api_cfg.get("model", "")] + \
+                    [fb.get("model", "") for fb in (api_cfg.get("fallback_models") or [])]:
+            slug = NV_SLUG_MAP.get(str(name), "")
+            if slug and slug not in nv_seen:
+                nv_seen.add(slug)
+                attempts.append({"base_url": NVIDIA_BASE, "model": slug, "api_key": nvkey,
+                                 "reasoning_effort": NV_REASONING_EFFORT.get(slug)})
     # 本机 OpenCode Zen 代理（2026-10-05）：本地唯一活着的 OpenCode 通道
     # （官网直连已被指纹校验 403）。CI 上无 4010，预检 False 自动跳过。
     try:
@@ -164,7 +195,7 @@ def call_ai(config, prompt):
                     return content.strip()
                 raise ValueError("empty response")
             url = (m.get("base_url") or "").rstrip("/") + "/chat/completions"
-            payload = json.dumps({
+            body = {
                 "model": m.get("model"),
                 "messages": [{"role": "system", "content": SYSTEM_PROMPT},
                              {"role": "user", "content": prompt}],
@@ -173,7 +204,12 @@ def call_ai(config, prompt):
                 # 对 5 条批次不够（实测中文 reasoning 吃光配额，正文被挤成半截 → 解析 0 条，
                 # 整批退化）。translate_local 早已为同样问题提到 12288，此处漏改。
                 "max_tokens": 12288,
-            }).encode("utf-8")
+            }
+            # 推理型模型的思考量控制（2026-10-12，NVIDIA 分支）：不加会陷入思考循环，
+            # content 永远为空（analyze.py 同款，实测 gpt-oss-20b 加 low 后恢复正常）
+            if m.get("reasoning_effort"):
+                body["reasoning_effort"] = m["reasoning_effort"]
+            payload = json.dumps(body).encode("utf-8")
             headers = {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + (m.get("api_key") or ""),
@@ -184,6 +220,12 @@ def call_ai(config, prompt):
             if "askdiandian" in url:
                 headers["api-key"] = m.get("api_key") or ""
                 headers.pop("x-opencode-client", None)
+            elif "nvidia" in url:
+                # NVIDIA integrate 不是 OpenCode 网关，不认 x-opencode-* 定制头，
+                # 保留最小头集（与 analyze.py 走 NVIDIA 时的实际行为一致）
+                headers = {"Content-Type": "application/json",
+                           "Authorization": "Bearer " + (m.get("api_key") or ""),
+                           "User-Agent": "osint/1.0"}
             raw = _safe_ai_post(url, payload, headers, 150)
             result = json.loads(raw)
             msg = result["choices"][0]["message"]
