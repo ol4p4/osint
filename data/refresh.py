@@ -671,6 +671,13 @@ def run_hypothesis_chain():
         # 的节流戳（同 probe/assess 教训——外部依赖的步骤不阻塞节流）。
         ("merge-ci", [sys.executable, str(PROJECT / "tools" / "merge_ci_diagnosis.py")],
          300, ("[MERGE-CI]",), False),
+        # 收编云端周报（2026-10-12 接入）：周报上云后的本地消费端。CI 周一生成
+        # weekly_cloud_*.md 随 git pull 回本地，本步收进 data/reports/。
+        # 三种情形：本地无周报→收编 / 本地是失败占位→替换 / 本地成功→保留本地
+        # （本地带完整证据链视角，云端只读快照，是兜底不是竞品）。
+        # 纯文件操作、无 AI 调用、秒级；critical=False（外部产物不阻塞节流戳）。
+        ("merge-weekly", [sys.executable, str(PROJECT / "tools" / "merge_ci_weekly.py")],
+         120, ("[MERGE-WEEKLY]",), False),
         ("ach-batch", [sys.executable, str(PROJECT / "tools" / "ach_daily_batch.py")], 1600, ("[ACH-BATCH]",), True),
         # 指标 AI 判定（2026-10-10 接入）：对**有真实抓取值**的叙述式阈值指标
         # 提前出判定。verify_hypotheses 只做数值比较，叙述式阈值标 needs_ai 等

@@ -548,232 +548,24 @@ CRITICAL requirements for thresholds:
         不足，仅 7 条可用"；而上一完整周实际有 12102 条）。标题/正文本就写
         "上周情报总览"，窗口必须与语义一致 → 改为上一个完整周。
         """
-        from datetime import datetime, timezone, timedelta
+        from datetime import datetime, timezone
+        # 2026-10-12 重构：取材/组 prompt/渲染抽到 local/weekly_report.py，
+        # 与云端 cloud/weekly_report_cloud.py 共用同一套（配额取样、反幻觉护栏、
+        # 内容安全降级都在那边）。本方法只负责「本地的 AI 调用 + 落盘」，
+        # 避免两份 prompt 各自漂移。行为等价性已用同周数据 A/B 对照验证。
+        try:
+            import weekly_report as _wr          # 与调用方同目录（local/ 已在 sys.path）
+        except ImportError:
+            from local import weekly_report as _wr
+
         report_dir = self.output_dir / "reports"
         report_dir.mkdir(parents=True, exist_ok=True)
-        date_str = datetime.now(timezone.utc).strftime("%Y%m%d")
 
-        # 上一个完整周窗口：上周一 00:00 ~ 上周日 23:59:59（本地时间，UTC+8 视角）
-        today_local = datetime.now()
-        this_monday = (today_local - timedelta(days=today_local.weekday())
-                       ).replace(hour=0, minute=0, second=0, microsecond=0)
-        week_end = this_monday - timedelta(seconds=1)
-        week_start = this_monday - timedelta(days=7)
-        if week_offset:
-            week_start -= timedelta(days=7 * week_offset)
-            week_end -= timedelta(days=7 * week_offset)
-        week_start_str = week_start.strftime("%Y-%m-%d")
-        week_end_str = week_end.strftime("%Y-%m-%d")
-        # 标题里的"周 N"标记
-        week_label = "上周（%s ~ %s）" % (week_start.strftime("%m-%d"), week_end.strftime("%m-%d"))
+        ctx, system, prompt = _wr.build_weekly_context(
+            hyps, ach_matrix=ach_matrix, intel_items=intel_items, week_offset=week_offset)
+        date_str = ctx["date_str"]
 
-        # 过滤上周情报
-        week_intel = []
-        if intel_items:
-            for it in intel_items:
-                pub = (it.get("published_at") or "")[:10]
-                if week_start_str <= pub <= week_end_str:
-                    week_intel.append(it)
-        week_intel.sort(key=lambda x: x.get("published_at", ""), reverse=True)
-
-        # 2026-10-05：主题分类的取样排序。原先取 week_intel[:30]（按 published_at
-        # 降序），当窗口是完整一周（上万条）时，前 30 条**全是最后一天**的，
-        # 周报会误以为整周只有那几件事。改为按重要度（final_score 优先，回退
-        # base_score）降序取样，让高价值条目跨全周浮现。
-        def _intel_rank(it):
-            for k in ("final_score", "base_score"):
-                v = it.get(k)
-                if isinstance(v, (int, float)):
-                    return float(v)
-            return 0.0
-
-        # 2026-10-06（B 方案）：纯按分数取样会**严重偏科**——实测上周 14860 条取
-        # 前 60，来源 100% 集中在金十/新浪/财联社 3 个高频源，主题 72% 是
-        # 金融/美联储，地缘（加沙停火、巴西大选）与科技（诺贝尔奖、英伟达）
-        # 一条都进不来。原因：高频快讯源权重高（1.2）+ 发得多，天然霸榜。
-        # 改为「源配额 + 主题配额」两轮取样（第一轮严格配额，第二轮放宽填满）：
-        # 实测源数 3→12、主题覆盖从 6 类不均变为 7 类均衡（各 8~10 条）。
-        SRC_CAP = 6      # 单源最多 6 条（60 席 / 约 12 源）
-        THEME_CAP = 8    # 单主题最多 8 条
-        _THEME_KWS = {
-            "就业/劳动": ["就业", "失业", "毕业生", "招聘", "裁员", "工资", "劳动", "岗位"],
-            "社保/民生": ["养老金", "社保", "医保", "退休", "房价", "楼市", "物价", "消费"],
-            "地缘/冲突": ["冲突", "战争", "袭击", "制裁", "导弹", "停火", "大选", "选举",
-                       "议会", "外交", "war", "strike", "military", "summit", "ceasefire"],
-            "能源/大宗": ["油价", "原油", "石油", "天然气", "OPEC", "铜", "黄金", "大宗",
-                       "能源", "oil", "gas", "gold", "copper", "crude"],
-            "科技/AI": ["AI", "人工智能", "芯片", "半导体", "算力", "机器人", "数据中心",
-                      "chip", "semiconductor", "OpenAI", "Nvidia"],
-            "贸易/供应链": ["关税", "贸易", "出口", "进口", "供应链", "tariff", "trade", "export"],
-        }
-
-        def _theme_of(it):
-            t = (it.get("cn_title") or it.get("title") or "")
-            for _th, _ws in _THEME_KWS.items():
-                if any(w in t for w in _ws):
-                    return _th
-            return "其他"
-
-        # 去重（同标题前 24 字符）+ 剔除固定栏目条（多主题打包，见 AGENTS.md
-        # §"固定栏目条降权"）——这两类占席位但不提供独立信息。
-        try:
-            from local.intel_gate import is_column_item as _is_col
-        except Exception:
-            _is_col = lambda _it: False  # noqa: E731
-
-        _ranked = sorted(week_intel, key=_intel_rank, reverse=True)
-        _pool = [x for x in _ranked if not _is_col(x)]
-        _seen_title = set()
-        _dedup = []
-        for x in _pool:
-            _k = (x.get("cn_title") or x.get("title") or "")[:24]
-            if _k and _k in _seen_title:
-                continue
-            _seen_title.add(_k)
-            _dedup.append(x)
-
-        week_intel_sorted = []
-        _src_cnt, _th_cnt, _chosen = {}, {}, set()
-        for _strict in (True, False):
-            for x in _dedup:
-                if len(week_intel_sorted) >= 60:
-                    break
-                if id(x) in _chosen:
-                    continue
-                _s = x.get("source_name") or x.get("source") or "_unknown"
-                _th = _theme_of(x)
-                if _strict and (_src_cnt.get(_s, 0) >= SRC_CAP or _th_cnt.get(_th, 0) >= THEME_CAP):
-                    continue
-                _chosen.add(id(x))
-                week_intel_sorted.append(x)
-                _src_cnt[_s] = _src_cnt.get(_s, 0) + 1
-                _th_cnt[_th] = _th_cnt.get(_th, 0) + 1
-            if len(week_intel_sorted) >= 60:
-                break
-
-        # 收集假设动态
-        active = [h for h in hyps if h.get("status") == "active"]
-        verified = [h for h in hyps if h.get("last_verified")
-                    and (h.get("last_verified") or "")[:10] >= week_start_str]
-        falsified = [h for h in hyps if h.get("status") == "falsified"]
-        new_hyps = [h for h in hyps
-                    if h.get("created_at") and h["created_at"][:10] >= week_start_str]
-
-        # 按主题分类上周情报
-        # 2026-10-06 修：原分类用 `category_cn`（**源类别**，如 finance/biz/rss），
-        # 而 46/60 条源类别都是 finance —— 逐条看大多是地缘/能源/科技内容，却被
-        # 统统归进"经济/金融/就业"，把配额取样刚换来的均衡在显示层又抹平了。
-        # 改用与取样同一套**标题关键词**判据（_THEME_KWS），显示与抽样口径一致。
-        themes = {
-            "就业/劳动": [],
-            "社保/民生": [],
-            "地缘/冲突": [],
-            "能源/大宗": [],
-            "科技/AI": [],
-            "贸易/供应链": [],
-            "其他": [],
-        }
-        for i in week_intel_sorted[:60]:
-            t = i.get("cn_title") or i.get("title") or ""
-            impact = i.get("graduate_impact") or i.get("impact") or ""
-            # relevance 是死字段（恒 0，见 AGENTS.md 筛选算法修复节），改用真实分数
-            score = _intel_rank(i)
-            themes[_theme_of(i)].append((score, t[:60], impact[:50]))
-
-        theme_lines = []
-        for theme, items in themes.items():
-            if not items:
-                continue
-            # 按 score 排序取前 5
-            items.sort(key=lambda x: x[0], reverse=True)
-            theme_lines.append(f"### {theme}（{len(items)} 条）")
-            for score, t, imp in items[:5]:
-                line = f"- (R{score}) {t}"
-                if imp:
-                    line += f" → 个人: {imp}"
-                theme_lines.append(line)
-            theme_lines.append("")
-        themes_block = "\n".join(theme_lines) if theme_lines else "（无）"
-
-        # ACH 排名
-        ach_section = ""
-        if ach_matrix and ach_matrix.get("scoring"):
-            top = sorted(ach_matrix["scoring"].items(),
-                         key=lambda kv: kv[1].get("posterior", 0), reverse=True)[:5]
-            rows = []
-            hyp_lookup = {h["id"]: h.get("title", h["id"]) for h in hyps}
-            for hid, s in top:
-                rows.append(f'- {hyp_lookup.get(hid, hid)[:40]} | 后验 {s.get("posterior", 0):.2f} | 支 {s.get("support", 0)} 驳 {s.get("refute", 0)}')
-            ach_section = "## ACH 排名 Top 5\n" + "\n".join(rows)
-
-        hyp_section_lines = []
-        for h in active[:8]:
-            conf = h.get("confidence", 0)
-            last_v = h.get("last_verified", "-")
-            hyp_section_lines.append(f'- [{h.get("level", "?")}] {h.get("title", "?")} (conf {conf:.2f}, last_verified {last_v})')
-        hyp_section = "## 活跃假设（前 8）\n" + "\n".join(hyp_section_lines)
-
-        new_section = "## 上周新增假设\n" + ("\n".join(f'- {h.get("title", "?")}' for h in new_hyps[:10]) if new_hyps else "（无）")
-
-        verif_section = "## 上周验证动态\n"
-        if verified or falsified:
-            for h in verified[-5:]:
-                verif_section += f'- ✓ {h.get("title", "?")}: {h.get("verification_result", "?")}\n'
-            for h in falsified[-5:]:
-                verif_section += f'- ✗ {h.get("title", "?")}: {h.get("verification_result", "?")}\n'
-        else:
-            verif_section += "（无到期验证）\n"
-
-        system = "你是一个中文政治经济分析师，面向'中国年轻失业毕业生'视角，浓缩上周情报、ACH 假设变化、给出对个人影响 + 下周预判。语气清醒、有批判性，避免空话和政治套话。不要说'我们要相信国家'这种官话。"
-        prompt = f"""请基于以下材料，写一份「参谋周报」总结，分四段：
-
-## 1. 本周大事（300 字内）
-按主题归纳上周最值得关注的 3-5 个事件。每事件 1-2 句：是什么 + 为什么重要。
-不要逐条复述情报列表，要识别**模式**（如"多家央行同步加息"、"AI 芯片订单集中爆发"）。
-
-## 2. 假设验证动态（150 字内）
-ACH 排名前 5 中哪些被强化/削弱？新出现的反常点是什么？本周验证活动有何结论？
-
-## 3. 对个人（年轻失业毕业生）的影响（200 字内）
-结合双层身份：
-- 第一层（普通公民）：宏观叙事如何映射到日常
-- 第二层（年轻失业毕业生）：就业/学历/房产/婚育/社保的具体影响
-要具体、可操作、避免空话。给出 1-2 个本周值得自己跟进的具体动作。
-
-## 4. 下周预判（200 字内）
-3-5 个具体观察点，标注"高/中/低确定性"。例如：
-- 央行议息（高，确定性最高）
-- 财报季 AI 板块表现（中）
-- 国内某政策窗口期（中）
-- 边缘/高赔率事件（低）
-每点 1 句说明触发条件。
-
----
-
-## 上周情报（已按主题分类，按相关度排序）
-
-{themes_block}
-
-## 上周情报总条数：{len(week_intel)}（活跃过滤后）
-
-{ach_section}
-
-{hyp_section}
-
-{new_section}
-
-{verif_section}
-
----
-
-要求：
-- 直接给结论，不要列点列举所有数据
-- 对"中国年轻失业毕业生"视角要具体到行为层面（投简历方向、技能学习、避免的坑）
-- 语气：参谋而非导师，敢说"这周最重要的信号是 X"
-- 字数：每段严格控制在提示字数内，总长 800-1000 字
-- 反幻觉（2026-09-16 加，9-14 周报曾把 0 条情报硬解读为"空白本身是最强信号"）：
-  若上周情报总条数为 0 或极少（<10），第 1 节必须如实写"本周无足够情报数据，以下判断仅基于假设矩阵存量"，禁止把数据缺失解读为任何"信号"；第 4 节预判须明确标注"数据不足，仅供参考"；绝不编造未在材料中出现的事件或数据"""
-
+        degraded = False
         try:
             summary = self.analyzer._call_api(system, prompt)
         except Exception as e:
@@ -793,12 +585,9 @@ ACH 排名前 5 中哪些被强化/削弱？新出现的反常点是什么？本
                             or "safety system" in str(e).lower())
             if is_block:
                 print("[ENGINE] AI weekly summary 被内容安全拦截，降级为无逐条标题版重试")
-                safe_prompt = prompt.replace(themes_block, "（逐条情报标题因内容安全策略省略；"
-                                                         "以下结论基于上方统计与假设矩阵）")
                 try:
-                    summary = self.analyzer._call_api(system, safe_prompt)
-                    summary = ("（注：本周情报标题因第三方内容安全策略未能送入 AI，"
-                               "以下总结基于统计与假设矩阵。）\n\n" + summary)
+                    summary = self.analyzer._call_api(system, _wr.safe_prompt_for(ctx))
+                    degraded = True
                 except Exception as e2:
                     print("[ENGINE] AI weekly summary 降级重试仍失败: " + str(e2)[:160])
                     summary = "（AI 周报生成失败，请看 hypothesis_weekly_*.md 了解活跃假设列表）"
@@ -806,38 +595,10 @@ ACH 排名前 5 中哪些被强化/削弱？新出现的反常点是什么？本
                 print("[ENGINE] AI weekly summary failed: " + str(e))
                 summary = "（AI 周报生成失败，请看 hypothesis_weekly_*.md 了解活跃假设列表）"
 
-        out = ["# 参谋周报 - " + date_str, ""]
-        out.append(f"> {week_label} | 视角：公民 + 年轻失业毕业生 | 来源：ACH 矩阵 + 假设验证 + 情报")
-        out.append("")
-        out.append("## AI 总结")
-        out.append("")
-        out.append(summary)
-        out.append("")
-        out.append("---")
-        out.append("")
-        out.append("## 机器索引")
-        out.append("")
-        out.append(f"### 上周情报总览（{week_start_str} ~ {week_end_str}）")
-        out.append("")
-        out.append(f"- 总条数：{len(week_intel)}")
-        out.append(f"- 活跃假设：{len(active)} | 已验证：{len(verified)} | 已证伪：{len(falsified)} | 新增：{len(new_hyps)}")
-        out.append("")
-        out.append("### 按主题分类")
-        out.append("")
-        out.append(themes_block)
-        out.append("")
-        out.append(ach_section)
-        out.append("")
-        out.append(hyp_section)
-        out.append("")
-        out.append(new_section)
-        out.append("")
-        out.append(verif_section)
-        out.append("")
-        out.append("---")
-        out.append("Generated by HypothesisEngine._save_ai_weekly_summary")
-
+        body = _wr.render_weekly_markdown(
+            ctx, summary, degraded=degraded,
+            generator="HypothesisEngine._save_ai_weekly_summary")
         summary_path = report_dir / ("weekly_" + date_str + ".md")
-        summary_path.write_text("\n".join(out), encoding="utf-8")
+        summary_path.write_text(body, encoding="utf-8")
         print("[ENGINE] AI weekly summary: " + str(summary_path))
         return summary_path

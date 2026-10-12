@@ -81,6 +81,20 @@ jobs:
           cd ${{ github.workspace }}
           python cloud/jev_signal_scan.py --dir . --limit 100 --ach-limit 60 || echo "JEV scan skipped"
 
+      # 参谋周报（2026-10-12 新增）：周报原只有本地一条路径，实测周循环会在
+      # AI 通道断供时静默挂死（零 CPU/网络超 5 分钟、无声退出、周报未产出），
+      # 而同日 CI 的 AI 通道是好的（Gemini 跑 citizen_impact 正常）→ 让周报兜底上云。
+      # 脚本自带周一判断（非周一直接跳过，可 --force 覆盖），故挂每日 workflow 无害。
+      # 取材逻辑与本地共用 local/weekly_report.py，不复制 prompt（防漂移）。
+      # 只读假设树、只写 weekly_cloud_*.md 独立产物；AI 不可达静默跳过。
+      - name: Weekly report (cloud fallback)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+        run: |
+          cd ${{ github.workspace }}
+          python cloud/weekly_report_cloud.py --dir . || echo "Weekly cloud report skipped"
+
       - name: Generate daily briefing
         run: |
           cd ${{ github.workspace }}
@@ -118,6 +132,8 @@ jobs:
           git add -A intel_2*.jsonl 2>/dev/null || true
           # JEV 信号扫描 + ACH 诊断产物 (2026-10-08): 让线上判定结果随仓库带回本地
           git add jev_signals_*.json jev_signals_*.md ach_diagnosis_*.json 2>/dev/null || true
+          # 云端周报 (2026-10-12): 周一生成，随仓库带回本地由 tools/merge_ci_weekly.py 收编
+          git add weekly_cloud_*.md 2>/dev/null || true
           git status
           if git diff --staged --quiet; then
             echo "No changes to commit"
