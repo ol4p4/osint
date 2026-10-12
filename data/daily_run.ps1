@@ -35,6 +35,14 @@ if (-not (Get-Command $pythonCmd -ErrorAction SilentlyContinue)) {
     exit 1
 }
 
+# 2026-10-12: 强制 Python 无缓冲输出。根因——`& $pythonCmd` 把子进程 stdout 接到
+# 管道，Python 对管道默认**块缓冲**；进程被强杀（超时/断电/任务终止）时缓冲区里
+# 未 flush 的内容全部丢失。实测：管道模式 + kill → 收到 0 字节；flush=True → 收到。
+# 这就是 10-12 周循环日志在 [3/5 ...] 后**戛然而止、引擎输出一条都没有**的原因——
+# 引擎其实干了活（diagnosis_log 有 12:15~12:17 三条），但它的日志全死在缓冲里，
+# 导致挂死无法定位。设 PYTHONUNBUFFERED 后日志实时落盘，下次可查。
+$env:PYTHONUNBUFFERED = "1"
+
 # Step 级隔离：任一步失败不连累后续步骤（对齐 refresh.py _step 哲学）
 # 原生命令非零退出码不触发 catch，需显式检查 $LASTEXITCODE
 function Invoke-PyStep {

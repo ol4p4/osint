@@ -4,12 +4,23 @@ Hypothesis Engine - hypothesis generation, update, verification, reconciliation
 Lifecycle: view -> decompose -> hypothesis card -> evidence update -> verify -> reconcile
 """
 
-import json, os, re, yaml, uuid
+import json, os, re, time, yaml, uuid
 from typing import List, Dict, Any, Optional
 from dataclasses import dataclass, asdict, field
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 import urllib.request, urllib.error
+
+# ACH 段的运行护栏（2026-10-12，周循环挂死修复）
+# 故障现场：JEV 断供后回退 mimo，每条要串完 dots→zen→opencode×3 的完整降级链，
+# 单条最坏 585s（实测 opencode 直连 SSL 握手超时 31s+，_safe_ai_post 硬上限
+# timeout+15=255s，×3 个变体）→ 30 条最坏 4.9 小时，进程被杀且日志因块缓冲全丢。
+# 预算取 1200s（20 分钟）：**实测 mimo 路径 60.4s/条**（沙箱 3 条取样，
+# 7 个 major 的判定 prompt 比研判大得多）→ 1200s 约消化 20 条，剩余 10 条
+# 留给日常 ach_daily_batch。JEV 健康时 0.66s/条，30 条约 20s，预算形同虚设。
+ACH_BUDGET_SECONDS = 1200
+# 连续失败熔断阈值：与 probe_mega / analyze.CONSECUTIVE_FAIL_LIMIT 同款判据
+ACH_CONSECUTIVE_FAIL_LIMIT = 3
 
 
 @dataclass
@@ -382,6 +393,27 @@ CRITICAL requirements for thresholds:
         hyp["resolved_at"] = entry["resolved_at"]  # 节点标记：到期过滤据此跳过（幂等）
         print("[ENGINE] Resolution recorded: " + str(hyp.get("id")) + " -> " + outcome)
 
+    def _ai_channel_alive(self, timeout=60):
+        """AI 通道预检（2026-10-12，周循环挂死修复）：真发一次最小请求。
+
+        动机：JEV 不可用时，ACH 段只能靠 analyzer（mimo）。若它也是死的，
+        30 条证据会**逐条**白撞完整降级链（单条最坏 585s）——与其让每条各撞
+        一次，不如先花 1 次调用确认通道，不通就整段跳过（下轮重试，日常增量
+        由 ach_daily_batch 消化）。这与 AGENTS.md「available 这类能力探针必须
+        实探，只看配置会把"配置了但死了"判成可用」是同一条判据。
+
+        返回 True/False，任何异常都视为不可用（预检本身不该抛错）。
+        """
+        try:
+            out = self.analyzer._call_api("你是一个测试助手。", "回答：ok",
+                                          timeout=timeout)
+            ok = bool(out and str(out).strip())
+            print("[ACH] AI 通道预检: " + ("可用" if ok else "返回空"))
+            return ok
+        except Exception as ex:
+            print("[ACH] AI 通道预检失败: " + str(ex)[:120])
+            return False
+
     def run_weekly_cycle(self, intel_items=None):
         """每周循环：补生成缺失的 view 假设 → 验证到期假设 → 保存 → 周报。
         证据追加由 link_intel_hyp.py 每日负责，这里不再写无信息量的汇总证据。"""
@@ -420,33 +452,72 @@ CRITICAL requirements for thresholds:
                     if _j.available:
                         jev = _j
                         print("[ACH] 决策层: " + _j.describe())
-                except Exception:
-                    pass
+                except Exception as _ex:
+                    print("[ACH] JEV 不可用: " + str(_ex)[:80])
                 if undiag:
                     # 批上限（2026-10-10）：原先无上限，积压 120 条 × mimo 53s/条
                     # ≈ 106 分钟，周循环被 ACH 拖死（其余步骤全被推迟）。日常增量
                     # 由 refresh 每轮的 ach_daily_batch（20h 节流）负责，这里只做
                     # 周度收尾：上限 30 条 ≈ 27 分钟，其余留给日常批消化。
                     undiag = undiag[:30]
-                    print(f"[ACH] 诊断 {len(undiag)} 条证据 × {len(majors)} 个 major 假设"
-                          f"（周度上限 30，积压由日常批消化）")
+                    # 2026-10-12 三重护栏（本轮挂死修复）——
+                    # 故障现场：JEV 451 断供 → 回退 mimo → 每条要串完
+                    # dots→zen→opencode×3 的完整降级链，单条最坏 585s（实测
+                    # opencode 直连 SSL 握手超时 31s+，_safe_ai_post 硬上限
+                    # timeout+15=255s ×3 变体），30 条 = 最坏 4.9 小时。进程最终
+                    # 被杀，且 stdout 块缓冲导致日志全丢（已在 daily_run.ps1 用
+                    # PYTHONUNBUFFERED 修），表现为"周循环静默挂死"。
+                    # 判据（AGENTS.md）：AI 分析量必须与通道吞吐匹配——
+                    # 条数 ÷ 吞吐 × 单条耗时 先算一遍再上线。
+                    budget_deadline = time.time() + ACH_BUDGET_SECONDS
+                    consec_fail = 0
+                    done = 0
+                    # ① 通道预检：先花 1 次调用确认通道真的能用，别让 30 条各自白撞。
+                    #    JEV 不可用时 analyzer（mimo）是唯一指望，它挂了就整段跳过。
+                    if jev is None and not self._ai_channel_alive():
+                        print("[ACH] AI 通道预检失败，本轮跳过 ACH（下轮重试；"
+                              "日常增量由 ach_daily_batch 消化）")
+                        undiag = []
+                    if undiag:
+                        print(f"[ACH] 诊断 {len(undiag)} 条证据 × {len(majors)} 个 major 假设"
+                              f"（周度上限 30，预算 {ACH_BUDGET_SECONDS}s，积压由日常批消化）")
                     for e in undiag:
+                        # ② 墙钟预算：超时即停，已诊断的照常落盘
+                        if time.time() > budget_deadline:
+                            print("[ACH] 预算用尽，剩余 %d 条下轮继续"
+                                  % (len(undiag) - done))
+                            break
                         try:
                             diag = ach.ai_diagnose(e, self.analyzer, jev=jev)
                             ach.record(e, diag, model=("jev" if jev is not None else "mimo"))
+                            done += 1
+                            consec_fail = 0
                         except Exception as ex:
                             if jev is not None:
                                 try:
                                     diag = ach.ai_diagnose(e, self.analyzer, jev=None)
                                     ach.record(e, diag, model="mimo")
+                                    done += 1
+                                    consec_fail = 0
                                     print("[ACH] JEV 失败已回退 mimo: " + str(ex)[:70])
                                     continue
                                 except Exception as ex2:
                                     ex = ex2
-                            print("[ACH] diagnose failed: " + str(ex))
-                    ach.bayesian_update(hyps)
-                    ach.sensitivity_analysis()  # P0-4：逐条证据中性化看排名稳定性
-                    ach.export_markdown(self.output_dir)
+                            consec_fail += 1
+                            print("[ACH] diagnose failed（连续 %d/%d）: %s"
+                                  % (consec_fail, ACH_CONSECUTIVE_FAIL_LIMIT, str(ex)[:100]))
+                            # ③ 连续失败熔断：与 probe_mega / analyze 同款判据。
+                            #    单条失败可能是内容问题，连续多条说明通道整体不可用，
+                            #    继续跑只是把剩余条目逐个喂给死链白等。
+                            if consec_fail >= ACH_CONSECUTIVE_FAIL_LIMIT:
+                                print("[ACH] 连续 %d 条失败，判定通道不可用，提前退出"
+                                      "（已诊断 %d 条已保留，剩余下轮）"
+                                      % (consec_fail, done))
+                                break
+                    if done:
+                        ach.bayesian_update(hyps)
+                        ach.sensitivity_analysis()  # P0-4：逐条证据中性化看排名稳定性
+                        ach.export_markdown(self.output_dir)
                 ach.save()
         except Exception as e:
             print("[ENGINE] ACH matrix failed: " + str(e))
