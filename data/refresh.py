@@ -422,24 +422,42 @@ def run_calibration():
 
 def fetch_unemployment_history():
     """拉取 NBS 分年龄组失业率历史月度序列 → data/cn_unemployment_history.json
-    NBS 每月19日发布上月数据,财新20日左右转载。节流策略:同月内只跑一次。
+
+    节流策略（2026-10-13 重写）：按**数据覆盖**判断，不按文件时间。
+    旧实现用「updated_at 是本月 → 跳过」：只要本月跑过一次，无论那次是否真拿到
+    当月数据都跳过；而 URL 表又漏了 2026-07/08 两月，于是 9/1 起每次都被判
+    「已抓过」→ 序列停在 2026-06 且两个月无任何告警（实测见 §数据新鲜度审计）。
+    现改为：
+      ① 已有月份数没变 → 3h 内不重试（避免每小时空跑 30 次网络请求）；
+      ② 已有月份数变了（拿到新数据）→ 记一次成功；
+      ③ NBS 每月 17-20 日发布上月数据，月底仍未补上当月最新月 → 打醒目告警。
     """
     hist_file = BASE / "cn_unemployment_history.json"
-    # 月度节流: 上次成功抓取是当前月则跳过
+    prev = {}
     if hist_file.exists():
         try:
             prev = json.loads(hist_file.read_text(encoding="utf-8"))
-            last_upd = prev.get("updated_at", "")
-            if last_upd:
-                last_month = last_upd[:7]  # YYYY-MM
-                if last_month == datetime.now().strftime("%Y-%m"):
-                    # 同月, 但允许在每月20日后重抓(NBS 通常19日发布, 保险起见 21+)
-                    day = datetime.now().day
-                    if day < 21:
-                        print(f"unrate-history: skip (already fetched {last_month}, day {day}<21)")
-                        return True
         except Exception:
+            prev = {}
+    series = prev.get("series", {})
+    have = len({r.get("date") for r in series.get("cn_youth_unrate_16_24", [])})
+
+    # 3h 尝试节流戳（只在**没拿到新数据**时生效）
+    stamp = BASE / ".unrate_last_try"
+    now = datetime.now()
+    if stamp.exists():
+        try:
+            age_h = (now - datetime.fromtimestamp(stamp.stat().st_mtime)).total_seconds() / 3600
+            if age_h < 3:
+                print(f"unrate-history: skip (retry throttle {age_h:.1f}h<3h, known months {have})")
+                return True
+        except OSError:
             pass
+    try:
+        stamp.write_text(now.isoformat(), encoding="utf-8")
+    except OSError:
+        pass
+
     r = subprocess.run(
         [sys.executable, str(PROJECT / "tools" / "fetch_macro_indicators.py"), "--history"],
         cwd=str(PROJECT), capture_output=True, text=True, creationflags=_NO_WINDOW
@@ -448,6 +466,37 @@ def fetch_unemployment_history():
         print(f"unrate-history: {r.stdout.strip()[:300]}")
     if r.returncode != 0 and r.stderr:
         print(f"unrate-history stderr: {r.stderr.strip()[:200]}")
+
+    # 抓完复查：比上次多拿到月份 → 清节流戳（下次可立即重试）；持平则保留
+    try:
+        after = json.loads(hist_file.read_text(encoding="utf-8"))
+        new_have = len({r.get("date") for r in after.get("series", {}).get("cn_youth_unrate_16_24", [])})
+        latest = after.get("latest_month", "?")
+        missing = after.get("missing_months") or []
+        print(f"unrate-history: months {have} -> {new_have}, latest={latest}")
+        # 陈旧告警按发布节奏判定：NBS 每月 17-20 日发布上月数据。
+        # 故「当前应有的最新月」= 上月（21 日起）/ 上上月（21 日前）——不按这条算
+        # 会把每个月的正常等待期都误报成断更（实测 10-13 时最新 8 月属正常）。
+        if latest and latest != "?":
+            _ly, _lm = int(latest[:4]), int(latest[5:7])
+            _em, _ey = now.month - 1, now.year
+            if _em == 0:
+                _em, _ey = 12, _ey - 1
+            if now.day < 21:  # 发布日前，上月数据本就还没出
+                _em -= 1
+                if _em == 0:
+                    _em, _ey = 12, _ey - 1
+            _expect = (_ey, _em)
+            if (_ly, _lm) < _expect:
+                print(f"[WARN] unrate-history: 序列最新 {latest}，按发布节奏应已有 "
+                      f"{_expect[0]}-{_expect[1]:02d}（缺 {missing}）——查 URL 表 / 数据源改动")
+        if new_have > have:
+            try:
+                stamp.unlink()
+            except OSError:
+                pass
+    except Exception as e:
+        print(f"unrate-history: post-check failed: {e}")
     return r.returncode == 0
 
 

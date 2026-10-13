@@ -27,6 +27,7 @@ ALLOWED_HOSTS = {
     "data.stats.gov.cn",
     "tradingeconomics.com",
     "economy.caixin.com",
+    "finance.sina.com.cn",  # 财新原文被删时的转载源（2026-10-13：7 月那篇财新 404）
     "hq.sinajs.cn",   # 新浪实时汇率（2026-10-11）：境内直连、分钟级，替代 Frankfurter 的 T-1 延迟
 }
 
@@ -269,50 +270,89 @@ def _parse_caixin_unrate(article_url, page_text):
         受 60 字窗口影响，实测抓成了 7.1（正确值应为 4.0）。
     - 分离式：「30—59岁劳动力失业率…维持在 3.9%」→ 旧正则正常。
     修复策略：先尝试"分别录得 A%、B%"模式精确配对；失败再退回旧正则。
+
+    2026-10-13 修：只截取**正文区**再解析。此前对整页 HTML 搜索，标题/分享串里的
+    「16—24岁失业率结束六连降 3月升至16.9%」以及侧栏相关报道链接会先被命中——
+    实测 2026-03 那篇被侧栏「2月…降至16.1%」的链接抢走，解析成 16.1（真值 16.9）。
+    正文容器按站别取：财新 `<div id="Main_Content_Val">`、新浪 `<div id="artibody">`；
+    两者都找不到时退回整页（保持旧行为，不因改版直接失能）。
     """
     import re
-    m16 = re.search(r"16[—\-]24岁[^\d]{0,60}?(\d+\.?\d*)%", page_text)
-    mtotal = re.search(r"全国城镇调查失业率[^\d]{0,30}?(\d+\.?\d*)%", page_text)
+    body = page_text
+    _m = re.search(r'<div[^>]*id="(?:Main_Content_Val|artibody)"[^>]*>', page_text)
+    if _m:
+        _tail = page_text.find("责任编辑", _m.end())
+        body = page_text[_m.end(): _tail if _tail > 0 else _m.end() + 20000]
+    # 剥离 HTML 标签（2026-10-13）：数值常被包在 <A href=".../520658977">16.9%</A> 里，
+    # href 中的数字会挡住正则的跨越——不去标签则真值抓不到。
+    body = re.sub(r"<[^>]+>", "", body)
 
-    # 配对句式（三种，2026-09-19 实测汇总）：
-    #   A「25—29岁、30—59岁…分别录得 7.1%、4.0%」
-    #   B「25—29岁和30—59岁…调查失业率为 7.4% 和 4.2%」
-    #   C「25—29岁、30—59岁劳动力失业率分别为 7.1%、4.0%」
-    # 通用做法：先定位含 25-29 与 30-59 的句子片段（两种年龄表述需在 60 字内相邻），
-    # 再按出场顺序取该片段内的百分比——第一个归 25-29、第二个归 30-59。
-    pair = None
-    seg = re.search(
-        r"25[—\-]29岁[^。]{0,60}?30[—\-]59岁[^。]{0,100}", page_text)
-    if seg:
-        pcts = re.findall(r"(\d+\.?\d*)%", seg.group(0))
-        if len(pcts) >= 2:
-            pair = (float(pcts[0]), float(pcts[1]))
-    if pair:
-        v25, v30 = pair
-    else:
-        m25 = re.search(r"25[—\-]29岁[^\d]{0,60}?(\d+\.?\d*)%", page_text)
-        m30 = re.search(r"30[—\-]59岁[^\d]{0,60}?(\d+\.?\d*)%", page_text)
-        v25 = float(m25.group(1)) if m25 else None
-        v30 = float(m30.group(1)) if m30 else None
+    # 句子级配对（2026-10-13 重写）。历史两版都栽在「年龄组与数值的跨段配对」上：
+    #   v1 整页裸搜 → 被标题/侧栏抢走（2026-03 篇解析成 16.1，真值 16.9）
+    #   v2 窗口正则 → 并列列举时把前一个年龄组的值串给后一个（2026-04 篇 30-59 得 7.4）
+    # 现按 。；，切子句，句内收集「年龄提及」与「百分比」两个有序列表：
+    #   数值出现在最后一个年龄组之后 → 按出场顺序一一配对
+    #     （覆盖「16—24岁、25—29岁…分别为14.5%、6.7%」与「16—24岁…录得18.9%」两式）；
+    #   数值出现在年龄组之前 → 只认「单年龄+单数值」，其余放弃。
+    # 判据：宁可缺值，不可串位（AGENTS.md 对数值型管道的既有要求）。
+    _AGE = re.compile(r"(16|25|30)\s*[—–\-]\s*(24|29|59)\s*岁")
+    _PCT = re.compile(r"(\d+(?:\.\d+)?)\s*[%％]")
+    _KEY = {("16", "24"): "cn_youth_16_24",
+            ("25", "29"): "cn_25_29",
+            ("30", "59"): "cn_30_59"}
+    values = {}
+    for clause in re.split(r"[。；;，,]", body):
+        ages = [(m.start(), _KEY[(m.group(1), m.group(2))]) for m in _AGE.finditer(clause)]
+        pcts = [(m.start(), float(m.group(1))) for m in _PCT.finditer(clause)]
+        if not ages or not pcts:
+            continue
+        if pcts[0][0] < ages[0][0]:
+            if len(ages) == 1 and len(pcts) == 1:
+                values.setdefault(ages[0][1], pcts[0][1])
+            continue
+        # 多期混杂 → 跳过（2026-10-13，实测 2024-02 篇踩坑）：
+        # 开篇综述句「16—24岁失业率分别为 14.6% 和 15.3%」写的是**连续两个月**，
+        # 数值个数多于年龄组个数。按序配对会把上月的 14.6 配给本月，
+        # 而正题句「2月…录得15.3%」的值因 setdefault 被拒 → 整篇取到错值。
+        if len(pcts) > len(ages):
+            continue
+        for (_, label), (_, val) in zip(ages, pcts):
+            values.setdefault(label, val)
 
-    # 自洽性校验：30-59 是劳动力主体，其失业率不应高于总量
-    if v30 is not None and mtotal:
-        if v30 > float(mtotal.group(1)):
-            v30 = None  # 拒绝写入不自洽值（宁可缺，不可错）
+    youth = values.get("cn_youth_16_24")
+    v25 = values.get("cn_25_29")
+    v30 = values.get("cn_30_59")
+    # 总量同样按「单值子句」提取（避开「1月、2月…分别为5.2%、5.3%」的跨期句）
+    total = None
+    for clause in re.split(r"[。；;，,]", body):
+        if "城镇调查失业率" in clause:
+            _p = _PCT.findall(clause)
+            if len(_p) == 1:
+                total = float(_p[0])
+                break
 
-    if not m16:
+    # 自洽性校验（宁可缺，不可错，AGENTS.md 既有规则）：
+    # 16-24 > 25-29 > 30-59 是本数据的一贯结构；30-59 也不应高于城镇调查失业率总量。
+    if v30 is not None and total is not None and v30 > total:
+        v30 = None
+    if v25 is not None and youth is not None and v25 >= youth:
+        v25 = None
+    if v30 is not None and v25 is not None and v30 >= v25:
+        v30 = None
+
+    if youth is None:
         return None
     rec = {
-        "cn_youth_16_24": float(m16.group(1)),
+        "cn_youth_16_24": youth,
         "source_url": article_url,
-        "source": "NBS-via-Caixin",
+        "source": "NBS-via-Sina" if "sina" in (urlparse(article_url).hostname or "") else "NBS-via-Caixin",
     }
     if v25 is not None:
         rec["cn_25_29"] = v25
     if v30 is not None:
         rec["cn_30_59"] = v30
-    if mtotal:
-        rec["cn_total"] = float(mtotal.group(1))
+    if total is not None:
+        rec["cn_total"] = total
     um = re.search(r"/(\d{4})-(\d{2})-\d{2}/", article_url)
     if um:
         pub_year, pub_month = int(um.group(1)), int(um.group(2))
@@ -359,34 +399,88 @@ _CAIXIN_URL_TABLE = {
     "2026-04": "https://economy.caixin.com/2026-05-21/102446106.html",
     "2026-05": "https://economy.caixin.com/2026-06-19/102456890.html",
     "2026-06": "https://economy.caixin.com/2026-07-20/102466293.html",
+    "2026-07": "https://finance.sina.com.cn/jjxw/2026-08-19/doc-ininvshv9435757.shtml",
+    "2026-08": "https://economy.caixin.com/2026-09-18/102486206.html",
 }
+
+# 手工维护的 URL 表本质上会腐化：财新 7 月那篇原文**已被删除**（实测 404），
+# 只能改用新浪转载；财新站内搜索/列表页又只回溯约 1 个月，无法自动发现更早文章。
+# 因此表里允许出现非财新域名（走 _get 白名单），解析器按 host 自适应。
+# 2026-10-13 起另加 `_discover_latest_unrate_url()`：每月新数据由列表页自动发现，
+# URL 表退化为「历史回填档案」，只在补历史时才需要人工增加条目。
+
+
+def _discover_latest_unrate_url():
+    """从财新经济频道列表页发现**最新**一篇分年龄组失业率报道的 URL。
+    返回 (url, data_month) 或 (None, None)。
+
+    为什么需要它：URL 表要人工维护，实测 2026-07 那篇财新原文被删（404）、
+    表里一度停在 2026-06，导致看板失业率序列整整断更 2 个月且无任何告警。
+    列表页只回溯约 1 个月，对「本月新数据」够用（NBS 每月 17-20 日发布）。
+    """
+    import re
+    try:
+        page = _get("https://economy.caixin.com/news/", timeout=15)
+    except Exception:
+        return None, None
+    best = None
+    for m in re.finditer(
+            r'href="(https://economy\.caixin\.com/(20\d{2}-\d{2})-\d{2}/\d+\.html)"(.*?)(?=href="|<dl|</dl)',
+            page, re.S):
+        url, pub_ym, blob = m.group(1), m.group(2), m.group(3)
+        if "失业率" not in blob:
+            continue
+        alt = re.search(r'alt="([^"]{4,90})"', blob)
+        title = alt.group(1) if alt else ""
+        # 标题必须含年龄组字样，排除「稳就业」等泛就业报道
+        if "岁" not in blob and "岁" not in title:
+            continue
+        if best is None or url > best[0]:
+            best = (url, title)
+    if not best:
+        return None, None
+    return best[0], None
 
 
 def fetch_caixin_unrate_history(year_month_list):
     """从财新 (economy.caixin.com) 每月新闻稿抓中国分年龄组失业率。
     NBS 官方 API/data 站 100% 403、TE 公开页只有最新 1 期;
     财新每月20日左右转载 NBS 数据,免费摘要含 16-24/25-29/30-59/总失业率4个值。
-    财新 list 页/文章页 urllib 都 403,改走 firecrawl (有 MCP) 抓文章 markdown。
     返回 {date: {cn_youth_16_24, cn_25_29, cn_30_59, cn_total, source_url, headline}}
     """
     result = {}
+    # 当前月允许「运行时发现」：URL 表里没有的月份，先从列表页找最新一篇补上
+    latest, _ = _discover_latest_unrate_url()
+    _effective = dict(_CAIXIN_URL_TABLE)
+    if latest:
+        _probe = _get(latest, timeout=15) if True else None
+        _rec = _parse_caixin_unrate(latest, _probe) if _probe else None
+        if _rec and _rec.get("date") in year_month_list and _rec["date"] not in _effective:
+            _effective[_rec["date"]] = latest
+            result[_rec["date"]] = _rec
     for ym in year_month_list:
-        if ym not in _CAIXIN_URL_TABLE:
+        if ym in result:
             continue
-        article_url = _CAIXIN_URL_TABLE[ym]
+        if ym not in _effective:
+            continue
+        article_url = _effective[ym]
         page_text = None
-        # 路径 1: firecrawl (有 MCP 服务时优先, 真实浏览器, 不 403)
+        # 路径 1: 直连 _get（2026-10-13 提为首选）。
+        # 实测本地 firecrawl SDK 无 key（`No API key provided`）恒失败，
+        # 而 urllib 直连财新/新浪正文页均 200；CI/agent 环境有 key 时仍可选走 SDK。
         try:
-            from firecrawl import FirecrawlApp
-            app = FirecrawlApp()
-            doc = app.scrape_url(article_url, params={"formats": ["markdown"]})
-            page_text = (doc or {}).get("markdown", "") or ""
+            page_text = _get(article_url, timeout=15)
         except Exception:
             page_text = None
-        # 路径 2: 直连 _get (部分月份可拉,失败走 firecrawl 缓存)
-        if not page_text or "16—24岁" not in page_text:
+        # 路径 2: firecrawl（有 MCP/key 时兜底；直连失败或内容不对时尝试）
+        if not page_text or ("16—24岁" not in page_text and "16-24岁" not in page_text):
             try:
-                page_text = _get(article_url, timeout=15)
+                from firecrawl import FirecrawlApp
+                app = FirecrawlApp()
+                doc = app.scrape_url(article_url, params={"formats": ["markdown"]})
+                _md = (doc or {}).get("markdown", "") or ""
+                if _md:
+                    page_text = _md
             except Exception:
                 pass
         if not page_text:
@@ -417,52 +511,76 @@ def fetch_unemployment_history(prev=None):
     fresh = fetch_caixin_unrate_history(months)
     # 2. WorldBank 年度参考线(15-24, 含学生, ILO 估计)
     wb = fetch_worldbank("CHN", "SL.UEM.1524.ZS")
-    # 3. 合并写盘
+    # 3. 合并写盘 —— 按 date 幂等 upsert（2026-10-13 修）
+    # 原实现是无条件 append：同一月份被抓到几次就追加几条，实测累积到 6 条/月
+    # （refresh 每月 21 日后若同月多跑几轮，每轮都从头重抓整表）。
+    # 现改为「同 date 覆盖」：新值始终覆盖旧值，顺带把历史上解析错的脏值订正掉。
     series = prev.get("series", {})
     methodology_break = "2023-12"  # 新口径起点
+
+    def _upsert(key, date, value, extra=None):
+        """按 date 写入/覆盖一条；同月重复全部清除，只保留本次写入的一条。"""
+        if not date:
+            return
+        rows = series.setdefault(key, [])
+        entry = {"date": date, "value": value}
+        if extra:
+            entry.update(extra)
+        # 剔除所有同 date 的历史行（含旧版 append 累积的重复条目），再追加
+        rows[:] = [r for r in rows if r.get("date") != date]
+        rows.append(entry)
+
     for ym, rec in fresh.items():
+        date = rec.get("date", ym)
         if "cn_youth_16_24" in rec:
-            entry = {
-                "date": rec.get("date", ym),
-                "value": rec["cn_youth_16_24"],
+            _upsert("cn_youth_unrate_16_24", date, rec["cn_youth_16_24"], {
                 "source": rec.get("source", "NBS-via-Caixin"),
-                "methodology_break": (rec.get("date", ym) == methodology_break),
-            }
-            series.setdefault("cn_youth_unrate_16_24", []).append(entry)
+                "methodology_break": (date == methodology_break),
+            })
         if "cn_25_29" in rec:
-            series.setdefault("cn_unrate_25_29", []).append({
-                "date": rec.get("date", ym),
-                "value": rec["cn_25_29"],
-                "source": rec.get("source", "NBS-via-Caixin"),
-            })
+            _upsert("cn_unrate_25_29", date, rec["cn_25_29"],
+                    {"source": rec.get("source", "NBS-via-Caixin")})
         if "cn_30_59" in rec:
-            series.setdefault("cn_unrate_30_59", []).append({
-                "date": rec.get("date", ym),
-                "value": rec["cn_30_59"],
-                "source": rec.get("source", "NBS-via-Caixin"),
-            })
+            _upsert("cn_unrate_30_59", date, rec["cn_30_59"],
+                    {"source": rec.get("source", "NBS-via-Caixin")})
         if "cn_total" in rec:
-            series.setdefault("cn_unrate_total", []).append({
-                "date": rec.get("date", ym),
-                "value": rec["cn_total"],
-                "source": rec.get("source", "NBS-via-Caixin"),
-            })
+            _upsert("cn_unrate_total", date, rec["cn_total"],
+                    {"source": rec.get("source", "NBS-via-Caixin")})
     # WB 年度参考线
     if wb and "value" in wb and "error" not in wb:
-        series.setdefault("cn_youth_15_24_ilo_annual", []).append({
-            "date": wb.get("date", ""),
-            "value": wb["value"],
+        _upsert("cn_youth_15_24_ilo_annual", wb.get("date", ""), wb["value"], {
             "source": "WorldBank",
             "note": "15-24 含学生, ILO 估计, 年度, 参考线",
         })
-    # 按日期排序
+    # 按日期排序 + 全局去重（2026-10-13）：历史上旧版 append 累积的重复条目
+    # 分布在「本次没抓到的月份」上，upsert 覆盖不到——统一按 date 保留最后一条。
     for k in series:
-        series[k] = sorted(series[k], key=lambda x: x.get("date", ""))
+        _dedup = {}
+        for r in series[k]:
+            _dedup[r.get("date", "")] = r  # 后者胜（同 date 时保留最新解析结果）
+        series[k] = [v for _, v in sorted(_dedup.items())]
+
+    # 缺月检测（2026-10-13 新增）：按「最新已有月份距当前月几个月」标 stale。
+    # 旧实现只看 `len(fresh) == 0`——抓不到任何新数据才算 stale，而历史月份一直
+    # 能拉到（URL 表里有），所以**序列断更时 stale 恒为 False**，看板无任何提示。
+    # 这正是 2026-07/08 两个月静默断更的直接原因。
+    _youth_rows = series.get("cn_youth_unrate_16_24", [])
+    _latest = _youth_rows[-1]["date"] if _youth_rows else ""
+    _missing = []
+    if _latest:
+        _ly, _lm = int(_latest[:4]), int(_latest[5:7])
+        _cy, _cm = today.year, today.month
+        _gap = (_cy - _ly) * 12 + (_cm - _lm)
+        for i in range(1, _gap):  # 中间缺失的月份（最新月之后是否已发布由发布日决定，不计）
+            _m2 = _lm + i
+            _missing.append(f"{_ly + (_m2 - 1) // 12}-{(_m2 - 1) % 12 + 1:02d}")
     return {
         "updated_at": today.isoformat(),
         "methodology_note": "NBS 城镇调查失业率。2023-08~11 NBS 停发; 2023-12 起 '16-24 不含在校生' 与之前'含在校生'口径不可比, 已标 methodology_break。",
         "source": "NBS-via-Caixin (主) + WorldBank (年度参考)",
         "series": series,
+        "latest_month": _latest,
+        "missing_months": _missing,
         "stale": len(fresh) == 0,
     }
 

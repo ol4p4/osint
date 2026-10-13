@@ -603,7 +603,7 @@ body.dark{
   <div class="section-header">
     <div>
       <div class="section-title">中国分年龄组失业率走势</div>
-      <div class="section-subtitle">16-24岁（不含在校生）核心指标 · 月度 NBS 数据 · 财新转载抓取</div>
+      <div class="section-subtitle">16-24岁（不含在校生）核心指标 · 月度 NBS 数据 · <span id="unrateAsOf">—</span></div>
     </div>
   </div>
   <div id="unratePanel" style="display:none">
@@ -832,6 +832,15 @@ var UNRATE_CHART=null;
   if(!hasAny){if(empty)empty.style.display='block';return;}
   if(empty)empty.style.display='none';
   panel.style.display='block';
+  // 数据截至 + 断更提示（2026-10-13）：此前序列静默断更 2 个月，页面上毫无痕迹
+  var asOf=document.getElementById('unrateAsOf');
+  if(asOf&&UNRATE_DATA.latest_month){
+    var txt='数据截至 '+UNRATE_DATA.latest_month;
+    if(UNRATE_DATA.missing_months&&UNRATE_DATA.missing_months.length){
+      txt+=' · <span style="color:#dc2626">缺 '+UNRATE_DATA.missing_months.join('、')+'</span>';
+    }
+    asOf.innerHTML=txt;
+  }
   // 收集所有日期点
   var dateSet={};
   Object.keys(s).forEach(function(k){
