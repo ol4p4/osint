@@ -35,6 +35,15 @@ _PROXY_CANDIDATES = (
     "http://127.0.0.1:7891",
     "http://127.0.0.1:7888",
 )
+
+# 实探目标：经代理 CONNECT 到 GitHub 的 443。
+# ⚠ 这两个常量曾被 `_proxy_works` 引用却**从未定义**（2026-10-13 修复）——
+# 该函数抛 NameError 后被 `except Exception: return False` 静默吞掉，
+# 导致**探测恒失败**、git 永远退回直连（而本机直连 GitHub 不通）。
+# 隐患持续到用户发现"推送总是失败"才暴露：静默的宽 except 会让 bug 无声存在。
+_PROBE_HOST = "github.com"
+_PROBE_PORT = 443
+
 _CACHE = {"at": 0.0, "proxy": None}
 _TTL = 300          # 探测缓存秒数
 
@@ -79,6 +88,14 @@ def _proxy_works(url, timeout=3.0):
     但 Clash 节点不稳时端口照样 LISTENING——实测代理 TLS 握手失败
     （`schannel: failed to receive handshake`），而**直连反而通了**。
     此时仍注入代理 → 把本来能成的 git 操作搞挂。所以端口开着还要实探一次。
+
+    **异常必须打印**（2026-10-13）：原先 `except Exception: return False` 把
+    所有异常静默吞掉——包括 `_PROBE_HOST` 未定义这种**代码 bug**（NameError）。
+    结果是探测恒失败、git 永远退回直连，且**日志里毫无线索**，排查了很久。
+    现在区分「网络类失败（正常，静默）」与「其他异常（打日志）」。
+
+    注：`_PROBE_HOST/_PROBE_PORT` 缺失的根因已修（见文件头常量区），此处保留
+    打印是为了**同类问题下次能自己现形**——宽 except 会让 bug 无声存在。
     """
     import http.client
     from urllib.parse import urlsplit
@@ -92,7 +109,18 @@ def _proxy_works(url, timeout=3.0):
         resp.read(0)
         conn.close()
         return True
-    except Exception:
+    except (OSError, http.client.HTTPException) as e:
+        # 网络类失败：代理确实不可用（节点挂/被墙），静默跳过是正确行为。
+        # 设 OSINT_GIT_PROXY_DEBUG=1 可看到细节（排查代理为何不被选用时用）。
+        if os.environ.get("OSINT_GIT_PROXY_DEBUG"):
+            print("[net_proxy] " + url + " 实探失败(网络): "
+                  + type(e).__name__ + ": " + str(e)[:80])
+        return False
+    except Exception as e:
+        # 非网络异常：多半是代码问题（如常量缺失），必须让它可见——否则探测恒失败
+        # 而日志无痕，排查成本极高（2026-10-13 的 NameError 就藏在这里）。
+        print("[net_proxy] " + url + " 实探异常(非网络，疑似代码 bug): "
+              + type(e).__name__ + ": " + str(e)[:120])
         return False
 
 
