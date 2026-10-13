@@ -1,6 +1,6 @@
 {
  "date": "20261013",
- "generated_at": "2026-10-13T10:41:46.524274+00:00",
+ "generated_at": "2026-10-13T11:12:44.228555+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -47,7 +47,7 @@
      "hyp_id": "HM102",
      "code": "I",
      "conf": 0.63,
-     "gate": 0.19,
+     "gate": 0.21,
      "selectivity": 3.5
     }
    ]
@@ -57,14 +57,14 @@
    "title": "This Ultra-Rare Gas Could Become An Ace In Canada’s Hands",
    "source": "OilPrice-News",
    "published_at": "2026-10-13T00:00:00+00:00",
-   "score": 0.582,
+   "score": 0.578,
    "hits": [
     {
      "hyp_id": "HM101",
      "code": "C",
-     "conf": 0.64,
-     "gate": 0.25,
-     "selectivity": 4.17
+     "conf": 0.6,
+     "gate": 0.23,
+     "selectivity": 3.83
     }
    ]
   }
