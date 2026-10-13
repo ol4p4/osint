@@ -1,0 +1,26 @@
+name: Gemma Probe (one-shot)
+
+# 只测 Gemma 可用性与 TPM 压测（2026-10-13）。
+# 独立于 cloud-translate-probe.yml —— 后者串了四个探针（含烧配额的重活），
+# 跑一次要十几分钟，改 Gemma 候选名后没必要重跑全套。
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gemma:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Probe Gemma
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          cd ${{ github.workspace }}
+          python tools/probe_gemma.py
