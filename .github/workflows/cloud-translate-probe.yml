@@ -37,3 +37,13 @@ jobs:
         run: |
           cd ${{ github.workspace }}
           python tools/probe_gemini_quota.py || echo "quota probe failed"
+
+      # 429 退避恢复验证（2026-10-13）：故意烧光三个模型的 RPM 桶，再调
+      # generate() 看新加的"退避后重跑整链"是否真能恢复。约需 2 分钟。
+      - name: Probe 429 recovery
+        if: always()
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          cd ${{ github.workspace }}
+          python tools/probe_429_recovery.py || echo "429 recovery probe failed"
