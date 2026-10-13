@@ -1,0 +1,29 @@
+name: Cloud Translate Probe (one-shot)
+
+# 一次性探针（2026-10-13）：实测 CI 能否用 Gemini 翻译英文条目。
+# 跑完即可删除——它不是常规流水线的一部分。
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install deps
+        run: pip install -q pyyaml
+      - name: Probe cloud translation
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          DOTS_API_KEY: ${{ secrets.DOTS_API_KEY }}
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+        run: |
+          cd ${{ github.workspace }}
+          python tools/probe_cloud_translate.py
