@@ -1,6 +1,6 @@
 {
  "date": "20261013",
- "generated_at": "2026-10-13T13:24:34.911289+00:00",
+ "generated_at": "2026-10-13T19:00:41.485203+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,40 +34,8 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 4,
+ "signal_count": 1,
  "signals": [
-  {
-   "id": "e12308461c5e2563",
-   "title": "【沙特阿美总裁：全球原油库存逼近“危险低位”】沙特阿拉伯国家石油公司（沙特阿美公司）总裁兼首席执行官阿明·纳赛尔12日在",
-   "source": "新浪财经-7x24直播",
-   "published_at": "2026-10-13T12:42:16+00:00",
-   "score": 0.935,
-   "hits": [
-    {
-     "hyp_id": "HM100",
-     "code": "I",
-     "conf": 0.71,
-     "gate": 0.15,
-     "selectivity": 2.5
-    }
-   ]
-  },
-  {
-   "id": "ad439ff9e854bd31",
-   "title": "美国芝加哥联储主席Goolsbee：人工智能热潮正开始推高价格",
-   "source": "华尔街见闻-快讯",
-   "published_at": "2026-10-13T11:06:52+00:00",
-   "score": 0.76,
-   "hits": [
-    {
-     "hyp_id": "HM003",
-     "code": "C",
-     "conf": 0.52,
-     "gate": 0.41,
-     "selectivity": 5.86
-    }
-   ]
-  },
   {
    "id": "9a09e86ff67cd3b0",
    "title": "博通CEO：许多AI投资者如同赌场赌徒，AI发展最大制约因素是资本",
@@ -79,24 +47,8 @@
      "hyp_id": "HM102",
      "code": "I",
      "conf": 0.63,
-     "gate": 0.22,
-     "selectivity": 3.67
-    }
-   ]
-  },
-  {
-   "id": "9d8d92d8575af939",
-   "title": "This Ultra-Rare Gas Could Become An Ace In Canada’s Hands",
-   "source": "OilPrice-News",
-   "published_at": "2026-10-13T00:00:00+00:00",
-   "score": 0.561,
-   "hits": [
-    {
-     "hyp_id": "HM101",
-     "code": "C",
-     "conf": 0.6,
-     "gate": 0.24,
-     "selectivity": 4.0
+     "gate": 0.2,
+     "selectivity": 3.33
     }
    ]
   }
