@@ -24,3 +24,13 @@ jobs:
         run: |
           cd ${{ github.workspace }}
           python tools/probe_gemma.py
+
+      # 500 性质判定（2026-10-13）：首轮两个官方模型名均返 500（非 404），
+      # 需区分"临时故障/未开通/端点差异"。约 1 分钟。
+      - name: Probe Gemma 500 nature
+        if: always()
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          cd ${{ github.workspace }}
+          python tools/probe_gemma_retry.py || echo "gemma retry probe failed"
