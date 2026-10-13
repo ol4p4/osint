@@ -21,6 +21,7 @@ import ipaddress
 import json
 import socket
 import threading
+import time
 import urllib.error
 import urllib.request
 from urllib.parse import urlparse
@@ -32,14 +33,55 @@ GEMINI_BASE = "https://" + GEMINI_HOST + "/v1beta"
 #   gemini-3.5-flash-lite / 3.1-flash-lite / 3.5-flash → HTTP 200
 #   gemini-2.5-flash-lite / 2.5-flash / 2.5-pro        → HTTP 404（对新用户下架）
 # 按「快/便宜优先」排序，逐个尝试，404/400 换下一个（404 不耗 token，代价可忽略）。
+#
+# **配额独立性（2026-10-13 实测，探针 tools/probe_gemini_quota.py）**：
+#   quotaId 全为 `GenerateRequestsPerMinutePerProjectPerModel-FreeTier`，**按模型分开**。
+#   逐个打爆实测：3.5-flash-lite → quotaValue **15**（第 15 发首次 429）
+#                 3.1-flash-lite → quotaValue **15**（第 13 发首次 429）
+#                 3.5-flash     → quotaValue **5** （第 8 发首次 429）
+#   证据：第一个模型打爆后，第二个模型仍能连发 16 条——**共享配额的话会立刻 429**。
+#   故三模型 = 三个独立桶（合计 35 RPM），"429 换下一个模型"是有效降级而非白费。
 GEMINI_MODELS = [
     "gemini-3.5-flash-lite",
     "gemini-3.1-flash-lite",
     "gemini-3.5-flash",
 ]
 
+# 全部模型都 429 后的退避重试（2026-10-13 新增）。
+#
+# 背景：原实现对 429 与 404 一视同仁（`except HTTPError` → 换下一个模型），
+# 三个模型全热后直接抛异常给调用方 → 切到 dots 等质量更差的备援通道。
+# 但实测 429 是**临时容量**信号且带 `retryDelay`（实测 21s/55s/36s），
+# **等一会儿原模型就能复用**——把"等 20 秒能好的活"降级给差通道并不划算。
+#
+# 策略：三模型全 429 → 按 retryDelay 退避（无该字段则用默认值）→ 重跑整条链。
+# 最多 GEMINI_429_ROUNDS 轮，仍失败才抛给调用方去切通道。
+GEMINI_429_ROUNDS = 2          # 额外重试轮数（总尝试 = 1 + 2 轮）
+GEMINI_429_MIN_WAIT = 8        # retryDelay 缺失时的兜底等待（秒）
+GEMINI_429_MAX_WAIT = 90       # 等待上限，防服务端给出离谱值把批次卡死
+
 _ALLOWED_HOSTS = {GEMINI_HOST}
 _STATE = {"checked": False, "ok": False}
+
+
+def _parse_retry_delay(body_text):
+    """从 429 响应体取 google.rpc.RetryInfo.retryDelay（如 "21s"）。
+
+    实测（2026-10-13）：**没有 Retry-After 响应头**，等待信息只在 body 里。
+    返回秒数（int）或 None。"""
+    try:
+        j = json.loads(body_text)
+    except Exception:
+        return None
+    for d in ((j.get("error") or {}).get("details") or []):
+        if "RetryInfo" in (d.get("@type") or ""):
+            raw = (d.get("retryDelay") or "").strip()
+            if raw.endswith("s"):
+                try:
+                    return int(float(raw[:-1]))
+                except ValueError:
+                    return None
+    return None
 
 
 def reachable(timeout=4):
@@ -98,40 +140,75 @@ def _post(url, payload, headers, timeout):
 
 
 def generate(api_key, user_prompt, system_prompt="", timeout=120, max_tokens=8192):
-    """原生 generateContent 调用，遍历 GEMINI_MODELS，404/400 换下一个。
+    """原生 generateContent 调用，遍历 GEMINI_MODELS；429 走退避重试。
 
-    返回文本（已 strip）；全部模型失败抛最后一个异常。
+    三级处理（2026-10-13 按实测配额重写）：
+      404/400          → 换下一个模型（模型不存在，立刻换是正解）
+      429              → 换下一个模型（配额**按模型独立**，换模型 = 换桶，零等待）
+      三模型全 429     → 按 retryDelay 退避后**重跑整条链**（最多 GEMINI_429_ROUNDS 轮）
+
+    只有全部重试仍失败才抛异常，让调用方去切备援通道。
+
+    返回文本（已 strip）。
     """
     last = None
-    for model in GEMINI_MODELS:
-        url = GEMINI_BASE + "/models/" + model + ":generateContent"
-        body = {
-            "contents": [{"role": "user", "parts": [{"text": user_prompt}]}],
-            "generationConfig": {"temperature": 0.3, "maxOutputTokens": max_tokens},
-        }
-        if system_prompt:
-            body["system_instruction"] = {"parts": [{"text": system_prompt}]}
-        headers = {
-            "Content-Type": "application/json",
-            "x-goog-api-key": api_key,
-            "User-Agent": "osint/1.0",
-        }
-        try:
-            raw = _post(url, json.dumps(body).encode("utf-8"), headers, timeout)
-            result = json.loads(raw)
-        except urllib.error.HTTPError as e:
-            last = e
-            print("[GEMINI] " + model + " HTTP " + str(e.code) + ", 尝试下一个")
-            continue
-        cands = result.get("candidates") or []
-        if not cands:
-            fb = result.get("promptFeedback") or {}
-            last = ValueError("gemini no candidates: " + json.dumps(fb, ensure_ascii=False)[:200])
-            continue
-        parts = (cands[0].get("content") or {}).get("parts") or []
-        text = "".join(p.get("text", "") for p in parts if isinstance(p, dict))
-        if not text.strip():
-            last = ValueError("gemini empty text (finishReason=" + str(cands[0].get("finishReason")) + ")")
-            continue
-        return text.strip()
+    rounds = 1 + GEMINI_429_ROUNDS
+    for rnd in range(rounds):
+        all_429 = True          # 本轮是否全因 429 失败（决定要不要退避重试）
+        retry_delay = None
+        for model in GEMINI_MODELS:
+            url = GEMINI_BASE + "/models/" + model + ":generateContent"
+            body = {
+                "contents": [{"role": "user", "parts": [{"text": user_prompt}]}],
+                "generationConfig": {"temperature": 0.3, "maxOutputTokens": max_tokens},
+            }
+            if system_prompt:
+                body["system_instruction"] = {"parts": [{"text": system_prompt}]}
+            headers = {
+                "Content-Type": "application/json",
+                "x-goog-api-key": api_key,
+                "User-Agent": "osint/1.0",
+            }
+            try:
+                raw = _post(url, json.dumps(body).encode("utf-8"), headers, timeout)
+                result = json.loads(raw)
+            except urllib.error.HTTPError as e:
+                last = e
+                if e.code == 429:
+                    # 读服务端建议的等待时间（实测无 Retry-After 头，只在 body）
+                    try:
+                        _body = (e.read() or b"").decode("utf-8", "replace")
+                        _d = _parse_retry_delay(_body)
+                        if _d:
+                            retry_delay = max(retry_delay or 0, _d)
+                    except Exception:
+                        pass
+                    print("[GEMINI] " + model + " 429(配额), 换下一个模型")
+                else:
+                    all_429 = False
+                    print("[GEMINI] " + model + " HTTP " + str(e.code) + ", 尝试下一个")
+                continue
+            cands = result.get("candidates") or []
+            if not cands:
+                fb = result.get("promptFeedback") or {}
+                last = ValueError("gemini no candidates: " + json.dumps(fb, ensure_ascii=False)[:200])
+                all_429 = False
+                continue
+            parts = (cands[0].get("content") or {}).get("parts") or []
+            text = "".join(p.get("text", "") for p in parts if isinstance(p, dict))
+            if not text.strip():
+                last = ValueError("gemini empty text (finishReason=" + str(cands[0].get("finishReason")) + ")")
+                all_429 = False
+                continue
+            return text.strip()
+
+        # 本轮结束：只有"全因 429"且还有重试轮次时才等待——其他错误等多久都无益
+        if not (all_429 and rnd + 1 < rounds):
+            break
+        wait = retry_delay or GEMINI_429_MIN_WAIT
+        wait = max(GEMINI_429_MIN_WAIT, min(wait, GEMINI_429_MAX_WAIT))
+        print("[GEMINI] 三模型配额全热，退避 " + str(wait) + "s 后重试"
+              " (第 " + str(rnd + 2) + "/" + str(rounds) + " 轮)")
+        time.sleep(wait)
+
     raise last if last else RuntimeError("gemini: no model available")
