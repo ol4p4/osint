@@ -34,3 +34,13 @@ jobs:
         run: |
           cd ${{ github.workspace }}
           python tools/probe_gemma_retry.py || echo "gemma retry probe failed"
+
+      # 稳定性与 TPM 压测（2026-10-13）：上一步判定 500 是临时的（重试第3次成功），
+      # 但 500 率很高。本步量化成功率 + 测 TPM 16K 下翻译批能否通过 + 抽检译文。
+      - name: Probe Gemma stability
+        if: always()
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          cd ${{ github.workspace }}
+          python tools/probe_gemma_stability.py || echo "gemma stability probe failed"
