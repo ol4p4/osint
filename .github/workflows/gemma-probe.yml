@@ -12,7 +12,9 @@ permissions:
 jobs:
   gemma:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    # 20 分钟：Gemma 稳定性测试要连发 15 次，而它 500/超时率高、平均每次 12s，
+    # 首版设 8 分钟直接超时（实测 9m52s 被杀）。给足余量。
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

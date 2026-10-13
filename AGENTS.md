@@ -1929,9 +1929,12 @@ schema 描述、示例值、字段说明里的措辞都会被子模型模仿。
 | gemini-3.1-flash-lite | 15 | 250K | **500** | ✅ 备援 |
 | gemini-3.5-flash | 5 | 250K | **20** | ⚠️ **形同虚设**（非 lite 的 Flash 族日额度极低） |
 | gemini-3.6 / 3.8 Flash | 5 | 250K | 20 | 同族同病 |
+| **Gemma 4 26B/31B** | 30 | 16K | **14,400** | ❌ **看着最宽，实测不可用**（见下） |
+| Gemini Live 系列 | — | 20K~1M | 无限制 | ❌ 是**实时音视频**接口，非文本批处理，`generateContent` 调不了 |
+| Veo / Lyria / Omni | 0 | 0 | 0 | 未开通（视频/音乐生成） |
 | 其余多数模型 | 0 | 0 | 0 | 未开通 |
 
-**三条要点**：
+**四条要点**：
 1. **RPM 15/15/5 与探针实测完全一致**——两条独立路径（探针打爆 vs 官方页面）互验，
    这个数字可以放心使用。
 2. **真实容量在两个 lite 模型**（RPD 合计 **1000/天**）。按每天 8 轮 CI、翻译+研判
@@ -1940,6 +1943,57 @@ schema 描述、示例值、字段说明里的措辞都会被子模型模仿。
    下一节的判据修正：不能因为"它一个撞了 RPD"就放弃整个通道。
 4. **`/models` 列表接口 404**（实测），所以无法靠 API 枚举可用模型与配额——
    只能靠 AI Studio 页面 + 429 响应体。
+
+### Gemma 4：配额最宽但**实测不可用**（2026-10-13，三个探针实测）
+
+用户发现 Gemma 4 的 **RPD=14,400**（lite 的 28 倍），问是否更宽松。实测结论：**否，
+两个独立原因都不是配额问题**。
+
+**① 模型名与协议**（`tools/probe_gemma.py`）：正确的 API 名是
+`gemma-4-26b-a4b-it`（MoE）/ `gemma-4-31b-it`（Dense）——注意 **`a4b` 后缀不可省**
+（首轮用 `gemma-4-26b-it` 全部 404）。协议与 lite **完全兼容**（同一个
+`:generateContent`，支持 system instruction / function calling）。但两者均返
+**HTTP 500**（不是 404）——说明模型已开通、路由认识，是后端问题。
+
+**② 500 是"临时"但极其频繁**（`tools/probe_gemma_retry.py`）：
+
+| 模型 | 第1次 | 第2次 | 第3次 | 换 stream/v1 端点 |
+|---|---|---|---|---|
+| gemma-4-26b-a4b-it | 500 | 500 | **200** | 500 |
+| gemma-4-31b-it | 超时 | 500 | 500 | 500 |
+
+→ 判定为**临时故障**（非"未开通"），但失败率极高。
+
+**③ 稳定性实测：成功率 7%**（`tools/probe_gemma_stability.py`，连发 15 次）：
+
+```
+gemma-4-26b-a4b-it   成功 1/15 =  7%   平均每次 12.0s   （500 × 14）
+gemini-3.5-flash-lite 成功 4/5 = 80%                    （503 × 1）← 对照
+```
+
+要让它达到 80% 成功率需重试约 11 次——**RPD=14.4K 的额度优势被重试成本完全吃掉**。
+
+**④ 致命：Gemma 4 默认带 thinking，把 TPM 吃光**（同一次实测的 usageMetadata）：
+
+```
+promptTokenCount:      406
+candidatesTokenCount:  119
+thoughtsTokenCount:  1,925   ← 思考 token 是输出的 16 倍
+totalTokenCount:     2,450
+finishReason: MAX_TOKENS     ← 正文没写完，JSON 解析失败
+```
+
+配额页的 `TPM=16K` 若按 `totalTokenCount` 计（**实测行为如此**），**单次就吃掉 15.3%**
+→ 每分钟最多 6 次；且 thinking 挤爆 `maxOutputTokens` 导致**输出被截断、JSON 解析失败**。
+而 lite 的 250K 配额 + 无 thinking，同一批轻松跑过。
+
+**判据（可复用）**：
+- **"配额页数字最大" ≠ "最适合"**：要连同**稳定性**与**隐性 token 开销**一起看。
+  Gemma 的 14.4K RPD 是诱饵——它 500 率 93%，且 thinking 吞配额。
+- **开放权重模型的托管版质量/稳定性与生成模型不同**：Gemma 走同一个 API 端点，
+  但后端显然更不稳定（500 而非 429/503）。**协议兼容 ≠ 生产可用**。
+- **看到 `thoughtsTokenCount` 就要警惕**：思考 token 计入 `totalTokenCount` 与
+  `maxOutputTokens`，两者都会挤压可用量。选模型时先跑一次真实负载看 usageMetadata。
 
 ### RPM vs RPD：两者都返 429，但处置相反（2026-10-13）
 
