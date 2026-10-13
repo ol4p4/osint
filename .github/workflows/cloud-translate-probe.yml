@@ -27,3 +27,13 @@ jobs:
         run: |
           cd ${{ github.workspace }}
           python tools/probe_cloud_translate.py
+
+      # 配额探测（2026-10-13）：读 429 响应体里的 quotaValue/retryDelay，
+      # 确认"15 RPM"是实测值还是文档值，并判断三模型配额是否独立。
+      - name: Probe Gemini quota
+        if: always()
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          cd ${{ github.workspace }}
+          python tools/probe_gemini_quota.py || echo "quota probe failed"
