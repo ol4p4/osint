@@ -41,6 +41,15 @@ GEMINI_BASE = "https://" + GEMINI_HOST + "/v1beta"
 #                 3.5-flash     → quotaValue **5** （第 8 发首次 429）
 #   证据：第一个模型打爆后，第二个模型仍能连发 16 条——**共享配额的话会立刻 429**。
 #   故三模型 = 三个独立桶（合计 35 RPM），"429 换下一个模型"是有效降级而非白费。
+#
+# **RPD（日额度）实况（2026-10-13，AI Studio rate-limit 页截图，用户账号）**：
+#     模型                  RPM    TPM      RPD
+#     gemini-3.5-flash-lite  15   250K     500    ← 主力，宽裕
+#     gemini-3.1-flash-lite  15   250K     500    ← 备援，宽裕
+#     gemini-3.5-flash        5   250K      20    ← **非 lite 的 Flash 族 RPD 仅 20**
+#     （3.6/3.8 Flash 同族，RPD 也是 20；其余多数模型 0/0 未开通）
+#   **两个 lite 的 RPD 才是真实容量**（合计 1000/天），第三个基本形同虚设。
+#   这直接决定 429 的处置：见 generate() 里"只有全模型皆 RPD 才跳过退避"的判据。
 GEMINI_MODELS = [
     "gemini-3.5-flash-lite",
     "gemini-3.1-flash-lite",
@@ -162,7 +171,10 @@ def generate(api_key, user_prompt, system_prompt="", timeout=120, max_tokens=819
     for rnd in range(rounds):
         all_429 = True          # 本轮是否全因 429 失败（决定要不要退避重试）
         retry_delay = None
-        _rpd_hit = False        # 本轮是否撞到**日额度**（RPD 等待无意义，直接跳出）
+        # 本轮各模型的 429 性质（2026-10-13）：用来判断"退避是否有意义"。
+        # 只有全模型皆 RPD 时才不该等；只要还有 RPM 限流的模型，等一会儿就能复用。
+        _rpd_models = set()     # 撞日额度的模型
+        _rpm_models = set()     # 撞分钟配额的模型
         for model in GEMINI_MODELS:
             url = GEMINI_BASE + "/models/" + model + ":generateContent"
             body = {
@@ -209,7 +221,9 @@ def generate(api_key, user_prompt, system_prompt="", timeout=120, max_tokens=819
                     print("[GEMINI] " + model + " 429(" + ("日额度 RPD 耗尽" if _is_rpd
                           else "分钟配额 RPM") + "), 换下一个模型")
                     if _is_rpd:
-                        _rpd_hit = True
+                        _rpd_models.add(model)
+                    else:
+                        _rpm_models.add(model)
                 else:
                     all_429 = False
                     print("[GEMINI] " + model + " HTTP " + str(e.code) + ", 尝试下一个")
@@ -229,13 +243,21 @@ def generate(api_key, user_prompt, system_prompt="", timeout=120, max_tokens=819
             return text.strip()
 
         # 本轮结束：决定要不要退避重试。
-        # 跳过退避的两种情况：
-        #   ① 非全 429（有 404/内容错误等，等多久都无益）
-        #   ② 撞到 RPD（日额度按天耗尽，等到明天才恢复——退避纯属白等，速切备援）
-        if not (all_429 and rnd + 1 < rounds) or _rpd_hit:
-            if _rpd_hit:
-                print("[GEMINI] 检测到日额度(RPD)耗尽，不做退避（等到次日无效）→ 交调用方切通道")
+        # 只有**全部模型都撞 RPD** 才跳过退避——那时等到次日才有意义，速切备援通道。
+        #
+        # 为什么不能"任一模型 RPD 就跳过"（2026-10-13 按 AI Studio 实际配额修正）：
+        # 实测本账号配额 3.5-flash-lite / 3.1-flash-lite 各 RPD=500，
+        # 而 gemini-3.5-flash（非 lite 的 Flash 族）**RPD 仅 20**——它几乎必然先撞日额度。
+        # 若见它一个就放弃，会白白浪费另两个"等 30~60 秒就能复用"的桶
+        # （它们通常只是 RPM 限流）。故判据收紧为「全模型皆 RPD」。
+        if not (all_429 and rnd + 1 < rounds):
             break
+        if _rpd_models and not _rpm_models:
+            print("[GEMINI] 全部模型日额度(RPD)耗尽，不做退避（等到次日无效）→ 交调用方切通道")
+            break
+        if _rpd_models:
+            print("[GEMINI] 部分模型 RPD 耗尽（" + ",".join(sorted(_rpd_models)) +
+                  "），其余仅 RPM 限流 → 仍退避重试")
         wait = retry_delay or GEMINI_429_MIN_WAIT
         wait = max(GEMINI_429_MIN_WAIT, min(wait, GEMINI_429_MAX_WAIT))
         print("[GEMINI] 三模型配额全热，退避 " + str(wait) + "s 后重试"
