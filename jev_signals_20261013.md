@@ -4,8 +4,8 @@
 
 ## HM102 AI算力与关键材料短缺限制技术商业化速度（1 条）
 
-- `I` gate=0.22 → HM102(0.61) ｜ 博通CEO：许多AI投资者如同赌场赌徒，AI发展最大制约因素是资本
+- `I` gate=0.19 → HM102(0.63) ｜ 博通CEO：许多AI投资者如同赌场赌徒，AI发展最大制约因素是资本
 
 ## HM101 美加贸易摩擦升级引发全球供应链重构（1 条）
 
-- `C` gate=0.26 → HM101(0.61) ｜ This Ultra-Rare Gas Could Become An Ace In Canada’s Hands
+- `C` gate=0.25 → HM101(0.64) ｜ This Ultra-Rare Gas Could Become An Ace In Canada’s Hands
