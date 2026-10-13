@@ -32,14 +32,18 @@ import urllib.error  # noqa: E402
 
 TINY = "Reply with the single word: ok"
 
-# 候选模型名（配额页显示的是展示名，API 名需探测）
+# 候选模型名（配额页显示的是展示名，API 名已按官方文档修正）
+# 官方文档 ai.google.dev/gemma/docs/core/gemma_on_gemini_api 明确：
+#   gemma-4-26b-a4b-it（MoE，26B/4B激活）/ gemma-4-31b-it（Dense）
+#   **走同一个 :generateContent 接口**，支持 system instruction / function calling
+#   / Google Search —— 协议与本项目现有调用完全兼容。
+# 首轮探针用了 "gemma-4-26b-it"（缺 a4b 后缀）故未命中，此处修正。
 CANDIDATES = [
-    "gemma-4-26b-it",
+    "gemma-4-26b-a4b-it",
     "gemma-4-31b-it",
-    "gemma-4-26b",
-    "gemma-4-31b",
-    "gemma-4-27b-it",
-    "gemma-3-27b-it",
+    "gemma-4-12b-it",
+    "gemma-4-e4b-it",
+    "gemma-4-e2b-it",
 ]
 
 # 对照：当前主力（应 200）
@@ -106,12 +110,68 @@ def main():
     if ok:
         print(f"    ✓ 可用模型: {ok}")
         print(f"    → Gemma 可用！RPD=14.4K 是 lite(500) 的 28 倍")
-        print(f"    → 下一步：实测 TPM 16K 下翻译批（5条）能否通过 + 译文质量")
+        print()
+        print("[3] TPM 压力测试（Gemma TPM=16K，仅为 lite 250K 的 6.4%）")
+        print("    用生产同款翻译批（5 条，约 2~4K token）实测能否通过")
+        best = ok[0]
+        # 构造近似生产的翻译批：5 条带标题+摘要
+        items = []
+        for i in range(5):
+            items.append(
+                f"ITEM_ID: probe{i}\nTITLE: Global markets react to policy shift number {i}\n"
+                f"CONTENT: Central banks signaled a change in stance as inflation data "
+                f"came in above expectations, prompting analysts to revise forecasts. "
+                f"Policy makers emphasized data dependence while noting risks to growth. "
+                f"Market participants are weighing the implications for rate paths. ({i})"
+            )
+        prompt = ("Translate each ITEM to Chinese. Output JSON array with format: "
+                  '[{"id": "...", "cn_title": "...", "cn_summary": "...", "impact": "..."}]. '
+                  "Only output JSON, no markdown.\n\n" + "\n\n".join(items))
+        approx_tokens = len(prompt) // 2  # 粗估：中文/英文混合约 2 字符/token
+        print(f"    prompt 长度 {len(prompt)} 字符 ≈ {approx_tokens} token（粗估）")
+        code, body = call(best, key, prompt=prompt, max_tokens=2048)
+        print(f"    HTTP {code}")
+        if code == 200:
+            try:
+                j = json.loads(body)
+                usage = j.get("usageMetadata") or {}
+                cand = (j.get("candidates") or [{}])[0]
+                parts = (cand.get("content") or {}).get("parts") or []
+                txt = "".join(p.get("text", "") for p in parts)
+                print(f"    ✓ 通过  usage={usage}")
+                print(f"    finishReason={cand.get('finishReason')}")
+                print(f"    返回长度 {len(txt)} 字符，前 150: {txt[:150]!r}")
+                parsed = _try_parse(txt)
+                print(f"    JSON 解析: {'✓ ' + str(len(parsed)) + ' 条' if parsed else '✗ 失败'}")
+            except Exception as e:
+                print(f"    解析异常: {e}  原文前 200: {body[:200]}")
+        elif code == 429:
+            print(f"    ✗ TPM 或 RPM 超限: {body[:200]}")
+        else:
+            print(f"    ✗ {body[:250]}")
     elif any(c == 429 for c in results.values()):
         print("    候选名可能不对（返 429 说明模型存在但受限），或今日额度已耗尽")
     else:
         print("    ✗ 以上候选名均不可用——可能需要精确的 API 名")
         print("    → 建议在 AI Studio 页面点开该模型的详情，或查 /models 列表")
+
+
+def _try_parse(text):
+    """从模型输出抓 JSON 数组。"""
+    t = text.strip()
+    if t.startswith("```"):
+        parts = t.split("```")
+        if len(parts) > 1:
+            t = parts[1]
+        if t.startswith("json"):
+            t = t[4:]
+    i, j = t.find("["), t.rfind("]")
+    if i < 0 or j <= i:
+        return None
+    try:
+        return json.loads(t[i:j + 1])
+    except Exception:
+        return None
 
 
 if __name__ == "__main__":
