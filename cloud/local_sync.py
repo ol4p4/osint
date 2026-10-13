@@ -91,14 +91,17 @@ def git_pull():
         # "cannot pull with rebase: You have unstaged changes" 永久失败，
         # 会把整条 refresh 链的拉取卡死（实测 probe_readings.json 残留导致）。
         # autostash 自动暂存/恢复工作区改动，pull 完成后原样还原，不丢本地修改。
-        # 2026-10-06：经 net_proxy 注入本地代理（GitHub 直连常态不通；探测不到
-        # 代理时返回与 os.environ 等价的 env，行为不变）。
-        from net_proxy import git_env
-        r = subprocess.run(["git", "pull", "--autostash", "origin", "master"], cwd=str(PROJECT),
-                           capture_output=True, text=True, timeout=120,
-                           env=git_env(), creationflags=_NO_WINDOW)
-        print(f"Git pull: {(r.stdout or r.stderr).strip()[:120]}")
-        return r.returncode == 0
+        # 2026-10-13：改用 net_proxy.run_git（**直连→代理→重试**降级梯）。
+        # 原实现"探测到代理就用、探测不到就直连"只有一次机会，而实测直连是
+        # **间歇性**失败（TCP 层全通、git 层偶发 21s 超时）→ 单次尝试就会失败。
+        # run_git 内置重试，且 Clash 挂掉时自动退回直连，不再硬依赖代理。
+        from net_proxy import run_git
+        rc, out, err, mode = run_git(
+            ["pull", "--autostash", "origin", "master"],
+            cwd=str(PROJECT), timeout=120, retries=3,
+            creationflags=_NO_WINDOW, label="git_pull")
+        print(f"Git pull[{mode}]: {(out or err).strip()[:120]}")
+        return rc == 0
     except Exception as e:
         print(f"[WARN] Git pull failed: {e}")
         return False

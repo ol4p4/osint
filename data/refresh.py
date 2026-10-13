@@ -804,46 +804,48 @@ def commit_hypotheses():
     改为动态取 data/hypotheses/ 下**已被追踪**的文件：既覆盖 probe_readings，
     也自动纳入日后新增的追踪文件，同时不会误把未追踪的 proposed_*.json 拉进库。"""
     try:
-        # 2026-10-06：全部 git 子进程经 net_proxy 注入本地代理（GitHub 直连常态不通）。
-        # 探测不到代理时 git_env() 返回与 os.environ 等价的 env，行为完全不变。
-        from net_proxy import git_env
-        _genv = git_env()
-        ls = subprocess.run(["git", "ls-files", "data/hypotheses/"], cwd=str(PROJECT),
-                            capture_output=True, text=True, timeout=60,
-                            env=_genv, creationflags=_NO_WINDOW)
-        files = [ln.strip() for ln in (ls.stdout or "").splitlines() if ln.strip()]
+        # 2026-10-13：改用 net_proxy.run_git（**直连→代理→重试**降级梯）。
+        # 原实现经 git_env() 只给一次机会：探测到代理就用代理、探测不到就直连，
+        # 而实测直连是**间歇性**失败（TCP 全通、git 层偶发 21s 超时）——
+        # 单次尝试会失败，表现为"假设树 commit 推不上远端"。run_git 内置重试，
+        # 且 Clash 挂掉时自动退回直连，不再硬依赖代理。
+        from net_proxy import run_git
+
+        def _g(args, **kw):
+            return run_git(args, cwd=str(PROJECT), creationflags=_NO_WINDOW,
+                           label="hyp-commit", **kw)
+
+        rc, out, _e, _m = _g(["ls-files", "data/hypotheses/"], timeout=60, retries=2)
+        files = [ln.strip() for ln in (out or "").splitlines() if ln.strip()]
         if not files:
             print("hyp-commit: data/hypotheses/ 无追踪文件, 跳过")
             return
-        subprocess.run(["git", "add", "--", *files], cwd=str(PROJECT), capture_output=True,
-                       text=True, timeout=60, env=_genv, creationflags=_NO_WINDOW)
-        # --quiet: 有 staged 变更返回 1, 无变更返回 0
+        _g(["add", "--", *files], timeout=60, retries=2)
+        # --quiet: 有 staged 变更返回 1, 无变更返回 0（本地操作，无需重试）
         diff = subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=str(PROJECT),
-                              capture_output=True, timeout=60, env=_genv, creationflags=_NO_WINDOW)
+                              capture_output=True, timeout=60, creationflags=_NO_WINDOW)
         if diff.returncode == 0:
             print("hyp-commit: 无变更, 跳过")
             return
         msg = f"auto: hypothesis chain update {time.strftime('%Y-%m-%d')}"
         c = subprocess.run(["git", "commit", "-m", msg], cwd=str(PROJECT),
                            capture_output=True, text=True, timeout=120,
-                           env=_genv, creationflags=_NO_WINDOW)
+                           creationflags=_NO_WINDOW)
         if c.returncode != 0:
             print(f"hyp-commit: commit 失败: {(c.stderr or '')[:150]}")
             return
-        rb = subprocess.run(["git", "pull", "--rebase", "--autostash", "origin", "master"], cwd=str(PROJECT),
-                            capture_output=True, text=True, timeout=180,
-                            env=_genv, creationflags=_NO_WINDOW)
-        if rb.returncode != 0:
+        rrc, rout, rerr, rmode = _g(
+            ["pull", "--rebase", "--autostash", "origin", "master"],
+            timeout=180, retries=3)
+        if rrc != 0:
             # 冲突时回退 rebase 中间态, 保住本地 commit 留待下轮, 避免污染后续 git_pull
             subprocess.run(["git", "rebase", "--abort"], cwd=str(PROJECT),
-                           capture_output=True, timeout=60, env=_genv, creationflags=_NO_WINDOW)
-            print(f"hyp-commit: rebase 失败(留下轮): {(rb.stderr or rb.stdout or '')[:150]}")
+                           capture_output=True, timeout=60, creationflags=_NO_WINDOW)
+            print(f"hyp-commit: rebase 失败(留下轮): {(rerr or rout or '')[:150]}")
             return
-        ph = subprocess.run(["git", "push", "origin", "master"], cwd=str(PROJECT),
-                            capture_output=True, text=True, timeout=180,
-                            env=_genv, creationflags=_NO_WINDOW)
-        print("hyp-commit: pushed" if ph.returncode == 0
-              else f"hyp-commit: push 失败(留下轮): {(ph.stderr or '')[:150]}")
+        prc, pout, perr, pmode = _g(["push", "origin", "master"], timeout=180, retries=3)
+        print(f"hyp-commit: pushed[{pmode}]" if prc == 0
+              else f"hyp-commit: push 失败(留下轮): {(perr or '')[:150]}")
     except Exception as e:
         print(f"hyp-commit: failed: {str(e)[:150]}")
 

@@ -25,6 +25,7 @@ CI（GitHub Actions）无本地代理 → 探测失败 → 返回空 dict → gi
 import os
 import re
 import socket
+import subprocess
 import time
 
 # 本地代理候选端口（按优先级）：Clash Verge mixed-port 默认 7897；
@@ -184,3 +185,116 @@ def describe():
     if proxy:
         return "git 经本地代理 " + proxy
     return "git 直连（未探测到本地代理）"
+
+
+# ---------------------------------------------------------------- 带降级梯的 git 执行
+
+# 网络型失败的特征（用于判断"该重试"而非"该放弃"）
+_NET_FAIL_MARKERS = (
+    "could not connect to server",
+    "failed to connect",
+    "connection timed out",
+    "operation timed out",
+    "connection reset",
+    "couldn't connect",
+    "unable to access",
+    "early eof",
+    "rpc failed",
+    "the remote end hung up",
+    "ssl connection timeout",
+)
+
+
+def _is_network_failure(stderr):
+    """判断 git 失败是否为网络型（值得重试）。返回 (是否网络失败, 原文片段)。"""
+    s = (stderr or "").lower()
+    for m in _NET_FAIL_MARKERS:
+        if m in s:
+            return True, m
+    return False, ""
+
+
+def run_git(args, cwd, timeout=120, retries=3, creationflags=0, label="git"):
+    """执行 git 命令，带**降级梯**：直连 → 代理 → 反复重试。
+
+    返回 (returncode, stdout, stderr, 使用的模式)。
+
+    ## 为什么要降级梯（2026-10-13 按实测重写）
+
+    原实现的假设是「直连常态不通 → 必须走代理」，但当晚实测推翻了这个前提：
+
+      · 各 GitHub IP 的 **TCP 层全通**（0.2s）——不是网络层被墙
+      · `api.github.com` 直连 **8/8 稳定**（0.23s）
+      · `github.com` git 层**间歇失败**（21s 超时），但窗口很短：
+        Clash 挂掉那 10 分钟里直连 **10/10 全通**
+      · Clash 可用性本身不稳（当晚 7897 从 200 变成端口关闭）
+
+    即：**失败是"偶发"而非"必然"**，而原实现"探测到代理就用代理、探测不到
+    就直连"只有一次机会——直连偶发失败时就直接放弃，这才表现为"推送总失败"。
+
+    降级梯把"单次尝试"变成"多路重试"：
+      ① 直连（最快，实测多数时候可用）
+      ② 若网络型失败且有可用代理 → 经代理重试
+      ③ 仍失败 → 直连再试（间歇故障往往已恢复），最多 retries 轮
+    只有非网络型失败（如 non-fast-forward）才立即返回——那种重试无意义。
+
+    ## 为什么不用 gh api 兜底
+
+    git 协议无法走 api.github.com；用 Git Data API 重建提交树可行（publish_pages
+    就这么干），但那是**只写单文件、无历史**的场景。假设树/代码需要真实 git
+    历史与三方合并，不适合。故此处用"重试"而非"换协议"。
+    """
+    last = (-1, "", "", "none")
+    proxy = git_proxy()
+    base_env = dict(os.environ)
+
+    # 顺序：直连 → 代理 → 直连 → 代理 ...（代理不可用时跳过该档）
+    plan = ["direct"]
+    if proxy:
+        plan = ["direct", "proxy"]
+    attempts = []
+    while len(attempts) < retries:
+        attempts.extend(plan)
+
+    for i, mode in enumerate(attempts[:max(retries, 1) * 2]):
+        env = dict(base_env)
+        if mode == "proxy" and proxy:
+            env["GIT_CONFIG_COUNT"] = "2"
+            env["GIT_CONFIG_KEY_0"] = "http.proxy"
+            env["GIT_CONFIG_VALUE_0"] = proxy
+            env["GIT_CONFIG_KEY_1"] = "https.proxy"
+            env["GIT_CONFIG_VALUE_1"] = proxy
+        kw = {"creationflags": creationflags} if creationflags else {}
+        try:
+            r = subprocess.run(["git"] + list(args), cwd=str(cwd),
+                               capture_output=True, text=True, timeout=timeout,
+                               env=env, **kw)
+        except subprocess.TimeoutExpired:
+            print(f"[{label}] 第{i+1}次({mode}) 超时（{timeout}s）")
+            last = (-1, "", "timeout", mode)
+            continue
+        except Exception as e:
+            last = (-1, "", type(e).__name__ + ": " + str(e)[:100], mode)
+            print(f"[{label}] 第{i+1}次({mode}) 异常: {last[2][:100]}")
+            continue
+
+        if r.returncode == 0:
+            if i > 0:
+                print(f"[{label}] 第{i+1}次({mode}) 成功（前 {i} 次失败后恢复）")
+            return r.returncode, r.stdout, r.stderr, mode
+
+        is_net, marker = _is_network_failure(r.stderr)
+        last = (r.returncode, r.stdout, r.stderr, mode)
+        if not is_net:
+            # 非网络错误（认证/non-fast-forward/冲突等）→ 重试无益，立即返回
+            return r.returncode, r.stdout, r.stderr, mode
+        print(f"[{label}] 第{i+1}次({mode}) 网络失败({marker})，继续下一档")
+
+    return last
+
+
+def run_git_checked(args, cwd, **kw):
+    """run_git 的便捷封装：返回 (是否成功, 输出摘要字符串)。"""
+    rc, out, err, mode = run_git(args, cwd, **kw)
+    summary = (out or err or "").strip()
+    return rc == 0, summary[:200], mode
