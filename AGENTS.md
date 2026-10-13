@@ -647,6 +647,20 @@ C conf=0.89 日经225指数低开1.5%                ← 行情？
    - CI 无本地代理 → 探测失败 → 返回空 dict → git 直连，互不影响
    - 应急开关：`OSINT_GIT_PROXY=none` 强制禁代理；`OSINT_GIT_PROXY=http://127.0.0.1:7897` 显式指定
    - 诊断：`python -c "import net_proxy; print(net_proxy.describe())"`；`gh` CLI 自带路由，**不受影响**（实测直连/代理都通）
+   - **⚠️ 2026-10-13 修：探测曾恒失败（`_PROBE_HOST/_PROBE_PORT` 未定义）**。
+     `_proxy_works()` 引用了这两个常量却从未定义 → NameError → 被
+     `except Exception: return False` 静默吞掉 → **探测永远返回"直连"**，
+     而本机直连 GitHub 不通 → 所有 git 推拉失败，只能靠 `gh api` 兜底。
+     诊断线索：`curl -x http://127.0.0.1:7897 https://github.com/` 返 **200**，
+     但 `describe()` 报"未探测到代理"——**两者矛盾即指向探测代码本身有 bug**。
+     实证：`_proxy_works(timeout=3.0)` → False **(0.04s)**（真超时会耗满 3s）。
+     **判据：实探失败若是"秒败"而非"耗尽 timeout"，几乎一定是代码异常而非网络问题。**
+     修法：① 补上常量；② 拆分异常——网络类（OSError/HTTPException）静默，
+     其他异常**打印**（否则 bug 无声存在）；③ 加 `OSINT_GIT_PROXY_DEBUG=1` 看细节。
+     修后 `git ls-remote` rc=0、`git push` 成功走代理。
+   - **教训**：**宽 `except Exception` 会把代码 bug 伪装成环境问题**。凡"静默降级"的
+     兜底分支，都要问：它吞掉的会不会是 bug 而不只是预期故障？本次若不是
+     "代理明明能用却探测不到"这个矛盾逼着逐步复现，NameError 会一直藏着。
    - **根因提醒**：Clash 未设自启（HKCU Run 无该键），重启后核心不运行 → 代理全失效。若频繁遇到，需给 Clash 自己开自启（属全局设置，osint 不自作主张）
 10. **fetch_list 采集 0 条**（2026-08-30 诊断）：接口缺陷已修（main 现在写 output jsonl，与 fetch_rss 同接口）；但所有列表源在 CI 上也解析出 0 条——**sources.yaml 的 list_selector 已与改版后的页面结构脱节**（gov.cn 还是 JS 渲染页）。逐源修选择器是持久战，替代方案：改用 RSSHub 或各站 RSS 源。
 11. **仪表盘情报全显示 "8 小时前" 但金十/财联社实际在发**（2026-09-01 诊断；**2026-09-04 已基本根治**）：原 90% 是本地 RSSHub Docker 容器没起。9-04 起 fetch_rss 三级改造后**无 RSSHub 也能拉全源**：
