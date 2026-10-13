@@ -60,6 +60,12 @@ GEMINI_429_ROUNDS = 2          # 额外重试轮数（总尝试 = 1 + 2 轮）
 GEMINI_429_MIN_WAIT = 8        # retryDelay 缺失时的兜底等待（秒）
 GEMINI_429_MAX_WAIT = 90       # 等待上限，防服务端给出离谱值把批次卡死
 
+# 判定「日额度 RPD」的 retryDelay 阈值（秒，2026-10-13）。
+# 依据：RPM 实测 retryDelay 21~55s，而分钟窗口本身最长 60s——若服务端报出的等待
+# 远超一分钟，那基本不是分钟配额。此判据不依赖 quotaId 命名（RPD 的字符串未实测过），
+# 与 "PerDay" 字符串判据**并列**，任一命中即按日额度处理（不退避、速切通道）。
+GEMINI_RPD_RETRY_HINT = 300
+
 _ALLOWED_HOSTS = {GEMINI_HOST}
 _STATE = {"checked": False, "ok": False}
 
@@ -156,6 +162,7 @@ def generate(api_key, user_prompt, system_prompt="", timeout=120, max_tokens=819
     for rnd in range(rounds):
         all_429 = True          # 本轮是否全因 429 失败（决定要不要退避重试）
         retry_delay = None
+        _rpd_hit = False        # 本轮是否撞到**日额度**（RPD 等待无意义，直接跳出）
         for model in GEMINI_MODELS:
             url = GEMINI_BASE + "/models/" + model + ":generateContent"
             body = {
@@ -176,6 +183,8 @@ def generate(api_key, user_prompt, system_prompt="", timeout=120, max_tokens=819
                 last = e
                 if e.code == 429:
                     # 读服务端建议的等待时间（实测无 Retry-After 头，只在 body）
+                    _d = None
+                    _body = ""
                     try:
                         _body = (e.read() or b"").decode("utf-8", "replace")
                         _d = _parse_retry_delay(_body)
@@ -183,7 +192,24 @@ def generate(api_key, user_prompt, system_prompt="", timeout=120, max_tokens=819
                             retry_delay = max(retry_delay or 0, _d)
                     except Exception:
                         pass
-                    print("[GEMINI] " + model + " 429(配额), 换下一个模型")
+                    # 区分 RPM / RPD（2026-10-13）：两者都返 429，但处置相反——
+                    # RPM 等 1 分钟就够（退避重试有效）；RPD 是**日额度**耗尽，
+                    # 等到次日才恢复，此时退避纯属白等，应立即切备援通道。
+                    #
+                    # ⚠ 判据可靠度（诚实标注）：实测只见过 RPM 的 quotaId
+                    # （`...PerMinutePerProjectPerModel-FreeTier`）；**RPD 的字符串没实测过**
+                    # （要烧光整日额度才能触发，不划算）。故用**双判据**，任一命中即算日额度，
+                    # 避免押注单一字符串：
+                    #   ① body 含 "PerDay"（按命名惯例；可能因命名不同而失效）
+                    #   ② retryDelay 明显偏长（> GEMINI_RPD_RETRY_HINT）——RPM 实测仅
+                    #      21~55s，而分钟窗口最长 60s；若服务端报出远超分钟的等待，
+                    #      基本不是分钟配额。此判据不依赖命名，更稳。
+                    _is_rpd = ("PerDay" in _body) or (
+                        isinstance(_d, int) and _d > GEMINI_RPD_RETRY_HINT)
+                    print("[GEMINI] " + model + " 429(" + ("日额度 RPD 耗尽" if _is_rpd
+                          else "分钟配额 RPM") + "), 换下一个模型")
+                    if _is_rpd:
+                        _rpd_hit = True
                 else:
                     all_429 = False
                     print("[GEMINI] " + model + " HTTP " + str(e.code) + ", 尝试下一个")
@@ -202,8 +228,13 @@ def generate(api_key, user_prompt, system_prompt="", timeout=120, max_tokens=819
                 continue
             return text.strip()
 
-        # 本轮结束：只有"全因 429"且还有重试轮次时才等待——其他错误等多久都无益
-        if not (all_429 and rnd + 1 < rounds):
+        # 本轮结束：决定要不要退避重试。
+        # 跳过退避的两种情况：
+        #   ① 非全 429（有 404/内容错误等，等多久都无益）
+        #   ② 撞到 RPD（日额度按天耗尽，等到明天才恢复——退避纯属白等，速切备援）
+        if not (all_429 and rnd + 1 < rounds) or _rpd_hit:
+            if _rpd_hit:
+                print("[GEMINI] 检测到日额度(RPD)耗尽，不做退避（等到次日无效）→ 交调用方切通道")
             break
         wait = retry_delay or GEMINI_429_MIN_WAIT
         wait = max(GEMINI_429_MIN_WAIT, min(wait, GEMINI_429_MAX_WAIT))
