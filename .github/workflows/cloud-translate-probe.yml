@@ -47,3 +47,13 @@ jobs:
         run: |
           cd ${{ github.workspace }}
           python tools/probe_429_recovery.py || echo "429 recovery probe failed"
+
+      # Gemma 4 可用性（2026-10-13）：配额页显示 Gemma RPD=14.4K（lite 的 28 倍），
+      # 但它是开放权重模型，未必支持 :generateContent 接口——需实测确认。
+      - name: Probe Gemma availability
+        if: always()
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          cd ${{ github.workspace }}
+          python tools/probe_gemma.py || echo "gemma probe failed"
