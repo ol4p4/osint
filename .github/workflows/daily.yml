@@ -172,6 +172,10 @@ jobs:
         env:
           OSINT_ROOT: ${{ github.workspace }}
           OSINT_CLOUD: "1"
+          # GH_TOKEN: gh CLI 的环境变量鉴权入口（CI 的 token 只存在于这里，
+          # 不会自动导出；缺它 _gh_ok 返回 False，build 成功也死在"gh 不可用"）
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           cd ${{ github.workspace }}
           python - <<'PYEOF'
