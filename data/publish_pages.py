@@ -41,6 +41,16 @@ DIST = BASE / "dist"
 BRANCH = "gh-pages"          # 硬编码：force push 只允许打到这个分支
 _REMOTE = "origin"
 
+# 旧云端路径重定向页：云端地址一直是 /osint/interactive_dashboard.html，
+# CI 发布改投根级 index.html 后旧书签 404。meta refresh 跳新地址。
+REDIRECT_HTML = (
+    '<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">'
+    '<meta http-equiv="refresh" content="0;url=./index.html">'
+    '<title>参谋系统（已迁移）</title></head><body>'
+    '<p>看板已迁移，正在跳转……新地址：<a href="./index.html">index.html</a></p>'
+    '</body></html>'
+)
+
 
 def _gen_env():
     """生成云端版所需环境变量（gen_dashboard/fix_dashboard 读这几个）。"""
@@ -141,9 +151,24 @@ def push_via_gh(dist_index):
         print("publish_pages: blob sha 为空")
         return False
 
-    # 2) 建 tree（根级 index.html）
+    # 2) 建 tree（根级 index.html + 旧路径重定向页）
+    # 兼容页：云端旧地址一直是 /osint/interactive_dashboard.html（书签、
+    # AGENTS.md 引用），孤儿树每次只放 index.html 会让旧路径 404。
+    # 重定向页是静态内容（blob sha 恒定），随每次发布一起放进树。
+    r = gh_call(["-X", "POST", f"{repo}/git/blobs"], {
+        "content": base64.b64encode(REDIRECT_HTML.encode("utf-8")).decode("ascii"),
+        "encoding": "base64",
+    })
+    if r.returncode != 0:
+        print(f"publish_pages: 建 blob 失败: {(r.stderr or r.stdout or '')[:200]}")
+        return False
+    redirect_sha = (_json.loads(r.stdout or "{}") or {}).get("sha")
     r = gh_call(["-X", "POST", f"{repo}/git/trees"], {
-        "tree": [{"path": "index.html", "mode": "100644", "type": "blob", "sha": blob_sha}],
+        "tree": [
+            {"path": "index.html", "mode": "100644", "type": "blob", "sha": blob_sha},
+            {"path": "interactive_dashboard.html", "mode": "100644", "type": "blob",
+             "sha": redirect_sha},
+        ],
     })
     if r.returncode != 0:
         print(f"publish_pages: 建 tree 失败: {(r.stderr or r.stdout or '')[:200]}")
