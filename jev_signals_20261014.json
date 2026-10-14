@@ -1,6 +1,6 @@
 {
  "date": "20261014",
- "generated_at": "2026-10-14T00:13:42.272284+00:00",
+ "generated_at": "2026-10-14T01:24:29.752414+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,6 +34,23 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 0,
- "signals": []
+ "signal_count": 1,
+ "signals": [
+  {
+   "id": "581f559bb439e44b",
+   "title": "【亚洲动力煤价格升至两年高位 冬季需求叠加供应趋紧】亚洲动力煤价格升至两年高位，随着电厂为冬季囤积燃料，本已受到旺盛需求",
+   "source": "新浪财经-7x24直播",
+   "published_at": "2026-10-14T00:13:52+00:00",
+   "score": 0.961,
+   "hits": [
+    {
+     "hyp_id": "HM100",
+     "code": "I",
+     "conf": 0.97,
+     "gate": 0.28,
+     "selectivity": 5.6
+    }
+   ]
+  }
+ ]
 }
