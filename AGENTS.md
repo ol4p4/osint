@@ -107,6 +107,8 @@ AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key �
 - **主要渠道**（weight 1.1-1.2，本地+CI 双采）：金十数据、新浪财经(7x24+滚动，官方直连 API)、财联社——国内市场行情/快讯/政策的主入口
 - **辅助渠道**（scope: ci，仅 GitHub Actions 采集）：彭博(容器路由)、路透(容器路由,上游时好时坏)、AP(容器路由)、CNN/DW(官方 RSS,CI 境外直连)——补充国际市场动态与海外宏观；境内网络直连这些源全部被阻,本地拉不动是设计内行为
 - 国内源双采幂等：条目 id=md5(源名:链接:标题)，本地与 CI 采同一条 id 相同，rebuild_data 自动去重；合并优先保留 CI 带回的 cn_title 翻译版
+- **⚠️ 财联社"每天只剩 1 条"是 dedup bug，非源问题（2026-10-13 修）**。CI 每天推的 intel 里财联社-电报长期只有 1 条（本地 90+），一度被误读成"CI 采不到境内源"。实测推翻：CI 日志 `财联社-电报: 12 items`（采集正常），丢失在 `dedup_items`——RSSHub `/cls/telegraph` 路由每条 item **没有独立 `<link>`**（实测 slarker/CI 容器 20 条 url 全为空串），旧逻辑把第一条空串加入 `seen_urls` 后，其余空 url 条目全被判重复丢弃 → 每天只剩第 1 条。金十/新浪不受影响（direct 采集器用条目 id 造了唯一 URL）。修法：`url_exact` 判定加"url 非空"前提（`cloud/clean_dedup_score.py`）。**判据：去重用的 key 若是"可选字段"，必须先排除空值——空串/None 在 `in set()` 判定里会互相"撞重"。** 验证用真实数据反向对照：同批 slarker 20 条，旧版 20→1、新版 20→20。
+- **境内源可达性真相（2026-10-13 双向探针实测）**：金十/新浪官方直连 API 在**境内(本机)与境外(CI US runner)都可达**（探针 `tools/probe_cn_sources.py` 两侧各跑：金十 50/新浪7x24 100/新浪滚动 50 条，两边全 200）。AGENTS.md 旧句"境内网络直连这些源全部被阻,本地拉不动"**只对 `scope:ci` 的外国源成立，对金十/新浪/财联社这三个 direct 源不成立**——它们本地能拉，CI 也能拉。fetch_now 跳过的是 `scope:ci` 外国源，不是境内源。
 - 东亚四源（Nikkei/KoreaHerald/Yonhap/JapanTimes）曾在 east_asia_sources 与 rss_sources 完全重复，已去重并入 rss_sources
 
 ### 产物目录（`D:\osint\data\`，gitignore 不追踪）
