@@ -1,6 +1,6 @@
 {
  "date": "20261014",
- "generated_at": "2026-10-14T06:23:28.514654+00:00",
+ "generated_at": "2026-10-14T07:33:13.003121+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -37,25 +37,18 @@
  "signal_count": 3,
  "signals": [
   {
-   "id": "4cd7376fb7b76f35",
-   "title": "AI数据中心建设成本飙升，Agent商业化面临算力成本压力",
-   "source": "金十数据-快讯",
-   "published_at": "2026-10-14T06:10:23+00:00",
-   "score": 0.832,
+   "id": "574b9d61766a2524",
+   "title": "伊拉克石油部发言人里卡比表示，尽管霍尔木兹海峡危机导致航运困难，伊拉克原油出口仍大幅回升，目前已达到约每天270万桶，而",
+   "source": "新浪财经-7x24直播",
+   "published_at": "2026-10-14T06:51:24+00:00",
+   "score": 0.793,
    "hits": [
     {
-     "hyp_id": "HM102",
+     "hyp_id": "HM002",
      "code": "C",
-     "conf": 0.75,
-     "gate": 0.38,
-     "selectivity": 4.75
-    },
-    {
-     "hyp_id": "HM003",
-     "code": "C",
-     "conf": 0.62,
-     "gate": 0.37,
-     "selectivity": 4.75
+     "conf": 0.55,
+     "gate": 0.25,
+     "selectivity": 5.0
     }
    ]
   },
@@ -64,12 +57,12 @@
    "title": "中国9月出口同比增长36%，集成电路出口暴涨136%",
    "source": "华尔街见闻-全球",
    "published_at": "2026-10-14T04:07:55+00:00",
-   "score": 0.708,
+   "score": 0.696,
    "hits": [
     {
      "hyp_id": "HM102",
      "code": "I",
-     "conf": 0.65,
+     "conf": 0.66,
      "gate": 0.21,
      "selectivity": 2.62
     }
@@ -80,12 +73,12 @@
    "title": "Trump’s diesel deal with Putin, a rebuke from Brussels, and a squabble over Europe’s enormous Russian energy bill",
    "source": "Meduza-EN",
    "published_at": "2026-10-13T21:22:28+00:00",
-   "score": 0.613,
+   "score": 0.603,
    "hits": [
     {
      "hyp_id": "HM100",
      "code": "I",
-     "conf": 0.53,
+     "conf": 0.51,
      "gate": 0.15,
      "selectivity": 3.0
     }
