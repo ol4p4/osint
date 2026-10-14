@@ -1617,32 +1617,39 @@ TLS 中间人劫持，urllib 默认 IPv6 优先 → 受影响主机（Cloudflare
 
 ## 仪表盘上云（2026-10-10，GitHub Pages）
 
-**云端地址：https://ol4p4.github.io/osint/**（公开可访问，只读快照）
+**云端地址：https://ol4p4.github.io/osint/**（公开可访问，只读快照；旧路径
+`/osint/interactive_dashboard.html` 是 meta-refresh 重定向页，双路径都 200）
 
 | 项 | 事实 |
 |---|---|
-| 部署方式 | 本地生成 → `gh api` 孤儿提交 → force 移动 `gh-pages` 分支 |
-| 页面体积 | 本地 33.7MB → **云端 0.88MB**（剔除面板零引用的重字段） |
-| Pages 占用 | 0.88MB / 1GB 限额 = **0.09%**，空间充裕，不需要 Cloudflare |
+| 部署方式 | **CI 生成并发布**（2026-10-14 起）：`rebuild_data_ci.py` 现算 dashboard_data → gen_dashboard 出 0.9MB 只读版 → `gh api` 孤儿提交 → force 移动 `gh-pages` 分支 |
+| 本地通道保留 | `refresh.py` 的 `publish_pages` 步骤（非 critical）每小时仍发布，本机关机时 CI 兜底，双通道互为备份 |
+| 页面体积 | **0.9MB**（OSINT_CLOUD=1 剔除面板零引用的重字段） |
 | 分支历史 | **恒定 1 个提交**（孤儿 commit + force ref），仓库不随时间膨胀 |
-| 调度 | `refresh.py` 的 `publish_pages` 步骤（非 critical），每小时自动发布 |
+| 调度 | daily.yml 每轮（8 次/天）在 briefing 之后 Generate & publish；本地 refresh 每小时 |
 | 手动 | `python data/publish_pages.py`；`--dry` 只生成不推送 |
 
-### 为什么是「本地生成」而不是「CI 生成」（实测数据）
+### 2026-10-14 转向：CI 生成替代本地生成（实测数据）
 
-云端能翻译（CI 里有 `GEMINI_API_KEY`，研判一直正常跑），但**翻译成果从未回流仓库**：
-本地翻译写 `data/intel_*.jsonl`（gitignore），CI 只看得见仓库根 `intel_*.jsonl`。实测对比：
+此前按 10-10 实测判断「CI 生成会得到劣化看板」，前提是**翻译不上云**（仓库根 cn_title 0%）。
+翻译上云（同日落地，CI 20/20 批全经 Gemini）后前提反转，CI 生成不再劣化：
 
-| 数据 | 仓库根（云端可见） | 产物目录（本地） |
+| 数据 | 翻译上云前（10-10 实测） | 翻译上云后（10-14 实跑） |
 |---|---|---|
-| 情报条数 | 20,129 | 100,367 |
-| 有 `cn_title` | **0%** | 93% |
-| 已 AI 研判 | 4% | 55% |
-| 估值分位/失业率历史 | **无**（本地专有工具链） | 有 |
+| CI 侧翻译增量 | 无（翻译只在本地） | AI 翻译 100 + 中文预填 11,286 |
+| `data/rebuild_data_ci.py` | 不存在 | CI 现算 19,227 条/31 源/79 节点，输出结构与本地 rebuild 一致，gen_dashboard 零改动 |
+| 估值分位/失业率历史面板 | 本地专有 | 仍本地专有，CI 侧**优雅降级**（面板隐藏），6 项缺失场景已验证 |
 
-所以 CI 生成会得到一个劣化看板。改为复用本地已有链路生成云端版——全保真、
-零第二套数据管线。**代价：本机关机时云端停在最后一次成功推送**（那种情况下
-本来也拿不到新情报）。
+### publish 上云的三连坑（2026-10-14 实跑定位）
+
+| 坑 | 现象 | 教训 |
+|---|---|---|
+| sync_data.py 硬编码 `D:\osint` | CI 上 9-10 起静默失败数月 | 废弃，改 `rebuild_data_ci.py` 现算 |
+| **GITHUB_TOKEN 不自动导出** | run 38509622057：build 成功后死在 `publish: gh 不可用`——workflow env 没写 `GH_TOKEN`，runner 的 token 只在 `${{ github.token }}` 里 | **GitHub Actions 的 token 必须显式 `env: GH_TOKEN: ${{ github.token }}` 注入**；`gh auth status` 查环境变量鉴权返回非零，不能作为 CI 内 gh 可用性判据（`_gh_ok` 已修：见 GITHUB_TOKEN 环境变量即 True） |
+| 孤儿树只放 index.html | 旧路径 `interactive_dashboard.html`（书签/文档引用）404 | 树里补静态重定向页（blob sha 恒定），`push_via_gh` 每次一并放进 tree |
+
+**判据**：gh CLI 在 CI 的唯一鉴权入口是环境变量（`GH_TOKEN`/`GITHUB_TOKEN`），
+与用户级 `gh auth login` 是两套体系——探测哪个体系可用，就测哪个体系。
 
 ### 云端瘦身：剔除面板零引用的重字段（33.7MB → 0.88MB）
 
@@ -1689,12 +1696,15 @@ port 443`），而 `gh` CLI 自带路由**每次都通**。故 `publish_pages` �
 |---|---|
 | `gen_dashboard.py` | `OSINT_ROOT`/`OSINT_CLOUD`/`OSINT_HTML_OUT` 支持 + 云端瘦身 + 只读化 |
 | `fix_dashboard.py` | `OSINT_HTML_OUT` 支持（路径可配置） |
-| `data/publish_pages.py` | **新增**：生成云端版 + gh api 孤儿提交发布 |
+| `data/publish_pages.py` | 新增：生成云端版 + gh api 孤儿提交发布；10-14 补旧路径重定向页 + `_gh_ok` CI 鉴权修复 |
 | `data/refresh.py` | 接入 `publish_pages` 步骤（非 critical） |
+| `data/rebuild_data_ci.py` | **10-14 新增**：CI 侧 dashboard_data 现算（去重/清洗/聚类/统一衰减/每源配额/Top200/intel_top/假设树挂载） |
+| `data/intel_gate.py` | 10-14 修 `_is_recent` 时区错位：ISO 串带时区走 `fromisoformat`（aware 相减），旧格式保留 naive 语义——**截断字符串按 naive 解析，UTC 串被当北京时间错位 8 小时** |
+| `.github/workflows/daily.yml` | 10-14：废弃 sync_data → rebuild_data_ci；新增 Generate & publish 步骤（`GH_TOKEN: ${{ github.token }}` 显式注入）；翻译步骤接回 |
 
-**实跑验证**：18:09 轮完整跑通（宏观 19 指标 → 面板生成 → 发布 commit 5582be4c）；
-公网 `https://ol4p4.github.io/osint/` HTTP 200、19 个宏观指标（含 PPI）、249 条情报、
-79 假设节点、聊天/重建已隐藏、零控制台报错。
+**实跑验证（2026-10-14）**：CI run 38512153975 全绿——翻译 20/20 批经 Gemini、
+看板 build 0.9MB、孤儿提交推送成功；公网 `https://ol4p4.github.io/osint/` 与
+旧路径均 HTTP 200，Pages build 状态 built。本地手动复跑 publish 双路径复验一致。
 
 ---
 
