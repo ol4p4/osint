@@ -1638,7 +1638,48 @@ TLS 中间人劫持，urllib 默认 IPv6 优先 → 受影响主机（Cloudflare
 |---|---|---|
 | CI 侧翻译增量 | 无（翻译只在本地） | AI 翻译 100 + 中文预填 11,286 |
 | `data/rebuild_data_ci.py` | 不存在 | CI 现算 19,227 条/31 源/79 节点，输出结构与本地 rebuild 一致，gen_dashboard 零改动 |
-| 估值分位/失业率历史面板 | 本地专有 | 仍本地专有，CI 侧**优雅降级**（面板隐藏），6 项缺失场景已验证 |
+| 估值分位/失业率历史面板 | 本地专有 | **同日下午补齐**（见下节），四个面板云端全部非 null |
+
+### 四面板数据上云（2026-10-14 下午，CI run 38530059006 全绿验证）
+
+云端看板此前 `MACRO_DATA`/`VALUATION_DATA`/`UNRATE_DATA`/`CALIB_DATA` **恒为 null**
+（实测抓取确认）——面板代码在页面里，数据只在本地 refresh 链生成。补齐路径：
+
+| 面板 | 数据源 | 上云方式 |
+|---|---|---|
+| 宏观指标（19 个） | 新浪汇率/TradingEconomics/FRED/WorldBank | `tools/fetch_macro_indicators.py` 加 OSINT_ROOT 参数化 + daily.yml 新步骤 |
+| 失业率历史 | 财新（403，走新浪转载）+ Firecrawl 兜底 | 同上脚本 `--history`；firecrawl SDK 兜底改直调 API |
+| 估值分位 | multpl + GuruFocus（本地 curl 403） | `fetch_index_valuation.py` 新增 `--firecrawl` 直调模式 |
+| 校准面板 | 纯本地计算（读 resolutions.jsonl） | `local/calibration.py` 参数化；resolutions 现在为空→空骨架，12 月自动有数据 |
+
+**源可达性实测（CI US runner 视角，临时探针 workflow 跑完即删）**：新浪 200 /
+TradingEconomics 200 / FRED 200 / WorldBank 200 / multpl 200 / 统计局 200 / **财新 403** / GDELT 429。
+
+### Firecrawl 上云：MCP 只是包装层，底层是 REST API
+
+用户问题"firecrawl MCP 也可以上云的吧"——**可以**。`firecrawl-mcp` 是本地
+stdio 包装，底层 `api.firecrawl.dev/v2/scrape`（Bearer key）任何环境可直调。
+脚本直调后 CI 无人值守可用（此前依赖本地 agent 手动抓+喂入，是两块数据
+无法上云的根因）。
+
+| 项 | 事实 |
+|---|---|
+| key 存放 | GitHub Secrets `FIRECRAWL_API_KEY`（本地在 zcode config.json） |
+| 共享客户端 | `tools/firecrawl_client.py`（**唯一实现**）：SSRF 守卫（仅 https + 端点/目标双白名单 + IP 边界）+ 429/5xx 指数退避（2s/4s/8s）+ 读响应体进错误信息 |
+| 消费方 | fetch_index_valuation / fetch_macro_indicators 的 `_firecrawl_scrape` 均为薄封装委托 |
+| 额度消耗 | 1000/月，三页抓取约 3 credits/天，充裕 |
+
+**踩坑（当日同轮）**：首版两个 tools 各写一份 `_firecrawl_scrape`（复制粘贴），
+CI 实测估值三页全 429 而本地同刻同 key 完全正常——**同码不同因**（并发限流）。
+修法二合一：① 抽共享客户端消除副本（AGENTS.md 既有教训"副本代码是定时炸弹"）；
+② 加 429 退避重试（单次失败即放弃太脆，双 run 并发是常态）。实测退避后 CI
+三页全部抓到（1870/27/27 点），云看板 `VALUATION_DATA` 非 null。
+
+**判据**：
+- **"某工具只能本地用"的结论要拆开看**——MCP/SDK 是包装层、API 是能力层，
+  包装层绑本地不等于能力层绑本地。判断"能否上云"要穿透到能力层。
+- **单次失败即放弃的外部调用在并发场景下必挂**——限流类错误（429/5xx）
+  必须有退避重试；且错误信息要带响应体（限流 vs 配额 vs 封禁处理方式相反）。
 
 ### publish 上云的三连坑（2026-10-14 实跑定位）
 
@@ -2187,7 +2228,7 @@ Gemini 免费层 RPD=500×2 lite → 70 批/天 ≈ 8% 用量，宽裕。
 
 ---
 
-*最后更新：2026-10-14 - 翻译重新上云（三通道+中文预填，CI 实跑 20/20 成功）+ net_proxy 降级梯 + 财联社去重修复 + 看板生成/发布上云（CI 全绿，双路径 200）+ 本地预填池饥饿修复（存量 39,955 条回填，中文缺失 703→0）。*
+*最后更新：2026-10-14 - 翻译重新上云（三通道+中文预填，CI 实跑 20/20 成功）+ net_proxy 降级梯 + 财联社去重修复 + 看板生成/发布上云（CI 全绿，双路径 200）+ 本地预填池饥饿修复（存量 39,955 条回填，中文缺失 703→0）+ **四面板数据上云**（宏观/失业率/估值/校准，云端四数据全非 null）+ **Firecrawl 直调 API 上云**（共享客户端 firecrawl_client.py，SSRF+429 退避）。*
 
 
 
