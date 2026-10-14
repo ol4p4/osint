@@ -1,6 +1,6 @@
 {
  "date": "20261014",
- "generated_at": "2026-10-14T05:18:39.408895+00:00",
+ "generated_at": "2026-10-14T06:06:54.735024+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,21 +34,37 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 1,
+ "signal_count": 2,
  "signals": [
   {
-   "id": "a8b1a85011f5dce9",
-   "title": "第19届国际风能展《北京倡议》发布",
-   "source": "新浪财经-7x24直播",
-   "published_at": "2026-10-14T03:50:24+00:00",
-   "score": 0.741,
+   "id": "591def8521afda41",
+   "title": "中国9月出口同比增长36%，集成电路出口暴涨136%",
+   "source": "华尔街见闻-全球",
+   "published_at": "2026-10-14T04:07:55+00:00",
+   "score": 0.711,
+   "hits": [
+    {
+     "hyp_id": "HM102",
+     "code": "I",
+     "conf": 0.69,
+     "gate": 0.22,
+     "selectivity": 2.75
+    }
+   ]
+  },
+  {
+   "id": "40905ca6578a2f2a",
+   "title": "Trump’s diesel deal with Putin, a rebuke from Brussels, and a squabble over Europe’s enormous Russian energy bill",
+   "source": "Meduza-EN",
+   "published_at": "2026-10-13T21:22:28+00:00",
+   "score": 0.615,
    "hits": [
     {
      "hyp_id": "HM100",
-     "code": "C",
-     "conf": 0.51,
-     "gate": 0.18,
-     "selectivity": 3.6
+     "code": "I",
+     "conf": 0.52,
+     "gate": 0.15,
+     "selectivity": 2.5
     }
    ]
   }
