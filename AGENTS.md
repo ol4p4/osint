@@ -15,7 +15,7 @@
 ## 数据流全貌（接手必读）
 ```
 GitHub CI (daily.yml, 8次/天, cron 0 */3 * * *)
-  采集RSS → clean_dedup_score → translate(NVIDIA增量50条) → citizen_impact(AI研判) → daily_briefing → push 仓库
+  采集RSS → clean_dedup_score → citizen_impact(AI研判) → translate(Gemini→dots→NVIDIA+中文预填, 2026-10-14重新上云) → daily_briefing → push 仓库
   （link_intel_hyp / verify_hypotheses 已于 2026-09-12 从 CI 删除——改 data/hypotheses/ 但 git add 不含该目录，每轮成果被丢弃；假设链只跑本地）
 仓库 D:\osint\intel_YYYYMMDD.jsonl
   ↓ (计划任务 OsintRefresh 每小时跑产物目录 refresh.py)
@@ -51,10 +51,10 @@ refresh.py: git pull + 合并 CI 数据 + 可选翻译
 |------|------|------|
 | 参谋长（生成） | Mimo-v2.5-free | 生成假设/现状分析/对话追问/观点卡 |
 | 裁判（验证） | Nemotron-3.5-lightning-free | 验证判定/复盘 |
-| 翻译（CI） | openai/gpt-oss-120b | NVIDIA API 批量翻译（2026-08-30 A/B 从 llama-3.2-11b-vision 切换：llama 生产 0/18 超时，gpt-oss 18/18 一次过，质量更好） |
+| 翻译（CI） | Gemini→dots→NVIDIA 三通道 | 2026-10-14 重新上云。主 Gemini（免费层实测 RPD=500/模型×2 lite），备 dots(`dots3-note-prev`)、NVIDIA(gpt-oss-120b→20b→llama)。此前(09-04)因"CI 只有 NVIDIA 单通道跟不上"挪到本地，现通道已齐 |
 | DeepSeek | 已弃用 | 输出过于官方，无批判性 |
 
-AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key 在 config.yaml），伪造请求头见 `local/analyze.py`。**端点有白名单校验（只允许 opencode.ai），改端点要同步改 analyze.py 的校验**。NVIDIA key 只在 GitHub Secrets（`NVIDIA_API_KEY`），本地没有——本地翻译默认跳过、靠合并 CI 翻译成果。
+AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key 在 config.yaml），伪造请求头见 `local/analyze.py`。**端点有白名单校验（只允许 opencode.ai），改端点要同步改 analyze.py 的校验**。GitHub Secrets 有 GEMINI_API_KEY / DOTS_API_KEY / NVIDIA_API_KEY / OC_DESKTOP_SESSION（CI 三通道链用）；本地没有 NVIDIA key——本地翻译链是 Gemini(境内不可达自动跳过)→dots→zen 代理→OpenCode，与 CI 互补（两边都只处理无 cn_title 条目，幂等）。
 
 ## 文件结构
 
@@ -64,7 +64,7 @@ AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key �
 | `cloud/main_cloud.py` | CI 主入口：采集→去重→评分→推送 |
 | `cloud/fetch_rss.py` / `fetch_list.py` | 抓取（列表页需 cssselect） |
 | `cloud/clean_dedup_score.py` | 去重+评分 |
-| `cloud/translate.py` | NVIDIA 增量翻译（CI 用 cwd，本地可 `--dir 产物目录`；步长 5 与切片一致） |
+| `cloud/translate.py` | CI 批量翻译（2026-10-14 起三通道 Gemini→dots→NVIDIA + 中文预填；`--dir`/`--max`/`--budget`；步长 5 与本地切片一致）。⚠️ 中文预填判据与 `tools/translate_local.py` 是**副本**（`_is_chinese_text`/`_extract_cn_title`/`local_prefill_chinese`），改一处必须同步另一处 |
 | `cloud/local_sync.py` | 本地同步：git pull + 合并 CI 数据 + 可选翻译 + 日志（refresh.py 调用） |
 | `local/analyze.py` | 本地 AI 四维分析（参谋长），`_call_api` 是所有 AI 调用的底层 |
 | `local/hypothesis_engine.py` | 假设全生命周期：views 分解→假设卡→证据→验证→周报；树节点用 `deadline`，engine 节点用 `due_date` |
@@ -2090,7 +2090,67 @@ rate-limits 页只写"View your active rate limits in AI Studio"（需登录看�
 
 ---
 
-*最后更新：2026-10-13 - 宏观数据时效审计 + 失业率三修 + Gemini 配额实测与 429 退避修复。*
+## 翻译重新上云（2026-10-14）
+
+**动机**：用户问"本地运行的环节还有什么能上云"。核查发现"翻译不能上云"是
+**2026-09-04 的旧结论且从未随通道变化更新**——当时理由是"CI 只有 NVIDIA 单通道、
+50 条/4h 跟不上"，但此后 CI 已补齐 Gemini(10-05)/dots(10-12) key，
+`citizen_impact` 早用同一通道链在 CI 跑通（45/50），而 `cloud/translate.py`
+一直没接线。**架构性前提变了，代码和文档没跟上。**
+
+### 实测证据链（全在 CI 真跑，非推断）
+
+| 步骤 | 结果 |
+|---|---|
+| 探针 `probe_cloud_translate.py`（已删，记录在此） | Gemini 翻译 12/12 零失败，53.6 条/分钟 |
+| 离线单测 25 例 | parse 容错/乱序按 id 回填/预填判据/SSRF 拒绝/通道展开 全过 |
+| 本地端到端冒烟（真数据 6 条） | dots 通道 AI 4/4 + 预填 2/2，零失败 |
+| **CI 实跑（run 38499776292）** | 通道链 `gemini → note3-prev-api → integrate`；**20/20 批全成功**；`AI 翻译 100 + 预填 11286` |
+| 译文入库核验 | `intel_20261014.jsonl` cn_title 覆盖 57%（96 条带 AI 摘要）；抽检专名（索菲亚·罗赞菲尔德/蒙特卡洛拉力赛）译法准确 |
+
+### 顺手抓到的两个真实 bug（冒烟测试的价值）
+
+1. **`os` 漏导入**：重写时删了 import 但 `os.path.join` 仍在用 → 本地冒烟立刻
+   NameError。**py_compile 不查名字解析，只有真跑才暴露。**
+2. **SSRF 错误信息合并**：`scheme != https or host not in` 合成一个 raise，测 http
+   拒绝时信息说的是"非白名单域"——**错误信息要能区分失败原因**（对齐"同码不同因"）。
+
+### ⚠️ 遗留：19,195 条历史积压（本轮新发现，未处理）
+
+CI 日志 `未翻译 19195 条 -> 中文预填 11286，待 AI 翻译 7909 条`。三个含义：
+
+- **预填一次清了 11,286 条**（零成本）——印证"81% 候选本是中文"，此前 AI 额度
+  大量浪费在摘中文标题上
+- **7,909 条真英文积压**：按 `--max 100` × 8 轮/天 = 80 约 10 天消化完
+- ⚠️ **本地 translate_local 每轮从 `max_n = max(100×4,100) = 400` 的池子选**，
+  若池子被积压按时间序灌满，额度可能全花在陈旧条目上。上云后本地链建议加
+  "新鲜度优先"或调小 --max，避免与 CI 抢同一批旧条目。
+
+### 通道与配额速查（实测，勿再抄文档）
+
+Gemini 主通道走 `local.gemini_client`（含 429 换桶/退避 + 批间 4.5s 节流）；
+dots 备援 `max_tokens=12288`（推理模型截断教训）；NVIDIA 三模型降级。
+Gemini 免费层 RPD=500×2 lite → 70 批/天 ≈ 8% 用量，宽裕。
+
+### 本轮改动文件
+
+| 文件 | 改动 |
+|---|---|
+| `cloud/translate.py` | 重写为三通道链 + 中文预填（幂等、时间预算、SSRF 守卫）；修 os/scheme 两 bug |
+| `.github/workflows/daily.yml` | 翻译步骤接回（impact 之后，注入三个 key），产物 intel_2*.jsonl 本就在既有 git add 范围 |
+| `tools/probe_cn_sources.py` | **保留**：境内源可达性探针（本机/CI 双向可复测） |
+| probe_gemma* / probe_429_recovery / probe_cloud_translate + 两个临时 workflow | 已删（使命完成） |
+
+**判据（可复用）**：
+- **"能不能上云"要重新验证，别沿用历史结论**：09-04 的"不能"在当时成立，但通道
+  补齐后没人回头改代码。**架构前提过期的最坏形态是它悄悄变成真的。**
+- **副本代码是定时炸弹**：`_is_chinese_text`/`_extract_cn_title` 现在有两份
+  （cloud 与 tools 各一，已在文件表标注同步义务）——既有教训"修一处要 grep 全部消费方"。
+- **离线单测 + 端到端冒烟缺一不可**：25 例全过后真跑仍抓到 `import os` 缺失。
+
+---
+
+*最后更新：2026-10-14 - 翻译重新上云（三通道+中文预填，CI 实跑 20/20 成功）+ net_proxy 降级梯 + 财联社去重修复。*
 
 
 
