@@ -8,16 +8,33 @@ r"""calibration.py - 同类方案调研 P0-1：假设置信度校准评分（学
 Brier = reliability − resolution + uncertainty（二值结果下的恒等式）
 关键价值：区分"校准好但没分辨力"（永远报基准概率）和"分辨力好但过度自信"。
 
-用法：python local/calibration.py   → 写 data/calibration.json（gen_dashboard 校准面板读取）
+用法：python local/calibration.py   → 写 <ROOT>/data/calibration.json（gen_dashboard 校准面板读取）
 纯标准库。
+
+根目录解析（2026-10-14）：OSINT_ROOT 可覆盖（CI 指向 checkout），默认 D:\osint；
+校验规格同 gen_dashboard._resolve_root（禁 `..`、须绝对路径）。
 """
 import json
 import math
+import os
 import sys
 import time
 from pathlib import Path
 
-BASE = Path(r"D:\osint\data")
+
+def _resolve_root():
+    """解析项目根：OSINT_ROOT 显式覆盖，否则默认 D:\\osint。校验失败退回默认。"""
+    default = r"D:\osint"
+    raw = (os.environ.get("OSINT_ROOT") or "").strip()
+    if not raw:
+        return Path(default)
+    if ".." in raw.replace("\\", "/").split("/"):
+        return Path(default)
+    p = Path(raw)
+    return p if p.is_absolute() else Path(default)
+
+
+BASE = _resolve_root() / "data"
 RESOLUTIONS_FILE = BASE / "hypotheses" / "resolutions.jsonl"
 OUT_FILE = BASE / "calibration.json"
 N_BINS = 10

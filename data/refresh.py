@@ -501,29 +501,51 @@ def fetch_unemployment_history():
 
 
 def check_valuation():
-    """估值分位面板数据看护（2026-09-19 挂调度，此前孤儿脚本停在 09-03）。
-    fetch_index_valuation.py 无自主抓取能力（数据需 firecrawl MCP 抓 3 个 URL 落
-    raw_*.md 后 --fetch 喂入），这里只做两件事：
-    ① 数据陈旧 >7 天时打醒目提醒（agent/用户看到后手动 firecrawl 更新）；
-    ② 顺手跑 --calc 重算 percentile（无外部调用，秒级，保持字段一致）。
+    """估值分位面板数据看护（2026-09-19 挂调度；2026-10-14 起可自动抓取）。
+
+    2026-10-14：fetch_index_valuation 新增 --firecrawl 直调 API（替代本地
+    firecrawl MCP——那是 zcode 专有工具，CI 上不存在）。这里改为：
+    数据缺失或陈旧 >7 天 → 自动 --firecrawl 抓取；否则只跑 --calc 重算
+    percentile（无外部调用，秒级）。节流：请求抓取受 FIRECRAWL_API_KEY
+    存在与否约束（无 key 环境退回只 --calc + 提醒）。
     """
     val_file = BASE / "index_valuation.json"
-    if not val_file.exists():
-        print("valuation: index_valuation.json 不存在——需 firecrawl 抓 3 个估值页后 --fetch 喂入")
-        return False
-    try:
-        prev = json.loads(val_file.read_text(encoding="utf-8"))
-        upd = prev.get("updated_at", "")
-        m = re.search(r"(\d{4})-(\d{2})-(\d{2})", upd)
-        if m:
-            d = datetime(int(m.group(1)), int(m.group(2)), int(m.group(3)))
-            age_d = (datetime.now() - d).days
-            if age_d > 7:
-                print(f"valuation: 数据已陈旧 {age_d} 天({m.group(1)}-{m.group(2)}-{m.group(3)})——"
-                      f"请用 firecrawl 抓 multpl/gurufocus 3 个 URL 后 "
-                      f"python tools/fetch_index_valuation.py --fetch ... 更新")
-    except Exception as e:
-        print(f"valuation: 读取检查失败: {e}")
+    need_fetch = not val_file.exists()
+    age_d = None
+    if not need_fetch:
+        try:
+            prev = json.loads(val_file.read_text(encoding="utf-8"))
+            upd = prev.get("updated_at", "")
+            m = re.search(r"(\d{4})-(\d{2})-(\d{2})", upd)
+            if m:
+                d = datetime(int(m.group(1)), int(m.group(2)), int(m.group(3)))
+                age_d = (datetime.now() - d).days
+                if age_d > 7:
+                    need_fetch = True
+        except Exception as e:
+            print(f"valuation: 读取检查失败: {e}")
+
+    if need_fetch:
+        has_key = bool((os.environ.get("FIRECRAWL_API_KEY") or "").strip())
+        if has_key:
+            why = "数据缺失" if age_d is None else f"数据已陈旧 {age_d} 天"
+            print(f"valuation: {why}——自动 --firecrawl 抓取")
+            r = subprocess.run(
+                [sys.executable, str(PROJECT / "tools" / "fetch_index_valuation.py"),
+                 "--firecrawl"],
+                cwd=str(PROJECT), capture_output=True, text=True,
+                creationflags=_NO_WINDOW, timeout=300,
+            )
+            if r.stdout:
+                for line in r.stdout.strip().splitlines():
+                    print(f"valuation: {line.strip()}")
+            if r.returncode != 0:
+                print(f"valuation: --firecrawl 失败（cwd={r.returncode}）"
+                      f"{' ' + r.stderr.strip()[:150] if r.stderr else ''}")
+                return False
+            return True
+        print("valuation: 数据需更新但 FIRECRAWL_API_KEY 未设置——跳过抓取")
+
     r = subprocess.run(
         [sys.executable, str(PROJECT / "tools" / "fetch_index_valuation.py"), "--calc"],
         cwd=str(PROJECT), capture_output=True, text=True, creationflags=_NO_WINDOW
