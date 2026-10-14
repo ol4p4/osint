@@ -749,6 +749,13 @@ def run_hypothesis_chain():
         # 纯文件操作、无 AI 调用、秒级；critical=False（外部产物不阻塞节流戳）。
         ("merge-weekly", [sys.executable, str(PROJECT / "tools" / "merge_ci_weekly.py")],
          120, ("[MERGE-WEEKLY]",), False),
+        # 收编云端探针读数（2026-10-14 接入）：probe_mega 的 JEV 依赖在本地被
+        # 地域封锁（HTTP 451，10-08 起 probe_readings 停更），而 CI 上 JEV 可用。
+        # CI 侧 --cloud 只写 probe_cloud_*.json（不碰假设树），本步在本地收编：
+        # 追加进 probe_readings.json（按 at 去重幂等）+ 写节点 probe_reading 字段。
+        # 纯本地合并、无 AI 调用、秒级；critical=False（外部产物不阻塞节流戳）。
+        ("merge-probe", [sys.executable, str(PROJECT / "tools" / "merge_ci_probe.py")],
+         120, ("[MERGE-PROBE]",), False),
         # opencode-desktop session 巡检（2026-10-12 接入）：该通道复用本机桌面登录态，
         # 是 5 条腿中唯一会**静默失效**的（恒排链尾、平时不调用，过期也没人知道）。
         # 本地跑能第一时间发现"该重新注入 session 了"。退出码恒 0，非 critical。
@@ -770,6 +777,12 @@ def run_hypothesis_chain():
         # 「4 步全成才写节流戳」，JEV 一挂就每小时重跑整链、每次白等 600s
         # 被强杀（实测单日空转 6 次），而 link/verify/ach 其实早已被各自
         # 节流跳过、无事可做。**外部依赖的观测步骤不该阻塞核心链的节流。**
+        #
+        # 2026-10-14：本地 JEV 被 451 地域封锁后，probe 本地已连续多日零产出；
+        # 云端（CI）JEV 可用，已由 daily.yml 的 Probe mega signals 步骤接管
+        # （--cloud → merge-probe 收编）。本步保留为本地兜底：JEV 若解封则
+        # 双路径都写 probe_readings，靠 at 去重不重复；封锁时连续失败熔断
+        # 27s 快速退出（见 probe_mega CONSECUTIVE_FAIL_LIMIT），不再白等 600s。
         ("probe", [sys.executable, str(PROJECT / "tools" / "probe_mega.py"),
                    "--limit", "200", "--write"], 600, ("[PROBE]",), False),
     ]
