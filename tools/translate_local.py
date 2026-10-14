@@ -295,7 +295,7 @@ def translate_batch(items, api_key, deadline=None):
     return translated, failed
 
 
-def collect_unjtranslated(jsonl_files, max_n=MAX_PER_RUN):
+def collect_unjtranslated(jsonl_files, max_n=MAX_PER_RUN, full=False):
     """从 jsonl 文件收集未翻译条目，按优先级排序后取前 max_n 条。
 
     2026-10-06：排序键改为「新鲜度优先 → base_score 降序 → 时间降序」，
@@ -303,13 +303,12 @@ def collect_unjtranslated(jsonl_files, max_n=MAX_PER_RUN):
     （实测 jaccard 1.00/0.83）却因 id 不同全保留，导致 AI 对同一件事分析多遍
     （未翻译池 14~17% 是这类重复）。去重与排序的说明见 local/intel_gate.py。
     候选本身不丢弃，只是"本轮该处理谁"里同一事件只留最优先的那条代表。
-    """
-    try:
-        sys.path.insert(0, str(ROOT))
-        from local.intel_gate import select_priority_unique
-    except Exception:
-        select_priority_unique = None  # noqa: F811  模块缺失时降级为纯时间序
 
+    full=True：跳过排序+去重，返回**未截断的原始候选**。用于纯 CPU 的预填
+    （2026-10-14）——预填不选"处理谁"，是对全部条目原地补字段，不需要
+    select_priority_unique 的 O(n·去重) 开销（实测全量 46K 条要 89s，
+    裸收集只需读文件+解 JSON 的时间）。
+    """
     items = []
     for fp in jsonl_files:
         try:
@@ -335,6 +334,14 @@ def collect_unjtranslated(jsonl_files, max_n=MAX_PER_RUN):
                 "base_score": d.get("base_score"),
                 "_file": str(fp),
             })
+    if full:
+        return items
+    try:
+        sys.path.insert(0, str(ROOT))
+        from local.intel_gate import select_priority_unique
+    except Exception:
+        select_priority_unique = None  # noqa: F811  模块缺失时降级为纯时间序
+
     items.sort(key=lambda x: x.get("published_at", ""), reverse=True)
     if select_priority_unique:
         # 内部含「新鲜优先 → 分数 → 时间」排序 + 跨源去重
@@ -379,7 +386,13 @@ def write_back_to_jsonl(translated_items, jsonl_files):
                 total_written += 1
             new_lines.append(json.dumps(d, ensure_ascii=False))
         if dirty:
-            Path(fp).write_text("\n".join(new_lines) + "\n", encoding="utf-8")
+            # 原子写（2026-10-14）：预填改为全量后单轮可重写数万条，
+            # 若中途被杀（refresh 有硬超时）直接 write_text 会留下半截文件。
+            # 先写同目录临时文件再 os.replace（同盘原子），被杀时原文件完好。
+            fp_p = Path(fp)
+            tmp = fp_p.with_suffix(fp_p.suffix + ".tmp")
+            tmp.write_text("\n".join(new_lines) + "\n", encoding="utf-8")
+            os.replace(tmp, fp_p)
     return total_written
 
 
@@ -409,17 +422,22 @@ def main():
     candidates = collect_unjtranslated(jsonl_files, max_n=args.max)
     print(f"[translate_local] {len(candidates)} untranslated candidates")
 
-    # 2026-10-08：先把「本就中文」的条目就地补 cn_title（零 AI 成本），
-    # 它们不再占用翻译额度——实测原先 81% 的额度浪费在这上面（AI 只是把
-    # 中文标题摘一遍），修后同样额度可多翻约 4 倍真英文。
-    # 先在更大的池子里摘（max×4），让 AI 额度能被真英文填满；否则中文占满
-    # 候选窗口后，本轮只剩少数英文可翻，额度空转。
-    pool = collect_unjtranslated(jsonl_files, max_n=max(args.max * 4, args.max))
-    n_local = local_prefill_chinese(pool)
+    # 2026-10-14 修复池饥饿：预填必须**全量扫描**，不进 AI 额度池。
+    # 旧实现：pool = collect_unjtranslated(max×4) 后在池内预填——但排序键第 3 位
+    # 按 base_score 降序，中文条目词表命中少（p50=0.0）被系统性排到分数>0 的外语
+    # 条目之后，top400 里中文仅 6~7 条。结果：全库 4 万条中文条目（含 48h 内 775 条）
+    # 长期得不到零成本的本地预填，而 CI 侧预填是全量的（同样上云后 CI 一次预填
+    # 11,286 条），本地反而饿死。
+    # 修法：预填走 full=True 的全量候选（纯 CPU 正则，无成本、无外发、无需选谁先）；
+    # 只有真需要 AI 翻译的条目才进 max 限额池。
+    all_candidates = collect_unjtranslated(jsonl_files, full=True)
+    n_local = local_prefill_chinese(all_candidates)
     if n_local:
-        written = write_back_to_jsonl(pool, jsonl_files)
+        written = write_back_to_jsonl(all_candidates, jsonl_files)
         print(f"[translate_local] 本地摘标题 {n_local} 条（中文条目，零 AI 成本），写回 {written} 条")
-    # 只剩真需要翻译的（英文等），取前 args.max 条占用本轮额度
+
+    # AI 额度池：从全量候选中按优先级取 max 条真需翻译的（外语+混排）
+    pool = collect_unjtranslated(jsonl_files, max_n=max(args.max * 4, args.max))
     candidates = [c for c in pool if not c.get("cn_title")][:args.max]
     print(f"[translate_local] 其中需 AI 翻译 {len(candidates)} 条")
 
