@@ -120,21 +120,32 @@ jobs:
       # --cloud 模式只写独立产物 probe_cloud_YYYYMMDD.json（不碰 data/hypotheses/，
       # 该目录唯一有效写入方是本地），由本地 merge_ci_probe.py 收编。
       - name: Probe mega signals (cloud)
+<<<<<<< HEAD
+        run: |
+          cd ${{ github.workspace }}
+          python tools/probe_mega.py --dir . --limit 150 --days 3 --cloud || echo "Probe skipped"
+=======
         env:
           OSINT_ROOT: ${{ github.workspace }}
         run: |
           cd ${{ github.workspace }}
           python tools/probe_mega.py --dir . --limit 150 --days 3 --cloud
+>>>>>>> 5b8cbb639940fe9847dfea520830c5da1be991bf
 
       # 指标 AI 判定上云（2026-10-14）：云端看板的指标判定区块此前恒为
       # "未达阈值"——indicator_assessments.json 未被 git 追踪，CI 生成看板时读不到。
       # 本步骤在 CI 侧产同一文件（随 commit 带回 + 看板生成时读取）。
       # AI 通道：dots（DOTS_API_KEY）在 CI 可用；全链失败时脚本内部逐批降级。
+<<<<<<< HEAD
+      - name: Assess indicators (narrative thresholds)
+        env:
+=======
       # OSINT_ROOT 必需（2026-10-14 踩坑）：脚本 _resolve_root 未设置时回退
       # D:\osint（CI 上不存在）→ FileNotFoundError 读假设树失败。
       - name: Assess indicators (narrative thresholds)
         env:
           OSINT_ROOT: ${{ github.workspace }}
+>>>>>>> 5b8cbb639940fe9847dfea520830c5da1be991bf
           DOTS_API_KEY: ${{ secrets.DOTS_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
@@ -292,7 +303,12 @@ jobs:
           git add weekly_cloud_*.md 2>/dev/null || true
           # 探针读数 + 指标判定 (2026-10-14): 云端产物随仓库带回本地
           # (merge_ci_probe 收编探针读数；indicator_assessments 供看板合并)
-          git add probe_cloud_*.json indicator_assessments.json 2>/dev/null || true
+          # ⚠️ 两条独立 git add（2026-10-14 踩坑）：`git add a b` 里若 b 的
+          # pathspec 无匹配，整条命令 fatal、**连 a 也不暂存**（实测复现）。
+          # 首版合成一条 + `2>/dev/null || true` 把 fatal 吞了 → probe_cloud
+          # 明明生成了却没进 commit。多产物暂存必须逐条、各自兜底。
+          git add probe_cloud_*.json 2>/dev/null || true
+          git add data/indicator_assessments.json 2>/dev/null || true
           git status
           if git diff --staged --quiet; then
             echo "No changes to commit"
