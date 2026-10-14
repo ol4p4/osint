@@ -1,6 +1,6 @@
 {
  "date": "20261014",
- "generated_at": "2026-10-14T01:51:14.988888+00:00",
+ "generated_at": "2026-10-14T02:30:09.677138+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,39 +34,6 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 2,
- "signals": [
-  {
-   "id": "3e457afb5576387e",
-   "title": "【煤炭库存急剧下降，多邦寻求中央支持，印度拉响电力短缺警报】印度拉响新的警报：燃煤电厂煤炭库存大幅下降，引发大范围电力短",
-   "source": "新浪财经-7x24直播",
-   "published_at": "2026-10-14T01:11:46+00:00",
-   "score": 0.877,
-   "hits": [
-    {
-     "hyp_id": "HM100",
-     "code": "I",
-     "conf": 0.82,
-     "gate": 0.15,
-     "selectivity": 3.0
-    }
-   ]
-  },
-  {
-   "id": "40905ca6578a2f2a",
-   "title": "Trump’s diesel deal with Putin, a rebuke from Brussels, and a squabble over Europe’s enormous Russian energy bill",
-   "source": "Meduza-EN",
-   "published_at": "2026-10-13T21:22:28+00:00",
-   "score": 0.654,
-   "hits": [
-    {
-     "hyp_id": "HM100",
-     "code": "I",
-     "conf": 0.52,
-     "gate": 0.15,
-     "selectivity": 2.5
-    }
-   ]
-  }
- ]
+ "signal_count": 0,
+ "signals": []
 }
