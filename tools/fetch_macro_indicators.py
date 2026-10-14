@@ -53,8 +53,7 @@ ALLOWED_HOSTS = {
     "api.firecrawl.dev",  # Firecrawl 直调（2026-10-14）：替代 CI 上不存在的本地 MCP
 }
 
-# Firecrawl 直调（2026-10-14）：端点硬编码，目标页在白名单内（财新/新浪转载）
-_FIRECRAWL_ENDPOINT = "https://api.firecrawl.dev/v2/scrape"
+# Firecrawl 抓取目标白名单（SSRF 守卫在 tools/firecrawl_client 共享实现）
 _ALLOWED_SCRAPE_TARGETS = {
     "economy.caixin.com", "finance.sina.com.cn",
 }
@@ -118,37 +117,16 @@ def _get(url, timeout=TIMEOUT, headers=None, encoding="utf-8"):
 
 
 def _firecrawl_scrape(url, timeout=60):
-    """直调 Firecrawl REST API 抓 URL，返回 markdown。SSRF 守卫同 _get 规格。
+    """抓取单个页面，委托共享客户端 tools/firecrawl_client。
 
-    2026-10-14 新增：替代 `from firecrawl import FirecrawlApp`（CI 无该包、
-    本地 SDK 无 key 恒失败）。只依赖 urllib，端点与目标均过白名单+IP 校验。
+    2026-10-14：先替代 `from firecrawl import FirecrawlApp`（CI 无该包、
+    本地 SDK 无 key 恒失败）；同日晚二次改造——SSRF 守卫 + 429 退避重试
+    下沉到共享模块（此前本文件与 fetch_index_valuation 各一份副本）。
+    白名单在 ALLOWED_HOSTS 里声明（财新/新浪转载页）。
     """
-    ep = urlparse(_FIRECRAWL_ENDPOINT)
-    if ep.scheme != "https" or ep.hostname != "api.firecrawl.dev":
-        raise ValueError("firecrawl endpoint not allowed")
-    if not _host_is_safe(ep.hostname):
-        raise ValueError("firecrawl endpoint resolves to unsafe IP")
-    tp = urlparse(url)
-    if tp.scheme != "https" or tp.hostname not in _ALLOWED_SCRAPE_TARGETS:
-        raise ValueError(f"scrape target {tp.hostname!r} not in whitelist")
-    if not _host_is_safe(tp.hostname):
-        raise ValueError(f"scrape target {tp.hostname!r} resolves to unsafe IP")
-    api_key = (os.environ.get("FIRECRAWL_API_KEY") or "").strip()
-    if not api_key:
-        raise ValueError("FIRECRAWL_API_KEY not set")
-    body = json.dumps({
-        "url": url, "formats": ["markdown"], "onlyMainContent": True,
-    }).encode("utf-8")
-    req = Request(_FIRECRAWL_ENDPOINT, data=body, headers={
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json",
-    }, method="POST")
-    with urlopen(req, timeout=timeout) as r:
-        payload = json.loads(r.read().decode("utf-8", errors="replace"))
-    md = ((payload or {}).get("data") or {}).get("markdown") or ""
-    if not md:
-        raise ValueError("firecrawl returned empty markdown")
-    return md
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from firecrawl_client import scrape
+    return scrape(url, _ALLOWED_SCRAPE_TARGETS, timeout=timeout)
 
 
 def fetch_fred(series_id, transformation=None):
