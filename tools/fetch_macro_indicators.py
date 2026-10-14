@@ -1,11 +1,15 @@
-"""宏观关键指标抓取 - 独立数据集，写 D:\\osint\\data\\macro_indicators.json
-只跑免费、无 key 的 API：FRED (DEMO_KEY) + Frankfurter + World Bank
+"""宏观关键指标抓取 - 独立数据集，写 <ROOT>/data/macro_indicators.json
+只跑免费、无 key 的 API：FRED (DEMO_KEY) + WorldBank + TradingEconomics + 新浪
 失败项保留 stale 标记 + 上次值，不阻塞。
 
 SSRF 防护：所有 URL 在发出前过白名单 + 解析 IP 检查（拒绝 RFC1918/loopback/link-local）。
+
+根目录解析（2026-10-14）：OSINT_ROOT 可覆盖（CI 指向 checkout 目录），
+未设置退回 D:\\osint。环境变量属外部输入，先校验再用（禁 `..`、须绝对路径）。
 """
 import ipaddress
 import json
+import os
 import re
 import socket
 from pathlib import Path
@@ -13,7 +17,24 @@ from datetime import datetime, timezone
 from urllib.request import Request, urlopen
 from urllib.parse import urlparse
 
-ROOT = Path(r"D:\osint")
+
+def _resolve_root():
+    """解析项目根目录：OSINT_ROOT 显式覆盖，否则默认 D:\\osint。
+
+    同 gen_dashboard._resolve_root 的校验规格（禁 `..`、须绝对路径）；
+    校验失败退回默认根，绝不据此访问任意路径。
+    """
+    default = r"D:\osint"
+    raw = (os.environ.get("OSINT_ROOT") or "").strip()
+    if not raw:
+        return Path(default)
+    if ".." in raw.replace("\\", "/").split("/"):
+        return Path(default)
+    p = Path(raw)
+    return p if p.is_absolute() else Path(default)
+
+
+ROOT = _resolve_root()
 OUT = ROOT / "data" / "macro_indicators.json"
 TIMEOUT = 10
 
@@ -29,6 +50,13 @@ ALLOWED_HOSTS = {
     "economy.caixin.com",
     "finance.sina.com.cn",  # 财新原文被删时的转载源（2026-10-13：7 月那篇财新 404）
     "hq.sinajs.cn",   # 新浪实时汇率（2026-10-11）：境内直连、分钟级，替代 Frankfurter 的 T-1 延迟
+    "api.firecrawl.dev",  # Firecrawl 直调（2026-10-14）：替代 CI 上不存在的本地 MCP
+}
+
+# Firecrawl 直调（2026-10-14）：端点硬编码，目标页在白名单内（财新/新浪转载）
+_FIRECRAWL_ENDPOINT = "https://api.firecrawl.dev/v2/scrape"
+_ALLOWED_SCRAPE_TARGETS = {
+    "economy.caixin.com", "finance.sina.com.cn",
 }
 
 
@@ -87,6 +115,40 @@ def _get(url, timeout=TIMEOUT, headers=None, encoding="utf-8"):
             return r.read().decode(encoding)
     finally:
         socket.getaddrinfo = _orig_gai
+
+
+def _firecrawl_scrape(url, timeout=60):
+    """直调 Firecrawl REST API 抓 URL，返回 markdown。SSRF 守卫同 _get 规格。
+
+    2026-10-14 新增：替代 `from firecrawl import FirecrawlApp`（CI 无该包、
+    本地 SDK 无 key 恒失败）。只依赖 urllib，端点与目标均过白名单+IP 校验。
+    """
+    ep = urlparse(_FIRECRAWL_ENDPOINT)
+    if ep.scheme != "https" or ep.hostname != "api.firecrawl.dev":
+        raise ValueError("firecrawl endpoint not allowed")
+    if not _host_is_safe(ep.hostname):
+        raise ValueError("firecrawl endpoint resolves to unsafe IP")
+    tp = urlparse(url)
+    if tp.scheme != "https" or tp.hostname not in _ALLOWED_SCRAPE_TARGETS:
+        raise ValueError(f"scrape target {tp.hostname!r} not in whitelist")
+    if not _host_is_safe(tp.hostname):
+        raise ValueError(f"scrape target {tp.hostname!r} resolves to unsafe IP")
+    api_key = (os.environ.get("FIRECRAWL_API_KEY") or "").strip()
+    if not api_key:
+        raise ValueError("FIRECRAWL_API_KEY not set")
+    body = json.dumps({
+        "url": url, "formats": ["markdown"], "onlyMainContent": True,
+    }).encode("utf-8")
+    req = Request(_FIRECRAWL_ENDPOINT, data=body, headers={
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+    }, method="POST")
+    with urlopen(req, timeout=timeout) as r:
+        payload = json.loads(r.read().decode("utf-8", errors="replace"))
+    md = ((payload or {}).get("data") or {}).get("markdown") or ""
+    if not md:
+        raise ValueError("firecrawl returned empty markdown")
+    return md
 
 
 def fetch_fred(series_id, transformation=None):
@@ -472,15 +534,13 @@ def fetch_caixin_unrate_history(year_month_list):
             page_text = _get(article_url, timeout=15)
         except Exception:
             page_text = None
-        # 路径 2: firecrawl（有 MCP/key 时兜底；直连失败或内容不对时尝试）
+        # 路径 2: firecrawl 直调 API 兜底（2026-10-14 改）
+        # 原走 `from firecrawl import FirecrawlApp` SDK——CI 上没装该包，
+        # 且本地实测 SDK 无 key 恒失败。改为直调 REST API（只依赖 urllib），
+        # 与 fetch_index_valuation._firecrawl_scrape 同规格。
         if not page_text or ("16—24岁" not in page_text and "16-24岁" not in page_text):
             try:
-                from firecrawl import FirecrawlApp
-                app = FirecrawlApp()
-                doc = app.scrape_url(article_url, params={"formats": ["markdown"]})
-                _md = (doc or {}).get("markdown", "") or ""
-                if _md:
-                    page_text = _md
+                page_text = _firecrawl_scrape(article_url)
             except Exception:
                 pass
         if not page_text:
