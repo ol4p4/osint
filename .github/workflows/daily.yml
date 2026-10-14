@@ -81,6 +81,23 @@ jobs:
         run: |
           cd ${{ github.workspace }}
           python cloud/citizen_impact.py || echo "Impact step skipped"
+
+      # 批量翻译（2026-10-14 重新上云）：翻译 2026-09-04 因「CI 只有 NVIDIA 单通道
+      # 50条/4h 跟不上」挪到本地；此后 CI 补齐 Gemini(10-05)/dots(10-12) key，
+      # cloud/translate.py 已改造为同款三通道链 + 中文预填（零 AI 成本——实测候选里
+      # 81% 本就是中文源条目）。本地冒烟实测 dots 通道 4/4 零失败、译文质量良好；
+      # Gemini 免费层 RPD 实测 500×2（AI Studio 页），70 批/天 ≈ 8% 用量。
+      # 幂等：只处理无 cn_title 条目；本地 translate_now 每小时仍在跑，两边互补。
+      # 产物写 intel_2*.jsonl（本就在下方 commit 的 git add 范围内），随仓库带回本地。
+      - name: Translate intel (Gemini -> dots -> NVIDIA)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          DOTS_API_KEY: ${{ secrets.DOTS_API_KEY }}
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+        run: |
+          cd ${{ github.workspace }}
+          python cloud/translate.py --max 100 --budget 600 || echo "Translate step skipped"
+
       # link_intel_hyp / verify_hypotheses 已从 CI 移除 (2026-09-12):
       # 它们改 data/hypotheses/ 但 git add 列表不含该目录, 每轮成果被 checkout 丢弃,
       # 纯属无效劳动; 假设链只跑本地 (refresh.py run_hypothesis_chain, 有 AI + git 版本化)
