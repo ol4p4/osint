@@ -16,15 +16,37 @@ deadline 到期（最早 2026-12-05）才触发，导致当前已取到真实值
 AI 裁判——写入；指标级预判不足以改假设级置信度）。本工具纯展示。
 
 节流：按日（data/.assess_last_run），供 refresh.py 调用；--force 绕过。
+
+## 上云（2026-10-14）
+
+云端看板的指标判定区块此前恒显示「未达阈值」——`indicator_assessments.json`
+未被 git 追踪，CI 生成看板时读不到本地判定结果。本工具上云后 CI 侧同一日
+产出该文件，随 commit 带回 + 在看板生成时读取（产物路径同 gen_dashboard）。
+
+根目录解析：OSINT_ROOT 可覆盖（CI 指向 checkout），默认 D:\\osint。
 """
 import argparse
 import datetime
 import json
+import os
 import re
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+
+def _resolve_root():
+    """解析项目根：OSINT_ROOT 显式覆盖，否则默认 D:\\osint。校验失败退回默认。"""
+    default = r"D:\osint"
+    raw = (os.environ.get("OSINT_ROOT") or "").strip()
+    if not raw:
+        return Path(default)
+    if ".." in raw.replace("\\", "/").split("/"):
+        return Path(default)
+    p = Path(raw)
+    return p if p.is_absolute() else Path(default)
+
+
+ROOT = _resolve_root()
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "local"))
 
