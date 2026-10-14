@@ -10,7 +10,7 @@
       "source": "WorldBank",
       "assessed_at": "2026-10-14",
       "verdict": "uncertain",
-      "reason": "当前值为2025年数据，而阈值针对2030年目标，尚未到期"
+      "reason": "当前值为2025年数据，而阈值目标为2030年，尚未到期无法判断。"
     },
     {
       "hyp_id": "hyp_e2b46e32_sub3_s2",
@@ -20,7 +20,7 @@
       "source": "WorldBank",
       "assessed_at": "2026-10-14",
       "verdict": "uncertain",
-      "reason": "当前值为单点数据，无法判断居民消费率是否持续走低"
+      "reason": "当前值为2024年数据，阈值要求持续走低趋势，但无具体时间点和趋势数据。"
     },
     {
       "hyp_id": "hyp_e2b46e32_sub4_s1",
@@ -30,7 +30,7 @@
       "source": "WorldBank",
       "assessed_at": "2026-10-14",
       "verdict": "uncertain",
-      "reason": "当前值为研发支出占GDP比，未涉及半导体等领域的具体数据"
+      "reason": "当前值为总研发支出占比，阈值涉及细分领域比例，且无具体时间点，无法直接比较。"
     },
     {
       "hyp_id": "HM001",
@@ -40,7 +40,7 @@
       "source": "检索核实:日本防卫省统合幕僚监部（共同社报道）（次/年度）",
       "assessed_at": "2026-10-14",
       "verdict": "uncertain",
-      "reason": "当前值为2025年数据，而阈值针对2027年目标，尚未到期"
+      "reason": "当前值为2025年数据，阈值要求2027年较2026年增长，尚未到期无法判断。"
     },
     {
       "hyp_id": "HM001_A",
@@ -50,7 +50,7 @@
       "source": "检索核实:SIPRI 世界军费报告2025（%）",
       "assessed_at": "2026-10-14",
       "verdict": "uncertain",
-      "reason": "当前值为2025年数据，而阈值针对2027年目标，尚未到期"
+      "reason": "当前值为2025年数据，阈值要求2027年较2026年增长，尚未到期无法判断。"
     },
     {
       "hyp_id": "HM001_A",
@@ -60,7 +60,7 @@
       "source": "检索核实:日本防卫省统合幕僚监部（共同社报道）（次/年度）",
       "assessed_at": "2026-10-14",
       "verdict": "uncertain",
-      "reason": "当前值为2025年数据，而阈值针对2027年目标，尚未到期"
+      "reason": "当前值为2025年数据，阈值要求2027年较2026年增长，尚未到期无法判断。"
     },
     {
       "hyp_id": "HM003_B",
@@ -70,7 +70,7 @@
       "source": "macro_snapshot:cn_unrate",
       "assessed_at": "2026-10-14",
       "verdict": "uncertain",
-      "reason": "当前值为2026年数据，而阈值针对2027年变化，尚未到期"
+      "reason": "当前值为2026年8月数据，阈值要求2027年较2026年水平比较，尚未到期无法判断。"
     },
     {
       "hyp_id": "HM003_B",
@@ -80,7 +80,7 @@
       "source": "macro_snapshot:cn_youth_unrate",
       "assessed_at": "2026-10-14",
       "verdict": "uncertain",
-      "reason": "当前值为2026年数据，而阈值针对2027年变化，尚未到期"
+      "reason": "当前值为2026年8月数据，阈值要求2027年较2026年水平比较，尚未到期无法判断。"
     }
   ]
 }
