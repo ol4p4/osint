@@ -1,6 +1,6 @@
 {
  "date": "20261014",
- "generated_at": "2026-10-14T02:48:59.262119+00:00",
+ "generated_at": "2026-10-14T04:45:21.464134+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,6 +34,39 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 0,
- "signals": []
+ "signal_count": 2,
+ "signals": [
+  {
+   "id": "c5c9fd09ba017914",
+   "title": "沙特阿美总裁：全球原油库存逼近“危险低位”",
+   "source": "新浪财经-7x24直播",
+   "published_at": "2026-10-14T03:29:02+00:00",
+   "score": 0.927,
+   "hits": [
+    {
+     "hyp_id": "HM100",
+     "code": "I",
+     "conf": 0.73,
+     "gate": 0.16,
+     "selectivity": 2.67
+    }
+   ]
+  },
+  {
+   "id": "31058f57e0930776",
+   "title": "海关总署：前三季度我国船舶出口超3500亿元，增长24.6%",
+   "source": "36氪-快讯",
+   "published_at": "2026-10-14T03:08:43+00:00",
+   "score": 0.711,
+   "hits": [
+    {
+     "hyp_id": "HM102",
+     "code": "I",
+     "conf": 0.52,
+     "gate": 0.18,
+     "selectivity": 2.57
+    }
+   ]
+  }
+ ]
 }
