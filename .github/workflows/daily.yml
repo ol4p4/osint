@@ -114,6 +114,31 @@ jobs:
           cd ${{ github.workspace }}
           python cloud/jev_signal_scan.py --dir . --limit 100 --ach-limit 60 || echo "JEV scan skipped"
 
+      # 探针读数上云（2026-10-14）：probe_mega 依赖 JEV Noul，而本地 JEV 免费
+      # 通道被地域封锁（HTTP 451，10-08 起 probe_readings 停止更新），CI 上
+      # JEV 完全可用（同日实测扫描 100 失败 0）——本地做不了、云端能做。
+      # --cloud 模式只写独立产物 probe_cloud_YYYYMMDD.json（不碰 data/hypotheses/，
+      # 该目录唯一有效写入方是本地），由本地 merge_ci_probe.py 收编。
+      - name: Probe mega signals (cloud)
+        run: |
+          cd ${{ github.workspace }}
+          python tools/probe_mega.py --dir . --limit 150 --days 3 --cloud || echo "Probe skipped"
+
+      # 指标 AI 判定上云（2026-10-14）：云端看板的指标判定区块此前恒为
+      # "未达阈值"——indicator_assessments.json 未被 git 追踪，CI 生成看板时读不到。
+      # 本步骤在 CI 侧产同一文件（随 commit 带回 + 看板生成时读取）。
+      # AI 通道：dots（DOTS_API_KEY）在 CI 可用；全链失败时脚本内部逐批降级。
+      - name: Assess indicators (narrative thresholds)
+        env:
+          DOTS_API_KEY: ${{ secrets.DOTS_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          OC_DESKTOP_SESSION: ${{ secrets.OC_DESKTOP_SESSION }}
+        run: |
+          cd ${{ github.workspace }}
+          python tools/assess_indicators.py --force || echo "Assess skipped"
+
       # 参谋周报（2026-10-12 新增）：周报原只有本地一条路径，实测周循环会在
       # AI 通道断供时静默挂死（零 CPU/网络超 5 分钟、无声退出、周报未产出），
       # 而同日 CI 的 AI 通道是好的（Gemini 跑 citizen_impact 正常）→ 让周报兜底上云。
@@ -260,6 +285,9 @@ jobs:
           git add jev_signals_*.json jev_signals_*.md ach_diagnosis_*.json 2>/dev/null || true
           # 云端周报 (2026-10-12): 周一生成，随仓库带回本地由 tools/merge_ci_weekly.py 收编
           git add weekly_cloud_*.md 2>/dev/null || true
+          # 探针读数 + 指标判定 (2026-10-14): 云端产物随仓库带回本地
+          # (merge_ci_probe 收编探针读数；indicator_assessments 供看板合并)
+          git add probe_cloud_*.json indicator_assessments.json 2>/dev/null || true
           git status
           if git diff --staged --quiet; then
             echo "No changes to commit"
