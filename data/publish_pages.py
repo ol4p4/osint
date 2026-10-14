@@ -81,7 +81,18 @@ def _git_env():
 
 
 def _gh_ok():
-    """gh CLI 是否可用（自带路由；本机 git 直连不稳时的可靠通道）。"""
+    """gh CLI 是否可用（自带路由；本机 git 直连不稳时的可靠通道）。
+
+    2026-10-14 修 CI 误判：原实现只跑 `gh auth status`（查**用户级**登录态），
+    而 GitHub Actions runner 的 GITHUB_TOKEN 是**环境变量鉴权**——
+    `gh auth status` 对它返回非零，但 `gh api` 用它完全正常（workflow 已授
+    permissions: contents: write）。实测 CI run 38506537502：build 成功生成
+    931KB 看板后死在"gh 不可用"——探测方法与鉴权方式错配。
+    修法：环境里有 GITHUB_TOKEN（CI 场景）直接视为可用；真正的鉴权失败由
+    push_via_gh 的首个 gh api 调用自然暴露并报错。
+    """
+    if (os.environ.get("GITHUB_TOKEN") or "").strip():
+        return True
     try:
         r = subprocess.run(["gh", "auth", "status"], capture_output=True,
                            text=True, timeout=30)
