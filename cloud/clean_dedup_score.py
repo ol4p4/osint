@@ -185,7 +185,12 @@ def dedup_items(items: List[Dict], config: Dict) -> List[Dict]:
     unique_items = []
     for item in items:
         url = item.get("url", "")
-        if url_exact and url in seen_urls:
+        # 空 url 不参与 URL 去重（2026-10-13 修）。RSSHub 的 /cls/telegraph 路由
+        # 每条 item 没有独立 <link>（实测 slarker 与 CI 容器的 20 条 link 全为空串），
+        # 旧逻辑把第一条的空串加入 seen_urls 后，其余空 url 条目全被判重复丢掉——
+        # 表现为 CI 日志"财联社 12 items → 最终 1 条"（本地复现：现状 20→1，
+        # 修复后 20→20）。simhash/title 两级去重仍照常兜底真实重复。
+        if url_exact and url and url in seen_urls:
             continue
         
         content_for_hash = item.get("title", "") + " " + item.get("content", "")
@@ -195,7 +200,8 @@ def dedup_items(items: List[Dict], config: Dict) -> List[Dict]:
         if not title_dedup.add(item.get("title", ""), item["id"]):
             continue
         
-        seen_urls.add(url)
+        if url:
+            seen_urls.add(url)
         unique_items.append(item)
     
     print(f"[DEDUP] {len(items)} -> {len(unique_items)}")
