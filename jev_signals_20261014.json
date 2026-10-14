@@ -1,6 +1,6 @@
 {
  "date": "20261014",
- "generated_at": "2026-10-14T08:09:33.538682+00:00",
+ "generated_at": "2026-10-14T08:30:51.371788+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,6 +34,23 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 0,
- "signals": []
+ "signal_count": 1,
+ "signals": [
+  {
+   "id": "f1f5315e90aad13a",
+   "title": "IEA：伊朗冲突扰动供应，柴油紧缺格局或将延续至 2027 年下半年",
+   "source": "新浪财经-滚动新闻",
+   "published_at": "2026-10-14T08:12:58+00:00",
+   "score": 0.818,
+   "hits": [
+    {
+     "hyp_id": "HM100",
+     "code": "I",
+     "conf": 0.54,
+     "gate": 0.17,
+     "selectivity": 2.83
+    }
+   ]
+  }
+ ]
 }
