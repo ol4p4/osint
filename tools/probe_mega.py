@@ -27,15 +27,46 @@ r"""probe_mega.py - 探针假设的情报信号测量（2026-09-28 新增）
     python tools/probe_mega.py --write               # 把读数写入探针节点（只写 probe_reading）
 
 落盘：data/hypotheses/probe_readings.json（每次运行追加，保留历史）
+
+## 上云（2026-10-14）
+
+**动机**：本地 JEV 免费通道被地域封锁（HTTP 451，实测 2026-10-08 起因），
+probe 本地已连续多日跑不动（日志「连续多次调用失败，判定 JEV 通道不可用」，
+probe_readings 停在 10-08）；而 CI（US runner）上 JEV 完全可用（同日实测
+诊断 60 条失败 0）。功能处于"本地做不了、云端能做但没接"的状态。
+
+**架构约束**：`data/hypotheses/` 的唯一有效写入方是本地（CI 改它会被 checkout
+丢弃——历史教训）。故 CI 侧模式与 jev_signal_scan 一致：**只读假设树、
+只写独立产物**（`probe_cloud_YYYYMMDD.json`），由本地 `merge_ci_probe.py`
+收编（追加进 probe_readings.json + 可选写节点字段）。
+
+CI 侧调用：`python tools/probe_mega.py --limit 150 --cloud`（--cloud 只写独立产物，
+不碰 probe_readings.json 与假设树）。
+
+根目录解析：OSINT_ROOT 可覆盖（CI 指向 checkout），默认 D:\\osint。
 """
 import argparse
 import json
+import os
 import sys
 import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-PROJECT = Path(r"D:\osint")
+
+def _resolve_root():
+    """解析项目根：OSINT_ROOT 显式覆盖，否则默认 D:\\osint。校验失败退回默认。"""
+    default = r"D:\osint"
+    raw = (os.environ.get("OSINT_ROOT") or "").strip()
+    if not raw:
+        return Path(default)
+    if ".." in raw.replace("\\", "/").split("/"):
+        return Path(default)
+    p = Path(raw)
+    return p if p.is_absolute() else Path(default)
+
+
+PROJECT = _resolve_root()
 BASE = PROJECT / "data"
 HYP_FILE = BASE / "hypotheses" / "active_hypotheses.json"
 READINGS_FILE = BASE / "hypotheses" / "probe_readings.json"
@@ -59,18 +90,22 @@ def load_probe_nodes():
     return [n for n in nodes if n.get("level") == "mega" and n.get("status") == "active"]
 
 
-def load_intel(days=3, limit=None):
+def load_intel(days=3, limit=None, intel_dir=None):
     """近 N 天的情报（按 published_at 过滤），按 final_score 降序取前 limit 条。
 
     为什么按分数排序：探针要测的是「语料里的信号强度」，低分噪声条目
     （广告、纯行情播报）会稀释信号。取高分条目是采样，不是筛选结论——
     采样口径在报告里显式写出，保证可复核。
+
+    intel_dir: intel 文件所在目录。默认 BASE/data（本地）；CI 上传 `--dir .`
+    （仓库根，intel_2026*.jsonl 直接放那里）。
     """
     now = datetime.now(timezone.utc).replace(tzinfo=None)
     lo = (now - timedelta(days=days)).strftime("%Y-%m-%d")
     hi = now.strftime("%Y-%m-%d")
 
-    files = sorted(BASE.glob("intel_2*.jsonl"), reverse=True)[:days + 2]
+    scan_dir = Path(intel_dir) if intel_dir else BASE
+    files = sorted(scan_dir.glob("intel_2*.jsonl"), reverse=True)[:days + 2]
     seen, items = set(), []
     for f in files:
         if "raw" in f.name or "final" in f.name:
@@ -188,6 +223,10 @@ def main():
     ap.add_argument("--dry", action="store_true", help="只统计，不调 API")
     ap.add_argument("--write", action="store_true",
                     help="把读数写回探针节点的 probe_reading 字段（不写 confidence）")
+    ap.add_argument("--cloud", action="store_true",
+                    help="CI 模式：只写独立产物 probe_cloud_YYYYMMDD.json，"
+                         "不碰 probe_readings.json / 假设树（本地 merge_ci_probe 收编）")
+    ap.add_argument("--dir", default="", help="intel 文件所在目录（CI 传 . / 仓库根）")
     args = ap.parse_args()
 
     probes = load_probe_nodes()
@@ -199,7 +238,8 @@ def main():
         print(f"         {p['id']:32s} {p.get('title')}  (先验 {p.get('base_confidence')})")
 
     limit = args.limit or None
-    items, lo, hi = load_intel(days=args.days, limit=limit)
+    items, lo, hi = load_intel(days=args.days, limit=limit,
+                               intel_dir=(args.dir or None))
     print(f"[PROBE] 语料窗口 {lo} ~ {hi}，取 {len(items)} 条（按 final_score 降序）")
     if args.dry or not items:
         return
@@ -270,6 +310,23 @@ def main():
             print(f"  最强信号 gate 值: {s['strong_signals']}")
 
     # 落盘（追加式，保留历史）
+    snapshot = {
+        "at": datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
+        "window": f"{lo} ~ {hi}", "samples": len(items),
+        "gate_threshold": GATE_THRESHOLD, "strong_threshold": STRONG_THRESHOLD,
+        "stats": stats,
+    }
+
+    if args.cloud:
+        # CI 模式（2026-10-14）：只写独立产物。data/hypotheses/ 的唯一有效
+        # 写入方是本地——CI 改它会被下次 checkout 丢弃（历史教训）。本地
+        # merge_ci_probe.py 读该产物收编（追加 probe_readings + 写节点字段）。
+        day = datetime.now().strftime("%Y%m%d")
+        out = PROJECT / f"probe_cloud_{day}.json"
+        out.write_text(json.dumps(snapshot, ensure_ascii=False, indent=1), encoding="utf-8")
+        print(f"\n[PROBE] 云端产物已落盘: {out.name}（本地 merge_ci_probe 收编）")
+        return
+
     history = []
     if READINGS_FILE.exists():
         try:
@@ -278,12 +335,7 @@ def main():
                 history = []
         except Exception:
             history = []
-    history.append({
-        "at": datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
-        "window": f"{lo} ~ {hi}", "samples": len(items),
-        "gate_threshold": GATE_THRESHOLD, "strong_threshold": STRONG_THRESHOLD,
-        "stats": stats,
-    })
+    history.append(snapshot)
     READINGS_FILE.write_text(json.dumps(history, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"\n[PROBE] 读数已落盘: {READINGS_FILE}（累计 {len(history)} 次）")
 
