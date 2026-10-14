@@ -1,6 +1,6 @@
 {
  "date": "20261014",
- "generated_at": "2026-10-14T07:52:17.208040+00:00",
+ "generated_at": "2026-10-14T08:09:33.538682+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,23 +34,6 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 1,
- "signals": [
-  {
-   "id": "591def8521afda41",
-   "title": "中国9月出口同比增长36%，集成电路出口暴涨136%",
-   "source": "华尔街见闻-全球",
-   "published_at": "2026-10-14T04:07:55+00:00",
-   "score": 0.693,
-   "hits": [
-    {
-     "hyp_id": "HM102",
-     "code": "I",
-     "conf": 0.67,
-     "gate": 0.22,
-     "selectivity": 2.75
-    }
-   ]
-  }
- ]
+ "signal_count": 0,
+ "signals": []
 }
