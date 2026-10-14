@@ -1,6 +1,6 @@
 {
  "date": "20261014",
- "generated_at": "2026-10-14T08:30:51.371788+00:00",
+ "generated_at": "2026-10-14T08:55:34.072818+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,21 +34,37 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 1,
+ "signal_count": 2,
  "signals": [
   {
    "id": "f1f5315e90aad13a",
    "title": "IEA：伊朗冲突扰动供应，柴油紧缺格局或将延续至 2027 年下半年",
    "source": "新浪财经-滚动新闻",
    "published_at": "2026-10-14T08:12:58+00:00",
-   "score": 0.818,
+   "score": 0.814,
    "hits": [
     {
      "hyp_id": "HM100",
      "code": "I",
-     "conf": 0.54,
-     "gate": 0.17,
-     "selectivity": 2.83
+     "conf": 0.51,
+     "gate": 0.16,
+     "selectivity": 2.67
+    }
+   ]
+  },
+  {
+   "id": "40905ca6578a2f2a",
+   "title": "Trump’s diesel deal with Putin, a rebuke from Brussels, and a squabble over Europe’s enormous Russian energy bill",
+   "source": "Meduza-EN",
+   "published_at": "2026-10-13T21:22:28+00:00",
+   "score": 0.591,
+   "hits": [
+    {
+     "hyp_id": "HM100",
+     "code": "I",
+     "conf": 0.51,
+     "gate": 0.15,
+     "selectivity": 3.0
     }
    ]
   }
