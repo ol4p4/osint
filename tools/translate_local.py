@@ -352,17 +352,26 @@ def collect_unjtranslated(jsonl_files, max_n=MAX_PER_RUN, full=False):
 def write_back_to_jsonl(translated_items, jsonl_files):
     """把翻译结果 (cn_title/cn_summary/impact/language=cn) 写回原 jsonl 文件。
     按 id 匹配, 避免全量重写。
+
+    **只写该条目实际携带的字段**（2026-10-14 修覆盖损伤）：旧实现无条件写
+    cn_summary/impact（缺失时用空串），而预填条目根本没有这两个字段——
+    写回即把它们覆盖空。旧版池内预填每轮只伤几条，全量预填后实测一次
+    清空了 **2,398 条已有研判产物（dims/graduate_impact）条目的 impact**。
+    修法：更新字典只包含值非空的字段；impact/cn_summary 为空则不动原值。
     """
-    # 建 id -> {cn_title,cn_summary,impact,language} 映射
+    # 建 id -> {非空字段} 映射（只含实际有新值的键）
     upd = {}
     for it in translated_items:
-        if it.get("id") and it.get("cn_title"):
-            upd[it["id"]] = {
-                "cn_title": it["cn_title"],
-                "cn_summary": it.get("cn_summary", ""),
-                "impact": it.get("impact", ""),
-                "language": "cn",
-            }
+        if not (it.get("id") and it.get("cn_title")):
+            continue
+        fields = {"cn_title": it["cn_title"], "language": "cn"}
+        # 这两个字段仅在有真值时才写——预填条目没有它们，不能拿空串覆盖
+        # 下游（研判/渲染）写入的结果
+        if (it.get("cn_summary") or "").strip():
+            fields["cn_summary"] = it["cn_summary"]
+        if (it.get("impact") or "").strip():
+            fields["impact"] = it["impact"]
+        upd[it["id"]] = fields
     if not upd:
         return 0
     total_written = 0
