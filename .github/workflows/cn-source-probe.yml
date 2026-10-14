@@ -1,0 +1,39 @@
+name: CN source probe (one-shot)
+
+# 一次性：从 CI（US runner）跑 tools/probe_cn_sources.py，对照境内(本机)与
+# 境外(US)对金十/新浪/财联社的可达性。并复刻 daily.yml 的 RSSHub 容器自起，
+# 测 CI 容器采 /cls/telegraph 的真实产出——本机实测财联社在 CI 侧每天仅 1 条，
+# 疑似路由/后端问题，需定位。
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start RSSHub (same as daily.yml)
+        run: |
+          docker rm -f rsshub 2>/dev/null || true
+          docker run -d --name rsshub -p 1200:1200 diygod/rsshub:latest
+          timeout 90 bash -c 'until curl -s -o /dev/null http://localhost:1200/healthz; do sleep 3; done' || echo "RSSHub slow start, continue anyway"
+          curl -s -o /dev/null -w "RSSHub healthz: %{http_code}\n" http://localhost:1200/healthz || true
+
+      - name: Probe CN sources (US perspective)
+        run: |
+          python tools/probe_cn_sources.py ci
+
+      # 深挖财联社路由：容器内直接请求 + 镜像对比 + 后端直连
+      - name: Deep-dive cls route
+        run: |
+          echo "=== CI 容器 /cls/telegraph ==="
+          curl -s --max-time 30 http://localhost:1200/cls/telegraph | head -c 400; echo
+          echo "=== item 计数 ==="
+          curl -s --max-time 30 http://localhost:1200/cls/telegraph | grep -c "<item>" || echo 0
+          echo "=== 容器日志尾部（RSSHub 自身报错会在这） ==="
+          docker logs rsshub 2>&1 | tail -25
