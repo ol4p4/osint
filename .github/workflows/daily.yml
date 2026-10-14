@@ -155,8 +155,41 @@ jobs:
       - name: Sync dashboard data
         run: |
           cd ${{ github.workspace }}
-          python sync_data.py || echo "Sync step skipped"
-      
+          # 2026-10-14: sync_data.py 硬编码 D:\osint\data\（本地路径），CI 上一直静默
+          # 跳过。改为 rebuild_data_ci.py 从本仓库 intel_2*.jsonl 现算 dashboard_data
+          # （精简版：去重/清洗/聚类/统一衰减/每源配额/Top200/intel_top/假设树挂载；
+          #  省略本地画像保底带与存量去饱和）。产物写进 checkout 的 data/（gitignore
+          # 只挡本地，CI 工作区可写），供下一步看板生成读取。
+          python data/rebuild_data_ci.py --dir . --hyp data/hypotheses/active_hypotheses.json \
+            --out data/dashboard_data.json || echo "Rebuild-CI step skipped"
+
+      # 看板生成 + 发布 gh-pages（2026-10-14 上云）。本机关机时云端看板不再停更。
+      # 数据完整性：intel/假设/宏观/失业率/ACH 均随 git 可得；仅估值面板
+      # （本地 firecrawl 抓的 raw md）CI 没有 → 面板优雅降级为隐藏（实测验证）。
+      # 复用 publish_pages 的 build()（OSINT_CLOUD 瘦身：剔 evidence_log/ACH evidence，
+      # 33MB → <1MB）与 push_via_gh()（孤儿提交覆盖 gh-pages，历史恒 1 提交）。
+      - name: Generate & publish dashboard
+        env:
+          OSINT_ROOT: ${{ github.workspace }}
+          OSINT_CLOUD: "1"
+        run: |
+          cd ${{ github.workspace }}
+          python - <<'PYEOF'
+          import sys
+          sys.path.insert(0, "data")
+          # 复用 publish_pages：build() 读 OSINT_CLOUD/OSINT_HTML_OUT 生成 dist/index.html，
+          # push_via_gh() 用 gh api 推孤儿提交（gh 在 CI 必可用）。
+          from publish_pages import build, push_via_gh, _gh_ok
+          idx = build()
+          if not idx:
+              print("publish: build 失败"); sys.exit(1)
+          if not _gh_ok():
+              print("publish: gh 不可用"); sys.exit(1)
+          ok = push_via_gh(idx)
+          sys.exit(0 if ok else 1)
+          PYEOF
+          echo "publish rc=$?"
+
       - uses: actions/upload-artifact@v4
         with:
           name: intel-daily

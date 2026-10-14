@@ -51,14 +51,42 @@ def _score(item):
 
 
 def _is_recent(item, now):
-    """条目是否落在新鲜度窗口内。时间戳无法解析时视为不新鲜（排后但不丢）。"""
+    """条目是否落在新鲜度窗口内。时间戳无法解析时视为不新鲜（排后但不丢）。
+
+    2026-10-14 修 8 小时错位：真实 jsonl 的 published_at 是 **UTC ISO 串**
+    （如 `2026-10-14T02:29:36+00:00`），旧实现截 16 字符按 naive 解析、与
+    `datetime.now()`（本地 UTC+8 naive）相减——**UTC 时间被当北京时间解读，
+    相当于把每条的时间往未来推了 8 小时**。后果：
+      · 56~72h 窗口边缘的条目被误判"陈旧"（实际 64h 的被判 72h+）；
+      · 反向：8~0h 内的 judged"更新鲜"无害，但窗口整体右移 8h。
+    积压场景（历史池 7909 条）实测放大了它的可见度：400 名额中陈旧 127 个
+    （纯新鲜补位数学上限 100）。修法：ISO 串优先 `fromisoformat`（保留时区，
+    aware 与 aware 相减）；无法解析的旧格式仍走 strptime naive 路径（源多为
+    北京时间字符串，与本地 naive 相减语义正确）。
+    """
     ts = str(item.get("published_at") or "")
     if not ts:
         return False
-    for fmt in ("%Y-%m-%d %H:%M", "%Y-%m-%dT%H:%M", "%Y-%m-%d"):
+    # 路径 1：ISO 格式（含时区）——CI/云端条目全是这种
+    if "T" in ts[:11] or (len(ts) > 10 and ts[10] in " T"):
+        try:
+            dt = datetime.fromisoformat(ts[:26])   # 截到微秒内，容 'Z' 之外的变体
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)  # 无时区标注的 ISO 串按 UTC（源均为 UTC）
+            _now = now or datetime.now(timezone.utc)
+            if _now.tzinfo is None:
+                _now = _now.astimezone()               # naive now（默认 now()）按本地时区转 aware
+            return (_now - dt).total_seconds() <= RECENCY_WINDOW_H * 3600
+        except ValueError:
+            pass
+    # 路径 2：旧格式（"2026-10-14 09:01" 等，源站北京时间）——按 naive 本地语义
+    for fmt in ("%Y-%m-%d %H:%M", "%Y-%m-%d"):
         try:
             dt = datetime.strptime(ts[:len(datetime.now().strftime(fmt))], fmt)
-            return (now - dt).total_seconds() <= RECENCY_WINDOW_H * 3600
+            _now = now or datetime.now()
+            if _now.tzinfo is not None:
+                _now = _now.astimezone().replace(tzinfo=None)
+            return (_now - dt).total_seconds() <= RECENCY_WINDOW_H * 3600
         except ValueError:
             continue
     return False

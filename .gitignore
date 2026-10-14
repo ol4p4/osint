@@ -8,6 +8,7 @@ nbs_cache.json
 # data 目录：忽略所有产物数据，仅保留活跃入口脚本受版本控制
 data/*
 !data/refresh.py
+!data/rebuild_data_ci.py
 !data/daily_run.ps1
 !data/serve.py
 !data/publish_pages.py
