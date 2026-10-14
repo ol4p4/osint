@@ -1,7 +1,8 @@
 # JEV 信号扫描 - 20261014
 
-扫描 100 条 / 失败 0 条 / 命中信号 1 条（通道 JEV: free(jev-1.13-free)）
+扫描 100 条 / 失败 0 条 / 命中信号 2 条（通道 JEV: free(jev-1.13-free)）
 
-## HM100 全球能源转型加速导致传统能源需求骤降（1 条）
+## HM100 全球能源转型加速导致传统能源需求骤降（2 条）
 
-- `I` gate=0.28 → HM100(0.97) ｜ 【亚洲动力煤价格升至两年高位 冬季需求叠加供应趋紧】亚洲动力煤价格升至两年高位，随着电厂为冬季囤积燃料，本已受到旺盛需求
+- `I` gate=0.15 → HM100(0.82) ｜ 【煤炭库存急剧下降，多邦寻求中央支持，印度拉响电力短缺警报】印度拉响新的警报：燃煤电厂煤炭库存大幅下降，引发大范围电力短
+- `I` gate=0.15 → HM100(0.52) ｜ Trump’s diesel deal with Putin, a rebuke from Brussels, and a squabble over Europe’s enormous Russian energy bill
