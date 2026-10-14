@@ -152,6 +152,43 @@ jobs:
           cd ${{ github.workspace }}
           python daily_briefing.py || echo "Briefing step skipped"
       
+      # 宏观/估值/失业率三个面板数据（2026-10-14 上云）。此前只在本地 refresh
+      # 抓取，云端看板 MACRO_DATA/VALUATION_DATA/UNRATE_DATA 恒为 null。
+      # 源可达性已实测（CI runner 视角）：新浪汇率 200 / TradingEconomics 200 /
+      # FRED 200 / WorldBank 200 / multpl 200 / 统计局 200；财新原文 403 走
+      # 新浪转载 + Firecrawl 兜底。三步骤任一失败不阻塞（|| echo skip）。
+      - name: Fetch macro indicators
+        env:
+          OSINT_ROOT: ${{ github.workspace }}
+        run: |
+          cd ${{ github.workspace }}
+          python tools/fetch_macro_indicators.py || echo "Macro step skipped"
+
+      - name: Fetch unemployment history
+        env:
+          OSINT_ROOT: ${{ github.workspace }}
+          FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
+        run: |
+          cd ${{ github.workspace }}
+          python tools/fetch_macro_indicators.py --history || echo "Unrate history step skipped"
+
+      - name: Fetch index valuation (firecrawl direct)
+        env:
+          OSINT_ROOT: ${{ github.workspace }}
+          FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
+        run: |
+          cd ${{ github.workspace }}
+          python tools/fetch_index_valuation.py --firecrawl || echo "Valuation step skipped"
+
+      # 校准面板：resolutions.jsonl 是假设验证产物（首个 2026-12 到期），
+      # 当前为空 → 输出空骨架（面板显示"暂无已验证假设"），12 月后自动有数据。
+      - name: Calibration scores
+        env:
+          OSINT_ROOT: ${{ github.workspace }}
+        run: |
+          cd ${{ github.workspace }}
+          python local/calibration.py || echo "Calibration step skipped"
+
       - name: Sync dashboard data
         run: |
           cd ${{ github.workspace }}
