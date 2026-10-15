@@ -1,6 +1,6 @@
 {
  "date": "20261015",
- "generated_at": "2026-10-15T03:43:39.069034+00:00",
+ "generated_at": "2026-10-15T11:07:29.787610+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,23 +34,6 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 1,
- "signals": [
-  {
-   "id": "d116c862bc0bb14f",
-   "title": "人工智能热潮风险转移资本，影响澳大利亚可再生能源发展",
-   "source": "金十数据-快讯",
-   "published_at": "2026-10-15T03:26:48+00:00",
-   "score": 0.939,
-   "hits": [
-    {
-     "hyp_id": "HM100",
-     "code": "I",
-     "conf": 0.6,
-     "gate": 0.15,
-     "selectivity": 2.5
-    }
-   ]
-  }
- ]
+ "signal_count": 0,
+ "signals": []
 }
