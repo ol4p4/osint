@@ -1,6 +1,6 @@
 {
  "date": "20261016",
- "generated_at": "2026-10-16T11:10:00.545839+00:00",
+ "generated_at": "2026-10-16T16:37:40.724642+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,39 +34,6 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 2,
- "signals": [
-  {
-   "id": "41e57dbd69ab90c7",
-   "title": "商务部、科技部拟修订《中国禁止出口限制出口技术目录》",
-   "source": "华尔街见闻-全球",
-   "published_at": "2026-10-16T08:17:43+00:00",
-   "score": 0.737,
-   "hits": [
-    {
-     "hyp_id": "HM102",
-     "code": "C",
-     "conf": 0.48,
-     "gate": 0.34,
-     "selectivity": 3.78
-    }
-   ]
-  },
-  {
-   "id": "e3cd458d6d5ec4ff",
-   "title": "两部门：拟禁止、限制出口人工智能、生物医药、光伏三个领域40项技术",
-   "source": "华尔街见闻-快讯",
-   "published_at": "2026-10-16T07:53:20+00:00",
-   "score": 0.703,
-   "hits": [
-    {
-     "hyp_id": "HM102",
-     "code": "C",
-     "conf": 0.49,
-     "gate": 0.43,
-     "selectivity": 3.91
-    }
-   ]
-  }
- ]
+ "signal_count": 0,
+ "signals": []
 }
