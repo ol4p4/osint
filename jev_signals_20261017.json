@@ -1,6 +1,6 @@
 {
  "date": "20261017",
- "generated_at": "2026-10-17T15:15:07.556820+00:00",
+ "generated_at": "2026-10-17T20:24:25.077242+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -32,8 +32,8 @@
    "title": "生物安全事件升级引发跨境防控收紧"
   }
  ],
- "scanned": 100,
- "failed": 0,
+ "scanned": 0,
+ "failed": 100,
  "signal_count": 0,
  "signals": []
 }
