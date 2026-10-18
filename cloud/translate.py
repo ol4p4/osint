@@ -52,9 +52,13 @@ NVIDIA_BASE = "https://integrate.api.nvidia.com/v1"
 OPENAI_HOSTS = {"note3-prev-api.askdiandian.com", "integrate.api.nvidia.com"}
 
 # NVIDIA 翻译模型降级链（2026-08-30 bench 实测可用，按速度/质量排序）
+# 2026-10-18 新增 z-ai/glm-5.3-flash：GLM 血统中文质量好（glm-5.3 已是 analyze 主笔模型），
+# flash 为其快速变体；插在 llama-3.2-11b 之前（后者高峰期 60s 超时，保留作末位兜底）。
+# 位次与可用性待 cloud/model_bench.py 实测复核（/models 列表非权威，AGENTS.md 判据）。
 MODEL_CHAIN = [
     "openai/gpt-oss-120b",
     "openai/gpt-oss-20b",
+    "z-ai/glm-5.3-flash",
     "meta/llama-3.2-11b-vision-instruct",
 ]
 BATCH_SIZE = 5

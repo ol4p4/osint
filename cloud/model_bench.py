@@ -19,14 +19,16 @@ AI_ALLOWED_HOST = "integrate.api.nvidia.com"
 CANDIDATES = [
     "openai/gpt-oss-120b",
     "openai/gpt-oss-20b",
+    "z-ai/glm-5.3-flash",
     "meta/llama-3.2-11b-vision-instruct",
     "mistralai/mistral-7b-instruct-v0.3",
     "nv-mistralai/mistral-nemo-12b-instruct",
+    # 2026-10-18 修正 org 前缀：/models 实列为 nvidia/（原 mistralai/ 恒 404）
     "nvidia/mistral-nemo-minitron-8b-8k-instruct",
     "google/gemma-3-4b-it",
     "google/gemma-3-12b-it",
     "nvidia/llama-3.1-nemotron-51b-instruct",
-    "mistralai/mistral-nemotron",
+    # mistralai/mistral-nemotron 已移除：/models 实列无此模型（死候选）
 ]
 
 PROMPT = ('Translate the news item to Chinese. Output JSON: '
