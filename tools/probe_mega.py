@@ -260,27 +260,58 @@ def main():
     # 「4 步全成才写节流戳」的设计，下一小时又重来一遍，单日空转 6 次。
     # 与 analyze.py 的 CONSECUTIVE_FAIL_LIMIT 同款判据：连续多次无有效产出
     # 即判定通道不可用，快速失败退出，把时间留给下轮调度。
+    #
+    # 429 区分（2026-10-14 修）：上云首轮实测 150 条跑完 52 条后 JEV free 通道
+    # 返回 HTTP 429 FreeUsageLimitError（免费额度限流），熔断逻辑把它当"通道
+    # 不可用"整轮放弃——但 429 是**暂时性限流**，退避后通常恢复；451/连接类
+    # 才是真不可用。判据（同项目"同码不同因"规则）：
+    #   429 → 指数退避重试（不计数熔断），本文件 RETRY 上限内继续；
+    #   其他异常 → 计入连续失败熔断（451/超时/协议错误=通道问题）。
     CONSECUTIVE_FAIL_LIMIT = 3
+    RATE_LIMIT_RETRIES = 3          # 单条 429 最多退避重试次数
+    RATE_LIMIT_BACKOFF = (5, 15, 30)  # 退避秒数（免费层限流通常是分钟级窗口）
     consecutive_fail = 0
+    rate_limited = 0
     for i, it in enumerate(items, 1):
         text = (it.get("cn_title") or it.get("title") or "")[:300]
         if not text:
             continue
-        try:
-            d = jev.systemone(text, questions, timeout=60)
-        except Exception as ex:
-            consecutive_fail += 1
-            print(f"[PROBE] {i}/{len(items)} 调用失败（连续 {consecutive_fail}/"
-                  f"{CONSECUTIVE_FAIL_LIMIT}）: {str(ex)[:80]}")
+        d = None
+        for attempt in range(RATE_LIMIT_RETRIES + 1):
+            try:
+                d = jev.systemone(text, questions, timeout=60)
+                break
+            except Exception as ex:
+                es = str(ex)
+                is_429 = "429" in es or "FreeUsageLimit" in es or "rate" in es.lower()
+                if is_429 and attempt < RATE_LIMIT_RETRIES:
+                    wait = RATE_LIMIT_BACKOFF[min(attempt, len(RATE_LIMIT_BACKOFF) - 1)]
+                    rate_limited += 1
+                    print(f"[PROBE] {i}/{len(items)} 429 限流，退避 {wait}s 重试"
+                          f"（{attempt + 1}/{RATE_LIMIT_RETRIES}）")
+                    time.sleep(wait)
+                    continue
+                consecutive_fail += 1
+                print(f"[PROBE] {i}/{len(items)} 调用失败（连续 {consecutive_fail}/"
+                      f"{CONSECUTIVE_FAIL_LIMIT}）: {es[:80]}")
+                if consecutive_fail >= CONSECUTIVE_FAIL_LIMIT:
+                    if readings:
+                        print(f"[PROBE] 连续多次调用失败，提前退出（已收集 "
+                              f"{len(readings)} 条读数，本次仍落盘）")
+                        break
+                    print("[PROBE] 连续多次调用失败，判定 JEV 通道不可用，提前退出"
+                          "（无有效读数，不写盘）")
+                    return
+                break
+        if d is None:
+            # 熔断已 break 外层的情形
             if consecutive_fail >= CONSECUTIVE_FAIL_LIMIT:
-                print("[PROBE] 连续多次调用失败，判定 JEV 通道不可用，提前退出"
-                      "（保留已收集读数，不写盘）")
-                return
+                break
             continue
         consecutive_fail = 0
         answers = d.get("answers") or {}
         for p in probes:
-            a = answers.get("p_" + p["id"]) or {}
+            a = answers.get("p_" + str(p["id"])) or {}
             gate = float(a.get("noul", 0.0))
             readings.append({
                 "probe_id": p["id"], "gate": round(gate, 4),
@@ -290,6 +321,7 @@ def main():
         if i % 50 == 0:
             el = time.time() - t0
             print(f"[PROBE] {i}/{len(items)} 条，{el:.0f}s，约 {el / i:.2f}s/条")
+    print(f"[PROBE] 采样完成: {len(readings)} 条读数（429 退避 {rate_limited} 次）")
 
     stats = aggregate(readings)
     print("\n" + "=" * 62)

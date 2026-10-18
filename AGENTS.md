@@ -208,15 +208,66 @@ python -c "..." # 见 daily_run.ps1 Step3，或等 OsintWeekly 周一 09:30 自�
 
 | 项 | 说明 |
 |---|---|
-| 输入 | 近 3 天情报（按 final_score 降序采样，默认取 200 条） |
+| 输入 | 近 3 天情报（按 final_score 降序采样，默认取 200 条；CI 传 `--dir . --limit 150`） |
 | 方法 | JEV Noul 逐条问「这条情报是否**实质推动**该情景向发生靠近」，问题里带节点自己的定义 |
 | 输出 | `signal_ratio`（gate ≥ 0.20 占比，判读用）/ `mention_ratio`（≥0.08 宽口径）/ 最强信号 gate 值 |
 | 落盘 | `data/hypotheses/probe_readings.json`（追加式保留历史）+ 节点 `probe_reading` 字段 |
 | **不写 confidence** | 探针概率是用户的问题，工具只提供客观输入；`confidence` 保持先验 |
-| 调度 | refresh.py `run_hypothesis_chain` 第 4 步（20h 节流），实测 0.88s/条、200 条约 3 分钟、成本 ~$0.005 |
-| 手动 | `python tools/probe_mega.py --limit 200 --write`；`--dry` 只看采样 |
+| 调度 | **云端主跑**（2026-10-14 起）：daily.yml `Probe mega signals` 步骤（`--dir . --limit 150 --cloud`）→ `probe_cloud_*.json` 随 commit 带回 → 本地 `merge_ci_probe.py` 收编（refresh hyp_chain `merge-probe` 步）。本地 probe 步保留兜底 |
+| 手动 | `python tools/probe_mega.py --limit 200 --write`；`--dry` 只看采样；`--cloud` 只写独立产物 |
 
 **当前读数**（2026-09-28，300 条样本）：三战 signal 6.67% / 经济危机 7.67%——语料里约 7% 的条目在实质推进这两个议题，与先验（0.05/0.08）同量级，暂无异常信号。
+
+### 探针上云（2026-10-14）：本地做不了、云端能做
+
+**动机**：本地 JEV 免费通道被地域封锁（HTTP 451，实测 2026-10-08 起），
+probe 本地连续多日跑不动（`probe_readings.json` 停在 10-08）；而 CI（US runner）
+同日实测 JEV 完全可用（「扫描 100 失败 0」）。功能处于"本地做不了、云端能做
+但没接"的状态。
+
+| 层 | 实现 |
+|---|---|
+| CI 产出 | `probe_mega.py --cloud`：只写 `probe_cloud_YYYYMMDD.json`，**不碰 data/hypotheses/**（该目录唯一有效写入方是本地） |
+| 本地收编 | `tools/merge_ci_probe.py`：按 `at` 去重（幂等）追加 probe_readings + 写节点 `probe_reading`（标 `measured_source: ci`，**不写 confidence**，实测 0.05/0.08/0.7/0.65 保持先验） |
+| 双路径 | 本地 JEV 若解封，两条路径都写 probe_readings，靠 `at` 去重不重复 |
+
+**实测（run 38542458640 全绿）**：CI 采 76 条有效样本（429 退避 3 次后耗尽额度
+提前收尾），产物 1144B 随 commit 到远端，本地收编写入 4 探针节点——三战 7.89% /
+经济危机 10.53% / 两个元命题 0%（与 9-28 结论同量级）。
+
+### 本轮踩坑三则（2026-10-14，全部实测复现）
+
+| 坑 | 现象 | 教训 |
+|---|---|---|
+| **两个新步骤都缺 `OSINT_ROOT`** | probe/assess 步骤 `env:` 没写 OSINT_ROOT → `_resolve_root()` 回退 `D:\osint`（CI 上不存在）→ `FileNotFoundError` 读假设树失败。而 `\|\| echo "skipped"` 把真失败掩盖成 success | **上云脚本的 OSINT_ROOT 是必需项**；`\|\| echo skip` 只适用于"外部依赖可缺"的步骤，**真异常不该被掩盖**（已从两步骤移除该兜底） |
+| **429 限流被熔断当通道死亡** | 探针免费层跑到第 53 条返 429（FreeUsageLimit），旧熔断逻辑判定"通道不可用"整轮放弃、已收集读数全丢 | **限流（429）≠ 通道死亡（451/连接类）**——429 走指数退避重试（5/15/30s），其他异常才计数熔断；且熔断时**保留已收集读数落盘**（实测救回 516 条） |
+| **`git add a b` 一条 fatal 连累全部** | `git add probe_cloud_*.json indicator_assessments.json` 中后者路径不存在（实际在 data/）→ 整条 fatal，**连存在的 probe_cloud 也没暂存**；`2>/dev/null \|\| true` 把 fatal 吞掉，Changes 列表静默缺失 | **多产物暂存必须逐条独立 `git add`**；`git add` 的 pathspec 匹配失败是**整条命令**级别，不是逐文件降级 |
+
+**判据**：**「功能失效」与「环境封锁」要分开归因**——probe 本地失效不是代码坏了，是 JEV 对本机 451；同一时刻 CI 上同一功能完好。本地跑不动的外部依赖型步骤，先查云端能否跑，而不是先改代码。这与 jev_signal_scan / merge_ci_diagnosis / weekly_report_cloud / merge_ci_weekly 是同一套"云端产出 + 本地收编"架构。
+
+## 指标 AI 判定上云（2026-10-14）
+
+云端看板的指标判定区块此前**恒显示「未达阈值」**——实测 `indicator_assessments.json`
+未被 git 追踪（`git ls-files` 计数 0），CI 生成看板时读不到本地判定结果。
+
+| 项 | 实现 |
+|---|---|
+| 参数化 | `assess_indicators` 加 `_resolve_root()`（OSINT_ROOT 可覆盖） |
+| CI 步骤 | daily.yml `Assess indicators`（`--force`：日节流在 CI 上每次 run 都是新环境，须绕过）+ 全 AI 通道 secrets |
+| 产物 | `data/indicator_assessments.json` 加入 gitignore 白名单（`!data/indicator_assessments.json`）+ 独立 `git add` 随 commit 带回 |
+| 实测 | CI 判定 8 项（远端假设树的 8 个 needs_ai 指标均有 current_value）；产物 3389B 到远端；云端看板读取生效 |
+
+## 未上云清单（2026-10-14 盘点结论）
+
+| 环节 | 状态 | 理由 |
+|---|---|---|
+| 假设树写入链（link/verify/ach 写回、周循环） | 不上 | `data/hypotheses/` 唯一有效写入方是本地；诊断已有"CI 扫描 → merge 收编"混合方案 |
+| 交互式工具（对话引擎/三观录入/问题生成器） | 不上 | 需要用户本人参与 |
+| 知识库写入（kb_linker/history_engine/render_wiki） | 不上 | CI 上没有 Obsidian 库 |
+| watchdog | 不上 | 职责是监控 CI 死活并唤醒本机，必须在本机 |
+| GDELT | 不上 | CI 实测 429 封 IP，本地可用 |
+| 本地采集/翻译/研判（fetch_now/translate_local/impact_now） | 保留 | 与 CI 并行的**双通道兜底设计**，不是遗漏 |
+| policy_tracker | **评估后决定不上** | 产出是观点卡直接写 Obsidian，CI 侧只能落 JSON 备查；对本地 analysis 路径依赖深，改造面大收益小 |
 
 ## 假设生产机制（2026-09-28 建立）
 
