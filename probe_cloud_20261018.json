@@ -1,68 +1,62 @@
 {
- "at": "2026-10-18T20:22:08",
+ "at": "2026-10-18T23:05:48",
  "window": "2026-10-15 ~ 2026-10-18",
  "samples": 150,
  "gate_threshold": 0.08,
  "strong_threshold": 0.2,
  "stats": {
-  "mega_global_economic_crisis": {
-   "samples": 96,
-   "mention_count": 68,
-   "mention_ratio": 0.7083,
-   "signal_count": 7,
-   "signal_ratio": 0.0729,
-   "max_gate": 0.24,
-   "mean_gate": 0.1158,
-   "strong_signals": [
-    0.24,
-    0.23,
-    0.21,
-    0.21,
-    0.21,
-    0.21,
-    0.2
-   ]
-  },
   "hyp_d26158d3": {
-   "samples": 96,
-   "mention_count": 0,
-   "mention_ratio": 0.0,
+   "samples": 50,
+   "mention_count": 1,
+   "mention_ratio": 0.02,
    "signal_count": 0,
    "signal_ratio": 0.0,
-   "max_gate": 0.06,
-   "mean_gate": 0.043,
-   "strong_signals": []
-  },
-  "hyp_e2b46e32": {
-   "samples": 96,
-   "mention_count": 4,
-   "mention_ratio": 0.0417,
-   "signal_count": 0,
-   "signal_ratio": 0.0,
-   "max_gate": 0.1,
-   "mean_gate": 0.0541,
+   "max_gate": 0.11,
+   "mean_gate": 0.0434,
    "strong_signals": []
   },
   "mega_war3": {
-   "samples": 96,
-   "mention_count": 51,
-   "mention_ratio": 0.5312,
-   "signal_count": 18,
-   "signal_ratio": 0.1875,
-   "max_gate": 0.26,
-   "mean_gate": 0.109,
+   "samples": 50,
+   "mention_count": 28,
+   "mention_ratio": 0.56,
+   "signal_count": 11,
+   "signal_ratio": 0.22,
+   "max_gate": 0.24,
+   "mean_gate": 0.1112,
    "strong_signals": [
-    0.26,
-    0.25,
-    0.25,
-    0.25,
-    0.24,
-    0.24,
-    0.24,
     0.24,
     0.23,
-    0.22
+    0.22,
+    0.22,
+    0.21,
+    0.21,
+    0.21,
+    0.21,
+    0.2,
+    0.2
    ]
+  },
+  "mega_global_economic_crisis": {
+   "samples": 50,
+   "mention_count": 37,
+   "mention_ratio": 0.74,
+   "signal_count": 1,
+   "signal_ratio": 0.02,
+   "max_gate": 0.2,
+   "mean_gate": 0.114,
+   "strong_signals": [
+    0.2
+   ]
+  },
+  "hyp_e2b46e32": {
+   "samples": 50,
+   "mention_count": 2,
+   "mention_ratio": 0.04,
+   "signal_count": 0,
+   "signal_ratio": 0.0,
+   "max_gate": 0.1,
+   "mean_gate": 0.0544,
+   "strong_signals": []
   }
  }
 }
