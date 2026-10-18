@@ -51,7 +51,7 @@ refresh.py: git pull + 合并 CI 数据 + 可选翻译
 |------|------|------|
 | 参谋长（生成） | Mimo-v2.5-free | 生成假设/现状分析/对话追问/观点卡 |
 | 裁判（验证） | Nemotron-3.5-lightning-free | 验证判定/复盘 |
-| 翻译（CI） | Gemini→dots→NVIDIA 三通道 | 2026-10-14 重新上云。主 Gemini（免费层实测 RPD=500/模型×2 lite），备 dots(`dots3-note-prev`)、NVIDIA(gpt-oss-120b→20b→llama)。此前(09-04)因"CI 只有 NVIDIA 单通道跟不上"挪到本地，现通道已齐 |
+| 翻译（CI） | Gemini→dots→NVIDIA 三通道 | 2026-10-14 重新上云。主 Gemini（免费层实测 RPD=500/模型×2 lite），备 dots(`dots3-note-prev`)、NVIDIA(20b→glm-5.3→llama；**2026-10-18 bench 重整**：gpt-oss-120b 已 410 下架剔除、glm-5.3-flash 两轮实测 115~132s 不可用、glm-5.3 主力版 4.1s 可用，见 `cloud/model_bench.py` 候选注释)。此前(09-04)因"CI 只有 NVIDIA 单通道跟不上"挪到本地，现通道已齐 |
 | DeepSeek | 已弃用 | 输出过于官方，无批判性 |
 
 AI 调用通过 OpenCode Zen 免费代理（`https://opencode.ai/zen/v1`，key 在 config.yaml），伪造请求头见 `local/analyze.py`。**端点有白名单校验（只允许 opencode.ai），改端点要同步改 analyze.py 的校验**。GitHub Secrets 有 GEMINI_API_KEY / DOTS_API_KEY / NVIDIA_API_KEY / OC_DESKTOP_SESSION（CI 三通道链用）；本地没有 NVIDIA key——本地翻译链是 Gemini(境内不可达自动跳过)→dots→zen 代理→OpenCode，与 CI 互补（两边都只处理无 cn_title 条目，幂等）。
@@ -683,7 +683,7 @@ C conf=0.89 日经225指数低开1.5%                ← 行情？
 
 ## CI 故障排除
 1. **RSS 超时**：每源 15s 超时，坏源跳过不影响其他源
-2. **翻译 404/超时**：NVIDIA key 在 GitHub Secrets；已限每次 50 条、batch 5；模型降级链 MODEL_CHAIN（gpt-oss-120b→20b→llama）
+2. **翻译 404/超时**：NVIDIA key 在 GitHub Secrets；已限每次 50 条、batch 5；模型降级链 MODEL_CHAIN（20b→glm-5.3→llama，2026-10-18 bench 重整后；重测方法：gh workflow run bench.yml）
 3. **push 403**：检查 workflow `permissions: contents: write`
 4. **`No module named 'cloud'`**：`main_cloud.py` 顶部有 sys.path 修复
 5. **simhash 报错**：确认 `simhash==2.1.2`
