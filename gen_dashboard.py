@@ -1212,7 +1212,11 @@ function tog(btn){var c=btn.nextElementSibling;var open=c.style.display!=="block
 function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
 buildCatBtns();R("");""")
 intel_js_lines.append('</script>')
-intel_js_lines.append('<script>var _lastUpdate="' + generated_at + '";(function(){var el=document.getElementById("headerUpdated");if(!el)return;var dt=new Date(_lastUpdate);if(isNaN(dt.getTime())){el.textContent="最近更新: "+_lastUpdate;return;}var local=dt.toLocaleString("zh-CN",{hour12:false,timeZone:"Asia/Shanghai"});el.textContent="最近更新: "+local;el.title="UTC: "+_lastUpdate;})();</script>')
+# 2026-10-18 修时区显示：CI 侧 rebuild_data_ci 写的 generated_at 是无时区后缀的
+# UTC 裸串，new Date() 会按浏览器本地时区（北京）解析，下面 timeZone:"Asia/Shanghai"
+# 的换算恒等于原值 → 顶部"最近更新"恒显示 UTC 原文，看起来永远落后 8 小时。
+# 无偏移后缀时补 Z 强制按 UTC 解析；已带后缀（本地北京串 +08:00 / 宏观 +00:00）不动。
+intel_js_lines.append('<script>var _lastUpdate="' + generated_at + '";(function(){var el=document.getElementById("headerUpdated");if(!el)return;var s=_lastUpdate;if(s&&!/(z|Z)$|[+-]\\d{2}:?\\d{2}$/.test(s)){s=s+"Z";}var dt=new Date(s);if(isNaN(dt.getTime())){el.textContent="最近更新: "+_lastUpdate;return;}var local=dt.toLocaleString("zh-CN",{hour12:false,timeZone:"Asia/Shanghai"});el.textContent="最近更新: "+local;el.title="UTC: "+_lastUpdate;})();</script>')
 # 新数据提示（2026-10-10）：页面 34MB，不能盲目自动重载。改为轮询轻量
 # /api/version（mtime+size），后台刷新产出新面板时给出显式"点击刷新"横幅，
 # 让用户一眼分清「没新新闻」和「页面是旧快照」。

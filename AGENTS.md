@@ -692,7 +692,8 @@ C conf=0.89 日经225指数低开1.5%                ← 行情？
 8. **GitHub schedule 会被静默跳过**（平台通病）：数据陈旧时先 `gh run list` 看 CI，再 `gh workflow run daily.yml` 手动补跑，跑完等本地 OsintRefresh 每小时拉取或手动跑 refresh.py
    - 诊断命令：`gh api repos/ol4p4/osint/actions/runs?event=schedule` 看时间戳间隔
    - 双联防御：CI 已 8x/day（cron `0 */3 * * *`）+ 本地 `OsintWatchdog` 计划任务每 6h 三项检查（v3, 2026-09-12）：① `intel_2*.jsonl` mtime > 8h 静默 → 本地跑 refresh.py 自愈 + `gh workflow run daily.yml`；② 最近 CI 成功 run > 12h → dispatch（此前只看本地 mtime，本地 fetch_now 活着时测不出 CI 死亡）；③ 最新 hypothesis_weekly_*.md > 8 天（错过周一）→ 补跑 daily_run.ps1 -Auto（24h 节流戳 data/.weekly_catchup_last_run）。日志 `data/logs/watchdog_YYYYMMDD.log`
-9. **仪表盘时间错乱**：time_ago 已改为浏览器端动态计算（gen_dashboard.py 内嵌 JS IIFE），不再依赖采集时写死的静态文本
+9. **仪表盘时间错乱**：time_ago 已改为浏览器端动态计算（gen_dashboard.py 内嵌 JS IIFE），不再依赖采集时写死的静态文本。
+   **2026-10-18 第二类根因（naive UTC 裸串）**：CI 侧 rebuild_data_ci 写的 `generated_at` 是无时区后缀的 UTC 裸串，`new Date()` 按浏览器本地时区解析后，`toLocaleString(timeZone:"Asia/Shanghai")` 换算恒等于原值 → 头部"最近更新"恒显示 UTC 原文（如 10:47），被误读成"8 小时没更新"（实际=北京 18:47 刚更新）。修法：渲染侧无偏移后缀时补 `Z` 强制按 UTC 解析（gen_dashboard.py）。同页"最近抓取"用的 macro `updated_at` 自带 `+00:00`，不受影响——**同页两个时间戳，一带时区一裸串，显示分裂是判别线索**。
 9b. **本地 git 连不上 GitHub**（`Failed to connect to github.com port 443`）：本机直连 GitHub 常态不通（国内网络），需经本地 Clash 代理。**已根治（2026-10-06）**：`net_proxy.py` 探测本地代理并注入 git 子进程环境变量，`local_sync.git_pull` / `refresh.commit_hypotheses` 全部改用它——**不再需要手工 export 代理**。
    - 代理候选端口：7897（Clash Verge mixed-port 默认）→ 7890 → 7891 → 7888，两级判据（端口在监听 **+ 实探 CONNECT 能连上 GitHub**），缓存 300s
    - **为什么必须实探**（2026-10-06 踩坑）：Clash 节点不稳时端口照样 LISTENING，但代理 TLS 握手失败（`schannel: failed to receive handshake`），而**直连反而通**——只看端口就会把本来能成的 git 操作塞进坏代理搞挂。实测 `_probe()` 在代理死时正确返回 None 退回直连
