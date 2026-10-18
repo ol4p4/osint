@@ -17,18 +17,14 @@ BASE = "https://integrate.api.nvidia.com/v1"
 AI_ALLOWED_HOST = "integrate.api.nvidia.com"
 
 CANDIDATES = [
-    "openai/gpt-oss-120b",
+    # 2026-10-18 bench（run 39118560082）重整：/models 列表 88 项里实际可服务的
+    # 只剩下列这些——gpt-oss-120b 已 410 Gone、mistral/gemma/nemotron-51b 全 404。
+    # 新增 z-ai/glm-5.3：它是 citizen_impact / weekly_report_cloud 的 NVIDIA
+    # 备援腿首位模型（NV_SLUG_MAP），其延迟决定该腿是否实际可用。
     "openai/gpt-oss-20b",
+    "z-ai/glm-5.3",
     "z-ai/glm-5.3-flash",
     "meta/llama-3.2-11b-vision-instruct",
-    "mistralai/mistral-7b-instruct-v0.3",
-    "nv-mistralai/mistral-nemo-12b-instruct",
-    # 2026-10-18 修正 org 前缀：/models 实列为 nvidia/（原 mistralai/ 恒 404）
-    "nvidia/mistral-nemo-minitron-8b-8k-instruct",
-    "google/gemma-3-4b-it",
-    "google/gemma-3-12b-it",
-    "nvidia/llama-3.1-nemotron-51b-instruct",
-    # mistralai/mistral-nemotron 已移除：/models 实列无此模型（死候选）
 ]
 
 PROMPT = ('Translate the news item to Chinese. Output JSON: '

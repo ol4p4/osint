@@ -51,14 +51,13 @@ NVIDIA_BASE = "https://integrate.api.nvidia.com/v1"
 # _safe_post 白名单（gemini 走 local.gemini_client 自带守卫，不在这里）
 OPENAI_HOSTS = {"note3-prev-api.askdiandian.com", "integrate.api.nvidia.com"}
 
-# NVIDIA 翻译模型降级链（2026-08-30 bench 实测可用，按速度/质量排序）
-# 2026-10-18 新增 z-ai/glm-5.3-flash：GLM 血统中文质量好（glm-5.3 已是 analyze 主笔模型），
-# flash 为其快速变体；插在 llama-3.2-11b 之前（后者高峰期 60s 超时，保留作末位兜底）。
-# 位次与可用性待 cloud/model_bench.py 实测复核（/models 列表非权威，AGENTS.md 判据）。
+# NVIDIA 翻译模型降级链（2026-10-18 bench 实测重整，run 39118560082）
+#   · openai/gpt-oss-120b 已 410 Gone（下架）→ 剔除；链上留着只会让每批白撞一次
+#   · z-ai/glm-5.3-flash 实测 131.7s（两轮取最小）→ 贴 150s 超时线，撤回不入链
+#     （与 analyze.py 2026-09-17 旧实测「glm-flash 173s」同结论：GLM flash 系在此通道极慢）
+#   · 存活仅 gpt-oss-20b(3.4s) / llama-3.2-11b-vision(2.8s)；质量优先 gpt-oss-20b 在前
 MODEL_CHAIN = [
-    "openai/gpt-oss-120b",
     "openai/gpt-oss-20b",
-    "z-ai/glm-5.3-flash",
     "meta/llama-3.2-11b-vision-instruct",
 ]
 BATCH_SIZE = 5
