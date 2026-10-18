@@ -1,6 +1,6 @@
 {
  "date": "20261018",
- "generated_at": "2026-10-18T03:31:44.569680+00:00",
+ "generated_at": "2026-10-18T10:41:08.509559+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -32,8 +32,25 @@
    "title": "生物安全事件升级引发跨境防控收紧"
   }
  ],
- "scanned": 0,
- "failed": 100,
- "signal_count": 0,
- "signals": []
+ "scanned": 100,
+ "failed": 0,
+ "signal_count": 1,
+ "signals": [
+  {
+   "id": "f54fe806071acacf",
+   "title": "特朗普政府提议乌和平协议包含欧洲重购俄天然气，德国明确反对",
+   "source": "新浪财经-7x24直播",
+   "published_at": "2026-10-17T20:19:17+00:00",
+   "score": 0.761,
+   "hits": [
+    {
+     "hyp_id": "HM100",
+     "code": "I",
+     "conf": 0.89,
+     "gate": 0.15,
+     "selectivity": 3.0
+    }
+   ]
+  }
+ ]
 }
