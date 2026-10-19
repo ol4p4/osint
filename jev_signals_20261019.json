@@ -1,6 +1,6 @@
 {
  "date": "20261019",
- "generated_at": "2026-10-19T12:31:50.762867+00:00",
+ "generated_at": "2026-10-19T20:35:38.389969+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,37 +34,21 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 2,
+ "signal_count": 1,
  "signals": [
   {
    "id": "c2c87a5d71ca4af7",
    "title": "White House proposed that EU buy more Russian gas and Ukraine resume transit, NYT reports",
    "source": "Meduza-EN",
    "published_at": "2026-10-19T08:37:11+00:00",
-   "score": 0.748,
+   "score": 0.666,
    "hits": [
     {
      "hyp_id": "HM100",
      "code": "I",
-     "conf": 0.92,
-     "gate": 0.15,
-     "selectivity": 2.5
-    }
-   ]
-  },
-  {
-   "id": "93f272d250bb7be5",
-   "title": "初企DoubleAI推出全新AI品类，助力企业降低算力成本",
-   "source": "新浪财经-7x24直播",
-   "published_at": "2026-10-19T12:05:21+00:00",
-   "score": 0.763,
-   "hits": [
-    {
-     "hyp_id": "HM102",
-     "code": "I",
-     "conf": 0.62,
-     "gate": 0.2,
-     "selectivity": 6.67
+     "conf": 0.9,
+     "gate": 0.16,
+     "selectivity": 2.67
     }
    ]
   }
