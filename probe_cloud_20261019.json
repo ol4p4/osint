@@ -1,61 +1,66 @@
 {
- "at": "2026-10-19T03:47:32",
+ "at": "2026-10-19T12:33:31",
  "window": "2026-10-16 ~ 2026-10-19",
  "samples": 150,
  "gate_threshold": 0.08,
  "strong_threshold": 0.2,
  "stats": {
-  "mega_global_economic_crisis": {
-   "samples": 79,
-   "mention_count": 45,
-   "mention_ratio": 0.5696,
-   "signal_count": 2,
-   "signal_ratio": 0.0253,
-   "max_gate": 0.38,
-   "mean_gate": 0.1013,
-   "strong_signals": [
-    0.38,
-    0.22
-   ]
-  },
-  "hyp_e2b46e32": {
-   "samples": 79,
-   "mention_count": 9,
-   "mention_ratio": 0.1139,
-   "signal_count": 0,
-   "signal_ratio": 0.0,
-   "max_gate": 0.17,
-   "mean_gate": 0.0586,
-   "strong_signals": []
-  },
   "mega_war3": {
-   "samples": 79,
-   "mention_count": 31,
-   "mention_ratio": 0.3924,
-   "signal_count": 9,
-   "signal_ratio": 0.1139,
-   "max_gate": 0.24,
-   "mean_gate": 0.0862,
+   "samples": 95,
+   "mention_count": 43,
+   "mention_ratio": 0.4526,
+   "signal_count": 13,
+   "signal_ratio": 0.1368,
+   "max_gate": 0.32,
+   "mean_gate": 0.0949,
    "strong_signals": [
-    0.24,
+    0.32,
+    0.27,
+    0.26,
+    0.25,
+    0.25,
     0.24,
     0.23,
-    0.22,
-    0.22,
+    0.23,
+    0.21,
+    0.21
+   ]
+  },
+  "mega_global_economic_crisis": {
+   "samples": 95,
+   "mention_count": 57,
+   "mention_ratio": 0.6,
+   "signal_count": 6,
+   "signal_ratio": 0.0632,
+   "max_gate": 0.25,
+   "mean_gate": 0.1006,
+   "strong_signals": [
+    0.25,
     0.21,
     0.21,
+    0.2,
     0.2,
     0.2
    ]
   },
   "hyp_d26158d3": {
-   "samples": 79,
-   "mention_count": 4,
-   "mention_ratio": 0.0506,
+   "samples": 95,
+   "mention_count": 3,
+   "mention_ratio": 0.0316,
    "signal_count": 0,
    "signal_ratio": 0.0,
-   "max_gate": 0.17,
-   "mean_gate": 0.0459,
+   "max_gate": 0.13,
+   "mean_gate": 0.0445,
+   "strong_signals": []
+  },
+  "hyp_e2b46e32": {
+   "samples": 95,
+   "mention_count": 10,
+   "mention_ratio": 0.1053,
+   "signal_count": 0,
+   "signal_ratio": 0.0,
+   "max_gate": 0.12,
+   "mean_gate": 0.0578,
    "strong_signals": []
   }
  }
