@@ -1,5 +1,5 @@
 {
-  "assessed_at": "2026-10-19",
+  "assessed_at": "2026-10-20",
   "n": 8,
   "items": [
     {
@@ -8,9 +8,9 @@
       "indicator": "老年抚养比(65+/15-64)",
       "current_value": 14.9114314271952,
       "source": "WorldBank",
-      "assessed_at": "2026-10-19",
+      "assessed_at": "2026-10-20",
       "verdict": "uncertain",
-      "reason": "支持阈值为到2030年的目标，当前值为2025年，尚未到期"
+      "reason": "阈值为未来目标（到2030年），当前值（2025年）尚未到期，无法比较"
     },
     {
       "hyp_id": "hyp_e2b46e32_sub3_s2",
@@ -18,9 +18,9 @@
       "indicator": "最终消费占GDP比重",
       "current_value": 56.6789524134646,
       "source": "WorldBank",
-      "assessed_at": "2026-10-19",
+      "assessed_at": "2026-10-20",
       "verdict": "uncertain",
-      "reason": "支持阈值要求居民消费率持续走低，但当前值仅为2024年单点值，无法判断趋势"
+      "reason": "阈值涉及趋势或多年条件（如连续三年上升），当前值仅一年数据，无法验证"
     },
     {
       "hyp_id": "hyp_e2b46e32_sub4_s1",
@@ -28,9 +28,9 @@
       "indicator": "研发支出占GDP比",
       "current_value": 2.57729,
       "source": "WorldBank",
-      "assessed_at": "2026-10-19",
+      "assessed_at": "2026-10-20",
       "verdict": "uncertain",
-      "reason": "支持阈值为定性描述，当前值仅提供研发支出占GDP比，无细分领域数据，无法验证"
+      "reason": "阈值涉及细分领域数据（如半导体/新能源/AI研发比例），当前值仅为总研发支出占GDP比，无法对应"
     },
     {
       "hyp_id": "HM001",
@@ -38,9 +38,9 @@
       "indicator": "中国军机在东海防空识别区活动频率",
       "current_value": 366.0,
       "source": "检索核实:日本防卫省统合幕僚监部（共同社报道）（次/年度）",
-      "assessed_at": "2026-10-19",
+      "assessed_at": "2026-10-20",
       "verdict": "uncertain",
-      "reason": "支持阈值为到2027年的目标，当前值为2025年，尚未到期"
+      "reason": "阈值为未来目标（到2027年），当前值（2025年）尚未到期，无法比较"
     },
     {
       "hyp_id": "HM001_A",
@@ -48,9 +48,9 @@
       "indicator": "三国军费开支同比增长率",
       "current_value": 6.6,
       "source": "检索核实:SIPRI 世界军费报告2025（%）",
-      "assessed_at": "2026-10-19",
+      "assessed_at": "2026-10-20",
       "verdict": "uncertain",
-      "reason": "支持阈值为到2027年的目标，当前值为2025年，尚未到期"
+      "reason": "阈值为未来目标（到2027年），当前值（2025年）尚未到期，无法比较"
     },
     {
       "hyp_id": "HM001_A",
@@ -58,9 +58,9 @@
       "indicator": "中国军机进入日本防空识别区次数",
       "current_value": 366.0,
       "source": "检索核实:日本防卫省统合幕僚监部（共同社报道）（次/年度）",
-      "assessed_at": "2026-10-19",
+      "assessed_at": "2026-10-20",
       "verdict": "uncertain",
-      "reason": "支持阈值为到2027年的目标，当前值为2025年，尚未到期"
+      "reason": "阈值为未来目标（到2027年），当前值（2025年）尚未到期，无法比较"
     },
     {
       "hyp_id": "HM003_B",
@@ -68,9 +68,9 @@
       "indicator": "失业率",
       "current_value": 5.3,
       "source": "macro_snapshot:cn_unrate",
-      "assessed_at": "2026-10-19",
+      "assessed_at": "2026-10-20",
       "verdict": "uncertain",
-      "reason": "支持阈值为到2027年的目标，且需要三国数据，当前值仅中国数据，无法计算平均"
+      "reason": "阈值要求三国失业率平均值，当前值仅中国数据，无法计算平均值"
     },
     {
       "hyp_id": "HM003_B",
@@ -78,9 +78,9 @@
       "indicator": "青年失业率",
       "current_value": 18.9,
       "source": "macro_snapshot:cn_youth_unrate",
-      "assessed_at": "2026-10-19",
+      "assessed_at": "2026-10-20",
       "verdict": "uncertain",
-      "reason": "支持阈值为到2027年的目标，且需要三国数据，当前值仅中国数据，无法计算平均"
+      "reason": "阈值要求三国青年失业率平均值，当前值仅中国数据，无法计算平均值"
     }
   ]
 }
