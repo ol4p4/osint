@@ -4,4 +4,4 @@
 
 ## HM100 全球能源转型加速导致传统能源需求骤降（1 条）
 
-- `I` gate=0.16 → HM100(0.91) ｜ White House proposed that EU buy more Russian gas and Ukraine resume transit, NYT reports
+- `I` gate=0.16 → HM100(0.90) ｜ White House proposed that EU buy more Russian gas and Ukraine resume transit, NYT reports
