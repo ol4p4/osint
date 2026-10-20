@@ -1,6 +1,6 @@
 {
  "date": "20261020",
- "generated_at": "2026-10-20T19:19:50.904444+00:00",
+ "generated_at": "2026-10-20T23:48:17.874361+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,8 +34,24 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 1,
+ "signal_count": 2,
  "signals": [
+  {
+   "id": "83a0705360d13447",
+   "title": "马斯克：ASML等公司正在加快为Terafab提供芯片制造设备",
+   "source": "金十数据-快讯",
+   "published_at": "2026-10-20T22:43:36+00:00",
+   "score": 0.78,
+   "hits": [
+    {
+     "hyp_id": "HM102",
+     "code": "I",
+     "conf": 0.76,
+     "gate": 0.36,
+     "selectivity": 7.2
+    }
+   ]
+  },
   {
    "id": "c2c87a5d71ca4af7",
    "title": "White House proposed that EU buy more Russian gas and Ukraine resume transit, NYT reports",
@@ -46,7 +62,7 @@
     {
      "hyp_id": "HM100",
      "code": "I",
-     "conf": 0.92,
+     "conf": 0.91,
      "gate": 0.16,
      "selectivity": 2.67
     }
