@@ -1,6 +1,6 @@
 {
  "date": "20261020",
- "generated_at": "2026-10-20T00:17:49.129716+00:00",
+ "generated_at": "2026-10-20T08:26:06.273302+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -41,12 +41,12 @@
    "title": "White House proposed that EU buy more Russian gas and Ukraine resume transit, NYT reports",
    "source": "Meduza-EN",
    "published_at": "2026-10-19T08:37:11+00:00",
-   "score": 0.631,
+   "score": 0.561,
    "hits": [
     {
      "hyp_id": "HM100",
      "code": "I",
-     "conf": 0.9,
+     "conf": 0.91,
      "gate": 0.16,
      "selectivity": 2.67
     }
