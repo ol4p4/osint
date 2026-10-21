@@ -1,0 +1,58 @@
+{
+ "at": "2026-10-21T03:46:47",
+ "window": "2026-10-18 ~ 2026-10-21",
+ "samples": 150,
+ "gate_threshold": 0.08,
+ "strong_threshold": 0.2,
+ "stats": {
+  "hyp_d26158d3": {
+   "samples": 94,
+   "mention_count": 3,
+   "mention_ratio": 0.0319,
+   "signal_count": 0,
+   "signal_ratio": 0.0,
+   "max_gate": 0.11,
+   "mean_gate": 0.0441,
+   "strong_signals": []
+  },
+  "hyp_e2b46e32": {
+   "samples": 94,
+   "mention_count": 15,
+   "mention_ratio": 0.1596,
+   "signal_count": 0,
+   "signal_ratio": 0.0,
+   "max_gate": 0.17,
+   "mean_gate": 0.0607,
+   "strong_signals": []
+  },
+  "mega_war3": {
+   "samples": 94,
+   "mention_count": 22,
+   "mention_ratio": 0.234,
+   "signal_count": 4,
+   "signal_ratio": 0.0426,
+   "max_gate": 0.23,
+   "mean_gate": 0.0656,
+   "strong_signals": [
+    0.23,
+    0.23,
+    0.2,
+    0.2
+   ]
+  },
+  "mega_global_economic_crisis": {
+   "samples": 94,
+   "mention_count": 40,
+   "mention_ratio": 0.4255,
+   "signal_count": 3,
+   "signal_ratio": 0.0319,
+   "max_gate": 0.23,
+   "mean_gate": 0.082,
+   "strong_signals": [
+    0.23,
+    0.21,
+    0.2
+   ]
+  }
+ }
+}
