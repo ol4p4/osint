@@ -1,6 +1,6 @@
 {
  "date": "20261021",
- "generated_at": "2026-10-21T11:27:43.798673+00:00",
+ "generated_at": "2026-10-21T16:55:35.275961+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,24 +34,8 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 2,
+ "signal_count": 1,
  "signals": [
-  {
-   "id": "e7e943dd5e264e4b",
-   "title": "英伟达盘前涨幅扩大至2.2% 英伟达在GTC柏林期间密集推出一系列举措",
-   "source": "新浪财经-7x24直播",
-   "published_at": "2026-10-21T11:09:49+00:00",
-   "score": 0.83,
-   "hits": [
-    {
-     "hyp_id": "HM102",
-     "code": "I",
-     "conf": 0.55,
-     "gate": 0.2,
-     "selectivity": 4.0
-    }
-   ]
-  },
   {
    "id": "83a0705360d13447",
    "title": "马斯克：ASML等公司正在加快为Terafab提供芯片制造设备",
@@ -62,9 +46,9 @@
     {
      "hyp_id": "HM102",
      "code": "I",
-     "conf": 0.77,
-     "gate": 0.4,
-     "selectivity": 8.0
+     "conf": 0.74,
+     "gate": 0.38,
+     "selectivity": 7.6
     }
    ]
   }
