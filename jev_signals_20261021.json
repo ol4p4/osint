@@ -1,6 +1,6 @@
 {
  "date": "20261021",
- "generated_at": "2026-10-21T03:45:04.805081+00:00",
+ "generated_at": "2026-10-21T11:27:43.798673+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -37,25 +37,18 @@
  "signal_count": 2,
  "signals": [
   {
-   "id": "7b5ea972c55e0a25",
-   "title": "DeepSeek开源AI推理框架 或能降低算力成本",
-   "source": "联合早报-中国",
-   "published_at": "2026-10-21T01:00:42+00:00",
-   "score": 0.796,
+   "id": "e7e943dd5e264e4b",
+   "title": "英伟达盘前涨幅扩大至2.2% 英伟达在GTC柏林期间密集推出一系列举措",
+   "source": "新浪财经-7x24直播",
+   "published_at": "2026-10-21T11:09:49+00:00",
+   "score": 0.83,
    "hits": [
     {
      "hyp_id": "HM102",
      "code": "I",
-     "conf": 0.77,
-     "gate": 0.22,
-     "selectivity": 5.5
-    },
-    {
-     "hyp_id": "HM003",
-     "code": "I",
-     "conf": 0.79,
-     "gate": 0.17,
-     "selectivity": 5.5
+     "conf": 0.55,
+     "gate": 0.2,
+     "selectivity": 4.0
     }
    ]
   },
@@ -69,9 +62,9 @@
     {
      "hyp_id": "HM102",
      "code": "I",
-     "conf": 0.75,
-     "gate": 0.38,
-     "selectivity": 7.6
+     "conf": 0.77,
+     "gate": 0.4,
+     "selectivity": 8.0
     }
    ]
   }
