@@ -1,6 +1,6 @@
 {
  "date": "20261022",
- "generated_at": "2026-10-22T11:27:24.930717+00:00",
+ "generated_at": "2026-10-22T17:10:32.507063+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,21 +34,37 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 1,
+ "signal_count": 2,
  "signals": [
   {
-   "id": "66322bf122ddafc6",
-   "title": "“DeepSeek才是真正的OpenAI”",
-   "source": "华尔街见闻-全球",
-   "published_at": "2026-10-22T08:45:23+00:00",
-   "score": 0.754,
+   "id": "a90cd7a9e57f0f6f",
+   "title": "英首相称批准北海气田项目是“务实之举”",
+   "source": "新浪财经-7x24直播",
+   "published_at": "2026-10-22T15:50:41+00:00",
+   "score": 0.789,
+   "hits": [
+    {
+     "hyp_id": "HM100",
+     "code": "I",
+     "conf": 0.96,
+     "gate": 0.18,
+     "selectivity": 3.6
+    }
+   ]
+  },
+  {
+   "id": "84f5e5f39d7b9e5b",
+   "title": "美国商务部长卢特尼克：宣布得益于美国总统特朗普与日本达成的历史性贸易协议，将拨款210亿美元用于建设两座新的半导体晶圆厂",
+   "source": "新浪财经-7x24直播",
+   "published_at": "2026-10-22T16:19:56+00:00",
+   "score": 0.762,
    "hits": [
     {
      "hyp_id": "HM102",
      "code": "I",
-     "conf": 0.73,
-     "gate": 0.22,
-     "selectivity": 4.4
+     "conf": 0.68,
+     "gate": 0.29,
+     "selectivity": 4.83
     }
    ]
   }
