@@ -1,6 +1,6 @@
 {
  "date": "20261023",
- "generated_at": "2026-10-23T16:46:34.394635+00:00",
+ "generated_at": "2026-10-23T21:13:59.078928+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,6 +34,23 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 0,
- "signals": []
+ "signal_count": 1,
+ "signals": [
+  {
+   "id": "aa1e9c67504ad372",
+   "title": "特朗普政府取消部分加拿大商品50%关税 另对其他产品加税",
+   "source": "金十数据-快讯",
+   "published_at": "2026-10-23T20:51:11+00:00",
+   "score": 0.788,
+   "hits": [
+    {
+     "hyp_id": "HM101",
+     "code": "I",
+     "conf": 0.87,
+     "gate": 0.25,
+     "selectivity": 5.0
+    }
+   ]
+  }
+ ]
 }
