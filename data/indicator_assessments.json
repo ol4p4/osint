@@ -9,8 +9,8 @@
       "current_value": 14.9114314271952,
       "source": "WorldBank",
       "assessed_at": "2026-10-26",
-      "verdict": "unmet",
-      "reason": "2025老年抚养比14.9%低于2030年20%的阈值"
+      "verdict": "uncertain",
+      "reason": "支持阈值为到2030年的目标，当前值2025年尚未到期"
     },
     {
       "hyp_id": "hyp_e2b46e32_sub3_s2",
@@ -19,8 +19,8 @@
       "current_value": 56.6789524134646,
       "source": "WorldBank",
       "assessed_at": "2026-10-26",
-      "verdict": "unmet",
-      "reason": "最终消费占GDP比重持续上升，未呈现持续走低趋势"
+      "verdict": "uncertain",
+      "reason": "支持阈值为定性描述'居民消费率持续走低'，无法直接比较当前值"
     },
     {
       "hyp_id": "hyp_e2b46e32_sub4_s1",
@@ -29,8 +29,8 @@
       "current_value": 2.57729,
       "source": "WorldBank",
       "assessed_at": "2026-10-26",
-      "verdict": "unmet",
-      "reason": "研发支出占GDP比重下降，未体现半导体/新能源/AI成为战略重点"
+      "verdict": "uncertain",
+      "reason": "支持阈值为定性描述'半导体/新能源/AI成为国家战略重点'，无法直接比较当前值"
     },
     {
       "hyp_id": "HM001",
@@ -40,7 +40,7 @@
       "source": "检索核实:日本防卫省统合幕僚监部（共同社报道）（次/年度）",
       "assessed_at": "2026-10-26",
       "verdict": "uncertain",
-      "reason": "缺乏2026年基准值，无法判断2027年增长是否超过40%"
+      "reason": "支持阈值为到2027年的目标，当前值2025年尚未到期"
     },
     {
       "hyp_id": "HM001_A",
@@ -50,7 +50,7 @@
       "source": "检索核实:SIPRI 世界军费报告2025（%）",
       "assessed_at": "2026-10-26",
       "verdict": "uncertain",
-      "reason": "缺乏2026年基准值，无法判断2027年增长是否超过15%"
+      "reason": "支持阈值为到2027年的目标，当前值2025年尚未到期"
     },
     {
       "hyp_id": "HM001_A",
@@ -60,7 +60,7 @@
       "source": "检索核实:日本防卫省统合幕僚监部（共同社报道）（次/年度）",
       "assessed_at": "2026-10-26",
       "verdict": "uncertain",
-      "reason": "缺乏2026年基准值，无法判断2027年增长是否超过50%"
+      "reason": "支持阈值为到2027年的目标，当前值2025年尚未到期"
     },
     {
       "hyp_id": "HM003_B",
@@ -70,7 +70,7 @@
       "source": "macro_snapshot:cn_unrate",
       "assessed_at": "2026-10-26",
       "verdict": "uncertain",
-      "reason": "缺乏2027年数据，无法判断平均失业率是否上升10%"
+      "reason": "支持阈值为到2027年的目标，当前值2026年尚未到期"
     },
     {
       "hyp_id": "HM003_B",
@@ -80,7 +80,7 @@
       "source": "macro_snapshot:cn_youth_unrate",
       "assessed_at": "2026-10-26",
       "verdict": "uncertain",
-      "reason": "缺乏2027年数据，无法判断平均青年失业率是否上升15%"
+      "reason": "支持阈值为到2027年的目标，当前值2026年尚未到期"
     }
   ]
 }
