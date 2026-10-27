@@ -1,6 +1,6 @@
 {
  "date": "20261027",
- "generated_at": "2026-10-27T15:29:51.333769+00:00",
+ "generated_at": "2026-10-27T22:02:07.581361+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,30 +34,6 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 1,
- "signals": [
-  {
-   "id": "126e561d5a479265",
-   "title": "周二美股盘前你需要了解的全球要闻",
-   "source": "华尔街见闻-快讯",
-   "published_at": "2026-10-27T13:03:11+00:00",
-   "score": 0.779,
-   "hits": [
-    {
-     "hyp_id": "HM102",
-     "code": "C",
-     "conf": 0.71,
-     "gate": 0.4,
-     "selectivity": 4.44
-    },
-    {
-     "hyp_id": "HM003",
-     "code": "C",
-     "conf": 0.61,
-     "gate": 0.38,
-     "selectivity": 4.44
-    }
-   ]
-  }
- ]
+ "signal_count": 0,
+ "signals": []
 }
