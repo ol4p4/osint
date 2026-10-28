@@ -1,6 +1,6 @@
 {
  "date": "20261028",
- "generated_at": "2026-10-28T04:35:13.423730+00:00",
+ "generated_at": "2026-10-28T12:24:53.558154+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,23 +34,6 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 1,
- "signals": [
-  {
-   "id": "26ed80b07a9bba42",
-   "title": "特朗普拟放宽油气行业甲烷管制",
-   "source": "金十数据-快讯",
-   "published_at": "2026-10-28T03:57:18+00:00",
-   "score": 0.785,
-   "hits": [
-    {
-     "hyp_id": "HM100",
-     "code": "I",
-     "conf": 0.91,
-     "gate": 0.16,
-     "selectivity": 3.2
-    }
-   ]
-  }
- ]
+ "signal_count": 0,
+ "signals": []
 }
