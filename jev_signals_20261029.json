@@ -1,6 +1,6 @@
 {
  "date": "20261029",
- "generated_at": "2026-10-29T00:47:31.067116+00:00",
+ "generated_at": "2026-10-29T09:46:20.569814+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,37 +34,21 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 2,
+ "signal_count": 1,
  "signals": [
-  {
-   "id": "c31a2ac6c9552f4c",
-   "title": "特朗普暂缓对机器人和工业机械加征关税 指示官员与贸易伙伴展开谈判",
-   "source": "新浪财经-7x24直播",
-   "published_at": "2026-10-28T23:49:02+00:00",
-   "score": 0.829,
-   "hits": [
-    {
-     "hyp_id": "HM101",
-     "code": "I",
-     "conf": 0.6,
-     "gate": 0.24,
-     "selectivity": 4.0
-    }
-   ]
-  },
   {
    "id": "d887087bf941ca26",
    "title": "Xi’s military purges make U.S. deterrence more urgent",
    "source": "Japan Times",
    "published_at": "2026-10-28T05:50:00+00:00",
-   "score": 0.508,
+   "score": 0.542,
    "hits": [
     {
      "hyp_id": "HM001",
      "code": "C",
      "conf": 0.57,
-     "gate": 0.57,
-     "selectivity": 9.5
+     "gate": 0.58,
+     "selectivity": 11.6
     }
    ]
   }
