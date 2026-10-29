@@ -1,6 +1,6 @@
 {
  "date": "20261029",
- "generated_at": "2026-10-29T09:46:20.569814+00:00",
+ "generated_at": "2026-10-29T18:22:54.788239+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -37,18 +37,18 @@
  "signal_count": 1,
  "signals": [
   {
-   "id": "d887087bf941ca26",
-   "title": "Xi’s military purges make U.S. deterrence more urgent",
-   "source": "Japan Times",
-   "published_at": "2026-10-28T05:50:00+00:00",
-   "score": 0.542,
+   "id": "ec7837c87c1345f3",
+   "title": "暴雷！新易盛三季度净利润38.43亿元同比增长61.15%、环比下降19%，存货大增141% | 财报见闻",
+   "source": "华尔街见闻-全球",
+   "published_at": "2026-10-29T15:26:41+00:00",
+   "score": 0.739,
    "hits": [
     {
-     "hyp_id": "HM001",
+     "hyp_id": "HM102",
      "code": "C",
-     "conf": 0.57,
-     "gate": 0.58,
-     "selectivity": 11.6
+     "conf": 0.78,
+     "gate": 0.26,
+     "selectivity": 8.67
     }
    ]
   }
