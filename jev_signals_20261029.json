@@ -1,0 +1,72 @@
+{
+ "date": "20261029",
+ "generated_at": "2026-10-29T00:47:31.067116+00:00",
+ "channel": "JEV: free(jev-1.13-free)",
+ "majors": [
+  {
+   "id": "HM100",
+   "title": "全球能源转型加速导致传统能源需求骤降"
+  },
+  {
+   "id": "HM101",
+   "title": "美加贸易摩擦升级引发全球供应链重构"
+  },
+  {
+   "id": "HM102",
+   "title": "AI算力与关键材料短缺限制技术商业化速度"
+  },
+  {
+   "id": "HM001",
+   "title": "台海冲突升级风险"
+  },
+  {
+   "id": "HM002",
+   "title": "全球能源供应格局重塑导致大国竞争"
+  },
+  {
+   "id": "HM003",
+   "title": "AI技术成本上升触发宏观经济波动与金融风险"
+  },
+  {
+   "id": "HM004",
+   "title": "生物安全事件升级引发跨境防控收紧"
+  }
+ ],
+ "scanned": 100,
+ "failed": 0,
+ "signal_count": 2,
+ "signals": [
+  {
+   "id": "c31a2ac6c9552f4c",
+   "title": "特朗普暂缓对机器人和工业机械加征关税 指示官员与贸易伙伴展开谈判",
+   "source": "新浪财经-7x24直播",
+   "published_at": "2026-10-28T23:49:02+00:00",
+   "score": 0.829,
+   "hits": [
+    {
+     "hyp_id": "HM101",
+     "code": "I",
+     "conf": 0.6,
+     "gate": 0.24,
+     "selectivity": 4.0
+    }
+   ]
+  },
+  {
+   "id": "d887087bf941ca26",
+   "title": "Xi’s military purges make U.S. deterrence more urgent",
+   "source": "Japan Times",
+   "published_at": "2026-10-28T05:50:00+00:00",
+   "score": 0.508,
+   "hits": [
+    {
+     "hyp_id": "HM001",
+     "code": "C",
+     "conf": 0.57,
+     "gate": 0.57,
+     "selectivity": 9.5
+    }
+   ]
+  }
+ ]
+}
