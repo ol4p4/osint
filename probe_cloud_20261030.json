@@ -1,49 +1,58 @@
 {
- "at": "2026-10-30T17:56:47",
+ "at": "2026-10-30T22:09:28",
  "window": "2026-10-27 ~ 2026-10-30",
  "samples": 150,
  "gate_threshold": 0.08,
  "strong_threshold": 0.2,
  "stats": {
-  "hyp_e2b46e32": {
-   "samples": 43,
-   "mention_count": 7,
-   "mention_ratio": 0.1628,
-   "signal_count": 0,
-   "signal_ratio": 0.0,
-   "max_gate": 0.09,
-   "mean_gate": 0.0586,
-   "strong_signals": []
-  },
   "mega_global_economic_crisis": {
-   "samples": 43,
-   "mention_count": 33,
-   "mention_ratio": 0.7674,
-   "signal_count": 0,
-   "signal_ratio": 0.0,
-   "max_gate": 0.19,
-   "mean_gate": 0.1067,
-   "strong_signals": []
+   "samples": 89,
+   "mention_count": 68,
+   "mention_ratio": 0.764,
+   "signal_count": 3,
+   "signal_ratio": 0.0337,
+   "max_gate": 0.22,
+   "mean_gate": 0.1043,
+   "strong_signals": [
+    0.22,
+    0.21,
+    0.21
+   ]
   },
-  "mega_war3": {
-   "samples": 43,
-   "mention_count": 10,
-   "mention_ratio": 0.2326,
-   "signal_count": 0,
-   "signal_ratio": 0.0,
-   "max_gate": 0.18,
-   "mean_gate": 0.0642,
-   "strong_signals": []
-  },
-  "hyp_d26158d3": {
-   "samples": 43,
-   "mention_count": 1,
-   "mention_ratio": 0.0233,
+  "hyp_e2b46e32": {
+   "samples": 89,
+   "mention_count": 8,
+   "mention_ratio": 0.0899,
    "signal_count": 0,
    "signal_ratio": 0.0,
    "max_gate": 0.12,
-   "mean_gate": 0.0479,
+   "mean_gate": 0.0556,
    "strong_signals": []
+  },
+  "hyp_d26158d3": {
+   "samples": 89,
+   "mention_count": 2,
+   "mention_ratio": 0.0225,
+   "signal_count": 0,
+   "signal_ratio": 0.0,
+   "max_gate": 0.14,
+   "mean_gate": 0.0464,
+   "strong_signals": []
+  },
+  "mega_war3": {
+   "samples": 89,
+   "mention_count": 30,
+   "mention_ratio": 0.3371,
+   "signal_count": 4,
+   "signal_ratio": 0.0449,
+   "max_gate": 0.3,
+   "mean_gate": 0.0754,
+   "strong_signals": [
+    0.3,
+    0.23,
+    0.23,
+    0.23
+   ]
   }
  }
 }

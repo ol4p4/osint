@@ -10,7 +10,7 @@
       "source": "WorldBank",
       "assessed_at": "2026-10-30",
       "verdict": "uncertain",
-      "reason": "支持阈值目标为2030年，当前值为2025年，尚未到期无法判断。"
+      "reason": "当前值为2025年数据，阈值涉及2030年目标，尚未到期。"
     },
     {
       "hyp_id": "hyp_e2b46e32_sub3_s2",
@@ -20,7 +20,7 @@
       "source": "WorldBank",
       "assessed_at": "2026-10-30",
       "verdict": "uncertain",
-      "reason": "支持阈值为定性描述'居民消费率持续走低'，无具体数字或日期，当前值无法直接比较趋势。"
+      "reason": "当前值为单一年份数据，无法验证趋势或连续条件。"
     },
     {
       "hyp_id": "hyp_e2b46e32_sub4_s1",
@@ -30,7 +30,7 @@
       "source": "WorldBank",
       "assessed_at": "2026-10-30",
       "verdict": "uncertain",
-      "reason": "支持阈值为定性描述'半导体/新能源/AI成为国家战略重点'，无具体数字，当前值为总体研发支出占比，无法直接判断是否支持。"
+      "reason": "当前值为总体研发支出占比，无细分领域数据，无法验证阈值条件。"
     },
     {
       "hyp_id": "HM001",
@@ -40,7 +40,7 @@
       "source": "检索核实:日本防卫省统合幕僚监部（共同社报道）（次/年度）",
       "assessed_at": "2026-10-30",
       "verdict": "uncertain",
-      "reason": "支持阈值目标为2027年，当前值为2025年，尚未到期无法判断。"
+      "reason": "当前值为2025年数据，阈值涉及2027年目标，尚未到期。"
     },
     {
       "hyp_id": "HM001_A",
@@ -50,7 +50,7 @@
       "source": "检索核实:SIPRI 世界军费报告2025（%）",
       "assessed_at": "2026-10-30",
       "verdict": "uncertain",
-      "reason": "支持阈值目标为2027年，当前值为2025年，尚未到期无法判断。"
+      "reason": "当前值为2025年数据，阈值涉及2027年目标，尚未到期。"
     },
     {
       "hyp_id": "HM001_A",
@@ -60,7 +60,7 @@
       "source": "检索核实:日本防卫省统合幕僚监部（共同社报道）（次/年度）",
       "assessed_at": "2026-10-30",
       "verdict": "uncertain",
-      "reason": "支持阈值目标为2027年，当前值为2025年，尚未到期无法判断。"
+      "reason": "当前值为2025年数据，阈值涉及2027年目标，尚未到期。"
     },
     {
       "hyp_id": "HM003_B",
@@ -70,7 +70,7 @@
       "source": "macro_snapshot:cn_unrate",
       "assessed_at": "2026-10-30",
       "verdict": "uncertain",
-      "reason": "支持阈值目标为2027年，当前值为2026年，尚未到期无法判断。"
+      "reason": "当前值为2026年数据，阈值涉及2027年目标，尚未到期。"
     },
     {
       "hyp_id": "HM003_B",
@@ -80,7 +80,7 @@
       "source": "macro_snapshot:cn_youth_unrate",
       "assessed_at": "2026-10-30",
       "verdict": "uncertain",
-      "reason": "支持阈值目标为2027年，当前值为2026年，尚未到期无法判断。"
+      "reason": "当前值为2026年数据，阈值涉及2027年目标，尚未到期。"
     }
   ]
 }
