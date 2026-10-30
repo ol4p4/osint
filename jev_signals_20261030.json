@@ -1,6 +1,6 @@
 {
  "date": "20261030",
- "generated_at": "2026-10-30T09:57:29.226796+00:00",
+ "generated_at": "2026-10-30T17:55:19.690097+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -37,18 +37,18 @@
  "signal_count": 2,
  "signals": [
   {
-   "id": "8ba1913ea46d0bcb",
-   "title": "欧盟批准奥地利向英飞凌公司提供3.19亿欧元补贴，支持其扩建氮化镓芯片产线",
-   "source": "新浪财经-7x24直播",
-   "published_at": "2026-10-30T09:35:08+00:00",
-   "score": 0.982,
+   "id": "d6d4836fea83cba7",
+   "title": "英特尔分析师电话会议要点总结",
+   "source": "华尔街见闻-快讯",
+   "published_at": "2026-10-30T15:21:44+00:00",
+   "score": 0.744,
    "hits": [
     {
      "hyp_id": "HM102",
-     "code": "I",
-     "conf": 0.82,
-     "gate": 0.37,
-     "selectivity": 4.62
+     "code": "C",
+     "conf": 0.84,
+     "gate": 0.42,
+     "selectivity": 8.4
     }
    ]
   },
