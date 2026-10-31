@@ -1,6 +1,6 @@
 {
  "date": "20261031",
- "generated_at": "2026-10-31T11:56:26.021785+00:00",
+ "generated_at": "2026-10-31T17:05:52.206545+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,24 +34,8 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 2,
+ "signal_count": 1,
  "signals": [
-  {
-   "id": "1b1e8d42420d0e9d",
-   "title": "智能液冷产业项目落户张家港，总投资11亿元",
-   "source": "新浪财经-7x24直播",
-   "published_at": "2026-10-31T08:14:48+00:00",
-   "score": 0.751,
-   "hits": [
-    {
-     "hyp_id": "HM102",
-     "code": "I",
-     "conf": 0.61,
-     "gate": 0.19,
-     "selectivity": 4.75
-    }
-   ]
-  },
   {
    "id": "d6d4836fea83cba7",
    "title": "英特尔分析师电话会议要点总结",
@@ -62,9 +46,9 @@
     {
      "hyp_id": "HM102",
      "code": "C",
-     "conf": 0.87,
-     "gate": 0.43,
-     "selectivity": 8.6
+     "conf": 0.88,
+     "gate": 0.41,
+     "selectivity": 8.2
     }
    ]
   }
