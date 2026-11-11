@@ -1,6 +1,6 @@
 {
  "date": "20261111",
- "generated_at": "2026-11-11T14:00:09.264997+00:00",
+ "generated_at": "2026-11-11T21:54:13.831942+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,37 +34,21 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 2,
+ "signal_count": 1,
  "signals": [
   {
-   "id": "159cacf8a830c3fa",
-   "title": "沐曦和优必选联姻造具身芯片 合资公司最新融资5亿元",
-   "source": "金十数据-快讯",
-   "published_at": "2026-11-11T13:26:25+00:00",
-   "score": 0.84,
+   "id": "d550c2063b64b496",
+   "title": "AI数据中心建设降温也不必担心",
+   "source": "华尔街见闻-全球",
+   "published_at": "2026-11-11T21:10:30+00:00",
+   "score": 0.762,
    "hits": [
     {
      "hyp_id": "HM102",
      "code": "I",
-     "conf": 0.66,
-     "gate": 0.2,
-     "selectivity": 6.67
-    }
-   ]
-  },
-  {
-   "id": "6ceb45bb6158408c",
-   "title": "沙特10月原油产量激增26%至战前高位，伊拉克产量也创冲突以来新高",
-   "source": "新浪财经-滚动新闻",
-   "published_at": "2026-11-11T13:05:33+00:00",
-   "score": 0.819,
-   "hits": [
-    {
-     "hyp_id": "HM002",
-     "code": "C",
-     "conf": 0.62,
-     "gate": 0.33,
-     "selectivity": 4.71
+     "conf": 0.51,
+     "gate": 0.17,
+     "selectivity": 3.4
     }
    ]
   }
