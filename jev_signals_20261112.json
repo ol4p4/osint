@@ -1,6 +1,6 @@
 {
  "date": "20261112",
- "generated_at": "2026-11-12T17:41:44.456033+00:00",
+ "generated_at": "2026-11-12T23:28:21.325133+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,37 +34,21 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 2,
+ "signal_count": 1,
  "signals": [
   {
    "id": "1930f05180009eaf",
    "title": "习近平提一中基础下两岸协商 台湾蓝营倡民间先行",
    "source": "联合早报-中国",
    "published_at": "2026-11-12T12:14:25+00:00",
-   "score": 0.761,
+   "score": 0.699,
    "hits": [
     {
      "hyp_id": "HM001",
      "code": "I",
-     "conf": 0.67,
-     "gate": 0.18,
-     "selectivity": 6.0
-    }
-   ]
-  },
-  {
-   "id": "d550c2063b64b496",
-   "title": "AI数据中心建设降温也不必担心",
-   "source": "华尔街见闻-全球",
-   "published_at": "2026-11-11T21:10:30+00:00",
-   "score": 0.762,
-   "hits": [
-    {
-     "hyp_id": "HM102",
-     "code": "I",
-     "conf": 0.57,
-     "gate": 0.16,
-     "selectivity": 2.67
+     "conf": 0.69,
+     "gate": 0.19,
+     "selectivity": 6.33
     }
    ]
   }
