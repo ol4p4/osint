@@ -1,6 +1,6 @@
 {
  "date": "20261113",
- "generated_at": "2026-11-13T14:14:31.370441+00:00",
+ "generated_at": "2026-11-13T21:22:46.788878+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,8 +34,40 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 4,
+ "signal_count": 5,
  "signals": [
+  {
+   "id": "d9cd582c63203c77",
+   "title": "美国国会如何收回贸易权力并限制特朗普的关税政策",
+   "source": "PIIE-Peterson",
+   "published_at": "2026-11-13T17:00:00+00:00",
+   "score": 0.839,
+   "hits": [
+    {
+     "hyp_id": "HM101",
+     "code": "I",
+     "conf": 0.55,
+     "gate": 0.18,
+     "selectivity": 3.6
+    }
+   ]
+  },
+  {
+   "id": "09860fd736089a8e",
+   "title": "黄仁勋风波冲击中国AI股 阿里巴巴一度跌逾7%",
+   "source": "联合早报-中国",
+   "published_at": "2026-11-12T09:43:10+00:00",
+   "score": 0.697,
+   "hits": [
+    {
+     "hyp_id": "HM102",
+     "code": "C",
+     "conf": 0.5,
+     "gate": 0.23,
+     "selectivity": 3.83
+    }
+   ]
+  },
   {
    "id": "1930f05180009eaf",
    "title": "习近平提一中基础下两岸协商 台湾蓝营倡民间先行",
@@ -46,9 +78,9 @@
     {
      "hyp_id": "HM001",
      "code": "I",
-     "conf": 0.7,
-     "gate": 0.18,
-     "selectivity": 6.0
+     "conf": 0.69,
+     "gate": 0.17,
+     "selectivity": 5.67
     }
    ]
   },
@@ -57,30 +89,14 @@
    "title": "中国国防部：重视中美两军战略沟通",
    "source": "联合早报-中国",
    "published_at": "2026-11-13T08:06:00+00:00",
-   "score": 0.736,
+   "score": 0.664,
    "hits": [
     {
      "hyp_id": "HM001",
      "code": "I",
-     "conf": 0.87,
-     "gate": 0.23,
-     "selectivity": 5.75
-    }
-   ]
-  },
-  {
-   "id": "c95ec2ca8440ebf8",
-   "title": "中芯国际：AI相关晶片供应链紧张将持续至2027年",
-   "source": "联合早报-中国",
-   "published_at": "2026-11-13T03:17:06+00:00",
-   "score": 0.687,
-   "hits": [
-    {
-     "hyp_id": "HM102",
-     "code": "C",
-     "conf": 0.72,
-     "gate": 0.36,
-     "selectivity": 9.0
+     "conf": 0.88,
+     "gate": 0.25,
+     "selectivity": 6.25
     }
    ]
   },
@@ -89,14 +105,14 @@
    "title": "China stages unannounced Pacific drills in ‘silent intimidation’ push: Taiwan officials",
    "source": "Japan Times",
    "published_at": "2026-11-13T08:35:00+00:00",
-   "score": 0.616,
+   "score": 0.555,
    "hits": [
     {
      "hyp_id": "HM001",
      "code": "C",
      "conf": 0.54,
-     "gate": 0.48,
-     "selectivity": 8.0
+     "gate": 0.49,
+     "selectivity": 9.8
     }
    ]
   }
