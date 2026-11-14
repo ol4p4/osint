@@ -4,5 +4,5 @@
 
 ## HM001 台海冲突升级风险（2 条）
 
-- `C` gate=0.50 → HM001(0.53) ｜ China stages unannounced Pacific drills in ‘silent intimidation’ push: Taiwan officials
-- `I` gate=0.24 → HM001(0.88) ｜ 中国国防部：重视中美两军战略沟通
+- `C` gate=0.50 → HM001(0.54) ｜ China stages unannounced Pacific drills in ‘silent intimidation’ push: Taiwan officials
+- `I` gate=0.24 → HM001(0.87) ｜ 中国国防部：重视中美两军战略沟通
