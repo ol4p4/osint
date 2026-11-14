@@ -1,6 +1,6 @@
 {
  "date": "20261114",
- "generated_at": "2026-11-14T13:16:39.521167+00:00",
+ "generated_at": "2026-11-14T19:55:09.789524+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,7 +34,7 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 2,
+ "signal_count": 3,
  "signals": [
   {
    "id": "fab299ad5c03909a",
@@ -46,9 +46,25 @@
     {
      "hyp_id": "HM001",
      "code": "I",
-     "conf": 0.87,
+     "conf": 0.86,
      "gate": 0.24,
      "selectivity": 6.0
+    }
+   ]
+  },
+  {
+   "id": "fbb0d95e33cfe890",
+   "title": "台官员：大陆未预告在西太平洋军演 对台实施无声威吓",
+   "source": "联合早报-中国",
+   "published_at": "2026-11-13T07:25:11+00:00",
+   "score": 0.597,
+   "hits": [
+    {
+     "hyp_id": "HM001",
+     "code": "C",
+     "conf": 0.58,
+     "gate": 0.53,
+     "selectivity": 10.6
     }
    ]
   },
@@ -57,14 +73,14 @@
    "title": "China stages unannounced Pacific drills in ‘silent intimidation’ push: Taiwan officials",
    "source": "Japan Times",
    "published_at": "2026-11-13T08:35:00+00:00",
-   "score": 0.442,
+   "score": 0.401,
    "hits": [
     {
      "hyp_id": "HM001",
      "code": "C",
-     "conf": 0.54,
+     "conf": 0.5,
      "gate": 0.5,
-     "selectivity": 10.0
+     "selectivity": 8.33
     }
    ]
   }
