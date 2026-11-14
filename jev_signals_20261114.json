@@ -1,0 +1,72 @@
+{
+ "date": "20261114",
+ "generated_at": "2026-11-14T05:27:01.044860+00:00",
+ "channel": "JEV: free(jev-1.13-free)",
+ "majors": [
+  {
+   "id": "HM100",
+   "title": "全球能源转型加速导致传统能源需求骤降"
+  },
+  {
+   "id": "HM101",
+   "title": "美加贸易摩擦升级引发全球供应链重构"
+  },
+  {
+   "id": "HM102",
+   "title": "AI算力与关键材料短缺限制技术商业化速度"
+  },
+  {
+   "id": "HM001",
+   "title": "台海冲突升级风险"
+  },
+  {
+   "id": "HM002",
+   "title": "全球能源供应格局重塑导致大国竞争"
+  },
+  {
+   "id": "HM003",
+   "title": "AI技术成本上升触发宏观经济波动与金融风险"
+  },
+  {
+   "id": "HM004",
+   "title": "生物安全事件升级引发跨境防控收紧"
+  }
+ ],
+ "scanned": 100,
+ "failed": 0,
+ "signal_count": 2,
+ "signals": [
+  {
+   "id": "fab299ad5c03909a",
+   "title": "中国国防部：重视中美两军战略沟通",
+   "source": "联合早报-中国",
+   "published_at": "2026-11-13T08:06:00+00:00",
+   "score": 0.664,
+   "hits": [
+    {
+     "hyp_id": "HM001",
+     "code": "I",
+     "conf": 0.88,
+     "gate": 0.24,
+     "selectivity": 8.0
+    }
+   ]
+  },
+  {
+   "id": "83baba34168496a7",
+   "title": "China stages unannounced Pacific drills in ‘silent intimidation’ push: Taiwan officials",
+   "source": "Japan Times",
+   "published_at": "2026-11-13T08:35:00+00:00",
+   "score": 0.494,
+   "hits": [
+    {
+     "hyp_id": "HM001",
+     "code": "C",
+     "conf": 0.53,
+     "gate": 0.5,
+     "selectivity": 10.0
+    }
+   ]
+  }
+ ]
+}
