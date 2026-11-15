@@ -1,6 +1,6 @@
 {
  "date": "20261115",
- "generated_at": "2026-11-15T10:37:35.700912+00:00",
+ "generated_at": "2026-11-15T18:41:46.464250+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,8 +34,24 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 1,
+ "signal_count": 2,
  "signals": [
+  {
+   "id": "2cb6a8f40fd63d1e",
+   "title": "美国二叠纪盆地地区石油产量稳健增长再次超出预期",
+   "source": "新浪财经-滚动新闻",
+   "published_at": "2026-11-15T14:37:23+00:00",
+   "score": 0.789,
+   "hits": [
+    {
+     "hyp_id": "HM100",
+     "code": "I",
+     "conf": 0.76,
+     "gate": 0.15,
+     "selectivity": 2.5
+    }
+   ]
+  },
   {
    "id": "83baba34168496a7",
    "title": "China stages unannounced Pacific drills in ‘silent intimidation’ push: Taiwan officials",
