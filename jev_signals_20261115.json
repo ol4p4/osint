@@ -1,0 +1,88 @@
+{
+ "date": "20261115",
+ "generated_at": "2026-11-15T00:56:58.552381+00:00",
+ "channel": "JEV: free(jev-1.13-free)",
+ "majors": [
+  {
+   "id": "HM100",
+   "title": "全球能源转型加速导致传统能源需求骤降"
+  },
+  {
+   "id": "HM101",
+   "title": "美加贸易摩擦升级引发全球供应链重构"
+  },
+  {
+   "id": "HM102",
+   "title": "AI算力与关键材料短缺限制技术商业化速度"
+  },
+  {
+   "id": "HM001",
+   "title": "台海冲突升级风险"
+  },
+  {
+   "id": "HM002",
+   "title": "全球能源供应格局重塑导致大国竞争"
+  },
+  {
+   "id": "HM003",
+   "title": "AI技术成本上升触发宏观经济波动与金融风险"
+  },
+  {
+   "id": "HM004",
+   "title": "生物安全事件升级引发跨境防控收紧"
+  }
+ ],
+ "scanned": 100,
+ "failed": 0,
+ "signal_count": 3,
+ "signals": [
+  {
+   "id": "c753f932e9926ac0",
+   "title": "美国能源部长赖特：美国是全球最大的石油和天然气生产国及出口国",
+   "source": "金十数据-快讯",
+   "published_at": "2026-11-14T20:28:58+00:00",
+   "score": 0.751,
+   "hits": [
+    {
+     "hyp_id": "HM100",
+     "code": "I",
+     "conf": 0.94,
+     "gate": 0.16,
+     "selectivity": 2.67
+    }
+   ]
+  },
+  {
+   "id": "888ada7b3b1cfab4",
+   "title": "中国驻美大使：以中美建设性战略稳定促进亚太共同繁荣",
+   "source": "新浪财经-7x24直播",
+   "published_at": "2026-11-14T23:24:27+00:00",
+   "score": 0.678,
+   "hits": [
+    {
+     "hyp_id": "HM001",
+     "code": "I",
+     "conf": 0.67,
+     "gate": 0.16,
+     "selectivity": 3.2
+    }
+   ]
+  },
+  {
+   "id": "83baba34168496a7",
+   "title": "China stages unannounced Pacific drills in ‘silent intimidation’ push: Taiwan officials",
+   "source": "Japan Times",
+   "published_at": "2026-11-13T08:35:00+00:00",
+   "score": 0.401,
+   "hits": [
+    {
+     "hyp_id": "HM001",
+     "code": "C",
+     "conf": 0.56,
+     "gate": 0.5,
+     "selectivity": 10.0
+    }
+   ]
+  }
+ ]
+}
