@@ -1,69 +1,63 @@
 {
- "at": "2026-11-16T00:56:40",
+ "at": "2026-11-16T10:54:04",
  "window": "2026-11-13 ~ 2026-11-16",
  "samples": 150,
  "gate_threshold": 0.08,
  "strong_threshold": 0.2,
  "stats": {
-  "hyp_e2b46e32": {
-   "samples": 150,
-   "mention_count": 26,
-   "mention_ratio": 0.1733,
-   "signal_count": 0,
-   "signal_ratio": 0.0,
-   "max_gate": 0.16,
-   "mean_gate": 0.0604,
-   "strong_signals": []
-  },
   "mega_war3": {
    "samples": 150,
-   "mention_count": 36,
-   "mention_ratio": 0.24,
-   "signal_count": 7,
-   "signal_ratio": 0.0467,
-   "max_gate": 0.34,
-   "mean_gate": 0.0691,
+   "mention_count": 34,
+   "mention_ratio": 0.2267,
+   "signal_count": 6,
+   "signal_ratio": 0.04,
+   "max_gate": 0.31,
+   "mean_gate": 0.0648,
    "strong_signals": [
-    0.34,
-    0.32,
+    0.31,
     0.25,
+    0.23,
     0.22,
-    0.22,
-    0.22,
+    0.21,
     0.21
    ]
   },
   "mega_global_economic_crisis": {
    "samples": 150,
-   "mention_count": 82,
-   "mention_ratio": 0.5467,
-   "signal_count": 9,
-   "signal_ratio": 0.06,
-   "max_gate": 0.25,
-   "mean_gate": 0.0945,
+   "mention_count": 84,
+   "mention_ratio": 0.56,
+   "signal_count": 6,
+   "signal_ratio": 0.04,
+   "max_gate": 0.26,
+   "mean_gate": 0.0912,
    "strong_signals": [
-    0.25,
-    0.23,
+    0.26,
+    0.22,
+    0.22,
     0.22,
     0.21,
-    0.21,
-    0.21,
-    0.2,
-    0.2,
     0.2
    ]
   },
+  "hyp_e2b46e32": {
+   "samples": 150,
+   "mention_count": 19,
+   "mention_ratio": 0.1267,
+   "signal_count": 0,
+   "signal_ratio": 0.0,
+   "max_gate": 0.14,
+   "mean_gate": 0.0588,
+   "strong_signals": []
+  },
   "hyp_d26158d3": {
    "samples": 150,
-   "mention_count": 4,
-   "mention_ratio": 0.0267,
-   "signal_count": 1,
-   "signal_ratio": 0.0067,
-   "max_gate": 0.24,
-   "mean_gate": 0.0441,
-   "strong_signals": [
-    0.24
-   ]
+   "mention_count": 5,
+   "mention_ratio": 0.0333,
+   "signal_count": 0,
+   "signal_ratio": 0.0,
+   "max_gate": 0.17,
+   "mean_gate": 0.0434,
+   "strong_signals": []
   }
  }
 }
