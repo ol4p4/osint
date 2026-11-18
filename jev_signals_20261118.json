@@ -1,6 +1,6 @@
 {
  "date": "20261118",
- "generated_at": "2026-11-18T11:25:46.962910+00:00",
+ "generated_at": "2026-11-18T20:18:28.479712+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,23 +34,6 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 1,
- "signals": [
-  {
-   "id": "c564bf1d85411b50",
-   "title": "美升级AI晶片出口管制 中国商务部：破坏国际经贸秩序",
-   "source": "联合早报-中国",
-   "published_at": "2026-11-17T12:55:29+00:00",
-   "score": 0.787,
-   "hits": [
-    {
-     "hyp_id": "HM102",
-     "code": "C",
-     "conf": 0.5,
-     "gate": 0.37,
-     "selectivity": 3.36
-    }
-   ]
-  }
- ]
+ "signal_count": 0,
+ "signals": []
 }

@@ -1,66 +1,65 @@
 {
- "at": "2026-11-18T11:26:12",
+ "at": "2026-11-18T20:19:19",
  "window": "2026-11-15 ~ 2026-11-18",
  "samples": 150,
  "gate_threshold": 0.08,
  "strong_threshold": 0.2,
  "stats": {
-  "mega_war3": {
-   "samples": 150,
-   "mention_count": 33,
-   "mention_ratio": 0.22,
-   "signal_count": 7,
-   "signal_ratio": 0.0467,
-   "max_gate": 0.3,
-   "mean_gate": 0.0656,
-   "strong_signals": [
-    0.3,
-    0.28,
-    0.25,
-    0.24,
-    0.22,
-    0.22,
-    0.21
-   ]
-  },
   "hyp_e2b46e32": {
    "samples": 150,
    "mention_count": 25,
    "mention_ratio": 0.1667,
-   "signal_count": 1,
-   "signal_ratio": 0.0067,
-   "max_gate": 0.23,
-   "mean_gate": 0.0631,
+   "signal_count": 0,
+   "signal_ratio": 0.0,
+   "max_gate": 0.14,
+   "mean_gate": 0.0611,
+   "strong_signals": []
+  },
+  "mega_war3": {
+   "samples": 150,
+   "mention_count": 30,
+   "mention_ratio": 0.2,
+   "signal_count": 7,
+   "signal_ratio": 0.0467,
+   "max_gate": 0.3,
+   "mean_gate": 0.0623,
    "strong_signals": [
-    0.23
+    0.3,
+    0.26,
+    0.22,
+    0.22,
+    0.22,
+    0.22,
+    0.2
+   ]
+  },
+  "mega_global_economic_crisis": {
+   "samples": 150,
+   "mention_count": 84,
+   "mention_ratio": 0.56,
+   "signal_count": 7,
+   "signal_ratio": 0.0467,
+   "max_gate": 0.28,
+   "mean_gate": 0.095,
+   "strong_signals": [
+    0.28,
+    0.25,
+    0.23,
+    0.22,
+    0.22,
+    0.2,
+    0.2
    ]
   },
   "hyp_d26158d3": {
    "samples": 150,
-   "mention_count": 9,
-   "mention_ratio": 0.06,
+   "mention_count": 7,
+   "mention_ratio": 0.0467,
    "signal_count": 0,
    "signal_ratio": 0.0,
-   "max_gate": 0.17,
-   "mean_gate": 0.0452,
+   "max_gate": 0.19,
+   "mean_gate": 0.0472,
    "strong_signals": []
-  },
-  "mega_global_economic_crisis": {
-   "samples": 150,
-   "mention_count": 79,
-   "mention_ratio": 0.5267,
-   "signal_count": 6,
-   "signal_ratio": 0.04,
-   "max_gate": 0.26,
-   "mean_gate": 0.0881,
-   "strong_signals": [
-    0.26,
-    0.26,
-    0.22,
-    0.22,
-    0.21,
-    0.2
-   ]
   }
  }
 }
