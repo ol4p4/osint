@@ -1,6 +1,6 @@
 {
  "date": "20261120",
- "generated_at": "2026-11-20T02:11:46.425734+00:00",
+ "generated_at": "2026-11-20T11:10:45.036110+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,7 +34,7 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 7,
+ "signal_count": 5,
  "signals": [
   {
    "id": "8031eafbbe60a46d",
@@ -46,9 +46,25 @@
     {
      "hyp_id": "HM001",
      "code": "I",
-     "conf": 0.52,
-     "gate": 0.16,
-     "selectivity": 3.2
+     "conf": 0.51,
+     "gate": 0.17,
+     "selectivity": 3.4
+    }
+   ]
+  },
+  {
+   "id": "01c5da9a2bc6f2fc",
+   "title": "特朗普评价美中俄元首会晤：若满分为10分会打12分",
+   "source": "联合早报-中国",
+   "published_at": "2026-11-20T05:33:00+00:00",
+   "score": 0.783,
+   "hits": [
+    {
+     "hyp_id": "HM001",
+     "code": "I",
+     "conf": 0.56,
+     "gate": 0.2,
+     "selectivity": 2.86
     }
    ]
   },
@@ -57,46 +73,14 @@
    "title": "中国称特朗普重申不支持台独 胡锡进：台湾对美价值加速贬值",
    "source": "联合早报-中国",
    "published_at": "2026-11-19T10:30:21+00:00",
-   "score": 0.63,
+   "score": 0.687,
    "hits": [
     {
      "hyp_id": "HM001",
      "code": "I",
-     "conf": 0.56,
+     "conf": 0.55,
      "gate": 0.19,
      "selectivity": 4.75
-    }
-   ]
-  },
-  {
-   "id": "919798a4b3fae41a",
-   "title": "中美俄历史性会晤 习近平：对话不停止 和平就有希望",
-   "source": "联合早报-中国",
-   "published_at": "2026-11-19T11:16:55+00:00",
-   "score": 0.624,
-   "hits": [
-    {
-     "hyp_id": "HM001",
-     "code": "I",
-     "conf": 0.69,
-     "gate": 0.21,
-     "selectivity": 2.62
-    }
-   ]
-  },
-  {
-   "id": "2e71a84afbc5f82d",
-   "title": "王毅：中美俄历史性会晤共同维护世界和平",
-   "source": "联合早报-中国",
-   "published_at": "2026-11-20T00:50:43+00:00",
-   "score": 0.753,
-   "hits": [
-    {
-     "hyp_id": "HM001",
-     "code": "I",
-     "conf": 0.66,
-     "gate": 0.21,
-     "selectivity": 3.5
     }
    ]
   },
@@ -105,44 +89,21 @@
    "title": "阿里财报会释放对国产芯片信心，阿里云2030年目标保持不变",
    "source": "第一财经-新闻",
    "published_at": "2026-11-19T14:39:56+00:00",
-   "score": 0.641,
+   "score": 0.699,
    "hits": [
     {
      "hyp_id": "HM102",
      "code": "I",
-     "conf": 0.9,
+     "conf": 0.89,
      "gate": 0.33,
-     "selectivity": 6.6
+     "selectivity": 8.25
     },
     {
      "hyp_id": "HM003",
      "code": "I",
-     "conf": 0.73,
+     "conf": 0.71,
      "gate": 0.19,
-     "selectivity": 6.6
-    }
-   ]
-  },
-  {
-   "id": "4440411aa03a1f22",
-   "title": "阿里、腾讯释放同一个信号：资本开支在2028年后下降，国产算力驱动推理",
-   "source": "华尔街见闻-全球",
-   "published_at": "2026-11-20T01:29:01+00:00",
-   "score": 0.741,
-   "hits": [
-    {
-     "hyp_id": "HM102",
-     "code": "I",
-     "conf": 0.88,
-     "gate": 0.31,
-     "selectivity": 6.2
-    },
-    {
-     "hyp_id": "HM003",
-     "code": "I",
-     "conf": 0.74,
-     "gate": 0.2,
-     "selectivity": 6.2
+     "selectivity": 8.25
     }
    ]
   },
@@ -151,14 +112,14 @@
    "title": "Russia-China-US summit could defuse tensions at critical moment — expert",
    "source": "TASS-EN",
    "published_at": "2026-11-19T20:14:14+00:00",
-   "score": 0.675,
+   "score": 0.593,
    "hits": [
     {
      "hyp_id": "HM001",
      "code": "I",
      "conf": 0.67,
      "gate": 0.24,
-     "selectivity": 4.0
+     "selectivity": 3.43
     }
    ]
   }
