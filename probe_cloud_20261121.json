@@ -1,60 +1,70 @@
 {
- "at": "2026-11-21T10:52:16",
+ "at": "2026-11-21T18:56:11",
  "window": "2026-11-18 ~ 2026-11-21",
  "samples": 150,
  "gate_threshold": 0.08,
  "strong_threshold": 0.2,
  "stats": {
+  "hyp_e2b46e32": {
+   "samples": 150,
+   "mention_count": 23,
+   "mention_ratio": 0.1533,
+   "signal_count": 0,
+   "signal_ratio": 0.0,
+   "max_gate": 0.17,
+   "mean_gate": 0.0601,
+   "strong_signals": []
+  },
+  "hyp_d26158d3": {
+   "samples": 150,
+   "mention_count": 4,
+   "mention_ratio": 0.0267,
+   "signal_count": 0,
+   "signal_ratio": 0.0,
+   "max_gate": 0.1,
+   "mean_gate": 0.0445,
+   "strong_signals": []
+  },
   "mega_war3": {
    "samples": 150,
-   "mention_count": 29,
-   "mention_ratio": 0.1933,
-   "signal_count": 3,
-   "signal_ratio": 0.02,
-   "max_gate": 0.25,
-   "mean_gate": 0.0591,
+   "mention_count": 32,
+   "mention_ratio": 0.2133,
+   "signal_count": 10,
+   "signal_ratio": 0.0667,
+   "max_gate": 0.32,
+   "mean_gate": 0.0698,
    "strong_signals": [
+    0.32,
+    0.31,
+    0.29,
+    0.26,
     0.25,
     0.24,
+    0.23,
+    0.23,
+    0.23,
     0.22
    ]
   },
   "mega_global_economic_crisis": {
    "samples": 150,
-   "mention_count": 84,
-   "mention_ratio": 0.56,
-   "signal_count": 6,
-   "signal_ratio": 0.04,
-   "max_gate": 0.42,
-   "mean_gate": 0.0976,
+   "mention_count": 91,
+   "mention_ratio": 0.6067,
+   "signal_count": 9,
+   "signal_ratio": 0.06,
+   "max_gate": 0.3,
+   "mean_gate": 0.1009,
    "strong_signals": [
-    0.42,
+    0.3,
+    0.27,
     0.22,
     0.22,
-    0.21,
-    0.21,
+    0.22,
+    0.2,
+    0.2,
+    0.2,
     0.2
    ]
-  },
-  "hyp_d26158d3": {
-   "samples": 150,
-   "mention_count": 6,
-   "mention_ratio": 0.04,
-   "signal_count": 0,
-   "signal_ratio": 0.0,
-   "max_gate": 0.1,
-   "mean_gate": 0.0455,
-   "strong_signals": []
-  },
-  "hyp_e2b46e32": {
-   "samples": 150,
-   "mention_count": 25,
-   "mention_ratio": 0.1667,
-   "signal_count": 0,
-   "signal_ratio": 0.0,
-   "max_gate": 0.17,
-   "mean_gate": 0.0613,
-   "strong_signals": []
   }
  }
 }
