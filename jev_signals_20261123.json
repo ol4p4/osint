@@ -1,6 +1,6 @@
 {
  "date": "20261123",
- "generated_at": "2026-11-23T01:34:10.397653+00:00",
+ "generated_at": "2026-11-23T12:03:56.309068+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -41,14 +41,14 @@
    "title": "报道：美国民主党将寻求推翻特朗普的税收和关税政策",
    "source": "华尔街见闻-快讯",
    "published_at": "2026-11-22T13:31:48+00:00",
-   "score": 0.623,
+   "score": 0.683,
    "hits": [
     {
      "hyp_id": "HM101",
      "code": "I",
      "conf": 0.53,
-     "gate": 0.18,
-     "selectivity": 3.6
+     "gate": 0.19,
+     "selectivity": 3.17
     }
    ]
   },
@@ -62,9 +62,9 @@
     {
      "hyp_id": "HM001",
      "code": "I",
-     "conf": 0.78,
+     "conf": 0.79,
      "gate": 0.23,
-     "selectivity": 2.88
+     "selectivity": 3.29
     }
    ]
   }
