@@ -1,6 +1,6 @@
 {
  "date": "20261123",
- "generated_at": "2026-11-23T12:03:56.309068+00:00",
+ "generated_at": "2026-11-23T23:44:47.727468+00:00",
  "channel": "JEV: free(jev-1.13-free)",
  "majors": [
   {
@@ -34,7 +34,7 @@
  ],
  "scanned": 100,
  "failed": 0,
- "signal_count": 2,
+ "signal_count": 1,
  "signals": [
   {
    "id": "94e5646133b46967",
@@ -46,25 +46,9 @@
     {
      "hyp_id": "HM101",
      "code": "I",
-     "conf": 0.53,
+     "conf": 0.54,
      "gate": 0.19,
      "selectivity": 3.17
-    }
-   ]
-  },
-  {
-   "id": "a31e325504d8926e",
-   "title": "US learned it cannot win trade or hot war with China — expert",
-   "source": "TASS-EN",
-   "published_at": "2026-11-21T21:30:01+00:00",
-   "score": 0.439,
-   "hits": [
-    {
-     "hyp_id": "HM001",
-     "code": "I",
-     "conf": 0.79,
-     "gate": 0.23,
-     "selectivity": 3.29
     }
    ]
   }
