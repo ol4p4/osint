@@ -1,0 +1,72 @@
+{
+ "date": "20261123",
+ "generated_at": "2026-11-23T01:34:10.397653+00:00",
+ "channel": "JEV: free(jev-1.13-free)",
+ "majors": [
+  {
+   "id": "HM100",
+   "title": "全球能源转型加速导致传统能源需求骤降"
+  },
+  {
+   "id": "HM101",
+   "title": "美加贸易摩擦升级引发全球供应链重构"
+  },
+  {
+   "id": "HM102",
+   "title": "AI算力与关键材料短缺限制技术商业化速度"
+  },
+  {
+   "id": "HM001",
+   "title": "台海冲突升级风险"
+  },
+  {
+   "id": "HM002",
+   "title": "全球能源供应格局重塑导致大国竞争"
+  },
+  {
+   "id": "HM003",
+   "title": "AI技术成本上升触发宏观经济波动与金融风险"
+  },
+  {
+   "id": "HM004",
+   "title": "生物安全事件升级引发跨境防控收紧"
+  }
+ ],
+ "scanned": 100,
+ "failed": 0,
+ "signal_count": 2,
+ "signals": [
+  {
+   "id": "94e5646133b46967",
+   "title": "报道：美国民主党将寻求推翻特朗普的税收和关税政策",
+   "source": "华尔街见闻-快讯",
+   "published_at": "2026-11-22T13:31:48+00:00",
+   "score": 0.623,
+   "hits": [
+    {
+     "hyp_id": "HM101",
+     "code": "I",
+     "conf": 0.53,
+     "gate": 0.18,
+     "selectivity": 3.6
+    }
+   ]
+  },
+  {
+   "id": "a31e325504d8926e",
+   "title": "US learned it cannot win trade or hot war with China — expert",
+   "source": "TASS-EN",
+   "published_at": "2026-11-21T21:30:01+00:00",
+   "score": 0.439,
+   "hits": [
+    {
+     "hyp_id": "HM001",
+     "code": "I",
+     "conf": 0.78,
+     "gate": 0.23,
+     "selectivity": 2.88
+    }
+   ]
+  }
+ ]
+}
