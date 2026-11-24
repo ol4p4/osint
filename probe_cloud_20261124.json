@@ -1,5 +1,5 @@
 {
- "at": "2026-11-24T09:04:48",
+ "at": "2026-11-24T20:15:06",
  "window": "2026-11-21 ~ 2026-11-24",
  "samples": 150,
  "gate_threshold": 0.08,
@@ -7,64 +7,66 @@
  "stats": {
   "hyp_e2b46e32": {
    "samples": 150,
-   "mention_count": 23,
-   "mention_ratio": 0.1533,
-   "signal_count": 0,
-   "signal_ratio": 0.0,
-   "max_gate": 0.15,
-   "mean_gate": 0.0588,
-   "strong_signals": []
-  },
-  "hyp_d26158d3": {
-   "samples": 150,
-   "mention_count": 10,
-   "mention_ratio": 0.0667,
-   "signal_count": 0,
-   "signal_ratio": 0.0,
-   "max_gate": 0.18,
-   "mean_gate": 0.0456,
-   "strong_signals": []
-  },
-  "mega_global_economic_crisis": {
-   "samples": 150,
-   "mention_count": 71,
-   "mention_ratio": 0.4733,
-   "signal_count": 10,
-   "signal_ratio": 0.0667,
-   "max_gate": 0.25,
-   "mean_gate": 0.0875,
+   "mention_count": 24,
+   "mention_ratio": 0.16,
+   "signal_count": 1,
+   "signal_ratio": 0.0067,
+   "max_gate": 0.24,
+   "mean_gate": 0.0592,
    "strong_signals": [
-    0.25,
-    0.24,
-    0.22,
-    0.22,
-    0.22,
-    0.21,
-    0.2,
-    0.2,
-    0.2,
-    0.2
+    0.24
    ]
   },
   "mega_war3": {
    "samples": 150,
-   "mention_count": 33,
-   "mention_ratio": 0.22,
-   "signal_count": 14,
-   "signal_ratio": 0.0933,
-   "max_gate": 0.32,
-   "mean_gate": 0.0725,
+   "mention_count": 42,
+   "mention_ratio": 0.28,
+   "signal_count": 19,
+   "signal_ratio": 0.1267,
+   "max_gate": 0.43,
+   "mean_gate": 0.0862,
    "strong_signals": [
-    0.32,
+    0.43,
+    0.31,
     0.31,
     0.3,
     0.3,
-    0.28,
-    0.27,
-    0.24,
-    0.24,
+    0.29,
+    0.26,
+    0.25,
+    0.25,
+    0.25
+   ]
+  },
+  "hyp_d26158d3": {
+   "samples": 150,
+   "mention_count": 9,
+   "mention_ratio": 0.06,
+   "signal_count": 0,
+   "signal_ratio": 0.0,
+   "max_gate": 0.13,
+   "mean_gate": 0.0457,
+   "strong_signals": []
+  },
+  "mega_global_economic_crisis": {
+   "samples": 150,
+   "mention_count": 84,
+   "mention_ratio": 0.56,
+   "signal_count": 14,
+   "signal_ratio": 0.0933,
+   "max_gate": 0.25,
+   "mean_gate": 0.1002,
+   "strong_signals": [
+    0.25,
+    0.25,
     0.23,
-    0.22
+    0.22,
+    0.22,
+    0.22,
+    0.21,
+    0.21,
+    0.21,
+    0.21
    ]
   }
  }
